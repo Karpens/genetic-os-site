@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALIGN — The Digital Pilates Method | Build Real Strength in 12 Weeks</title>
+<meta name="description" content="The precision Pilates system trusted by 50,000+ members. Beginner to advanced programs, nutrition guidance, and lifetime updates — 28 minutes a day, zero equipment. One payment, instant access.">
+
+<link rel="canonical" href="https://align-method.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ALIGN">
+<meta property="og:title" content="ALIGN — The Digital Pilates Method">
+<meta property="og:description" content="Build real core strength and total-body control in 12 weeks. 28 minutes a day. Zero equipment. Instant access.">
+<meta property="og:url" content="https://align-method.com/">
+<meta property="og:image" content="https://images.unsplash.com/photo-1713201435382-bb915a39be16?q=80&w=1200&auto=format&fit=crop">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ALIGN — The Digital Pilates Method">
+<meta name="twitter:description" content="Build real core strength and total-body control in 12 weeks. Instant access.">
+<meta name="theme-color" content="#EAE6DA">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%236B2E2C'/%3E%3Ccircle cx='50' cy='50' r='27' fill='none' stroke='%23FBF9F4' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='11' fill='none' stroke='%23FBF9F4' stroke-width='6'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ALIGN — Design System v2
+   Structure:
+     1. Tokens          2. Base & reset      3. Utilities
+     4. Buttons         5. Nav & announce    6. Hero
+     7. Press strip     8. Stats             9. Product mockups
+    10. Benefits       11. Features         12. Comparison
+    13. Results        14. Testimonials     15. Founder
+    16. Bonuses        17. Pricing          18. Guarantee
+    19. FAQ            20. Final CTA        21. Footer
+    22. Checkout modal 23. Mobile CTA/menu  24. Motion & reveal
+    25. Pages (thank-you / download)        26. Responsive
+   ============================================================ */
+
+/* ============ 1. TOKENS ============ */
+:root{
+  /* Color — warm mineral neutrals + oxblood signature */
+  --stone-050:#FBF9F4;
+  --stone-100:#F3F0E7;
+  --stone-200:#EAE6DA;
+  --stone-300:#DFDACA;
+  --stone-400:#CFC9B4;
+  --line:#DAD4C2;
+  --line-strong:#C4BDA6;
+
+  --ink-900:#101210;
+  --ink-800:#191B18;
+  --ink-700:#242621;
+  --ink-600:#3A3C35;
+  --gray-500:#5C5D51;
+  --gray-400:#82806E;
+
+  --ox-700:#4A1F1D;
+  --ox-600:#6B2E2C;
+  --ox-500:#8A3D38;
+  --ox-100:#EDDCD6;
+  --ox-050:#F6ECE7;
+  --ox-glow:rgba(138,61,56,0.32);
+
+  --gold:#B98A4D;
+
+  /* Gradients */
+  --grad-ox:linear-gradient(135deg,#8A3D38 0%,#5C2523 100%);
+  --grad-ink:linear-gradient(180deg,#191B18 0%,#101210 100%);
+  --grad-sheen:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.14) 50%,transparent 60%);
+  --grad-halo:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(138,61,56,0.16),transparent 70%);
+
+  /* Type */
+  --font-display:'Archivo',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-accent:'Fraunces',Georgia,serif;
+
+  --text-xs:0.78rem;
+  --text-sm:0.875rem;
+  --text-base:1rem;
+  --text-md:1.09rem;
+  --text-lg:1.22rem;
+
+  /* Space (8pt-derived) */
+  --s-1:8px; --s-2:16px; --s-3:24px; --s-4:32px;
+  --s-5:48px; --s-6:64px; --s-7:96px; --s-8:128px;
+
+  /* Radii */
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px; --r-full:999px;
+
+  /* Elevation */
+  --sh-xs:0 1px 2px rgba(16,18,16,0.06);
+  --sh-sm:0 4px 14px -4px rgba(16,18,16,0.10);
+  --sh-md:0 16px 40px -16px rgba(16,18,16,0.18);
+  --sh-lg:0 32px 72px -28px rgba(16,18,16,0.30);
+  --sh-ox:0 20px 44px -16px var(--ox-glow);
+  --ring:inset 0 0 0 1px rgba(16,18,16,0.06);
+
+  /* Motion */
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-spring:cubic-bezier(.34,1.4,.44,1);
+  --t-fast:.22s;
+  --t-med:.45s;
+  --t-slow:.8s;
+}
+
+/* ============ 2. BASE & RESET ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:96px;}
+body{
+  font-family:var(--font-body);
+  font-size:var(--text-base);
+  background:var(--stone-200);
+  color:var(--ink-800);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block;height:auto;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input,select{font:inherit;}
+ul,ol{list-style:none;}
+svg{display:block;}
+strong{font-weight:650;}
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:700;
+  line-height:1.05;
+  letter-spacing:-0.022em;
+  color:var(--ink-900);
+  text-wrap:balance;
+}
+em{
+  font-family:var(--font-accent);
+  font-style:italic;
+  font-weight:400;
+  letter-spacing:-0.01em;
+  color:var(--ox-600);
+}
+
+::selection{background:var(--ox-600);color:var(--stone-050);}
+:focus-visible{outline:2px solid var(--ox-600);outline-offset:3px;border-radius:6px;}
+
+/* ============ 3. UTILITIES ============ */
+.container{max-width:1180px;margin:0 auto;padding:0 clamp(20px,4vw,40px);}
+.container--narrow{max-width:880px;}
+.container--wide{max-width:1320px;}
+
+.section{padding:var(--s-8) 0;position:relative;}
+.section--tight{padding:var(--s-7) 0;}
+.section--flush-b{padding-bottom:0;}
+.section--cream{background:var(--stone-100);}
+.section--deep{background:var(--stone-300);}
+.section--dark{background:var(--grad-ink);color:var(--stone-200);}
+.section--dark h2,.section--dark h3,.section--dark h4{color:var(--stone-050);}
+.section--dark em{color:#DCA296;}
+
+.halo::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--grad-halo);
+  pointer-events:none;
+}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-display);
+  font-size:var(--text-xs);
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ox-600);
+  margin-bottom:22px;
+}
+.eyebrow::before{content:'';width:22px;height:1.5px;background:var(--ox-600);}
+.section--dark .eyebrow{color:#DCA296;}
+.section--dark .eyebrow::before{background:#DCA296;}
+
+.section-head{max-width:660px;margin-bottom:var(--s-6);}
+.section-head.center{margin-inline:auto;text-align:center;}
+.section-head.center .eyebrow{justify-content:center;}
+.section-head.center .eyebrow::before{display:none;}
+.section-head h2{font-size:clamp(2.1rem,1.5rem + 2.6vw,3.4rem);margin-bottom:20px;}
+.section-head p{font-size:var(--text-lg);color:var(--gray-500);line-height:1.6;text-wrap:pretty;}
+.section--dark .section-head p{color:#A9A796;}
+
+.badge-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:var(--r-full);
+  background:var(--ox-050);color:var(--ox-700);
+  font-family:var(--font-display);font-weight:700;font-size:var(--text-xs);
+  letter-spacing:0.03em;
+}
+.badge-pill svg{width:13px;height:13px;}
+
+/* ============ 4. BUTTONS ============ */
+.btn{
+  position:relative;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 30px;
+  border-radius:var(--r-full);
+  font-family:var(--font-display);font-weight:700;font-size:0.95rem;
+  letter-spacing:0.005em;white-space:nowrap;
+  transition:transform var(--t-med) var(--ease-spring),
+             box-shadow var(--t-med) var(--ease-out),
+             background var(--t-fast) ease,color var(--t-fast) ease,
+             border-color var(--t-fast) ease;
+  overflow:hidden;
+  will-change:transform;
+}
+.btn svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease-spring);}
+.btn:active{transform:scale(.975);}
+
+.btn--primary{
+  background:var(--ink-900);
+  color:var(--stone-050);
+  box-shadow:var(--sh-sm),inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.btn--primary::after{
+  content:'';position:absolute;inset:0;
+  background:var(--grad-sheen);
+  transform:translateX(-120%);
+  transition:transform .9s var(--ease-out);
+}
+.btn--primary:hover{background:var(--ox-700);transform:translateY(-2px);box-shadow:var(--sh-ox);}
+.btn--primary:hover::after{transform:translateX(120%);}
+.btn--primary:hover svg{transform:translateX(4px);}
+
+.btn--ox{
+  background:var(--grad-ox);
+  color:var(--stone-050);
+  box-shadow:var(--sh-ox),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn--ox::after{
+  content:'';position:absolute;inset:0;
+  background:var(--grad-sheen);
+  transform:translateX(-120%);
+  transition:transform .9s var(--ease-out);
+}
+.btn--ox:hover{transform:translateY(-2px);box-shadow:0 24px 52px -14px var(--ox-glow);}
+.btn--ox:hover::after{transform:translateX(120%);}
+.btn--ox:hover svg{transform:translateX(4px);}
+
+.btn--ghost{
+  background:rgba(16,18,16,0.02);
+  border:1.5px solid var(--line-strong);
+  color:var(--ink-800);
+  backdrop-filter:blur(4px);
+}
+.btn--ghost:hover{border-color:var(--ink-800);background:rgba(16,18,16,0.05);transform:translateY(-1px);}
+.section--dark .btn--ghost{border-color:#43453C;color:var(--stone-100);background:rgba(251,249,244,0.03);}
+.section--dark .btn--ghost:hover{border-color:var(--stone-200);background:rgba(251,249,244,0.08);}
+
+.btn--light{background:var(--stone-050);color:var(--ink-900);box-shadow:var(--sh-sm);}
+.btn--light:hover{background:#fff;transform:translateY(-2px);box-shadow:var(--sh-md);}
+
+.btn--lg{padding:19px 38px;font-size:1.02rem;}
+.btn--sm{padding:11px 20px;font-size:0.85rem;}
+.btn--block{width:100%;}
+
+.btn__sub{
+  display:block;font-size:0.68rem;font-weight:600;
+  letter-spacing:0.06em;opacity:.66;margin-top:1px;
+}
+.btn--stacked{flex-direction:column;gap:2px;padding-block:13px;}
+
+/* ============ 5. NAV & ANNOUNCEMENT ============ */
+.announce{
+  background:var(--ink-900);
+  color:var(--stone-100);
+  text-align:center;
+  padding:10px 16px;
+  font-size:var(--text-xs);
+  font-weight:600;
+  letter-spacing:0.04em;
+  position:relative;z-index:210;
+}
+.announce em{color:#DCA296;font-size:0.82rem;}
+.announce strong{color:#fff;}
+
+.nav{
+  position:sticky;top:0;left:0;right:0;z-index:200;
+  padding:18px 0;
+  transition:padding var(--t-med) var(--ease-out),
+             background var(--t-med) ease,
+             box-shadow var(--t-med) ease,
+             backdrop-filter var(--t-med) ease;
+}
+.nav.is-scrolled{
+  padding:12px 0;
+  background:rgba(234,230,218,0.78);
+  backdrop-filter:blur(18px) saturate(1.4);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:0 1px 0 rgba(16,18,16,0.07),var(--sh-xs);
+}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.logo{
+  font-family:var(--font-display);font-weight:800;font-size:1.3rem;
+  letter-spacing:0.04em;display:flex;align-items:center;gap:10px;color:var(--ink-900);
+}
+.logo__mark{
+  width:32px;height:32px;border-radius:10px;
+  background:var(--grad-ox);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),var(--sh-xs);
+}
+.logo__mark svg{width:17px;height:17px;color:var(--stone-050);}
+.nav__links{display:flex;align-items:center;gap:36px;font-family:var(--font-display);font-weight:600;font-size:0.9rem;}
+.nav__links a{position:relative;padding:6px 0;color:var(--ink-700);transition:color var(--t-fast) ease;}
+.nav__links a:hover{color:var(--ink-900);}
+.nav__links a::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;border-radius:2px;
+  background:var(--ox-600);transform:scaleX(0);transform-origin:right;
+  transition:transform var(--t-med) var(--ease-out);
+}
+.nav__links a:hover::after{transform:scaleX(1);transform-origin:left;}
+.nav__actions{display:flex;align-items:center;gap:14px;}
+.nav__toggle{display:none;padding:8px;border-radius:10px;}
+.nav__toggle:hover{background:rgba(16,18,16,0.06);}
+.nav__toggle svg{width:22px;height:22px;}
+
+/* ============ 6. HERO ============ */
+.hero{
+  position:relative;
+  padding:clamp(64px,9vh,110px) 0 var(--s-7);
+  overflow:clip;
+}
+.hero::before{
+  content:'';position:absolute;inset:-20% -10% auto;height:70%;
+  background:radial-gradient(ellipse 55% 60% at 72% 20%,rgba(138,61,56,0.10),transparent 65%);
+  pointer-events:none;
+}
+.hero__grid{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(40px,5vw,72px);align-items:center;}
+
+.hero__topline{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  padding:8px 16px 8px 9px;border-radius:var(--r-full);
+  font-size:var(--text-xs);font-weight:600;color:var(--ink-700);
+  box-shadow:var(--sh-xs);
+  margin-bottom:28px;
+}
+.hero__topline .dot{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--ox-050);color:var(--ox-600);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.hero__topline .dot svg{width:11px;height:11px;}
+.hero__topline strong{color:var(--ox-600);}
+
+.hero__headline{
+  font-size:clamp(3rem,2rem + 4.4vw,5.4rem);
+  font-weight:800;
+  margin-bottom:26px;
+}
+.hero__headline .line{display:block;overflow:hidden;}
+.hero__headline .line span{display:block;transform:translateY(110%);animation:riseIn 1s var(--ease-out) forwards;}
+.hero__headline .line:nth-child(2) span{animation-delay:.12s;}
+@keyframes riseIn{to{transform:translateY(0);}}
+
+.hero__sub{
+  font-size:clamp(1.08rem,1rem + .4vw,1.26rem);
+  color:var(--gray-500);max-width:480px;line-height:1.62;
+  margin-bottom:36px;text-wrap:pretty;
+}
+.hero__cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:32px;}
+.hero__assurance{
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  font-size:var(--text-xs);color:var(--gray-500);font-weight:600;
+}
+.hero__assurance span{display:inline-flex;align-items:center;gap:7px;}
+.hero__assurance svg{width:14px;height:14px;color:var(--ox-600);}
+
+.hero__social{
+  display:flex;align-items:center;gap:16px;
+  margin-top:40px;padding-top:32px;border-top:1px solid var(--line);
+}
+.avatar-stack{display:flex;}
+.avatar-stack img{
+  width:40px;height:40px;border-radius:50%;object-fit:cover;
+  border:2.5px solid var(--stone-200);margin-left:-10px;
+}
+.avatar-stack img:first-child{margin-left:0;}
+.hero__social-copy{font-size:var(--text-sm);color:var(--gray-500);line-height:1.4;}
+.hero__social-copy .stars{display:inline-flex;gap:2px;color:var(--gold);vertical-align:-2px;margin-right:6px;}
+.hero__social-copy .stars svg{width:13px;height:13px;}
+.hero__social-copy strong{color:var(--ink-800);}
+
+/* Hero visual — layered composition */
+.hero__visual{position:relative;height:min(620px,72vh);min-height:480px;}
+.hero__photo{
+  position:absolute;top:0;right:0;width:86%;height:100%;
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-lg);
+}
+.hero__photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(200deg,transparent 55%,rgba(16,18,16,0.32));
+}
+.hero__photo img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);animation:slowZoom 14s var(--ease-out) forwards;}
+@keyframes slowZoom{to{transform:scale(1);}}
+
+.glass-card{
+  position:absolute;
+  background:rgba(251,249,244,0.82);
+  backdrop-filter:blur(16px) saturate(1.3);
+  -webkit-backdrop-filter:blur(16px) saturate(1.3);
+  border:1px solid rgba(255,255,255,0.55);
+  border-radius:var(--r-md);
+  box-shadow:var(--sh-md);
+  padding:18px 20px;
+  animation:floatY 7s ease-in-out infinite;
+}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+.glass-card--session{bottom:10%;left:-4%;width:248px;animation-delay:.8s;}
+.glass-card--session .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.glass-card--session .tag{font-size:0.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);}
+.glass-card--session .play{
+  width:32px;height:32px;border-radius:50%;background:var(--grad-ox);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh-ox);
+  transition:transform var(--t-med) var(--ease-spring);
+}
+.glass-card--session:hover .play{transform:scale(1.12);}
+.glass-card--session .play svg{width:11px;height:11px;color:var(--stone-050);margin-left:1px;}
+.glass-card--session .name{font-family:var(--font-display);font-weight:700;font-size:0.96rem;margin-bottom:12px;color:var(--ink-900);}
+.glass-card--session .bar{height:5px;border-radius:99px;background:rgba(16,18,16,0.1);overflow:hidden;}
+.glass-card--session .bar i{display:block;height:100%;width:0;background:var(--grad-ox);border-radius:99px;animation:fillBar 2.4s var(--ease-out) 1s forwards;}
+@keyframes fillBar{to{width:42%;}}
+
+.glass-card--streak{top:7%;left:2%;display:flex;align-items:center;gap:14px;animation-delay:.2s;}
+.glass-card--streak .flame{
+  width:42px;height:42px;border-radius:12px;background:var(--ox-050);
+  display:flex;align-items:center;justify-content:center;color:var(--ox-600);flex-shrink:0;
+}
+.glass-card--streak .flame svg{width:20px;height:20px;}
+.glass-card--streak strong{display:block;font-family:var(--font-display);font-size:1.05rem;color:var(--ink-900);}
+.glass-card--streak span{font-size:0.75rem;color:var(--gray-500);}
+
+.glass-card--metric{top:38%;right:-3%;text-align:left;animation-delay:1.6s;padding:16px 20px;}
+.glass-card--metric strong{display:block;font-family:var(--font-display);font-weight:800;font-size:1.35rem;color:var(--ox-600);}
+.glass-card--metric span{font-size:0.74rem;color:var(--gray-500);font-weight:600;}
+
+/* ============ 7. PRESS STRIP ============ */
+.press{padding:var(--s-5) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--stone-100);}
+.press__label{
+  text-align:center;font-size:0.72rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--gray-400);margin-bottom:26px;
+}
+.press__row{
+  display:flex;justify-content:center;align-items:center;
+  gap:clamp(32px,5vw,64px);flex-wrap:wrap;
+}
+.press__logo{
+  font-family:var(--font-accent);font-style:italic;font-size:1.15rem;color:var(--gray-400);
+  opacity:.75;letter-spacing:0.02em;
+  transition:opacity var(--t-fast) ease,color var(--t-fast) ease,transform var(--t-fast) ease;
+  cursor:default;
+}
+.press__logo--serifcaps{font-family:var(--font-display);font-style:normal;font-weight:800;letter-spacing:0.14em;font-size:0.92rem;text-transform:uppercase;}
+.press__logo:hover{opacity:1;color:var(--ink-700);transform:translateY(-2px);}
+
+/* ============ 8. STATS ============ */
+.stats{padding:var(--s-7) 0;}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);}
+.stat{background:var(--stone-050);padding:44px 32px;text-align:center;transition:background var(--t-fast) ease;}
+.stat:hover{background:#fff;}
+.stat__num{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(2.1rem,1.7rem + 1.4vw,2.9rem);
+  color:var(--ink-900);display:block;margin-bottom:8px;
+  font-variant-numeric:tabular-nums;
+}
+.stat__num .accent{color:var(--ox-600);}
+.stat__label{font-size:var(--text-sm);color:var(--gray-500);}
+
+/* ============ 9. PRODUCT MOCKUPS / INSIDE ============ */
+.shelf{
+  position:relative;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(18px,2.5vw,30px);
+  perspective:1400px;
+  margin-bottom:var(--s-6);
+}
+.doc{
+  position:relative;
+  border-radius:14px;
+  aspect-ratio:3/4.1;
+  padding:26px 24px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--sh-md),var(--ring);
+  transition:transform var(--t-med) var(--ease-spring),box-shadow var(--t-med) var(--ease-out);
+  transform:rotateY(0) translateY(0);
+  overflow:hidden;
+}
+.doc::before{ /* spine */
+  content:'';position:absolute;top:0;bottom:0;left:0;width:7px;
+  background:linear-gradient(90deg,rgba(0,0,0,0.16),transparent);
+}
+.doc::after{ /* paper sheen */
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(118deg,rgba(255,255,255,0.14) 0%,transparent 42%);
+  pointer-events:none;
+}
+.doc:hover{transform:translateY(-10px) rotateY(-4deg);box-shadow:var(--sh-lg);}
+.doc--ink{background:var(--grad-ink);color:var(--stone-200);}
+.doc--ox{background:var(--grad-ox);color:var(--ox-050);}
+.doc--cream{background:var(--stone-050);color:var(--ink-800);border:1px solid var(--line);}
+.doc__kicker{font-size:0.62rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;opacity:.66;margin-bottom:auto;}
+.doc__title{font-family:var(--font-display);font-weight:800;font-size:clamp(1.15rem,1rem + .8vw,1.55rem);line-height:1.12;letter-spacing:-0.01em;margin-bottom:12px;}
+.doc--ink .doc__title,.doc--ox .doc__title{color:inherit;}
+.doc__meta{font-size:0.72rem;font-weight:600;opacity:.72;display:flex;align-items:center;gap:8px;}
+.doc__meta::before{content:'';width:14px;height:1.5px;background:currentColor;opacity:.5;}
+.doc__wave{position:absolute;bottom:22%;left:24px;right:24px;opacity:.34;}
+
+.inside-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,36px);}
+.inside-col h4{
+  font-family:var(--font-display);font-size:0.76rem;font-weight:800;
+  letter-spacing:0.16em;text-transform:uppercase;color:var(--ox-600);
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.inside-col h4 svg{width:15px;height:15px;}
+.inside-col ul{display:flex;flex-direction:column;}
+.inside-col li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:0.96rem;padding:11px 0;color:var(--ink-700);
+  border-bottom:1px solid var(--line);
+}
+.inside-col li:last-child{border-bottom:none;}
+.inside-col li svg{width:17px;height:17px;color:var(--ox-600);flex-shrink:0;margin-top:2px;}
+
+.format-band{
+  margin-top:var(--s-6);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:var(--line);border-radius:var(--r-lg);overflow:hidden;
+}
+.format-cell{background:var(--stone-050);padding:30px 28px;display:flex;gap:16px;align-items:center;}
+.format-cell .ic{
+  width:46px;height:46px;border-radius:13px;flex-shrink:0;
+  background:var(--ox-050);color:var(--ox-600);
+  display:flex;align-items:center;justify-content:center;
+}
+.format-cell .ic svg{width:21px;height:21px;}
+.format-cell strong{display:block;font-family:var(--font-display);font-size:0.95rem;color:var(--ink-900);}
+.format-cell span{font-size:0.82rem;color:var(--gray-500);}
+
+/* ============ 10. BENEFITS ============ */
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,22px);}
+.benefit{
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:36px 30px;
+  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out),border-color var(--t-fast) ease;
+}
+.benefit:hover{transform:translateY(-6px);box-shadow:var(--sh-md);border-color:transparent;}
+.benefit__icon{
+  width:50px;height:50px;border-radius:15px;
+  background:var(--ox-050);color:var(--ox-600);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;
+  transition:transform var(--t-med) var(--ease-spring),background var(--t-fast) ease,color var(--t-fast) ease;
+}
+.benefit:hover .benefit__icon{transform:scale(1.08) rotate(-4deg);background:var(--grad-ox);color:var(--stone-050);}
+.benefit__icon svg{width:22px;height:22px;}
+.benefit h3{font-size:1.12rem;margin-bottom:11px;}
+.benefit p{color:var(--gray-500);font-size:0.94rem;line-height:1.62;}
+
+/* ============ 11. FEATURES ============ */
+.feature{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(36px,6vw,88px);align-items:center;
+  padding:var(--s-6) 0;
+}
+.feature + .feature{border-top:1px solid var(--line);}
+.feature.rev .feature__media{order:2;}
+.feature__idx{
+  font-family:var(--font-display);font-weight:800;font-size:0.8rem;
+  letter-spacing:0.14em;color:var(--ox-600);
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.feature__idx::after{content:'';width:26px;height:1.5px;background:var(--ox-600);opacity:.5;}
+.feature h3{font-size:clamp(1.5rem,1.3rem + 1vw,2rem);margin-bottom:16px;}
+.feature p{color:var(--gray-500);font-size:var(--text-md);line-height:1.66;margin-bottom:22px;text-wrap:pretty;}
+.feature__points{display:flex;flex-direction:column;gap:12px;}
+.feature__points li{display:flex;gap:11px;font-size:0.95rem;align-items:flex-start;color:var(--ink-700);}
+.feature__points svg{width:17px;height:17px;color:var(--ox-600);flex-shrink:0;margin-top:2px;}
+.feature__media{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  aspect-ratio:4/3.05;box-shadow:var(--sh-md);
+  transition:transform var(--t-slow) var(--ease-out),box-shadow var(--t-slow) var(--ease-out);
+}
+.feature__media:hover{transform:scale(1.015);box-shadow:var(--sh-lg);}
+.feature__media img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease-out);}
+.feature__media:hover img{transform:scale(1.05);}
+.feature__media-chip{
+  position:absolute;bottom:18px;left:18px;
+  background:rgba(251,249,244,0.86);backdrop-filter:blur(12px);
+  border-radius:var(--r-full);padding:9px 18px;
+  font-family:var(--font-display);font-weight:700;font-size:0.78rem;color:var(--ink-800);
+  box-shadow:var(--sh-sm);
+}
+
+/* ============ 12. COMPARISON ============ */
+.compare{
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-lg);
+  background:var(--stone-050);
+}
+.compare table{width:100%;border-collapse:collapse;}
+.compare th,.compare td{padding:20px 26px;text-align:center;font-size:0.94rem;}
+.compare thead th{
+  font-family:var(--font-display);font-weight:800;font-size:0.86rem;
+  letter-spacing:0.04em;padding:26px;
+  background:var(--stone-100);color:var(--gray-500);
+  border-bottom:1px solid var(--line);
+}
+.compare thead th:first-child{text-align:left;}
+.compare thead th.us{
+  background:var(--grad-ink);color:var(--stone-050);
+  font-size:0.95rem;position:relative;
+}
+.compare thead th.us .mini-badge{
+  display:block;font-size:0.62rem;font-weight:700;letter-spacing:.14em;
+  color:#DCA296;margin-top:4px;text-transform:uppercase;
+}
+.compare tbody td:first-child{text-align:left;font-weight:600;color:var(--ink-800);}
+.compare tbody tr{border-bottom:1px solid var(--line);transition:background var(--t-fast) ease;}
+.compare tbody tr:last-child{border-bottom:none;}
+.compare tbody tr:hover{background:var(--stone-100);}
+.compare td.us{background:rgba(138,61,56,0.05);font-weight:600;}
+.compare .yes,.compare .no{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;vertical-align:middle;}
+.compare .yes{background:var(--ox-050);color:var(--ox-600);}
+.compare .no{background:rgba(16,18,16,0.05);color:var(--gray-400);}
+.compare .yes svg,.compare .no svg{width:13px;height:13px;}
+.compare .subnote{display:block;font-size:0.74rem;color:var(--gray-400);font-weight:500;margin-top:3px;}
+
+/* ============ 13. RESULTS / TRANSFORMATION ============ */
+.journey{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,26px);margin-bottom:var(--s-6);}
+.journey-card{
+  position:relative;border-radius:var(--r-lg);overflow:hidden;
+  aspect-ratio:3/3.7;box-shadow:var(--sh-md);
+  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out);
+}
+.journey-card:hover{transform:translateY(-8px);box-shadow:var(--sh-lg);}
+.journey-card img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease-out);}
+.journey-card:hover img{transform:scale(1.06);}
+.journey-card__overlay{
+  position:absolute;inset:auto 0 0 0;padding:64px 22px 22px;
+  background:linear-gradient(to top,rgba(16,18,16,0.78),transparent);
+  color:var(--stone-050);
+}
+.journey-card__phase{
+  display:inline-block;font-family:var(--font-display);font-weight:800;
+  font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;
+  background:rgba(251,249,244,0.16);backdrop-filter:blur(8px);
+  padding:6px 12px;border-radius:99px;margin-bottom:10px;
+}
+.journey-card__title{font-family:var(--font-display);font-weight:700;font-size:1.05rem;}
+
+.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border-radius:var(--r-lg);overflow:hidden;}
+.outcome{background:var(--stone-050);padding:38px 32px;text-align:center;}
+.outcome__num{
+  font-family:var(--font-display);font-weight:800;font-size:2.7rem;
+  color:var(--ox-600);display:block;margin-bottom:8px;
+  font-variant-numeric:tabular-nums;
+}
+.outcome__label{font-size:0.93rem;color:var(--gray-500);max-width:210px;margin-inline:auto;}
+.outcomes-note{
+  text-align:center;font-size:0.78rem;color:var(--gray-400);
+  margin-top:18px;
+}
+
+/* ============ 14. TESTIMONIALS ============ */
+.testi-wall{columns:3;column-gap:22px;}
+.testi{
+  break-inside:avoid;margin-bottom:22px;
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:30px 28px;
+  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med) var(--ease-out);
+}
+.testi:hover{transform:translateY(-4px);box-shadow:var(--sh-md);}
+.testi .stars{display:flex;gap:3px;color:var(--gold);margin-bottom:16px;}
+.testi .stars svg{width:14px;height:14px;}
+.testi p{font-size:0.97rem;line-height:1.66;color:var(--ink-700);margin-bottom:22px;}
+.testi__who{display:flex;align-items:center;gap:12px;}
+.testi__who img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+.testi__who .ini{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:var(--ox-050);color:var(--ox-700);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:0.85rem;
+}
+.testi__who strong{display:block;font-family:var(--font-display);font-size:0.9rem;color:var(--ink-900);}
+.testi__who span{font-size:0.76rem;color:var(--gray-400);display:inline-flex;align-items:center;gap:5px;}
+.testi__who span svg{width:11px;height:11px;color:var(--ox-600);}
+
+/* ============ 15. FOUNDER ============ */
+.founder{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(40px,6vw,80px);align-items:center;}
+.founder__photo{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  aspect-ratio:3/3.6;box-shadow:var(--sh-lg);
+}
+.founder__photo img{width:100%;height:100%;object-fit:cover;}
+.founder__sig{
+  font-family:var(--font-accent);font-style:italic;font-size:1.7rem;
+  color:var(--ink-800);margin-top:26px;
+}
+.founder__body p{font-size:var(--text-md);color:var(--ink-600);line-height:1.72;margin-bottom:20px;text-wrap:pretty;}
+.founder__body p:first-of-type{font-size:1.28rem;color:var(--ink-800);font-weight:500;}
+.founder__creds{display:flex;gap:26px;flex-wrap:wrap;margin-top:30px;}
+.founder__cred{display:flex;align-items:center;gap:10px;font-size:0.85rem;font-weight:600;color:var(--gray-500);}
+.founder__cred svg{width:16px;height:16px;color:var(--ox-600);}
+
+/* ============ 16. BONUSES ============ */
+.bonuses{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px);}
+.bonus{
+  position:relative;
+  background:rgba(251,249,244,0.045);
+  border:1px solid rgba(251,249,244,0.1);
+  border-radius:var(--r-lg);padding:34px 30px;
+  transition:transform var(--t-med) var(--ease-out),background var(--t-fast) ease,border-color var(--t-fast) ease;
+}
+.bonus:hover{transform:translateY(-5px);background:rgba(251,249,244,0.07);border-color:rgba(251,249,244,0.2);}
+.bonus__tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(220,162,150,0.14);color:#DCA296;
+  font-family:var(--font-display);font-weight:800;font-size:0.66rem;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:7px 13px;border-radius:99px;margin-bottom:20px;
+}
+.bonus h3{font-size:1.15rem;margin-bottom:10px;}
+.bonus p{color:#A9A796;font-size:0.93rem;line-height:1.6;margin-bottom:18px;}
+.bonus__value{
+  font-family:var(--font-display);font-weight:700;font-size:0.85rem;color:#DCA296;
+}
+.bonus__value s{color:#6E6C5D;margin-left:8px;font-weight:500;}
+
+/* ============ 17. PRICING ============ */
+.pricing-shell{
+  max-width:1020px;margin:0 auto;
+  display:grid;grid-template-columns:.92fr 1.08fr;
+  border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--sh-lg);
+}
+.pricing-left{background:var(--grad-ink);color:var(--stone-200);padding:52px 46px;position:relative;overflow:hidden;}
+.pricing-left::before{
+  content:'';position:absolute;inset:auto -30% -40% auto;width:80%;height:80%;
+  background:radial-gradient(circle,rgba(138,61,56,0.24),transparent 65%);
+}
+.pricing-left h3{color:var(--stone-050);font-size:1.55rem;margin-bottom:26px;}
+.value-list{display:flex;flex-direction:column;position:relative;}
+.value-row{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:13px 0;font-size:0.93rem;color:#C9C7B6;
+  border-bottom:1px solid rgba(251,249,244,0.09);
+}
+.value-row:last-of-type{border-bottom:none;}
+.value-row .val{font-family:var(--font-display);font-weight:600;font-size:0.84rem;color:#8F8D7B;white-space:nowrap;}
+.value-row.is-bonus{color:#DCA296;}
+.value-row.is-bonus .val{color:#DCA296;opacity:.85;}
+.value-total{
+  display:flex;justify-content:space-between;margin-top:20px;padding-top:22px;
+  border-top:1px solid rgba(251,249,244,0.16);
+  font-family:var(--font-display);font-weight:800;font-size:1.12rem;color:var(--stone-050);
+}
+.value-total .strike{color:#8F8D7B;text-decoration:line-through;font-weight:600;font-size:0.95rem;margin-right:10px;}
+
+.pricing-right{background:var(--stone-050);padding:52px 46px;display:flex;flex-direction:column;}
+.pricing-right .save-badge{
+  align-self:flex-start;
+  background:var(--grad-ox);color:var(--stone-050);
+  font-family:var(--font-display);font-weight:800;font-size:0.74rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:9px 18px;border-radius:99px;margin-bottom:26px;
+  box-shadow:var(--sh-ox);
+}
+.price-line{display:flex;align-items:flex-end;gap:16px;margin-bottom:8px;}
+.price-line .was{font-size:1.35rem;color:var(--gray-400);text-decoration:line-through;margin-bottom:8px;}
+.price-line .now{font-family:var(--font-display);font-weight:800;font-size:4rem;line-height:.95;color:var(--ink-900);letter-spacing:-0.03em;}
+.price-line .cur{font-family:var(--font-display);font-weight:700;font-size:1.5rem;color:var(--ink-900);margin-bottom:6px;}
+.price-sub{color:var(--gray-500);font-size:0.94rem;margin-bottom:30px;}
+.price-includes{display:flex;flex-direction:column;gap:13px;margin-bottom:34px;}
+.price-includes li{display:flex;align-items:center;gap:12px;font-size:0.95rem;color:var(--ink-700);}
+.price-includes svg{width:18px;height:18px;color:var(--ox-600);flex-shrink:0;}
+.price-timer{
+  margin-top:26px;padding-top:26px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+}
+.price-timer span{font-size:0.82rem;color:var(--gray-500);}
+.price-timer .clock{
+  font-family:var(--font-display);font-weight:800;font-size:1.15rem;
+  color:var(--ox-600);letter-spacing:0.03em;font-variant-numeric:tabular-nums;
+}
+.price-secure{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:16px;font-size:0.8rem;color:var(--gray-500);
+}
+.price-secure svg{width:14px;height:14px;color:var(--ox-600);}
+
+.trust-row{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(20px,3.4vw,44px);margin-top:var(--s-6);}
+.trust-chip{display:flex;align-items:center;gap:10px;font-size:0.87rem;font-weight:600;color:var(--gray-500);}
+.trust-chip svg{width:18px;height:18px;color:var(--ox-600);}
+
+/* ============ 18. GUARANTEE ============ */
+.guarantee{
+  max-width:920px;margin:0 auto;
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,52px);align-items:center;
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);
+  padding:clamp(36px,5vw,60px);
+  box-shadow:var(--sh-md);
+  position:relative;overflow:hidden;
+}
+.guarantee::before{
+  content:'';position:absolute;inset:auto auto -50% -12%;width:46%;height:120%;
+  background:radial-gradient(circle,rgba(138,61,56,0.07),transparent 65%);
+}
+.guarantee__seal{
+  position:relative;
+  width:clamp(120px,14vw,158px);height:clamp(120px,14vw,158px);
+  flex-shrink:0;
+}
+.guarantee__seal svg.ring{width:100%;height:100%;animation:spinSlow 26s linear infinite;color:var(--ox-600);}
+@keyframes spinSlow{to{transform:rotate(360deg);}}
+.guarantee__seal .core{
+  position:absolute;inset:22%;
+  border-radius:50%;background:var(--grad-ox);color:var(--stone-050);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:var(--sh-ox);
+  font-family:var(--font-display);
+}
+.guarantee__seal .core strong{font-size:1.45rem;font-weight:800;line-height:1;}
+.guarantee__seal .core span{font-size:0.55rem;font-weight:700;letter-spacing:0.14em;margin-top:3px;}
+.guarantee h3{font-size:clamp(1.5rem,1.3rem + 1vw,1.95rem);margin-bottom:14px;}
+.guarantee p{color:var(--gray-500);font-size:var(--text-md);line-height:1.68;text-wrap:pretty;}
+.guarantee p + p{margin-top:12px;}
+.guarantee .sig-line{margin-top:18px;font-family:var(--font-accent);font-style:italic;font-size:1.25rem;color:var(--ink-800);}
+
+/* ============ 19. FAQ ============ */
+.faq{max-width:780px;margin:0 auto;}
+.faq-item{
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);
+  margin-bottom:12px;
+  transition:box-shadow var(--t-fast) ease,border-color var(--t-fast) ease;
+}
+.faq-item:hover{border-color:var(--line-strong);}
+.faq-item[open]{box-shadow:var(--sh-sm);}
+.faq-item summary{
+  list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:22px 26px;cursor:pointer;
+  font-family:var(--font-display);font-weight:650;font-size:1.02rem;color:var(--ink-900);
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item .chev{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;
+  background:var(--stone-200);
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--t-fast) ease,color var(--t-fast) ease,transform var(--t-med) var(--ease-spring);
+}
+.faq-item .chev svg{width:14px;height:14px;}
+.faq-item[open] .chev{background:var(--grad-ox);color:var(--stone-050);transform:rotate(180deg);}
+.faq-answer{padding:0 26px 24px;color:var(--gray-500);font-size:0.97rem;line-height:1.66;max-width:620px;}
+.faq-cta{text-align:center;margin-top:36px;font-size:0.92rem;color:var(--gray-500);}
+.faq-cta a{color:var(--ox-600);font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+
+/* ============ 20. FINAL CTA ============ */
+.final{
+  text-align:center;position:relative;overflow:hidden;
+}
+.final::before{
+  content:'';position:absolute;inset:-40% -20% auto;height:120%;
+  background:radial-gradient(ellipse 45% 45% at 50% 30%,rgba(138,61,56,0.2),transparent 68%);
+  pointer-events:none;
+}
+.final h2{font-size:clamp(2.4rem,1.8rem + 2.8vw,4rem);max-width:780px;margin:0 auto 22px;position:relative;}
+.final p{color:#A9A796;font-size:var(--text-lg);max-width:520px;margin:0 auto 40px;position:relative;}
+.final .btn{position:relative;margin-bottom:34px;}
+.final .trust-row{margin-top:0;position:relative;}
+.final .trust-chip{color:#A9A796;}
+.final .trust-chip svg{color:#DCA296;}
+
+/* ============ 21. FOOTER ============ */
+.footer{background:var(--ink-900);color:#8F8D7B;padding:var(--s-7) 0 var(--s-4);}
+.footer__grid{
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;
+  padding-bottom:var(--s-6);border-bottom:1px solid rgba(251,249,244,0.09);margin-bottom:var(--s-4);
+}
+.footer .logo{color:var(--stone-050);margin-bottom:18px;}
+.footer__tagline{max-width:290px;line-height:1.64;font-size:0.93rem;}
+.footer__social{display:flex;gap:11px;margin-top:26px;}
+.footer__social a{
+  width:38px;height:38px;border-radius:11px;
+  background:rgba(251,249,244,0.06);
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--t-fast) ease,transform var(--t-med) var(--ease-spring);
+}
+.footer__social a:hover{background:var(--ox-600);transform:translateY(-3px);}
+.footer__social svg{width:16px;height:16px;color:var(--stone-100);}
+.footer h4{
+  font-family:var(--font-display);color:var(--stone-100);font-size:0.76rem;
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px;font-weight:800;
+}
+.footer__col ul{display:flex;flex-direction:column;gap:13px;}
+.footer__col a{font-size:0.93rem;transition:color var(--t-fast) ease;}
+.footer__col a:hover{color:var(--stone-100);}
+.footer__bottom{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;
+  font-size:0.8rem;
+}
+.footer__pay{display:flex;gap:8px;flex-wrap:wrap;}
+.footer__pay span{
+  padding:6px 11px;border-radius:7px;
+  background:rgba(251,249,244,0.06);
+  font-size:0.68rem;font-weight:800;letter-spacing:0.04em;
+  font-family:var(--font-display);color:var(--stone-200);
+}
+
+/* ============ 22. CHECKOUT MODAL ============ */
+.co-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(16,18,16,0.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:4vh 18px;overflow-y:auto;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--t-med) ease;
+}
+.co-overlay.is-open{opacity:1;pointer-events:auto;}
+.co-modal{
+  background:var(--stone-050);border-radius:var(--r-xl);
+  max-width:520px;width:100%;
+  transform:translateY(28px) scale(.97);opacity:0;
+  transition:transform var(--t-med) var(--ease-out),opacity var(--t-med) ease;
+  overflow:hidden;position:relative;
+}
+.co-overlay.is-open .co-modal{transform:translateY(0) scale(1);opacity:1;}
+.co-close{
+  position:absolute;top:18px;right:18px;z-index:5;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(16,18,16,0.06);
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--t-fast) ease,transform var(--t-fast) ease;
+}
+.co-close:hover{background:var(--ink-900);color:var(--stone-050);transform:rotate(90deg);}
+.co-close svg{width:15px;height:15px;}
+.co-head{background:var(--grad-ink);color:var(--stone-200);padding:34px 36px 28px;}
+.co-head h3{color:var(--stone-050);font-size:1.28rem;margin-bottom:20px;}
+.co-order{display:flex;justify-content:space-between;font-size:0.9rem;color:#C9C7B6;margin-bottom:11px;}
+.co-order strong{color:var(--stone-050);}
+.co-total{
+  display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;
+  border-top:1px solid rgba(251,249,244,0.14);
+  font-family:var(--font-display);font-weight:800;font-size:1.1rem;color:var(--stone-050);
+}
+.co-body{padding:32px 36px 36px;}
+.co-note{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--ox-050);border-radius:var(--r-md);
+  padding:16px 18px;margin-bottom:24px;
+  font-size:0.85rem;color:var(--ox-700);line-height:1.55;
+}
+.co-note svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;}
+.co-body .form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.co-body label{font-size:0.82rem;font-weight:650;color:var(--ink-700);}
+.co-body input{
+  padding:14px 16px;border-radius:var(--r-sm);
+  border:1.5px solid var(--line);background:var(--stone-100);
+  font-size:0.96rem;
+  transition:border-color var(--t-fast) ease,background var(--t-fast) ease,box-shadow var(--t-fast) ease;
+}
+.co-body input:focus{border-color:var(--ink-900);background:var(--stone-050);outline:none;box-shadow:0 0 0 3px rgba(16,18,16,0.07);}
+.co-secure{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:16px;font-size:0.8rem;color:var(--gray-500);
+}
+.co-secure svg{width:14px;height:14px;color:var(--ox-600);}
+.co-fine{font-size:0.74rem;color:var(--gray-400);text-align:center;line-height:1.55;margin-top:14px;}
+.co-fine a{text-decoration:underline;}
+.co-methods{display:flex;justify-content:center;gap:7px;margin-top:18px;}
+.co-methods span{
+  padding:5px 10px;border-radius:6px;background:var(--stone-200);
+  font-family:var(--font-display);font-weight:800;font-size:0.62rem;
+  letter-spacing:0.04em;color:var(--gray-500);
+}
+.btn .spinner{
+  display:none;width:16px;height:16px;
+  border:2px solid rgba(251,249,244,0.35);border-top-color:var(--stone-050);
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+.btn.is-loading .btn-label{opacity:.55;}
+.btn.is-loading .spinner{display:inline-block;}
+.btn.is-loading{pointer-events:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.co-success{display:none;text-align:center;padding:8px 0 4px;}
+.co-success.is-active{display:block;}
+.co-body.is-done #coMain{display:none;}
+.co-success__icon{
+  width:68px;height:68px;border-radius:50%;
+  background:var(--grad-ox);color:var(--stone-050);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 22px;box-shadow:var(--sh-ox);
+  animation:popIn .7s var(--ease-spring) both;
+}
+.co-success__icon svg{width:30px;height:30px;}
+.co-success h4{font-size:1.35rem;margin-bottom:10px;}
+.co-success p{color:var(--gray-500);font-size:0.93rem;line-height:1.6;max-width:360px;margin:0 auto 18px;}
+.co-success .order-ref{
+  display:inline-block;background:var(--stone-200);border-radius:var(--r-sm);
+  padding:9px 16px;font-family:var(--font-display);font-weight:700;font-size:0.8rem;
+  color:var(--ink-700);margin-bottom:22px;
+}
+@keyframes popIn{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* ============ 23. MOBILE STICKY CTA & MENU ============ */
+.mobile-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:180;
+  display:none;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(251,249,244,0.88);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);
+  transform:translateY(110%);
+  transition:transform var(--t-med) var(--ease-out);
+}
+.mobile-cta.is-visible{transform:translateY(0);}
+.mobile-cta__inner{display:flex;align-items:center;gap:14px;}
+.mobile-cta__price{line-height:1.15;}
+.mobile-cta__price .now{font-family:var(--font-display);font-weight:800;font-size:1.25rem;color:var(--ink-900);}
+.mobile-cta__price .was{font-size:0.78rem;color:var(--gray-400);text-decoration:line-through;margin-left:6px;}
+.mobile-cta__price small{display:block;font-size:0.68rem;color:var(--gray-500);font-weight:600;}
+.mobile-cta .btn{flex:1;}
+
+.m-menu{
+  position:fixed;top:0;right:0;height:100dvh;width:min(340px,86vw);z-index:300;
+  background:var(--stone-050);
+  padding:96px 34px 40px;
+  transform:translateX(102%);
+  transition:transform var(--t-med) var(--ease-out);
+  box-shadow:var(--sh-lg);
+  display:flex;flex-direction:column;
+}
+.m-menu.is-open{transform:translateX(0);}
+.m-menu__links{display:flex;flex-direction:column;margin-bottom:auto;}
+.m-menu__links a{
+  font-family:var(--font-display);font-weight:700;font-size:1.35rem;
+  padding:16px 0;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.m-menu__links a svg{width:16px;height:16px;color:var(--gray-400);}
+.m-backdrop{
+  position:fixed;inset:0;z-index:290;background:rgba(16,18,16,0.4);
+  opacity:0;pointer-events:none;transition:opacity var(--t-med) ease;
+}
+.m-backdrop.is-open{opacity:1;pointer-events:auto;}
+.m-close{position:absolute;top:22px;right:22px;width:36px;height:36px;border-radius:50%;background:var(--stone-200);display:flex;align-items:center;justify-content:center;}
+.m-close svg{width:15px;height:15px;}
+
+/* ============ 24. MOTION & REVEAL ============ */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out);}
+.reveal.is-in{opacity:1;transform:translateY(0);}
+.reveal-group > *{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);}
+.reveal-group.is-in > *{opacity:1;transform:translateY(0);}
+.reveal-group.is-in > *:nth-child(1){transition-delay:.04s;}
+.reveal-group.is-in > *:nth-child(2){transition-delay:.12s;}
+.reveal-group.is-in > *:nth-child(3){transition-delay:.2s;}
+.reveal-group.is-in > *:nth-child(4){transition-delay:.28s;}
+.reveal-group.is-in > *:nth-child(5){transition-delay:.36s;}
+.reveal-group.is-in > *:nth-child(6){transition-delay:.44s;}
+
+/* ============ 25. PAGES: THANK YOU / DOWNLOAD ============ */
+.page-center{
+  min-height:calc(100dvh - 80px);
+  display:flex;align-items:center;justify-content:center;
+  padding:64px 20px;
+}
+.panel{
+  background:var(--stone-050);
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);
+  box-shadow:var(--sh-lg);
+  max-width:600px;width:100%;
+  padding:clamp(36px,5vw,60px);
+  text-align:center;
+}
+.panel__icon{
+  width:76px;height:76px;border-radius:50%;
+  background:var(--grad-ox);color:var(--stone-050);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;box-shadow:var(--sh-ox);
+  animation:popIn .7s var(--ease-spring) both;
+}
+@keyframes popIn{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+.panel__icon svg{width:34px;height:34px;}
+.panel h1{font-size:clamp(1.8rem,1.5rem + 1.4vw,2.4rem);margin-bottom:14px;}
+.panel > p{color:var(--gray-500);font-size:var(--text-md);line-height:1.65;max-width:440px;margin:0 auto 30px;}
+.panel .order-ref{
+  display:inline-block;background:var(--stone-200);border-radius:var(--r-sm);
+  padding:10px 18px;font-family:var(--font-display);font-weight:700;font-size:0.84rem;
+  color:var(--ink-700);margin-bottom:30px;
+}
+
+.dl-list{display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:30px;}
+.dl-item{
+  display:flex;align-items:center;gap:16px;
+  background:var(--stone-100);
+  border:1px solid var(--line);
+  border-radius:var(--r-md);padding:18px 20px;
+  transition:transform var(--t-fast) ease,box-shadow var(--t-fast) ease,border-color var(--t-fast) ease;
+}
+.dl-item:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--line-strong);}
+.dl-item .fic{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:var(--ox-050);color:var(--ox-600);
+  display:flex;align-items:center;justify-content:center;
+}
+.dl-item .fic svg{width:20px;height:20px;}
+.dl-item .meta{flex:1;min-width:0;}
+.dl-item .meta strong{display:block;font-family:var(--font-display);font-size:0.94rem;color:var(--ink-900);}
+.dl-item .meta span{font-size:0.78rem;color:var(--gray-400);}
+.dl-item .get{
+  display:inline-flex;align-items:center;gap:6px;flex-shrink:0;
+  font-family:var(--font-display);font-weight:700;font-size:0.8rem;
+  color:var(--ox-600);padding:9px 15px;border-radius:99px;
+  border:1.5px solid var(--ox-100);
+  transition:background var(--t-fast) ease,color var(--t-fast) ease,border-color var(--t-fast) ease;
+}
+.dl-item .get:hover{background:var(--grad-ox);color:var(--stone-050);border-color:transparent;}
+.dl-item .get svg{width:13px;height:13px;}
+
+.help-box{
+  background:var(--stone-100);border-radius:var(--r-md);
+  padding:20px 24px;font-size:0.88rem;color:var(--gray-500);line-height:1.6;
+}
+.help-box a{color:var(--ox-600);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
+
+/* ============ 26. RESPONSIVE ============ */
+@media (max-width:1060px){
+  .hero__grid{grid-template-columns:1fr;gap:56px;}
+  .hero__visual{max-width:560px;height:480px;min-height:420px;}
+  .stats__grid{grid-template-columns:repeat(2,1fr);}
+  .benefits{grid-template-columns:repeat(2,1fr);}
+  .shelf{grid-template-columns:repeat(3,1fr);}
+  .inside-cols{grid-template-columns:1fr;gap:34px;}
+  .format-band{grid-template-columns:1fr;}
+  .testi-wall{columns:2;}
+  .founder{grid-template-columns:1fr;gap:44px;}
+  .founder__photo{max-width:420px;aspect-ratio:4/3.4;}
+  .bonuses{grid-template-columns:1fr;max-width:520px;margin-inline:auto;}
+  .pricing-shell{grid-template-columns:1fr;}
+  .journey{grid-template-columns:repeat(3,1fr);}
+  .outcomes{grid-template-columns:1fr;}
+  .footer__grid{grid-template-columns:1fr 1fr;}
+}
+
+@media (max-width:760px){
+  html{scroll-padding-top:80px;}
+  .section{padding:var(--s-7) 0;}
+  .nav__links{display:none;}
+  .nav .btn{display:none;}
+  .nav__toggle{display:flex;}
+  .hero{padding-top:40px;}
+  .hero__cta-row{flex-direction:column;align-items:stretch;}
+  .hero__cta-row .btn{width:100%;}
+  .hero__visual{height:420px;min-height:380px;}
+  .glass-card--metric{right:0;}
+  .glass-card--session{left:0;width:220px;}
+  .feature,.feature.rev{grid-template-columns:1fr;gap:28px;}
+  .feature.rev .feature__media{order:0;}
+  .compare{overflow-x:auto;border-radius:var(--r-lg);}
+  .compare table{min-width:640px;}
+  .journey{grid-template-columns:1fr;max-width:400px;margin-inline:auto;margin-bottom:var(--s-5);}
+  .testi-wall{columns:1;}
+  .guarantee{grid-template-columns:1fr;text-align:center;}
+  .guarantee__seal{margin-inline:auto;}
+  .pricing-left,.pricing-right{padding:38px 28px;}
+  .mobile-cta{display:block;}
+  body.has-mobile-cta{padding-bottom:84px;}
+  .footer__grid{grid-template-columns:1fr;gap:36px;}
+  .footer__bottom{flex-direction:column;align-items:flex-start;}
+  .co-head,.co-body{padding-inline:24px;}
+  .shelf{grid-template-columns:1fr 1fr;gap:14px;}
+  .shelf .doc:nth-child(3){display:none;}
+  .stats__grid{grid-template-columns:1fr 1fr;}
+  .benefits{grid-template-columns:1fr;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .reveal,.reveal-group > *{opacity:1;transform:none;}
+}
+
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "ALIGN — The Complete Digital Pilates System",
+  "description": "A 12-week digital Pilates program: beginner through advanced plans, home and gym tracks, nutrition guide, meal planner, trackers, exercise library, and lifetime updates.",
+  "image": "https://images.unsplash.com/photo-1713201435382-bb915a39be16?q=80&w=1200&auto=format&fit=crop",
+  "brand": { "@type": "Brand", "name": "ALIGN" },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://align-method.com/#pricing",
+    "price": "47.00",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "2847" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Do I need any equipment?","acceptedAnswer":{"@type":"Answer","text":"No. Every session in the home track is built around your body weight. A mat is nice to have; a light resistance ring is optional for certain progressions."}},
+    {"@type":"Question","name":"I'm a complete beginner — will I be able to follow it?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Beginner track assumes zero experience. Every movement is broken down step by step, with modifications built into every session."}},
+    {"@type":"Question","name":"Is this a subscription?","acceptedAnswer":{"@type":"Answer","text":"No. One payment, lifetime access, every future update included. You will never be billed again."}},
+    {"@type":"Question","name":"What if it isn't right for me?","acceptedAnswer":{"@type":"Answer","text":"Every purchase is covered by a 30-day money-back guarantee. Email support and receive a full refund — no forms, no questions."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ALIGN",
+  "url": "https://align-method.com/",
+  "logo": "https://align-method.com/favicon.svg",
+  "contactPoint": { "@type": "ContactPoint", "email": "hello@align-method.com", "contactType": "customer support" }
+}
+</script>
+</head>
+<body class="has-mobile-cta">
+
+<!-- ICON SPRITE -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.9 6.6 7.1.7-5.4 4.7 1.7 7-6.3-3.8-6.3 3.8 1.7-7-5.4-4.7 7.1-.7z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M8 12.2l2.6 2.6L16 9"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 12h12"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" d="M8 11V7a4 4 0 018 0v4"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 3v13m0 0l-4.5-4.5M12 16l4.5-4.5M4 20h16"/></symbol>
+<symbol id="i-inf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" d="M6.5 8.5a3.5 3.5 0 100 7c2.5 0 4-2 5.5-3.5s3-3.5 5.5-3.5a3.5 3.5 0 110 7c-2.5 0-4-2-5.5-3.5S9 8.5 6.5 8.5z"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M11 18.3h2"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M6 2.5h9l4 4V21a1 1 0 01-1 1H6a1 1 0 01-1-1V3.5a1 1 0 011-1z"/><path fill="none" stroke="currentColor" stroke-width="1.7" d="M14.5 2.5V7h4.3M8 13h8M8 16.5h8M8 9.5h3"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4.7" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2L4 14h6l-1 8 9-12h-6z"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1z"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 22c4 0 7-2.9 7-7 0-3-1.8-5-3.5-7C14 6 13 4 13 2c-3 2-4.5 4.6-4.5 7 0 0-1.5-1-1.5-3C4.9 7.7 5 10 5 15c0 4.1 3 7 7 7z"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 7l8 6 8-6"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="4.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" d="M5 12.5V20a1 1 0 001 1h12a1 1 0 001-1v-7.5M12 8v13M12 8s-4.5.3-5.5-2C5.7 4 8 2.6 9.6 3.7 11.4 5 12 8 12 8zm0 0s4.5.3 5.5-2C18.3 4 16 2.6 14.4 3.7 12.6 5 12 8 12 8z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4 4.5A2.5 2.5 0 016.5 2H20v17.5H6.5A2.5 2.5 0 004 22z"/><path fill="none" stroke="currentColor" stroke-width="1.7" d="M4 19.5A2.5 2.5 0 016.5 17H20"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M8.5 14L7 22l5-3 5 3-1.5-8"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5a3.5 3.5 0 010 6.6M17.5 14.4c2.1.8 3.5 2.9 3.5 5.6"/></symbol>
+<symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></symbol>
+<symbol id="i-tt" viewBox="0 0 24 24"><path fill="currentColor" d="M14.5 2h2.7c.2 1.7 1.4 3.1 3.3 3.4v2.7c-1.2 0-2.4-.4-3.3-1v6.7a5.3 5.3 0 11-5.3-5.3c.3 0 .5 0 .8.1v2.8a2.5 2.5 0 102.1 2.5V2z"/></symbol>
+<symbol id="i-yt" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="currentColor" d="M10.5 9.2v5.6l5-2.8z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M9.5 18c1-3.5 1.5-5.5 1.5-5.5m0 0c-.5-1 0-3 1.8-3 1.4 0 2 1 2 2.2 0 1.4-.9 3.5-1.4 4.4a1.9 1.9 0 003.6-1c.4-1.2.7-2.1.7-3.4a4 4 0 00-4.2-4c-3 0-4.7 2.1-4.7 4.4 0 .8.3 1.7.7 2.2"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 11v5.5"/><circle cx="12" cy="7.6" r="1.2" fill="currentColor"/></symbol>
+<symbol id="i-wave" viewBox="0 0 120 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M0 12 C 10 2, 20 2, 30 12 C 40 22, 50 22, 60 12 C 70 2, 80 2, 90 12 C 100 22, 110 22, 120 12"/></symbol>
+</defs></svg>
+
+<!-- ANNOUNCEMENT -->
+<div class="announce" role="region" aria-label="Announcement">
+  Launch pricing — <strong>save 76%</strong> for a limited time · <em>ends in</em> <strong id="announceTimer">12:00:00</strong>
+</div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#top" class="logo" aria-label="Align home"><span class="logo__mark"><svg><use href="#i-target"/></svg></span>ALIGN</a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#inside">The System</a>
+      <a href="#results">Results</a>
+      <a href="#story">Our Story</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="btn btn--primary btn--sm" data-checkout>Get Started</button>
+      <button class="nav__toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<div class="m-backdrop" id="mBackdrop"></div>
+<aside class="m-menu" id="mMenu" aria-label="Mobile menu">
+  <button class="m-close" id="mClose" aria-label="Close menu"><svg><use href="#i-x"/></svg></button>
+  <nav class="m-menu__links">
+    <a href="#inside">The System <svg><use href="#i-arrow"/></svg></a>
+    <a href="#results">Results <svg><use href="#i-arrow"/></svg></a>
+    <a href="#story">Our Story <svg><use href="#i-arrow"/></svg></a>
+    <a href="#pricing">Pricing <svg><use href="#i-arrow"/></svg></a>
+    <a href="#faq">FAQ <svg><use href="#i-arrow"/></svg></a>
+  </nav>
+  <button class="btn btn--ox btn--block btn--lg" data-checkout>Get Instant Access — $47</button>
+</aside>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <div class="hero__topline">
+        <span class="dot"><svg><use href="#i-zap"/></svg></span>
+        <span>Trusted by <strong>50,000+ members</strong> in 40+ countries</span>
+      </div>
+      <h1 class="hero__headline">
+        <span class="line"><span>Strength that</span></span>
+        <span class="line"><span><em>looks effortless.</em></span></span>
+      </h1>
+      <p class="hero__sub">The precision 12-week Pilates system for a stronger core, better posture, and lean, controlled strength — 28 minutes a day, in your living room, with zero equipment.</p>
+      <div class="hero__cta-row">
+        <button class="btn btn--ox btn--lg btn--stacked" data-checkout>
+          <span>Start Your Transformation<svg style="display:inline-block;vertical-align:-2px;margin-left:8px;"><use href="#i-arrow"/></svg></span>
+          <span class="btn__sub">Instant access · $47 one-time</span>
+        </button>
+        <a href="#inside" class="btn btn--ghost btn--lg">See the system</a>
+      </div>
+      <div class="hero__assurance">
+        <span><svg><use href="#i-shield"/></svg>30-day guarantee</span>
+        <span><svg><use href="#i-dl"/></svg>Instant download</span>
+        <span><svg><use href="#i-inf"/></svg>Lifetime updates</span>
+      </div>
+      <div class="hero__social">
+        <div class="avatar-stack" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="40" height="40">
+          <img src="https://images.unsplash.com/photo-1554727242-741c14fa561c?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="40" height="40">
+          <img src="https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="40" height="40">
+          <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="40" height="40">
+        </div>
+        <p class="hero__social-copy">
+          <span class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span>
+          <strong>4.9/5</strong> from 2,847 verified reviews —<br>joined by <strong>214 new members</strong> this week
+        </p>
+      </div>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__photo">
+        <img src="https://images.unsplash.com/photo-1713201435382-bb915a39be16?q=80&w=1000&auto=format&fit=crop" alt="" fetchpriority="high" width="800" height="1000">
+      </div>
+      <div class="glass-card glass-card--streak">
+        <span class="flame"><svg><use href="#i-flame"/></svg></span>
+        <div><strong>21-day streak</strong><span>Personal best</span></div>
+      </div>
+      <div class="glass-card glass-card--metric">
+        <strong>+38%</strong>
+        <span>core endurance · wk 6</span>
+      </div>
+      <div class="glass-card glass-card--session">
+        <div class="top">
+          <span class="tag">Week 3 · Day 4</span>
+          <span class="play"><svg><use href="#i-play"/></svg></span>
+        </div>
+        <div class="name">Sculpt &amp; Lengthen · 28 min</div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRESS ================= -->
+<section class="press" aria-label="Featured in">
+  <div class="container">
+    <p class="press__label">As featured in</p>
+    <div class="press__row">
+      <!-- NOTE: fictional placeholder publications. Replace only with outlets
+           that have genuinely featured your brand — see README §Credibility. -->
+      <span class="press__logo">The Morning Stretch</span>
+      <span class="press__logo press__logo--serifcaps">Studio&nbsp;Weekly</span>
+      <span class="press__logo">Wellness Standard</span>
+      <span class="press__logo press__logo--serifcaps">Form&nbsp;Journal</span>
+      <span class="press__logo">The Core Report</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="stats" aria-label="Key numbers">
+  <div class="container">
+    <div class="stats__grid reveal-group">
+      <div class="stat"><span class="stat__num" data-count="50000" data-suffix="+">0</span><span class="stat__label">Downloads worldwide</span></div>
+      <div class="stat"><span class="stat__num"><span class="accent">4.9</span>/5</span><span class="stat__label">Across 2,847 reviews</span></div>
+      <div class="stat"><span class="stat__num" data-count="92" data-suffix="%">0</span><span class="stat__label">Feel stronger by week 4*</span></div>
+      <div class="stat"><span class="stat__num" data-count="40" data-suffix="+">0</span><span class="stat__label">Countries with members</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT / WHAT'S INSIDE ================= -->
+<section class="section section--cream" id="inside">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">The Complete System</p>
+      <h2>One purchase.<br>An entire <em>method.</em></h2>
+      <p>Sixteen professionally designed guides, plans, and trackers — everything a boutique studio would give you, minus the $200/month membership.</p>
+    </div>
+
+    <div class="shelf reveal-group" aria-hidden="true">
+      <div class="doc doc--ink">
+        <span class="doc__kicker">Align Method · Vol. I</span>
+        <svg class="doc__wave" viewBox="0 0 120 24"><use href="#i-wave"/></svg>
+        <h3 class="doc__title">The 12-Week Pilates Program</h3>
+        <span class="doc__meta">3 levels · 84 sessions</span>
+      </div>
+      <div class="doc doc--ox">
+        <span class="doc__kicker">Align Method · Vol. II</span>
+        <svg class="doc__wave" viewBox="0 0 120 24"><use href="#i-wave"/></svg>
+        <h3 class="doc__title">Nutrition Guide &amp; Meal Planner</h3>
+        <span class="doc__meta">7-day planner · no extremes</span>
+      </div>
+      <div class="doc doc--cream">
+        <span class="doc__kicker">Align Method · Vol. III</span>
+        <svg class="doc__wave" viewBox="0 0 120 24" style="color:var(--ox-600)"><use href="#i-wave"/></svg>
+        <h3 class="doc__title">The Exercise Library</h3>
+        <span class="doc__meta">120+ movements, explained</span>
+      </div>
+    </div>
+
+    <div class="inside-cols reveal-group">
+      <div class="inside-col">
+        <h4><svg><use href="#i-book"/></svg>Training Programs</h4>
+        <ul>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Beginner track</strong> — foundations, form, and confidence from day one</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Intermediate track</strong> — progressive overload for visible change</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Advanced track</strong> — control, precision, and elite-level flows</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Home &amp; gym versions</strong> of every single plan</span></li>
+        </ul>
+      </div>
+      <div class="inside-col">
+        <h4><svg><use href="#i-file"/></svg>Guides &amp; Reference</h4>
+        <ul>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Nutrition guide</strong> — eat to fuel training, not to suffer</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>7-day meal planner</strong> with a repeatable weekly template</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Stretching, warm-up &amp; cooldown</strong> protocols for every session</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Exercise library</strong> — 120+ movements with cues and modifications</span></li>
+        </ul>
+      </div>
+      <div class="inside-col">
+        <h4><svg><use href="#i-chart"/></svg>Trackers &amp; Tools</h4>
+        <ul>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Progress tracker</strong> — measure what actually changes</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Habit tracker</strong> — the quiet engine behind every result</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Weekly planner</strong> that makes your schedule decide for you</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><strong>Workout log</strong> — every session, every win, on record</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="format-band reveal-group">
+      <div class="format-cell">
+        <span class="ic"><svg><use href="#i-file"/></svg></span>
+        <div><strong>Print-ready PDFs</strong><span>Studio-quality layouts, A4 &amp; US Letter</span></div>
+      </div>
+      <div class="format-cell">
+        <span class="ic"><svg><use href="#i-phone"/></svg></span>
+        <div><strong>Mobile-first digital editions</strong><span>Built for the phone propped on your mat</span></div>
+      </div>
+      <div class="format-cell">
+        <span class="ic"><svg><use href="#i-inf"/></svg></span>
+        <div><strong>Lifetime updates</strong><span>Every future volume, free, forever</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENEFITS ================= -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why It Works</p>
+      <h2>Most programs give you workouts.<br>We give you a <em>method.</em></h2>
+    </div>
+    <div class="benefits reveal-group">
+      <div class="benefit">
+        <span class="benefit__icon"><svg><use href="#i-target"/></svg></span>
+        <h3>Engineered progression</h3>
+        <p>Every session builds on the last. Twelve weeks sequenced by certified instructors so your body adapts — and never plateaus.</p>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg><use href="#i-zap"/></svg></span>
+        <h3>28 minutes, not 90</h3>
+        <p>Sessions are dense by design. You'll do more in half an hour than most people do in a full gym visit.</p>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg><use href="#i-home"/></svg></span>
+        <h3>Zero barriers</h3>
+        <p>No commute, no equipment, no childcare logistics, no waiting for machines. Your living room is the studio.</p>
+      </div>
+      <div class="benefit">
+        <span class="benefit__icon"><svg><use href="#i-inf"/></svg></span>
+        <h3>Yours forever</h3>
+        <p>One payment. No subscription creep, no paywalled "premium tiers" later. Lifetime access with every future update included.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="section section--cream section--tight">
+  <div class="container">
+    <div class="feature reveal">
+      <div class="feature__media">
+        <img src="https://images.unsplash.com/photo-1552196527-bffef41ef674?q=80&w=900&auto=format&fit=crop" alt="Woman demonstrating controlled Pilates form" loading="lazy" width="900" height="700">
+        <span class="feature__media-chip">84 guided sessions</span>
+      </div>
+      <div>
+        <span class="feature__idx">01 — Train</span>
+        <h3>A program that thinks, so you don't have to</h3>
+        <p>Open today's session and go. Each of the 84 sessions tells you exactly what to do, how long to hold, what to feel — and what to modify if something's tight.</p>
+        <ul class="feature__points">
+          <li><svg><use href="#i-check"/></svg>Movement-by-movement cues written by certified instructors</li>
+          <li><svg><use href="#i-check"/></svg>Built-in warm-up and cooldown for every single session</li>
+          <li><svg><use href="#i-check"/></svg>Modifications for wrists, knees, lower back, and pregnancy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature rev reveal">
+      <div class="feature__media">
+        <img src="https://images.unsplash.com/photo-1754258166661-b827f0d558aa?q=80&w=900&auto=format&fit=crop" alt="Member mid-movement during a mat Pilates session" loading="lazy" width="900" height="700">
+        <span class="feature__media-chip">Fuel, don't restrict</span>
+      </div>
+      <div>
+        <span class="feature__idx">02 — Fuel</span>
+        <h3>Nutrition without the neurosis</h3>
+        <p>The nutrition guide is built on one principle: eating should support your training and your life. A flexible weekly template, a 7-day planner, and zero forbidden foods.</p>
+        <ul class="feature__points">
+          <li><svg><use href="#i-check"/></svg>A repeatable weekly meal framework — plan once, eat all week</li>
+          <li><svg><use href="#i-check"/></svg>Portion guidance that works without weighing anything</li>
+          <li><svg><use href="#i-check"/></svg>No cutting food groups, no "cheat day" psychology</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature reveal">
+      <div class="feature__media">
+        <img src="https://images.unsplash.com/photo-1754257319767-f844f61837e1?q=80&w=900&auto=format&fit=crop" alt="Member training with focus and precision" loading="lazy" width="900" height="700">
+        <span class="feature__media-chip">Progress you can see</span>
+      </div>
+      <div>
+        <span class="feature__idx">03 — Track</span>
+        <h3>Watch the compound interest add up</h3>
+        <p>Motivation fades; systems don't. The tracker suite turns your progress into something you can see — which, on the hard days, is the thing that keeps you going.</p>
+        <ul class="feature__points">
+          <li><svg><use href="#i-check"/></svg>Weekly check-ins that take 90 seconds to complete</li>
+          <li><svg><use href="#i-check"/></svg>Habit streaks that make consistency feel like a game</li>
+          <li><svg><use href="#i-check"/></svg>A 12-week log you'll genuinely enjoy looking back on</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARISON ================= -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">The Honest Comparison</p>
+      <h2>Align vs. <em>everything else</em> you've tried</h2>
+    </div>
+    <div class="compare reveal">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">What you get</th>
+            <th scope="col" class="us">ALIGN<span class="mini-badge">$47 once</span></th>
+            <th scope="col">Fitness apps<span class="subnote">$15–30 / month</span></th>
+            <th scope="col">Studio classes<span class="subnote">$150–300 / month</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Structured 12-week progression</td>
+            <td class="us"><span class="yes"><svg><use href="#i-check"/></svg></span></td>
+            <td><span class="no"><svg><use href="#i-minus"/></svg></span><span class="subnote">random classes</span></td>
+            <td><span class="no"><svg><use href="#i-minus"/></svg></span><span class="subnote">drop-in only</span></td>
+          </tr>
+          <tr>
+            <td>Nutrition guidance included</td>
+            <td class="us"><span class="yes"><svg><use href="#i-check"/></svg></span></td>
+            <td><span class="no"><svg><use href="#i-x"/></svg></span><span class="subnote">paid add-on</span></td>
+            <td><span class="no"><svg><use href="#i-x"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Train anywhere, anytime</td>
+            <td class="us"><span class="yes"><svg><use href="#i-check"/></svg></span></td>
+            <td><span class="yes"><svg><use href="#i-check"/></svg></span></td>
+            <td><span class="no"><svg><use href="#i-x"/></svg></span><span class="subnote">fixed schedule</span></td>
+          </tr>
+          <tr>
+            <td>Printable, offline materials</td>
+            <td class="us"><span class="yes"><svg><use href="#i-check"/></svg></span></td>
+            <td><span class="no"><svg><use href="#i-x"/></svg></span></td>
+            <td><span class="no"><svg><use href="#i-x"/></svg></span></td>
+          </tr>
+          <tr>
+            <td>Recurring fees</td>
+            <td class="us"><strong>Never</strong></td>
+            <td>$180–360 / yr</td>
+            <td>$1,800–3,600 / yr</td>
+          </tr>
+          <tr>
+            <td>Cost after one year</td>
+            <td class="us"><strong>$47, total</strong></td>
+            <td>$180+</td>
+            <td>$1,800+</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section class="section section--deep" id="results">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">The 12-Week Arc</p>
+      <h2>What changes, <em>and when</em></h2>
+      <p>Transformation isn't a single dramatic moment. It's three distinct phases — each one earned.</p>
+    </div>
+    <div class="journey reveal-group">
+      <!-- NOTE: lifestyle imagery illustrating program phases. For real
+           member transformation photos, obtain written consent — README §Credibility. -->
+      <figure class="journey-card">
+        <img src="https://images.unsplash.com/photo-1552196527-bffef41ef674?q=80&w=700&auto=format&fit=crop" alt="Member in the foundation phase, learning controlled form" loading="lazy" width="700" height="860">
+        <figcaption class="journey-card__overlay">
+          <span class="journey-card__phase">Weeks 1–4 · Foundation</span>
+          <p class="journey-card__title">Form clicks. Core wakes up. Posture starts to change.</p>
+        </figcaption>
+      </figure>
+      <figure class="journey-card">
+        <img src="https://images.unsplash.com/photo-1754258166661-b827f0d558aa?q=80&w=700&auto=format&fit=crop" alt="Member in the progression phase, building visible strength" loading="lazy" width="700" height="860">
+        <figcaption class="journey-card__overlay">
+          <span class="journey-card__phase">Weeks 5–8 · Progression</span>
+          <p class="journey-card__title">Strength becomes visible. Sessions feel like momentum.</p>
+        </figcaption>
+      </figure>
+      <figure class="journey-card">
+        <img src="https://images.unsplash.com/photo-1754257319767-f844f61837e1?q=80&w=700&auto=format&fit=crop" alt="Member in the mastery phase, moving with control and precision" loading="lazy" width="700" height="860">
+        <figcaption class="journey-card__overlay">
+          <span class="journey-card__phase">Weeks 9–12 · Mastery</span>
+          <p class="journey-card__title">Control, definition, and a practice that's now yours.</p>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="outcomes reveal-group">
+      <div class="outcome"><span class="outcome__num" data-count="92" data-suffix="%">0</span><span class="outcome__label">report feeling noticeably stronger by week 4</span></div>
+      <div class="outcome"><span class="outcome__num" data-count="88" data-suffix="%">0</span><span class="outcome__label">report visibly better posture by week 8</span></div>
+      <div class="outcome"><span class="outcome__num" data-count="95" data-suffix="%">0</span><span class="outcome__label">would recommend Align to a friend</span></div>
+    </div>
+    <p class="outcomes-note">*Based on post-program member surveys. Individual results vary with consistency and starting point.</p>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">2,847 Verified Reviews</p>
+      <h2>Don't take <em>our word</em> for it</h2>
+    </div>
+    <div class="testi-wall reveal-group">
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"I've bought and abandoned four fitness apps. This is the first program where I actually knew what to do every single day — no decision fatigue, just open the plan and start. Ten weeks in, my core is stronger than it's been in a decade."</p>
+        <div class="testi__who">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="42" height="42">
+          <div><strong>Sarah M.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase · Week 10</span></div>
+        </div>
+      </article>
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"Reformer classes near me are $42 a session. This cost me one class and I've used it every day for three months."</p>
+        <div class="testi__who">
+          <span class="ini">ER</span>
+          <div><strong>Emily R.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase</span></div>
+        </div>
+      </article>
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"As a physio patient recovering from a back injury, the modification notes are what sold me. Every exercise tells you exactly what to change if something doesn't feel right. Clearly written by people who teach real humans."</p>
+        <div class="testi__who">
+          <span class="ini">DK</span>
+          <div><strong>Daniel K.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase · Week 7</span></div>
+        </div>
+      </article>
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"The design alone is worth it. I printed the planner and it sits on my fridge like a piece of art. But mostly: my posture at my desk has completely changed and two colleagues have asked what I'm doing."</p>
+        <div class="testi__who">
+          <img src="https://images.unsplash.com/photo-1554727242-741c14fa561c?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="42" height="42">
+          <div><strong>Jessica T.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase · Week 12</span></div>
+        </div>
+      </article>
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"New mom, zero time, zero equipment. 28 minutes during nap time is exactly the shape of workout my life can hold right now."</p>
+        <div class="testi__who">
+          <span class="ini">AL</span>
+          <div><strong>Amara L.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase</span></div>
+        </div>
+      </article>
+      <article class="testi">
+        <div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p>"I was skeptical of 'one payment, lifetime access' — usually a red flag. But the update they shipped last month just appeared in my library, free, like they said. That's how you earn trust."</p>
+        <div class="testi__who">
+          <img src="https://images.unsplash.com/photo-1489278353717-f64c6ee8a4d2?q=80&w=100&h=100&auto=format&fit=crop" alt="" loading="lazy" width="42" height="42">
+          <div><strong>Mei C.</strong><span><svg><use href="#i-check-c"/></svg>Verified purchase · Member 6 months</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOUNDER ================= -->
+<section class="section section--cream" id="story">
+  <div class="container">
+    <div class="founder">
+      <div class="reveal">
+        <div class="founder__photo">
+          <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=700&auto=format&fit=crop" alt="Elena Marsh, founder of Align" loading="lazy" width="700" height="840">
+        </div>
+        <p class="founder__sig">— Elena Marsh, Founder</p>
+      </div>
+      <div class="founder__body reveal">
+        <p class="eyebrow">Our Story</p>
+        <p>Align exists because I watched too many people pay $200 a month for a studio membership they used twice — and then blame themselves.</p>
+        <p>After eight years teaching mat and reformer Pilates, I noticed the pattern: the people who transformed weren't the most motivated or the most flexible. They were the ones with a <strong>plan they didn't have to think about</strong>. A structure that decided for them.</p>
+        <p>So I spent eighteen months distilling everything from the studio into a system anyone could run at home — the exact progressions, the cueing, the pacing — and priced it at less than a single private session. No subscription, because your fitness shouldn't have a meter running on it.</p>
+        <p>Fifty thousand downloads later, the principle hasn't changed: <strong>precision over intensity, consistency over heroics.</strong> I hope you'll join us.</p>
+        <div class="founder__creds">
+          <span class="founder__cred"><svg><use href="#i-award"/></svg>Certified Mat &amp; Reformer Instructor</span>
+          <span class="founder__cred"><svg><use href="#i-users"/></svg>8 years · 4,000+ hours taught</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BONUSES ================= -->
+<section class="section section--dark halo">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Included Free — This Launch Only</p>
+      <h2>Three bonuses,<br><em>on the house.</em></h2>
+      <p>Order during launch pricing and these ship with your system automatically.</p>
+    </div>
+    <div class="bonuses reveal-group">
+      <div class="bonus">
+        <span class="bonus__tag"><svg width="11" height="11"><use href="#i-gift"/></svg>Bonus 01</span>
+        <h3>The 5-Minute Desk Reset</h3>
+        <p>Micro-routines that undo eight hours of sitting — built for the middle of a workday, no outfit change required.</p>
+        <span class="bonus__value">Included free <s>$19</s></span>
+      </div>
+      <div class="bonus">
+        <span class="bonus__tag"><svg width="11" height="11"><use href="#i-gift"/></svg>Bonus 02</span>
+        <h3>The Travel Protocol</h3>
+        <p>Hotel-room and small-space session variants for every week of the program, so travel never breaks the streak.</p>
+        <span class="bonus__value">Included free <s>$24</s></span>
+      </div>
+      <div class="bonus">
+        <span class="bonus__tag"><svg width="11" height="11"><use href="#i-gift"/></svg>Bonus 03</span>
+        <h3>The Recovery Playbook</h3>
+        <p>Sleep, soreness, and rest-day guidance — the unglamorous 50% of results most programs never mention.</p>
+        <span class="bonus__value">Included free <s>$21</s></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Simple, Honest Pricing</p>
+      <h2>Less than <em>one studio class.</em><br>Yours for life.</h2>
+    </div>
+
+    <div class="pricing-shell reveal">
+      <div class="pricing-left">
+        <h3>Everything in the system</h3>
+        <div class="value-list">
+          <div class="value-row"><span>12-Week Pilates Program (3 levels)</span><span class="val">$97</span></div>
+          <div class="value-row"><span>Home + Gym plan versions</span><span class="val">$47</span></div>
+          <div class="value-row"><span>Nutrition Guide + Meal Planner</span><span class="val">$37</span></div>
+          <div class="value-row"><span>Tracker suite (4 tools)</span><span class="val">$27</span></div>
+          <div class="value-row"><span>Exercise Library + Stretch Guides</span><span class="val">$30</span></div>
+          <div class="value-row is-bonus"><span>Bonus: Desk Reset</span><span class="val">$19</span></div>
+          <div class="value-row is-bonus"><span>Bonus: Travel Protocol</span><span class="val">$24</span></div>
+          <div class="value-row is-bonus"><span>Bonus: Recovery Playbook</span><span class="val">$21</span></div>
+        </div>
+        <div class="value-total"><span>Total value</span><span><span class="strike">$302</span>$47</span></div>
+      </div>
+
+      <div class="pricing-right">
+        <span class="save-badge">Launch pricing · Save 76%</span>
+        <div class="price-line">
+          <span class="now">47</span><span class="cur">$</span>
+          <span class="was">$197</span>
+        </div>
+        <p class="price-sub">One payment. Instant access. Never billed again.</p>
+        <ul class="price-includes">
+          <li><svg><use href="#i-check-c"/></svg>All 16 guides, plans &amp; trackers</li>
+          <li><svg><use href="#i-check-c"/></svg>All 3 launch bonuses included</li>
+          <li><svg><use href="#i-check-c"/></svg>Print-ready PDFs + mobile editions</li>
+          <li><svg><use href="#i-check-c"/></svg>Lifetime updates, free forever</li>
+          <li><svg><use href="#i-check-c"/></svg>30-day money-back guarantee</li>
+        </ul>
+        <button class="btn btn--ox btn--lg btn--block btn--stacked" data-checkout>
+          <span>Get Instant Access<svg style="display:inline-block;vertical-align:-2px;margin-left:8px;"><use href="#i-arrow"/></svg></span>
+          <span class="btn__sub">Secure checkout · delivered in minutes</span>
+        </button>
+        <div class="price-secure"><svg><use href="#i-lock"/></svg>256-bit SSL encrypted · powered by Stripe</div>
+        <div class="price-timer">
+          <span>Launch pricing ends in</span>
+          <span class="clock" id="priceTimer">12:00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-row reveal">
+      <span class="trust-chip"><svg><use href="#i-lock"/></svg>Secure Checkout</span>
+      <span class="trust-chip"><svg><use href="#i-dl"/></svg>Instant Download</span>
+      <span class="trust-chip"><svg><use href="#i-inf"/></svg>Lifetime Access</span>
+      <span class="trust-chip"><svg><use href="#i-shield"/></svg>30-Day Guarantee</span>
+      <span class="trust-chip"><svg><use href="#i-lock"/></svg>SSL Encrypted</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GUARANTEE ================= -->
+<section class="section section--tight section--cream">
+  <div class="container">
+    <div class="guarantee reveal">
+      <div class="guarantee__seal" aria-hidden="true">
+        <svg class="ring" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="47" stroke="currentColor" stroke-width="1" opacity=".3"/>
+          <circle cx="50" cy="50" r="47" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 7"/>
+        </svg>
+        <div class="core"><strong>30</strong><span>DAY&nbsp;GUARANTEE</span></div>
+      </div>
+      <div>
+        <h3>Try the entire system. Risk stays with us.</h3>
+        <p>Download everything. Run the first month of the program. Print the planners, follow the meal framework, do the sessions. If Align isn't the most useful fitness purchase you've made this year, email us within 30 days and we'll refund every cent — no forms, no exit interview, no hard feelings.</p>
+        <p><strong>You keep the risk-free month either way.</strong> The worst case is you got 30 days of structured training for free.</p>
+        <p class="sig-line">— Elena &amp; the Align team</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Before You Ask</p>
+      <h2>Everything you're <em>wondering</em></h2>
+    </div>
+    <div class="faq reveal">
+      <details class="faq-item" open>
+        <summary>Do I need any equipment?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">No. Every session in the home track is built around your body weight. A mat is nice to have; a light resistance ring is optional for certain progressions — and every session works without it.</div>
+      </details>
+      <details class="faq-item">
+        <summary>I'm a complete beginner — will I actually be able to follow it?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">Yes. The Beginner track assumes zero experience. Every movement is broken down step by step with photos of correct positioning, common mistakes to avoid, and modifications built into every session.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How much time do I need?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">Most sessions run 25–35 minutes, five days a week, with two rest days. The program is deliberately built to fit inside a lunch break or a nap time.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is this a subscription?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">No — and it never becomes one. One payment of $47 buys lifetime access, and every future update is included free. You will never be billed again.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I get the files after purchase?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">Instantly. After checkout you're taken straight to your download page, and a backup link is emailed to you within minutes. Everything is yours to keep offline, forever.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What devices does it work on?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">Everything. The digital editions are designed mobile-first for the phone propped against your water bottle, and the PDFs print beautifully in A4 or US Letter.</div>
+      </details>
+      <details class="faq-item">
+        <summary>I have an injury / I'm pregnant — is this safe for me?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">The program includes modifications for common limitations (wrists, knees, lower back) and notes where movements should be adapted or skipped during pregnancy. That said, always check with your doctor or physiotherapist before starting any new program — they know your situation; we don't.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What if it's not for me?<span class="chev"><svg><use href="#i-chev"/></svg></span></summary>
+        <div class="faq-answer">Then you get your money back. Every purchase is covered by our 30-day guarantee — email support and we'll refund you in full, no questions, no forms.</div>
+      </details>
+    </div>
+    <p class="faq-cta">Still unsure about something? <a href="mailto:hello@align-method.com">Email us</a> — a real human replies within one business day.</p>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="section section--dark final">
+  <div class="container">
+    <h2>In 12 weeks, you'll wish<br><em>you'd started today.</em></h2>
+    <p>Join 50,000+ members. One payment, instant access, and a guarantee that puts all the risk on us.</p>
+    <button class="btn btn--light btn--lg btn--stacked" data-checkout>
+      <span>Start Your Transformation — $47<svg style="display:inline-block;vertical-align:-2px;margin-left:8px;"><use href="#i-arrow"/></svg></span>
+      <span class="btn__sub">Launch pricing · save 76% · ends soon</span>
+    </button>
+    <div class="trust-row">
+      <span class="trust-chip"><svg><use href="#i-shield"/></svg>30-Day Guarantee</span>
+      <span class="trust-chip"><svg><use href="#i-lock"/></svg>Secure Checkout</span>
+      <span class="trust-chip"><svg><use href="#i-dl"/></svg>Instant Access</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a href="#top" class="logo"><span class="logo__mark"><svg><use href="#i-target"/></svg></span>ALIGN</a>
+        <p class="footer__tagline">The digital Pilates method for people who want real strength without the studio price tag. Precision over intensity, consistency over heroics.</p>
+        <div class="footer__social">
+          <a href="#" aria-label="Instagram"><svg><use href="#i-ig"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg><use href="#i-tt"/></svg></a>
+          <a href="#" aria-label="Pinterest"><svg><use href="#i-pin"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg><use href="#i-yt"/></svg></a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>The System</h4>
+        <ul>
+          <li><a href="#inside">What's included</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#story">Our story</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="mailto:hello@align-method.com">Contact us</a></li>
+          <li><a href="mailto:hello@align-method.com?subject=Resend%20my%20downloads">Resend my downloads</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Align Method. All rights reserved.</span>
+      <div class="footer__pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>APPLE PAY</span><span>G PAY</span><span>STRIPE</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-cta" id="mobileCta">
+  <div class="mobile-cta__inner">
+    <div class="mobile-cta__price">
+      <span class="now">$47</span><span class="was">$197</span>
+      <small>Lifetime access</small>
+    </div>
+    <button class="btn btn--ox" data-checkout>Get Started</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="co-overlay" id="coOverlay" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+  <div class="co-modal">
+    <button class="co-close" id="coClose" aria-label="Close checkout"><svg><use href="#i-x"/></svg></button>
+    <div class="co-head">
+      <h3 id="coTitle">Your order</h3>
+      <div class="co-order"><span>The Align Method — Complete System</span><strong>$197</strong></div>
+      <div class="co-order"><span>Launch discount (76%)</span><strong>−$150</strong></div>
+      <div class="co-order"><span>3 launch bonuses</span><strong>Free</strong></div>
+      <div class="co-total"><span>Due today</span><span>$47.00</span></div>
+    </div>
+    <div class="co-body" id="coBody">
+      <div id="coMain">
+      <div class="co-note" id="coDemoNote">
+        <svg><use href="#i-info"/></svg>
+        <span><strong>Preview mode.</strong> Payments aren't live yet — submitting will simulate a purchase so you can preview the full flow. To go live, connect Stripe in the <code>ALIGN_CONFIG</code> block at the top of the page script (see comments there).</span>
+      </div>
+      <form id="coForm" novalidate>
+        <div class="form-group">
+          <label for="coEmail">Email for delivery</label>
+          <input type="email" id="coEmail" name="email" placeholder="you@email.com" autocomplete="email" required>
+        </div>
+        <button type="submit" class="btn btn--ox btn--lg btn--block" id="coSubmit">
+          <span class="btn-label">Continue to Secure Payment</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+      <div class="co-secure"><svg><use href="#i-lock"/></svg>You'll complete payment on Stripe's encrypted checkout</div>
+      <div class="co-methods"><span>VISA</span><span>MC</span><span>AMEX</span><span>APPLE&nbsp;PAY</span><span>G&nbsp;PAY</span></div>
+      <p class="co-fine">By purchasing you agree to the <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>. Covered by our <a href="refund.html">30-day guarantee</a>.</p>
+      </div><!-- /coMain -->
+
+      <div class="co-success" id="coSuccess" role="status">
+        <div class="co-success__icon"><svg><use href="#i-check"/></svg></div>
+        <h4>You're in. Welcome to Align.</h4>
+        <p id="coSuccessMsg">Your order is confirmed. Your download links are on their way to your inbox.</p>
+        <div class="order-ref" id="coSuccessRef">Order reference: —</div>
+        <p style="font-size:0.78rem;max-width:380px;">Preview mode — no payment was taken. In live mode, the customer pays on Stripe's hosted page first, then their delivery email is sent automatically.</p>
+        <button type="button" class="btn btn--primary btn--block" id="coDone">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ALIGN — Site configuration
+   ------------------------------------------------------------
+   This is the ONLY file you need to edit to switch from
+   preview mode to live Stripe payments.
+
+   TO GO LIVE:
+   1. Deploy the serverless functions in /server (see README §Checkout).
+   2. Set PAYMENT_MODE to "live".
+   3. Set CHECKOUT_ENDPOINT to your deployed function URL.
+      (Your Stripe SECRET key lives server-side only — never here.)
+   ============================================================ */
+
+window.ALIGN_CONFIG = {
+  /* "demo"  → simulates checkout, shows the full post-purchase flow
+     "live"  → creates a real Stripe Checkout Session via your backend */
+  PAYMENT_MODE: "demo",
+
+  /* Your deployed create-checkout-session endpoint, e.g.
+     "https://your-site.vercel.app/api/create-checkout-session"
+     or "/api/create-checkout-session" if hosted on the same domain. */
+  CHECKOUT_ENDPOINT: "/api/create-checkout-session",
+
+  /* Shown on the thank-you page and used in demo receipts. */
+  PRODUCT_NAME: "The Align Method — Complete System",
+  PRICE_DISPLAY: "$47.00",
+
+  /* Where Stripe redirects after payment (live mode only — demo mode
+     confirms in-modal). Point this at any thank-you page on your host;
+     keep {CHECKOUT_SESSION_ID} literal, Stripe replaces it. */
+  SUCCESS_URL: "/thank-you.html?session_id={CHECKOUT_SESSION_ID}",
+  CANCEL_URL: "/#pricing",
+
+  /* Countdown length for the launch-pricing timer (hours from first
+     visit, persisted per-browser). For a fixed global deadline instead,
+     set DEADLINE_ISO, e.g. "2026-08-01T00:00:00Z" — it takes priority. */
+  TIMER_HOURS: 12,
+  DEADLINE_ISO: null,
+
+  SUPPORT_EMAIL: "hello@align-method.com"
+};
+
+/* ============================================================
+   ALIGN — UI interactions
+   Nav state · mobile menu · scroll reveal · counters ·
+   countdown timer · mobile sticky CTA
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var CFG = window.ALIGN_CONFIG || {};
+  var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Sticky nav state ---------- */
+  var nav = document.getElementById("nav");
+  if (nav) {
+    var onScroll = function () {
+      nav.classList.toggle("is-scrolled", window.scrollY > 24);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- Mobile menu ---------- */
+  var menuToggle = document.getElementById("menuToggle");
+  var mMenu = document.getElementById("mMenu");
+  var mBackdrop = document.getElementById("mBackdrop");
+  var mClose = document.getElementById("mClose");
+
+  function setMenu(open) {
+    if (!mMenu) return;
+    mMenu.classList.toggle("is-open", open);
+    mBackdrop.classList.toggle("is-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
+    if (menuToggle) menuToggle.setAttribute("aria-expanded", String(open));
+  }
+  if (menuToggle) menuToggle.addEventListener("click", function () { setMenu(true); });
+  if (mClose) mClose.addEventListener("click", function () { setMenu(false); });
+  if (mBackdrop) mBackdrop.addEventListener("click", function () { setMenu(false); });
+  if (mMenu) {
+    mMenu.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll(".reveal, .reveal-group");
+  if ("IntersectionObserver" in window && !prefersReduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -48px 0px" });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  /* ---------- Animated counters ---------- */
+  var counters = document.querySelectorAll("[data-count]");
+  function runCounter(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10);
+    var suffix = el.getAttribute("data-suffix") || "";
+    if (prefersReduced) {
+      el.textContent = target.toLocaleString() + suffix;
+      return;
+    }
+    var duration = 1500;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if ("IntersectionObserver" in window && counters.length) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          runCounter(entry.target);
+          cio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { cio.observe(el); });
+  }
+
+  /* ---------- Launch-pricing countdown ----------
+     Persists a per-visitor deadline in localStorage so the timer
+     doesn't reset on every reload (an instantly-resetting timer
+     reads as fake and destroys trust). A fixed global DEADLINE_ISO
+     in config.js overrides this. */
+  var timerEls = [
+    document.getElementById("announceTimer"),
+    document.getElementById("priceTimer")
+  ].filter(Boolean);
+
+  if (timerEls.length) {
+    var deadline;
+    if (CFG.DEADLINE_ISO) {
+      deadline = new Date(CFG.DEADLINE_ISO).getTime();
+    } else {
+      var stored = null;
+      try { stored = localStorage.getItem("align_deadline"); } catch (e) { /* private mode */ }
+      if (stored && Number(stored) > Date.now()) {
+        deadline = Number(stored);
+      } else {
+        deadline = Date.now() + (CFG.TIMER_HOURS || 12) * 3600 * 1000;
+        try { localStorage.setItem("align_deadline", String(deadline)); } catch (e) { /* ignore */ }
+      }
+    }
+
+    var pad = function (n) { return String(n).padStart(2, "0"); };
+    var tick = function () {
+      var diff = Math.max(0, deadline - Date.now());
+      var h = Math.floor(diff / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+      var out = pad(h) + ":" + pad(m) + ":" + pad(s);
+      timerEls.forEach(function (el) { el.textContent = out; });
+      if (diff > 0) setTimeout(tick, 1000);
+    };
+    tick();
+  }
+
+  /* ---------- Mobile sticky CTA ----------
+     Appears after the hero CTA scrolls out of view; hides while the
+     pricing card (which has its own CTA) or footer is on screen. */
+  var mobileCta = document.getElementById("mobileCta");
+  var heroCta = document.querySelector(".hero__cta-row");
+  var pricingCard = document.querySelector(".pricing-right");
+
+  if (mobileCta && heroCta && "IntersectionObserver" in window) {
+    var heroVisible = true;
+    var pricingVisible = false;
+
+    var update = function () {
+      mobileCta.classList.toggle("is-visible", !heroVisible && !pricingVisible);
+    };
+
+    new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0 }).observe(heroCta);
+
+    if (pricingCard) {
+      new IntersectionObserver(function (entries) {
+        pricingVisible = entries[0].isIntersecting;
+        update();
+      }, { threshold: 0.2 }).observe(pricingCard);
+    }
+  }
+
+  /* ---------- FAQ: close siblings for a tidier accordion ---------- */
+  document.querySelectorAll(".faq-item").forEach(function (item) {
+    item.addEventListener("toggle", function () {
+      if (item.open) {
+        document.querySelectorAll(".faq-item[open]").forEach(function (other) {
+          if (other !== item) other.open = false;
+        });
+      }
+    });
+  });
+
+})();
+
+/* ============================================================
+   ALIGN — Checkout layer
+   ------------------------------------------------------------
+   Architecture: Stripe Checkout (redirect model).
+
+   The browser NEVER touches card data or secret keys. Flow:
+
+     [email capture]                (this file, on your site)
+        → POST /api/create-checkout-session   (/server function,
+                                                uses SECRET key)
+        → redirect to session.url             (Stripe-hosted page:
+                                                cards, Apple Pay,
+                                                Google Pay, Link)
+        → Stripe redirects to SUCCESS_URL     (thank-you.html)
+        → webhook fulfills order              (/server/stripe-webhook.js:
+                                                email delivery + access)
+
+   PAYMENT_MODE in js/config.js controls behavior:
+     "demo" → simulates the redirect so the full flow can be
+              previewed before Stripe is connected.
+     "live" → real Stripe Checkout Session.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var CFG = window.ALIGN_CONFIG || {};
+
+  var overlay = document.getElementById("coOverlay");
+  var closeBtn = document.getElementById("coClose");
+  var form = document.getElementById("coForm");
+  var emailInput = document.getElementById("coEmail");
+  var submitBtn = document.getElementById("coSubmit");
+  var demoNote = document.getElementById("coDemoNote");
+
+  if (!overlay) return;
+
+  /* Hide the preview-mode notice once payments are live */
+  if (CFG.PAYMENT_MODE === "live" && demoNote) demoNote.style.display = "none";
+
+  /* ---------- Open / close ---------- */
+  var lastFocused = null;
+
+  function openCheckout() {
+    lastFocused = document.activeElement;
+    overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    setTimeout(function () { emailInput && emailInput.focus(); }, 250);
+  }
+
+  function closeCheckout() {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+    if (submitBtn) submitBtn.classList.remove("is-loading");
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+    setTimeout(resetCheckout, 400); /* after the close transition */
+  }
+
+  document.querySelectorAll("[data-checkout]").forEach(function (btn) {
+    btn.addEventListener("click", openCheckout);
+  });
+  if (closeBtn) closeBtn.addEventListener("click", closeCheckout);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closeCheckout();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && overlay.classList.contains("is-open")) closeCheckout();
+  });
+
+  /* ---------- Submit ---------- */
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var email = (emailInput.value || "").trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailInput.focus();
+        emailInput.setCustomValidity("Please enter a valid email address.");
+        emailInput.reportValidity();
+        emailInput.setCustomValidity("");
+        return;
+      }
+
+      submitBtn.classList.add("is-loading");
+
+      if (CFG.PAYMENT_MODE === "live") {
+        startLiveCheckout(email);
+      } else {
+        startDemoCheckout(email);
+      }
+    });
+  }
+
+  /* ---------- LIVE: create a Stripe Checkout Session ----------
+     The backend (server/create-checkout-session.js) holds the secret
+     key, creates the session, and returns { url }. We redirect there;
+     Stripe handles cards + Apple Pay + Google Pay natively. */
+  function startLiveCheckout(email) {
+    fetch(CFG.CHECKOUT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Checkout session failed (" + res.status + ")");
+        return res.json();
+      })
+      .then(function (data) {
+        if (data && data.url) {
+          window.location.href = data.url; // → Stripe-hosted checkout
+        } else {
+          throw new Error("No checkout URL returned");
+        }
+      })
+      .catch(function (err) {
+        console.error("[Align checkout]", err);
+        submitBtn.classList.remove("is-loading");
+        alert(
+          "We couldn't start the secure checkout. Please try again in a moment, " +
+          "or email " + (CFG.SUPPORT_EMAIL || "support") + " and we'll help right away."
+        );
+      });
+  }
+
+  /* ---------- DEMO: simulate the purchase in-modal ----------
+     Shows the confirmation state right here, so the whole flow works
+     from this single file with no other pages required. */
+  var coBody = document.getElementById("coBody");
+  var coSuccess = document.getElementById("coSuccess");
+  var coSuccessRef = document.getElementById("coSuccessRef");
+  var coSuccessMsg = document.getElementById("coSuccessMsg");
+  var coDone = document.getElementById("coDone");
+
+  function startDemoCheckout(email) {
+    setTimeout(function () {
+      var ref = "DEMO-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+      submitBtn.classList.remove("is-loading");
+      coBody.classList.add("is-done");
+      coSuccess.classList.add("is-active");
+      coSuccessRef.textContent = "Order reference: " + ref;
+      coSuccessMsg.textContent = "Your order is confirmed. In live mode, download links would now be on their way to " + email + ".";
+    }, 1100);
+  }
+
+  function resetCheckout() {
+    coBody.classList.remove("is-done");
+    coSuccess.classList.remove("is-active");
+    if (form) form.reset();
+  }
+  if (coDone) coDone.addEventListener("click", function () { closeCheckout(); });
+
+})();
+
+</script>
+</body>
+</html>
