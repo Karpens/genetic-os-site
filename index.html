@@ -116,6 +116,11 @@ section.page.on{display:block}
 .save{font-weight:600;color:var(--ok)}
 .flag{align-self:flex-start;background:var(--stain);color:var(--paper);font-size:13px;font-weight:600;border-radius:999px;padding:3px 10px;margin-bottom:6px}
 .fine{font-size:14px;color:var(--muted);max-width:70ch}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--paper);border-radius:14px;padding:14px 16px;margin:6px 0 20px;max-width:760px;font-size:14px;color:var(--muted);box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.consent input{margin-top:3px;flex:none;width:16px;height:16px;accent-color:var(--stain)}
+.consent.shake{animation:shakeX .4s}
+@keyframes shakeX{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.consent.shake{animation:none}}
 details{background:var(--paper);border-radius:14px;padding:14px 18px;margin:10px 0;box-shadow:0 0 0 1px var(--line);max-width:760px}
 summary{font-weight:600;cursor:pointer}
 
@@ -301,6 +306,7 @@ const SUPPORT_EMAIL = "hello@example.com";
   <div class="wrap">
     <h2>Plans</h2>
     <p class="muted">Every plan includes all subjects at GCSE, AS and A2. Cancel any time. Already subscribed on another device? <a href="#" id="restoreLink">Restore access</a>.</p>
+    <label class="consent"><input type="checkbox" id="agreeTerms"> I understand that access starts immediately after payment, so I'm giving up my 14-day cancellation right for this billing period once I start using the content, and that already-paid periods aren't refunded.</label>
     <div class="plans">
       <div class="plan">
         <h3>Monthly</h3>
@@ -325,11 +331,12 @@ const SUPPORT_EMAIL = "hello@example.com";
         <button class="btn" data-plan="annual">Choose annual</button>
       </div>
     </div>
-    <p class="fine">Plans renew automatically until cancelled. Cancel from your account before the next payment date. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
+    <p class="fine">Plans renew automatically until cancelled. Cancel from your account before the next payment date to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
     <h2 style="margin-top:48px;font-size:28px">Questions</h2>
     <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR and Edexcel. New subjects are added at no extra cost.</p></details>
     <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR and Edexcel. Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
-    <details><summary>Can I cancel?</summary><p style="margin-top:8px">Yes. You keep access until the end of the period you've paid for.</p></details>
+    <details><summary>Can I cancel?</summary><p style="margin-top:8px">Yes, any time, from your account. Cancelling stops future payments, and you keep access until the end of the period you've already paid for.</p></details>
+    <details><summary>What is your refund policy?</summary><p style="margin-top:8px">Because you get full access to every subject the moment you pay, we don't offer refunds for time already paid for, including if you cancel partway through a period. By subscribing, you agree to this and to waiving the standard 14-day cooling-off period once you've started using the content. If something went wrong with your payment or you were charged in error, contact us and we'll look into it.</p></details>
   </div>
 </section>
 </main>
@@ -5274,6 +5281,13 @@ async function refreshPremiumFromServer(){
 }
 
 $$('[data-plan]').forEach(b=>b.onclick=async()=>{
+  const agree=$('#agreeTerms');
+  if(agree && !agree.checked){
+    agree.closest('.consent')?.classList.add('shake');
+    setTimeout(()=>agree.closest('.consent')?.classList.remove('shake'),500);
+    showModal('Please confirm first',`<p>Tick the box above the plans to confirm you understand access starts immediately and already-paid periods aren't refunded — then choose your plan again.</p>`);
+    return;
+  }
   if(API_BASE){
     b.disabled=true;const old=b.textContent;b.textContent='Redirecting…';
     try{
