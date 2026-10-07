@@ -805,6 +805,23 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 .pb-wave{font-size:40px;display:inline-block;transform-origin:70% 70%;animation:wave 2.4s ease-in-out infinite}
 @keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-8deg)}}
 @media (max-width:560px){.parentban{flex-direction:column;padding:18px}.askp{padding:14px 16px}}
+
+#p-pricing.owned-on :is(.consent,.trialban,.plans,#taxNote,.askp,.fine){display:none!important}
+.owned[hidden]{display:none!important}
+.owned{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;margin:8px 0 10px;padding:28px;border-radius:30px;background:var(--stage);color:var(--stage-ink);box-shadow:var(--shadow-lg);overflow:hidden;isolation:isolate;animation:popIn .6s cubic-bezier(.2,1.3,.3,1)}
+.owned::before{content:'';position:absolute;width:420px;height:420px;right:-140px;top:-200px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,#3DDB93 55%,transparent),transparent 65%);z-index:-1;opacity:.5;animation:lbGlow 6s ease-in-out infinite alternate}
+.owned h3{color:#fff;font-size:clamp(22px,3vw,28px);margin:4px 0 6px}
+.owned p{color:var(--stage-muted);margin:0 0 8px}
+.owned small{display:inline-block;font-size:13px;font-weight:600;color:#3DDB93;background:rgba(61,219,147,.1);border-radius:999px;padding:5px 12px}
+.owned .eyebrow{color:#3DDB93}
+.owned-btns{display:flex;flex-direction:column;gap:8px}
+.owned .btn.ghost{color:#fff;background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28)}
+.owned-badge svg{width:76px;height:76px;display:block}
+.owned-badge circle{fill:rgba(61,219,147,.14);stroke:#3DDB93;stroke-width:3;stroke-dasharray:145;stroke-dashoffset:145;animation:drawLine .8s cubic-bezier(.45,.1,.25,1) .1s forwards}
+.owned-badge path{fill:none;stroke:#3DDB93;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:drawLine .5s cubic-bezier(.45,.1,.25,1) .75s forwards}
+@media (max-width:760px){.owned{grid-template-columns:1fr;padding:22px;text-align:left}.owned-btns{flex-direction:row;flex-wrap:wrap}.owned-badge svg{width:60px;height:60px}}
+.acct span{display:block}
+#navCta.owned-cta{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px var(--stain)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -841,7 +858,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <a class="l" href="#pricing">Pricing</a>
       <a class="xpchip" href="#me" id="xpChip" title="Your level and streak"><span class="ring"><b id="xpLv">1</b></span><span id="xpTxt">0 XP</span><span class="fl" id="xpFl"></span></a>
       <button class="btn ghost sm" id="themeBtn" aria-label="Switch light or dark">◐</button>
-      <a class="btn sm" href="#pricing">Get full access</a>
+      <a class="btn sm" href="#pricing" id="navCta">Get full access</a>
     </nav>
   </div>
 </header>
@@ -1009,6 +1026,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <span class="eyebrow">Pricing</span>
     <h2>One plan. <span class="grad">Every subject.</span></h2>
     <p class="muted">Every plan includes all subjects at GCSE, AS and A2. Cancel any time. Already subscribed on another device? <a href="#" id="restoreLink">Restore access</a>.</p>
+    <div class="owned" id="ownedBox" hidden></div>
     <label class="consent"><input type="checkbox" id="agreeTerms"> <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms</a>. I understand that access starts straight away, so I give up my 14-day cancellation right once I start using the content, and that already-paid periods aren't refunded. If my plan starts with a free trial, I can cancel before it ends and pay nothing.</span></label>
     <div class="trialban" id="trialBan" hidden><span>🎁</span><div><b>Every plan starts with a free trial</b><small>Full access straight away. Cancel before it ends and you pay nothing.</small></div></div>
     <div class="plans">
@@ -1105,7 +1123,7 @@ let level=store.get('go-lvl','GCSE'); if(!LEVELS.some(l=>l[0]===level))level='GC
 
 
 function save(){store.set('go-sub',subject);store.set('go-lvl',level)}
-function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy();if(location.hash==='#me')renderMe()}
+function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy();if(location.hash==='#me')renderMe();renderOwned()}
 
 /* home picker */
 let boards={};try{boards=JSON.parse(store.get('go-boards','{}'))||{}}catch(e){boards={}}
@@ -1428,7 +1446,7 @@ async function refreshPremiumFromServer(){
   if(!API_BASE || !authToken())return;
   try{
     const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});
-    const data=await r.json();
+    const data=await r.json();ACCOUNT=data;
     if(data.premium)await loadPremium();else setPremium(false);
   }catch(e){/* offline or backend unreachable — stay on the free content */}
 }
@@ -1905,12 +1923,13 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
 /* ---------- account: manage subscription (Stripe customer portal) ---------- */
 var TRIAL=0;
 function accountCard(){const em=store.get('go-auth-email','');
-  if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
+  if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${subLine()}</span><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
   if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="manageSub">Billing history</button></div>`;
   return `<div class="acct"><div><b>Using Full Marks for free</b><span>Already subscribed on another device? Restore access with the email you paid with.</span></div><button class="btn ghost" id="meRestore">Restore access</button><a class="btn" href="#pricing">See plans</a></div>`}
 function wireAccount(){
   const r=$('#meRestore');if(r)r.onclick=()=>$('#restoreLink')?.click();
-  const m=$('#manageSub');if(m)m.onclick=async()=>{if(!API_BASE)return;m.disabled=true;const old=m.textContent;m.textContent='Opening…';
+  const m=$('#manageSub');if(m)m.onclick=()=>openPortal(m)}
+async function openPortal(m){{if(!API_BASE)return;m.disabled=true;const old=m.textContent;m.textContent='Opening…';
     try{const res=await fetch(`${API_BASE}/portal`,{method:'POST',headers:{Authorization:'Bearer '+authToken()}});const j=await res.json();
       if(j.url){location.href=j.url;return}showModal('Manage subscription',`<p>${esc(j.error||'Please try again in a moment.')}</p><p>You can always cancel by emailing <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>`)}
     catch(e){showModal('Could not reach the server',`<p>Check your connection and try again, or email <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>`)}
@@ -1943,6 +1962,26 @@ document.addEventListener('click',e=>{if(e.target.closest('.ask-parent'))askPare
   box.innerHTML=`<span class="pb-wave">👋</span><div><h3>Hello! You’ve been asked to look at Full Marks</h3><p>${SUBJECTS[s]&&LEVEL_WORD[l]?`It’s for <strong>${esc(SUBJECTS[s].name)} ${LEVEL_WORD[l]}</strong> (${esc(boardLabel())}). `:''}Full Marks is GCSE and A-level revision: short notes for every topic, ${fmtN(roundDown(TOTAL.q))}+ exam-style questions with explanations, mock papers and games, following the student’s own exam board.</p>
     <ul><li>One plan covers every subject and level.</li><li>Cancel any time in two clicks, from the Progress page.</li><li>Payment is handled securely by Stripe.</li><li><strong>Tip:</strong> enter your child’s email address at checkout. That’s how they sign in on their own phone or laptop.</li></ul></div>`;
   sec.prepend(box)})();
+
+/* ---------- subscribers: "you already have full access" with plan dates ---------- */
+var ACCOUNT=null,_acctLoading=false;
+const fmtD=t=>t?new Date(t*1000).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
+const PLAN_NAME={monthly:'Monthly plan',quarterly:'3-month plan',annual:'Annual plan'};
+function subLine(){const a=ACCOUNT||{},pn=PLAN_NAME[a.plan]||'Full access',from=fmtD(a.since||a.periodStart);
+  if(a.status==='trialing'&&a.trialEnd)return `Free trial · ${from?from+' – ':''}${fmtD(a.trialEnd)} · ${a.cancelAtPeriodEnd?'won’t continue after the trial':`then your ${pn.toLowerCase()} starts`}`;
+  const end=fmtD(a.periodEnd);if(!end)return pn;
+  return `${pn} · ${from?from+' – ':'until '}${end} · ${a.cancelAtPeriodEnd?'cancelled, won’t renew':'renews automatically'}`}
+async function ensureAccount(){if(ACCOUNT||_acctLoading||!API_BASE||!authToken())return;_acctLoading=true;
+  try{const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});ACCOUNT=await r.json();renderOwned();if(location.hash==='#me')renderMe()}catch(e){}_acctLoading=false}
+function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navCta');if(!sec||!box)return;
+  sec.classList.toggle('owned-on',!!premium);box.hidden=!premium;
+  if(cta){cta.textContent=premium?'✓ Full access':'Get full access';cta.href=premium?'#me':'#pricing';cta.classList.toggle('owned-cta',!!premium)}
+  if(!premium)return;if(!ACCOUNT)ensureAccount();
+  box.innerHTML=`<div class="owned-badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><path d="M15 27l7 7 15-16"/></svg></div>
+    <div class="owned-txt"><span class="eyebrow">Your plan</span><h3>You already have full access 🎉</h3><p>Every subject, level and exam board is unlocked. There’s nothing else to buy.</p><small>${esc(subLine())}</small></div>
+    <div class="owned-btns"><a class="btn" href="#study">Start revising →</a><button class="btn ghost" id="ownedManage">Manage subscription</button></div>`;
+  $('#ownedManage').onclick=()=>openPortal($('#ownedManage'))}
+renderOwned();
 
 /* routing */
 const PAGES=['home','study','games','me','pricing'];
