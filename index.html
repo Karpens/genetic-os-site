@@ -768,6 +768,22 @@ footer .social svg{width:15px;height:15px}
 .tracker td button.g{background:var(--ok-soft);color:var(--ok);border:0}
 .tracker td button.a{background:var(--gold-soft);color:color-mix(in srgb,var(--gold) 70%,var(--ink));border:0}
 .tracker td button.r{background:var(--bad-soft);color:var(--bad);border:0}
+
+/* diagrams draw themselves: outlines trace in, fills fade up, labels pop, arrows flow */
+.diag svg.drawing :is(path,line,polyline,polygon,circle,ellipse,rect){stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:drawLine 1.1s cubic-bezier(.45,.1,.25,1) forwards,fillUpD .7s ease backwards;animation-delay:calc(.15s + var(--k,0)*70ms),calc(.55s + var(--k,0)*70ms)}
+.diag svg.drawing text{animation:txtPop .5s cubic-bezier(.2,1.4,.3,1) backwards;animation-delay:calc(.7s + var(--t,0)*55ms);transform-box:fill-box;transform-origin:center}
+.diag svg.drawing .flow{animation:drawLine 1.1s cubic-bezier(.45,.1,.25,1) forwards,fillUpD .7s ease backwards,flowD 1.4s linear infinite;animation-delay:calc(.15s + var(--k,0)*70ms),calc(.55s + var(--k,0)*70ms),calc(1.6s + var(--k,0)*70ms)}
+.diag svg.drawing text.hl{stroke:#FFE36E;stroke-width:6px;paint-order:stroke fill;stroke-linejoin:round;font-weight:800;animation:txtPop .5s cubic-bezier(.2,1.4,.3,1) backwards,hlPulse 1.6s ease-in-out infinite;animation-delay:calc(.7s + var(--t,0)*55ms),calc(1.8s + var(--hk,0)*.25s)}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+@keyframes fillUpD{from{fill-opacity:0}}
+@keyframes txtPop{from{opacity:0;transform:translateY(6px) scale(.8)}}
+@keyframes flowD{0%{stroke-dasharray:7 5;stroke-dashoffset:24}100%{stroke-dasharray:7 5;stroke-dashoffset:0}}
+.why.has-d{grid-template-columns:1fr;gap:12px}
+.why-fig{position:relative;margin:4px 0 0;max-width:none;cursor:pointer;animation:popIn .6s cubic-bezier(.2,1.2,.3,1) .15s backwards}
+.why-fig svg{max-height:380px}
+.why-fig figcaption{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.why-fig .replay{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:var(--wc,var(--stain));color:#fff;font:800 17px/34px sans-serif;box-shadow:0 8px 18px -8px var(--wc,var(--stain));opacity:.85;transition:transform .3s cubic-bezier(.2,1.5,.3,1),opacity .2s}
+.why-fig .replay:hover{transform:rotate(-180deg) scale(1.1);opacity:1}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -1692,17 +1708,30 @@ function eqTiles(e){e=e.trim().replace(/[.,;:]+$/,'');const i=e.lastIndexOf('=')
 function whyKeys(q){const txt=(q[1][q[2]]+' '+q[3]).toLowerCase();return [...new Set(txt.match(/[a-z][a-z-]{3,}/g)||[])].filter(w=>!STOPW.has(w)).slice(0,40)}
 function explainHtml(q,ok,subj=subject){const parts=String(q[3]).split(/(?<=[.!?])\s+(?=\S)/);const x=subOfQ(q),ans=q[1][q[2]],col=(SUBJECTS[subj]||{}).color||'#0E9F5D';
   const hi=s=>esc(s).replace(/(?<![#\w])(\d[\d.,]*\s?(?:%|°C|kJ|J|N|W|V|A|Ω|m\/s²|m\/s|mol|dm³|cm³|g|kg|m|s|Hz|Pa|eV)?)/g,'<b class="num">$1</b>');
-  const eqs=[...new Set(String(q[3]).match(EQ_RE)||[])].slice(0,2);
+  const eqs=[...new Set(String(q[3]).match(EQ_RE)||[])].slice(0,2),hasD=!!(x&&x.d);
+  const top=`<div class="why-top"><strong class="verdict ${ok?'ok':'no'}">${ok?'✓ Correct!':'✗ Not quite.'}</strong><span class="why-tag">Here’s why</span></div>
+    <div class="why-ans"><span>${ok?'Your answer':'Right answer'}</span><b>${esc(ans)}</b></div>`;
+  const rest=`${eqs.length?`<div class="why-eq"><span class="why-lbl">The working</span>${eqs.map(eqTiles).join('')}</div>`:''}
+    <div class="why-steps">${parts.map((s,i)=>`<span class="xs" style="--s:${i}">${hi(s.trim())} </span>`).join('')}</div>`;
+  if(hasD)return `<div class="why has-d ${ok?'ok':'no'}" style="--wc:${col}"><div class="why-body">${top}</div>
+    <figure class="why-fig diag spot" data-kw="${esc(whyKeys(q).join(' '))}" title="Tap to draw it again">${x.d}<i class="scan" aria-hidden="true"></i><button class="replay" type="button" aria-label="Draw the diagram again">↻</button><figcaption>📊 ${esc(x.title)} <span class="hlcount"></span></figcaption></figure>
+    <div class="why-body">${rest}</div></div>`;
   return `<div class="why ${ok?'ok':'no'}" style="--wc:${col}"><div class="why-art" aria-hidden="true"><div class="why-orb"><i></i><i></i><i></i>${glyph(subj)}</div></div>
-    <div class="why-body"><div class="why-top"><strong class="verdict ${ok?'ok':'no'}">${ok?'✓ Correct!':'✗ Not quite.'}</strong><span class="why-tag">Here’s why</span></div>
-    <div class="why-ans"><span>${ok?'Your answer':'Right answer'}</span><b>${esc(ans)}</b></div>
-    ${eqs.length?`<div class="why-eq"><span class="why-lbl">The working</span>${eqs.map(eqTiles).join('')}</div>`:''}
-    <div class="why-steps">${parts.map((s,i)=>`<span class="xs" style="--s:${i}">${hi(s.trim())} </span>`).join('')}</div></div></div>`
-    +(x&&x.d?`<details class="diagwrap" open><summary>📊 See it: ${esc(x.title)} <span class="hlcount"></span></summary><figure class="diag spot" style="--wc:${col}" data-kw="${esc(whyKeys(q).join(' '))}">${x.d}<i class="scan" aria-hidden="true"></i></figure></details>`:'')}
-function animateDiagrams(root){root.querySelectorAll('.diag svg').forEach(svg=>{let k=0;svg.querySelectorAll('path,line,polyline,polygon,circle,ellipse,rect,text').forEach(el=>{el.style.setProperty('--k',k++)})});
+    <div class="why-body">${top}${rest}</div></div>`}
+const SHAPES='path,line,polyline,polygon,circle,ellipse,rect';
+function drawDiagram(svg){if(RM)return;svg.classList.remove('drawing');let k=0,t=0;
+  svg.querySelectorAll(SHAPES).forEach(el=>{let len=0;try{len=el.getTotalLength()}catch(e){}el.style.setProperty('--len',Math.ceil(len)||1);el.style.setProperty('--k',Math.min(k++,45))});
+  svg.querySelectorAll('text').forEach(el=>el.style.setProperty('--t',Math.min(t++,40)));
+  void svg.getBoundingClientRect();svg.classList.add('drawing')}
+function animateDiagrams(root){
+  root.querySelectorAll('.diag svg:not([data-drawn])').forEach(svg=>{svg.dataset.drawn=1;
+    svg.querySelectorAll('[marker-end],[marker-start]').forEach(el=>el.classList.add('flow'));
+    if(svg.isConnected&&svg.getBoundingClientRect().width)drawDiagram(svg);else requestAnimationFrame(()=>drawDiagram(svg))});
   root.querySelectorAll('.diag.spot:not([data-done])').forEach(f=>{f.dataset.done=1;const stem=w=>w.replace(/(ing|ed|es|s)$/,'').slice(0,7),keys=new Set((f.dataset.kw||'').split(' ').filter(Boolean).map(stem));let n=0;
     f.querySelectorAll('svg text').forEach(t=>{if(n>=6)return;const ws=t.textContent.toLowerCase().match(/[a-z][a-z-]{3,}/g)||[];if(ws.some(w=>keys.has(stem(w)))){t.classList.add('hl');t.style.setProperty('--hk',n++)}});
-    const c=f.closest('details')?.querySelector('.hlcount');if(c&&n)c.textContent=`· 🔦 ${n} label${n>1?'s':''} linked to this answer`})}
+    const c=f.querySelector('.hlcount')||f.closest('details')?.querySelector('.hlcount');if(c&&n)c.textContent=`· 🔦 ${n} label${n>1?'s':''} linked to this answer`;
+    const again=()=>{const s=f.querySelector('svg');if(s)drawDiagram(s)};f.querySelector('.replay')?.addEventListener('click',e=>{e.stopPropagation();again()});f.querySelector('svg')?.addEventListener('click',again)})}
+document.addEventListener('toggle',e=>{if(e.target.matches?.('details[open]'))e.target.querySelectorAll('.diag svg').forEach(drawDiagram)},true);
 new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)if(n.nodeType===1&&n.querySelector&&n.querySelector('.diag svg'))animateDiagrams(n)}).observe(document.body,{childList:true,subtree:true});
 
 
