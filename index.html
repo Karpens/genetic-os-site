@@ -784,6 +784,27 @@ footer .social svg{width:15px;height:15px}
 .why-fig figcaption{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
 .why-fig .replay{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:var(--wc,var(--stain));color:#fff;font:800 17px/34px sans-serif;box-shadow:0 8px 18px -8px var(--wc,var(--stain));opacity:.85;transition:transform .3s cubic-bezier(.2,1.5,.3,1),opacity .2s}
 .why-fig .replay:hover{transform:rotate(-180deg) scale(1.1);opacity:1}
+
+.askp{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:22px auto 0;max-width:760px;padding:16px 20px;border-radius:20px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.askp b{display:block;font:800 17px "Bricolage Grotesque",sans-serif}.askp span{color:var(--muted);font-size:14px}
+.trialban{display:flex;align-items:center;gap:14px;margin:0 0 18px;padding:14px 18px;border-radius:20px;background:linear-gradient(120deg,var(--gold-soft),var(--stain-soft));animation:popIn .6s cubic-bezier(.2,1.4,.3,1)}
+.trialban>span{font-size:30px;animation:bob 3s ease-in-out infinite}.trialban b{display:block;font:800 18px "Bricolage Grotesque",sans-serif}.trialban small{color:var(--muted)}
+.plan .trial{font-size:13px;font-weight:600;color:color-mix(in srgb,var(--stain) 80%,var(--ink));margin:auto 0 10px;line-height:1.4}
+.plan.best .trial{color:#3DDB93}
+.lock .actions{margin-top:6px}
+.why-report{display:inline-block;margin-top:10px;border:0;background:none;padding:4px 0;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.why-report:hover:not(:disabled){color:var(--bad)}.why-report:disabled{text-decoration:none;color:var(--ok);cursor:default}
+.rep-r{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}.rep-r label{display:flex;gap:10px;align-items:center;cursor:pointer}
+.ap-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
+.acct{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:20px 22px;border-radius:24px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.acct>div{flex:1;min-width:220px}.acct b{display:block;font:800 18px "Bricolage Grotesque",sans-serif}.acct span{color:var(--muted);font-size:14px}
+.acct.on{box-shadow:var(--shadow),0 0 0 2px var(--ok)}.acct.on b{color:var(--ok)}
+.parentban{display:flex;gap:16px;align-items:flex-start;margin:0 0 30px;padding:22px 24px;border-radius:26px;background:var(--stage);color:var(--stage-ink);box-shadow:var(--shadow-lg);animation:popIn .6s cubic-bezier(.2,1.3,.3,1)}
+.parentban h3{color:#fff;margin:0 0 6px}.parentban p,.parentban li{color:var(--stage-muted)}.parentban strong{color:#fff}.parentban ul{margin:8px 0 0;padding-left:18px}
+.pb-wave{font-size:40px;display:inline-block;transform-origin:70% 70%;animation:wave 2.4s ease-in-out infinite}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-8deg)}}
+@media (max-width:560px){.parentban{flex-direction:column;padding:18px}.askp{padding:14px 16px}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -988,7 +1009,8 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <span class="eyebrow">Pricing</span>
     <h2>One plan. <span class="grad">Every subject.</span></h2>
     <p class="muted">Every plan includes all subjects at GCSE, AS and A2. Cancel any time. Already subscribed on another device? <a href="#" id="restoreLink">Restore access</a>.</p>
-    <label class="consent"><input type="checkbox" id="agreeTerms"> I understand that access starts immediately after payment, so I'm giving up my 14-day cancellation right for this billing period once I start using the content, and that already-paid periods aren't refunded.</label>
+    <label class="consent"><input type="checkbox" id="agreeTerms"> <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms</a>. I understand that access starts straight away, so I give up my 14-day cancellation right once I start using the content, and that already-paid periods aren't refunded. If my plan starts with a free trial, I can cancel before it ends and pay nothing.</span></label>
+    <div class="trialban" id="trialBan" hidden><span>🎁</span><div><b>Every plan starts with a free trial</b><small>Full access straight away. Cancel before it ends and you pay nothing.</small></div></div>
     <div class="plans">
       <div class="plan" data-p="monthly">
         <h3>Monthly</h3>
@@ -1014,7 +1036,8 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       </div>
     </div>
     <p class="fine" id="taxNote" style="text-align:center;margin-top:12px"></p>
-    <p class="fine">Plans renew automatically until cancelled. Cancel from your account before the next payment date to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
+    <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link, price and how to cancel.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
+    <p class="fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
     <h2 style="margin-top:48px;font-size:28px">Questions</h2>
     <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR and Edexcel. New subjects are added at no extra cost.</p></details>
     <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR and Edexcel. Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
@@ -1033,7 +1056,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </section>
 </main>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="#pricing">Pricing</a> · <a id="mailto" href="#">Contact</a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -1082,7 +1105,7 @@ let level=store.get('go-lvl','GCSE'); if(!LEVELS.some(l=>l[0]===level))level='GC
 
 
 function save(){store.set('go-sub',subject);store.set('go-lvl',level)}
-function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy()}
+function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy();if(location.hash==='#me')renderMe()}
 
 /* home picker */
 let boards={};try{boards=JSON.parse(store.get('go-boards','{}'))||{}}catch(e){boards={}}
@@ -1137,7 +1160,7 @@ $('#lvlSel').onchange=e=>{level=e.target.value;save();resetView();renderStudy();
 $('#brdSel').innerHTML=BOARDS.map(([b,l])=>`<option value="${b}">${l}</option>`).join('');
 $('#brdSel').onchange=e=>{setBoard(e.target.value);resetView();renderStudy();renderPicker()};
 
-const lockCard=msg=>`<div class="lock"><h3>This is part of full access</h3><p>${msg}</p><a class="btn" href="#pricing">See plans</a></div>`;
+const lockCard=msg=>`<div class="lock"><h3>This is part of full access</h3><p>${msg}</p><div class="actions"><a class="btn" href="#pricing">See plans</a><button class="btn ghost ask-parent" type="button">Ask a parent</button></div></div>`;
 
 function crumbs(){
   const s=SUBJECTS[subject],d=levelData(),parts=[`<a href="#" data-nav="root">${s.name} ${level} · ${boardLabel()}</a>`];
@@ -1687,7 +1710,9 @@ function renderMe(){const main=$('#meMain');if(!main)return;const xp=XP.xp,l=lvl
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Activity</h2><p class="muted">The last 15 weeks. Darker squares mean more questions that day.</p><div class="heat">${cells.join('')}</div></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Subjects</h2><div class="subprog">${Object.entries(SUBJECTS).map(([k,sb])=>{const v=Object.entries(P).filter(([x])=>x.startsWith(k+':')).map(([,v])=>v);const avg=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return `<div class="sp"><div class="r" style="--c:${sb.color}" data-p="${avg}"><b>${avg}%</b></div><strong>${esc(sb.name)}</strong><br><small class="muted">${v.length} tests done</small></div>`}).join('')}</div></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Badges</h2><div class="badges">${BADGES.map(([e,n,t,f],i)=>{const got=f(s,st,l,xp);return `<div class="badge${got?' got':''}" style="--i:${i}"><span class="e">${e}</span><b>${n}</b><small>${t}</small></div>`}).join('')}</div></div>
-    <div class="actions" style="margin-top:40px"><a class="btn" href="#games" id="meDaily">Do today's challenge</a><a class="btn ghost" href="#study">Keep revising</a></div>`;
+    <div class="actions" style="margin-top:40px"><a class="btn" href="#games" id="meDaily">Do today's challenge</a><a class="btn ghost" href="#study">Keep revising</a></div>
+    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Your account</h2>${accountCard()}</div>`;
+  wireAccount();
   requestAnimationFrame(()=>{$('#lvFg').style.strokeDashoffset=478-478*into/need;main.querySelectorAll('.sp .r').forEach(r=>{let v=0;const to=+r.dataset.p,step=()=>{v=Math.min(to,v+Math.max(1,to/40));r.style.setProperty('--p',v);if(v<to)requestAnimationFrame(step)};step()})})}
 
 /* result ring for finished tests */
@@ -1714,7 +1739,8 @@ function explainHtml(q,ok,subj=subject){const parts=String(q[3]).split(/(?<=[.!?
   const top=`<div class="why-top"><strong class="verdict ${ok?'ok':'no'}">${ok?'✓ Correct!':'✗ Not quite.'}</strong><span class="why-tag">Here’s why</span></div>
     <div class="why-ans"><span>${ok?'Your answer':'Right answer'}</span><b>${esc(ans)}</b></div>`;
   const rest=`${eqs.length?`<div class="why-eq"><span class="why-lbl">The working</span>${eqs.map(eqTiles).join('')}</div>`:''}
-    <div class="why-steps">${parts.map((s,i)=>`<span class="xs" style="--s:${i}">${hi(s.trim())} </span>`).join('')}</div>`;
+    <div class="why-steps">${parts.map((s,i)=>`<span class="xs" style="--s:${i}">${hi(s.trim())} </span>`).join('')}</div>
+    <button class="why-report" type="button" data-rq="${esc(q[0])}" data-ra="${esc(ans)}" data-rs="${esc(subj)}" data-rt="${esc(x?x.title:'')}">⚑ Report a mistake</button>`;
   if(hasD)return `<div class="why has-d ${ok?'ok':'no'}" style="--wc:${col}"><div class="why-body">${top}</div>
     <figure class="why-fig diag spot" data-kw="${esc(whyKeys(q).join(' '))}" title="Tap to draw it again">${x.d}<i class="scan" aria-hidden="true"></i><button class="replay" type="button" aria-label="Draw the diagram again">↻</button><figcaption>📊 ${esc(x.title)} <span class="hlcount"></span></figcaption></figure>
     <div class="why-body">${rest}</div></div>`;
@@ -1815,7 +1841,11 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
     const months=pr.interval==='year'?12*pr.count:pr.interval==='month'?pr.count:0;card.querySelector('.amt').textContent=money(pr.amount,pr.currency);
     if(months>1){card.querySelector('.pm').textContent=`${money(Math.round(pr.amount/months),pr.currency)} a month`;const sv=card.querySelector('.sv');
       if(sv&&m&&m.amount){const save=m.amount*months-pr.amount;sv.textContent=save>0?`Save ${money(save,pr.currency)} compared with monthly`:'All subjects, one payment'}}}
-  const tx=$('#taxNote'),tb=(Object.values(P)[0]||{}).tax;if(tx&&j.automaticTax)tx.textContent=tb==='exclusive'?'VAT is added at checkout where it applies.':'Prices include VAT where it applies.'}catch(e){}}
+  const tx=$('#taxNote'),tb=(Object.values(P)[0]||{}).tax;if(tx&&j.automaticTax)tx.textContent=tb==='exclusive'?'VAT is added at checkout where it applies.':'Prices include VAT where it applies.';
+  TRIAL=+j.trialDays||0;if(TRIAL){const per={monthly:'month',quarterly:'3 months',annual:'year'};
+    $$('.plan[data-p]').forEach(card=>{const b=card.querySelector('[data-plan]'),amt=card.querySelector('.amt').textContent;b.textContent=`Start ${TRIAL}-day free trial`;
+      let t=card.querySelector('.trial');if(!t){t=document.createElement('div');t.className='trial';b.before(t)}t.textContent=`Free for ${TRIAL} days, then ${amt} / ${per[card.dataset.p]}. Cancel before then and pay nothing.`});
+    const ban=$('#trialBan');if(ban){ban.hidden=false;ban.querySelector('b').textContent=`Every plan starts with a ${TRIAL}-day free trial`}}}catch(e){}}
 loadPrices();
 
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
@@ -1871,6 +1901,48 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
     $('#trkSave').onclick=()=>{const v=Math.round(+inp.value);if(inp.value===''||!(v>=0&&v<=100))return;trk[k]=v;store.set(tkey,JSON.stringify(trk));$('#modal').classList.remove('on');renderPapers(main,spec)};
     inp.onkeydown=e=>{if(e.key==='Enter')$('#trkSave').click()};
     if($('#trkDel'))$('#trkDel').onclick=()=>{delete trk[k];store.set(tkey,JSON.stringify(trk));$('#modal').classList.remove('on');renderPapers(main,spec)}})}
+
+/* ---------- account: manage subscription (Stripe customer portal) ---------- */
+var TRIAL=0;
+function accountCard(){const em=store.get('go-auth-email','');
+  if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
+  if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="manageSub">Billing history</button></div>`;
+  return `<div class="acct"><div><b>Using Full Marks for free</b><span>Already subscribed on another device? Restore access with the email you paid with.</span></div><button class="btn ghost" id="meRestore">Restore access</button><a class="btn" href="#pricing">See plans</a></div>`}
+function wireAccount(){
+  const r=$('#meRestore');if(r)r.onclick=()=>$('#restoreLink')?.click();
+  const m=$('#manageSub');if(m)m.onclick=async()=>{if(!API_BASE)return;m.disabled=true;const old=m.textContent;m.textContent='Opening…';
+    try{const res=await fetch(`${API_BASE}/portal`,{method:'POST',headers:{Authorization:'Bearer '+authToken()}});const j=await res.json();
+      if(j.url){location.href=j.url;return}showModal('Manage subscription',`<p>${esc(j.error||'Please try again in a moment.')}</p><p>You can always cancel by emailing <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>`)}
+    catch(e){showModal('Could not reach the server',`<p>Check your connection and try again, or email <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>.</p>`)}
+    m.disabled=false;m.textContent=old}}
+
+/* ---------- report a mistake ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('.why-report');if(!b||b.disabled)return;
+  const reasons=[['wrong-answer','The marked answer is wrong'],['unclear','The question or explanation is unclear'],['typo','Typo or formatting'],['diagram','The diagram is wrong'],['other','Something else']];
+  showModal('Report a mistake',`<p class="muted" style="margin-top:0">“${esc(b.dataset.rq)}”</p><div class="rep-r">${reasons.map(([v,t],i)=>`<label><input type="radio" name="repR" value="${v}"${i?'':' checked'}> ${t}</label>`).join('')}</div>
+    <textarea id="repNote" class="lbinput" rows="3" maxlength="500" placeholder="What’s wrong? (optional)"></textarea><button class="btn" id="repSend">Send report</button>`);
+  $('#repSend').onclick=async()=>{const s=$('#repSend');s.disabled=true;s.textContent='Sending…';
+    try{const r=await fetch(`${API_BASE}/report`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({device:LB.device,reason:document.querySelector('input[name=repR]:checked')?.value,note:$('#repNote').value,question:b.dataset.rq,answer:b.dataset.ra,subject:b.dataset.rs,level,board:boardOf(b.dataset.rs||subject),topic:b.dataset.rt})});
+      const j=await r.json();if(!r.ok)throw new Error(j.error);$('#modal').classList.remove('on');b.textContent='✓ Reported, thank you';b.disabled=true;toast('🙏','Thanks! We’ll check that question.')}
+    catch(err){s.disabled=false;s.textContent='Send report';showModal('Could not send the report',`<p>${esc(err.message||'Please try again in a moment.')}</p>`)}}});
+
+/* ---------- ask a parent to pay ---------- */
+const LEVEL_WORD={GCSE:'GCSE',AS:'A-level (Year 12)',A2:'A-level (Year 13)'};
+function askParent(){const s=SUBJECTS[subject],bd=boardLabel(),amt=k=>document.querySelector(`.plan[data-p="${k}"] .amt`)?.textContent||'';
+  const link=`https://fullmarkss.com/?for=parent&s=${subject}&l=${level}&b=${boardOf(subject)}#pricing`;
+  const msg=`Hi! Could you get me Full Marks for my ${s.name} ${LEVEL_WORD[level]} revision? It has notes and ${fmtN(roundDown(TOTAL.q))}+ exam-style questions with explanations for my exact exam board (${bd}). It's ${amt('monthly')} a month or ${amt('annual')} a year and can be cancelled any time${TRIAL?`, and it starts with a ${TRIAL}-day free trial`:''}. Please use my email at checkout so I can sign in on my phone. Here's the link: ${link}`;
+  showModal('Ask a parent',`<p style="margin-top:0">Send this to a parent or guardian. You can edit it first.</p><textarea id="apMsg" class="lbinput" rows="7">${esc(msg)}</textarea>
+    <div class="ap-btns">${navigator.share?'<button class="btn" id="apShare">Share…</button>':''}<a class="btn${navigator.share?' ghost':''}" id="apWa" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost" id="apMail">Email</a><button class="btn ghost" id="apCopy">Copy</button></div>`);
+  const txt=()=>$('#apMsg').value,upd=()=>{$('#apWa').href='https://wa.me/?text='+encodeURIComponent(txt());$('#apMail').href=`mailto:?subject=${encodeURIComponent('Full Marks revision')}&body=${encodeURIComponent(txt())}`};upd();$('#apMsg').oninput=upd;
+  if($('#apShare'))$('#apShare').onclick=()=>navigator.share({title:'Full Marks',text:txt()}).catch(()=>{});
+  $('#apCopy').onclick=async()=>{try{await navigator.clipboard.writeText(txt());$('#apCopy').textContent='✓ Copied'}catch(e){$('#apMsg').select()}}}
+document.addEventListener('click',e=>{if(e.target.closest('.ask-parent'))askParent()});
+(function parentLanding(){const q=new URLSearchParams(location.search);if(q.get('for')!=='parent')return;
+  const s=q.get('s'),l=q.get('l'),b=q.get('b');if(SUBJECTS[s]&&LEVEL_WORD[l]){subject=s;level=l;if(BOARDS.some(x=>x[0]===b))setBoard(b);save();renderPicker()}
+  const sec=$('#p-pricing .wrap');if(!sec)return;const box=document.createElement('div');box.className='parentban';
+  box.innerHTML=`<span class="pb-wave">👋</span><div><h3>Hello! You’ve been asked to look at Full Marks</h3><p>${SUBJECTS[s]&&LEVEL_WORD[l]?`It’s for <strong>${esc(SUBJECTS[s].name)} ${LEVEL_WORD[l]}</strong> (${esc(boardLabel())}). `:''}Full Marks is GCSE and A-level revision: short notes for every topic, ${fmtN(roundDown(TOTAL.q))}+ exam-style questions with explanations, mock papers and games, following the student’s own exam board.</p>
+    <ul><li>One plan covers every subject and level.</li><li>Cancel any time in two clicks, from the Progress page.</li><li>Payment is handled securely by Stripe.</li><li><strong>Tip:</strong> enter your child’s email address at checkout. That’s how they sign in on their own phone or laptop.</li></ul></div>`;
+  sec.prepend(box)})();
 
 /* routing */
 const PAGES=['home','study','games','me','pricing'];
