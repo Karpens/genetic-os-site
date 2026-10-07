@@ -566,7 +566,7 @@ footer .social svg{width:15px;height:15px}
 .gl{display:inline-block}
 .gl svg{display:block;width:100%;height:100%;overflow:visible}
 .gl .dna,.gl .bub,.gl .spk,.gl .mer,.gl .bc{transform-box:fill-box;transform-origin:center}
-.gl .orb{transform-box:view-box;transform-origin:24px 24px}
+.gl .orb{transform-box:fill-box;transform-origin:center}
 :is(.sub2:hover,.sub2.on,.why-orb,.big-ic) .gl-biology .dna{animation:glDna 2.4s ease-in-out infinite}
 :is(.sub2:hover,.sub2.on,.why-orb,.big-ic) .gl-chemistry .bub{animation:glBub 1.6s ease-in infinite}
 :is(.sub2:hover,.sub2.on,.why-orb,.big-ic) .gl-chemistry .b2{animation-delay:.5s}
@@ -595,14 +595,14 @@ footer .social svg{width:15px;height:15px}
 .stamp svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .stamp .r1{fill:var(--bg);stroke:currentColor;stroke-width:2;stroke-dasharray:4 3}
 .stamp .r2{fill:none;stroke:currentColor;stroke-width:1.5;opacity:.6}
-.stamp text{font:700 8.4px "IBM Plex Sans",sans-serif;letter-spacing:.14em;fill:currentColor}
-.stamp .rot{transform-box:view-box;transform-origin:50px 50px}
-.stamp b{position:relative;font:800 clamp(14px,3.6vw,19px) "Bricolage Grotesque",sans-serif;color:var(--ink)}
+.stamp text{font:700 8px "IBM Plex Sans",sans-serif;fill:currentColor}
+.stamp .ring{transform-origin:50% 50%}
+.stamp b{position:relative;font:800 clamp(12px,3vw,16px) "Bricolage Grotesque",sans-serif;letter-spacing:-.01em;color:var(--ink)}
 .stamp:hover:not(:disabled){transform:rotate(-6deg) scale(1.05)}
 .stamp.on{color:var(--stain);transform:rotate(-8deg)}
 .stamp.on .r1{fill:color-mix(in srgb,var(--stain) 14%,var(--paper));stroke-dasharray:none;stroke-width:3.5}
 .stamp.on b{color:var(--stain)}
-.stamp.on .rot{animation:glSpin 16s linear infinite}
+.stamp.on .ring{animation:glSpin 18s linear infinite}
 .stamp.hit{animation:stampIn .6s cubic-bezier(.2,1.4,.3,1)}
 @keyframes stampIn{0%{transform:scale(1.7) rotate(-22deg);opacity:.1}60%{transform:scale(.9) rotate(-6deg);opacity:1}100%{transform:rotate(-8deg)}}
 .stamp:disabled{opacity:.35;cursor:not-allowed}
@@ -1096,7 +1096,7 @@ function renderPicker(){
   $('#homeSubs').innerHTML=Object.entries(SUBJECTS).map(([k,s],i)=>{let n=0;for(const [l] of LEVELS)if(s[l])n+=qCount(s[l]);
     return `<button class="sub2${k===subject?' on':''}" style="--c:${s.color};--i:${i}" data-s="${k}" aria-pressed="${k===subject}">${glyph(k)}<b>${esc(s.name)}</b><small>${fmtN(n)} questions</small></button>`}).join('');
   $('#homeBoards').innerHTML=BOARDS.map(([b,l])=>{const any=LEVELS.some(([x])=>SPECS[subject][b][x]);
-    return `<button class="stamp${b===bd?' on':''}${b===bd&&pickHit==='b'?' hit':''}" data-b="${b}" aria-pressed="${b===bd}" ${any?'':'disabled'}><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="rg-${b}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><circle class="r1" cx="50" cy="50" r="47"/><circle class="r2" cx="50" cy="50" r="29"/><g class="rot"><text><textPath href="#rg-${b}">★ EXAM BOARD ★ ${l.toUpperCase()} SPEC ★ OFFICIAL</textPath></text></g></svg><b>${l}</b></button>`}).join('');
+    return `<button class="stamp${b===bd?' on':''}${b===bd&&pickHit==='b'?' hit':''}" data-b="${b}" aria-pressed="${b===bd}" ${any?'':'disabled'}><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="r1" cx="50" cy="50" r="47"/><circle class="r2" cx="50" cy="50" r="29"/></svg><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="rg-${b}" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><text><textPath href="#rg-${b}" textLength="226" lengthAdjust="spacing">★ ${l.toUpperCase()} ★ EXAM BOARD ★ SPEC</textPath></text></svg><b>${l}</b></button>`}).join('');
   const from=CAMP[pickPrev]||CAMP[level],to=CAMP[level];
   $('#homeLevels').innerHTML=`<svg class="mtn" viewBox="0 0 300 150" preserveAspectRatio="none" aria-hidden="true"><path class="m2" d="M0 150V92l55-18 60 22 85-62 40 16 60-30v130z"/><path class="m1" d="M0 150v-34l60-14 35 8 55-40 35 14 65-52 50 38v80z"/><path class="tr0" pathLength="100" d="${TRAIL}"/><path class="tr1" pathLength="100" d="${TRAIL}" style="stroke-dashoffset:${100-from[2]}"/></svg>`
     +LEVELS.map(([l,y])=>{const ok=!!SPECS[subject][bd][l],[x,yy]=CAMP[l];return `<button class="camp${l===level?' on':''}${ok?'':' no'}" style="left:${x}%;top:${100-yy}%" data-l="${l}" aria-pressed="${l===level}"><i></i><span>${l}</span><small>${ok?y:'Not offered'}</small></button>`}).join('')
