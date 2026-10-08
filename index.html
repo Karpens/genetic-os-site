@@ -2294,21 +2294,53 @@ function playMistakes(){stopGame();const token={};game=token;const gm=$('#gamesM
   draw()}
 
 /* ---------- printable cheat sheet for a topic ---------- */
-function loadPdfLib(){return window.html2pdf?Promise.resolve(window.html2pdf):new Promise((ok,no)=>{const s=document.createElement('script');s.src='vendor/html2pdf.bundle.min.js';s.onload=()=>window.html2pdf?ok(window.html2pdf):no(new Error('pdf'));s.onerror=no;document.head.appendChild(s)})}
-const svgImg=svg=>{const s=svg.replace(/<svg\b([^>]*)>/,(m,a)=>`<svg${a.replace(/\s(width|height)="[^"]*"/g,'')} width="800" height="520">`);return `<img alt="" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(s.includes('xmlns=')?s:s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"'))}">`};
-function cheatHtml(t,forPdf){const s=SUBJECTS[subject];
+function loadJsPdf(){return window.jspdf?Promise.resolve(window.jspdf):new Promise((ok,no)=>{const s=document.createElement('script');s.src='vendor/jspdf.umd.min.js';s.onload=()=>window.jspdf?ok(window.jspdf):no(new Error('pdf'));s.onerror=no;document.head.appendChild(s)})}
+function cheatHtml(t){const s=SUBJECTS[subject];
   return `<header><b>FULL MARKS</b><span>${esc(s.name)} ${level} · ${esc(boardLabel())}</span></header><h1>Topic ${esc(t.n)}: ${esc(t.title)}</h1>
-    ${t.subs.map(x=>{const open=premium||x.notes.length>0;return `<section><h2>${esc(x.n)} ${esc(x.title)}</h2>${open?`${x.d?`<div class="ps-diag">${forPdf?svgImg(x.d):x.d}</div>`:''}<ul>${x.notes.map(n=>`<li>${md(n)}</li>`).join('')}</ul>`:'<p class="ps-lock">Included in full access at fullmarkss.com</p>'}</section>`}).join('')}
+    ${t.subs.map(x=>{const open=premium||x.notes.length>0;return `<section><h2>${esc(x.n)} ${esc(x.title)}</h2>${open?`${x.d?`<div class="ps-diag">${x.d}</div>`:''}<ul>${x.notes.map(n=>`<li>${md(n)}</li>`).join('')}</ul>`:'<p class="ps-lock">Included in full access at fullmarkss.com</p>'}</section>`}).join('')}
     <footer>fullmarkss.com · notes, questions and games for every topic</footer>`}
+const svgImage=svg=>new Promise(res=>{let s=svg.replace(/<svg\b([^>]*)>/,(m,a)=>`<svg${a.replace(/\s(width|height)="[^"]*"/g,'')} width="800" height="520">`);if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');
+  const img=new Image();let done=false;const fin=v=>{if(!done){done=true;res(v)}};img.onload=()=>fin(img);img.onerror=()=>fin(null);setTimeout(()=>fin(null),4000);img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s)});
+// A4 pages at 150 dpi, laid out by hand: every browser draws the same thing.
+async function drawCheatPages(t){
+  const W=1240,H=1754,M=96,CW=W-2*M,FONT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif',G='#0E9F5D',s=SUBJECTS[subject];
+  const pages=[];let ctx,y;
+  const font=(w,sz)=>{ctx.font=`${w} ${sz}px ${FONT}`};
+  const newPage=()=>{const cv=document.createElement('canvas');cv.width=W;cv.height=H;ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.textBaseline='alphabetic';pages.push(cv);
+    font(800,20);ctx.fillStyle=G;ctx.fillText('F U L L   M A R K S',M,M);font(500,20);ctx.fillStyle='#555';const r=`${s.name} ${level} · ${boardLabel()}`;ctx.fillText(r,W-M-ctx.measureText(r).width,M);
+    ctx.fillStyle=G;ctx.fillRect(M,M+14,CW,3);y=M+64};
+  const room=need=>{if(y+need>H-M-40)newPage()};
+  const runsOf=str=>{const out=[];String(str).split(/(\*\*[^*]+\*\*)/).forEach(p=>{if(!p)return;const b=/^\*\*.*\*\*$/.test(p);(b?p.slice(2,-2):p).split(/(\s+)/).forEach(w=>{if(w)out.push({w,b})})});return out};
+  const wrap=(runs,maxW,sz,base)=>{const lines=[];let line=[],x=0;for(const r of runs){font(r.b?800:base,sz);const ww=ctx.measureText(r.w).width,sp=/^\s+$/.test(r.w);
+      if(sp){if(line.length){line.push({...r,ww});x+=ww}continue}
+      if(x+ww>maxW&&line.length){while(line.length&&/^\s+$/.test(line[line.length-1].w))line.pop();lines.push(line);line=[];x=0}line.push({...r,ww});x+=ww}
+    if(line.length)lines.push(line);return lines};
+  const drawLines=(lines,x0,sz,lh,color,base)=>{for(const l of lines){room(lh);let x=x0;for(const r of l){font(r.b?800:base,sz);ctx.fillStyle=r.b?'#000':color;ctx.fillText(r.w,x,y);x+=r.ww}y+=lh}};
+  newPage();
+  // topic title
+  drawLines(wrap(runsOf(`Topic ${t.n}: ${t.title}`),CW,46,800),M,46,56,'#111',800);y+=18;
+  const imgs=await Promise.all(t.subs.map(x=>(premium||x.notes.length>0)&&x.d?svgImage(x.d):null));
+  t.subs.forEach((x,i)=>{const open=premium||x.notes.length>0,img=imgs[i],dh=img?Math.round(CW*.62*260/400):0;
+    const titleLines=wrap(runsOf(`${x.n}  ${x.title}`),CW,30,800);
+    room(titleLines.length*40+(img?dh+20:0)+70);
+    ctx.fillStyle='#E8E1D0';ctx.fillRect(M,y-6,CW,2);y+=34;
+    drawLines(titleLines,M,30,40,G,800);y+=6;
+    if(!open){font(400,22);ctx.fillStyle='#888';room(32);ctx.fillText('Included in full access at fullmarkss.com',M,y);y+=46;return}
+    if(img){room(dh+20);const dw=Math.round(CW*.62);ctx.drawImage(img,M,y,dw,dh);y+=dh+20}
+    for(const n of x.notes){const lines=wrap(runsOf(n),CW-34,23,400);room(34);font(800,23);ctx.fillStyle=G;ctx.fillText('•',M+4,y);drawLines(lines,M+34,23,33,'#222',400);y+=6}
+    y+=18});
+  // footers with page numbers
+  pages.forEach((cv,i)=>{const c=cv.getContext('2d');c.font=`500 18px ${FONT}`;c.fillStyle='#888';c.fillText('fullmarkss.com · notes, questions and games for every topic',M,H-M+30);const pn=`Page ${i+1} of ${pages.length}`;c.fillText(pn,W-M-c.measureText(pn).width,H-M+30)});
+  return pages}
 let _pdfBusy=false;
 async function printCheat(t){if(_pdfBusy)return;_pdfBusy=true;const s=SUBJECTS[subject],name=`Full-Marks-${s.name}-${level}-Topic-${t.n}`.replace(/[^\w.-]+/g,'-')+'.pdf';
-  toast('📄','Making your cheat sheet PDF…');const wrap=document.createElement('div'),el=document.createElement('div');wrap.style.cssText='position:fixed;left:-10000px;top:0;width:700px';el.className='pdfsheet';el.innerHTML=cheatHtml(t,true);wrap.appendChild(el);document.body.appendChild(wrap);
-  try{const h2p=await loadPdfLib();
-    await h2p().set({margin:[10,10,12,10],filename:name,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,backgroundColor:'#ffffff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['section','li','.ps-diag']}}).from(el).save();
-    toast('✅',`Saved ${name}`)}
-  catch(e){// no PDF library (offline or blocked): fall back to the print dialog, where "Save as PDF" works too
+  toast('📄','Making your cheat sheet PDF…');
+  try{const [{jsPDF},pages]=await Promise.all([loadJsPdf(),drawCheatPages(t)]);const pdf=new jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+    pages.forEach((cv,i)=>{if(i)pdf.addPage();pdf.addImage(cv.toDataURL('image/jpeg',.9),'JPEG',0,0,210,297,undefined,'FAST')});
+    pdf.setProperties({title:`${s.name} ${level} · Topic ${t.n}: ${t.title}`,creator:'Full Marks'});pdf.save(name);toast('✅',`Saved ${name}`)}
+  catch(e){// PDF library can't load (offline or blocked): fall back to the print dialog, where "Save as PDF" works too
     const ps=document.createElement('div');ps.id='printSheet';ps.innerHTML=cheatHtml(t);$('#printSheet')?.remove();document.body.appendChild(ps);const clean=()=>{ps.remove();removeEventListener('afterprint',clean)};addEventListener('afterprint',clean);setTimeout(()=>window.print(),80)}
-  finally{wrap.remove();_pdfBusy=false}}
+  finally{_pdfBusy=false}}
 
 /* routing */
 const PAGES=['home','study','games','me','pricing'];
