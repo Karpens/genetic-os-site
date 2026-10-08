@@ -955,6 +955,24 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 .cs-item span{flex:none;min-width:30px;font:800 13px "IBM Plex Sans",sans-serif;color:var(--stain)}
 .cs-item em{margin-left:auto;font-style:normal}
 .cs-item:hover{transform:translateX(4px);box-shadow:inset 0 0 0 2px var(--stain)}
+
+.pdfsheet{width:auto;max-width:700px;background:#fff;color:#111;font:13px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0}
+.pdfsheet header{display:flex;justify-content:space-between;border-bottom:2px solid #0E9F5D;padding-bottom:6px;margin-bottom:12px;font-size:11px;color:#444}
+.pdfsheet header b{color:#0E9F5D;letter-spacing:.2em}
+.pdfsheet h1{font:800 22px/1.2 system-ui,sans-serif;margin:0 0 12px;color:#111}
+.pdfsheet section{break-inside:avoid;page-break-inside:avoid;margin:0 0 12px;padding:10px 12px;border:1px solid #ddd;border-radius:10px}
+.pdfsheet h2{font:700 15px/1.3 system-ui,sans-serif;margin:0 0 6px;color:#0E9F5D}
+.pdfsheet ul{margin:0;padding-left:18px}.pdfsheet li{margin:2px 0}
+.pdfsheet strong{color:#111}
+.pdfsheet .ps-diag img{display:block;width:400px;height:260px;margin:2px 0 8px}
+.pdfsheet .ps-lock{color:#888;margin:0}
+.pdfsheet footer{margin-top:10px;font-size:10px;color:#777;text-align:center}
+.gcard.locked .gicon{filter:grayscale(1);opacity:.55}
+.gcard.locked::before{opacity:.06}
+.gcard.locked h3,.gcard.locked p{opacity:.75}
+.gcard .lockb{position:absolute;top:16px;right:16px;z-index:2;font:800 11px "IBM Plex Sans",sans-serif;letter-spacing:.06em;background:var(--gold);color:#1D1A15;border-radius:999px;padding:4px 10px}
+.gfree{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px;padding:14px 18px;border-radius:20px;background:linear-gradient(120deg,var(--gold-soft),var(--stain-soft))}
+.gfree>span{font-size:28px}.gfree>div{flex:1;min-width:220px}.gfree b{display:block}.gfree small{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -1108,10 +1126,11 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <tr><td>Exam-style questions</td><td>Sample questions</td><td class="yes">All <span data-total-q>5,000+</span>, each explained</td></tr>
         <tr><td>Topic tests and timed exams</td><td class="no">—</td><td class="yes">Included</td></tr>
         <tr><td>Daily challenge, XP and streaks</td><td class="yes">Included</td><td class="yes">Included</td></tr>
-        <tr><td>Match Up and Flashcards</td><td class="yes">Included</td><td class="yes">Included</td></tr>
+        <tr><td>Match Up, Flashcards and Swipe</td><td class="yes">Included</td><td class="yes">Included</td></tr>
         <tr><td>Weekly leaderboards</td><td class="yes">Included</td><td class="yes">Included</td></tr>
         <tr><td>Mock papers and topic papers</td><td>Free mini mock</td><td class="yes">Every set, every topic</td></tr>
-        <tr><td>Speed Round and Survival</td><td>One free go each</td><td class="yes">Unlimited</td></tr>
+        <tr><td>Boss Battle, The Ladder, Speed Round, Survival, Fix your mistakes</td><td class="no">—</td><td class="yes">Included</td></tr>
+        <tr><td>Topic cheat sheets (PDF)</td><td>Free topics</td><td class="yes">Every topic</td></tr>
         <tr><td>Progress tracking</td><td>On this device</td><td class="yes">Every subject and topic</td></tr>
       </table>
     </div>
@@ -1348,7 +1367,7 @@ function renderStudy(){
       <div class="actions">
         <button class="btn" id="mixBtn">Mixed practice · 10 questions</button>
         <button class="btn ghost" id="examBtn">Timed exam · 25 questions · 30 min</button>
-        <button class="btn gold" id="ppBtn">📄 Past papers &amp; mocks</button><button class="btn" id="csBtn">🖨️ Cheat sheets</button><button class="btn ghost" id="chkBtn">${boardLabel()} checklist</button>
+        <button class="btn gold" id="ppBtn">📄 Past papers &amp; mocks</button><button class="btn" id="csBtn">⬇️ Cheat sheets (PDF)</button><button class="btn ghost" id="chkBtn">${boardLabel()} checklist</button>
       </div>
       <div id="rootLock"></div>
       <div class="tcards">${d.topics.map((t,i)=>{
@@ -1358,7 +1377,7 @@ function renderStudy(){
     main.querySelectorAll('.tcard').forEach(c=>c.onclick=()=>{view.topic=+c.dataset.t;view.sub=null;renderStudy();scrollTo(0,0)});
     $('#chkBtn').onclick=()=>{view.check=true;renderStudy();scrollTo(0,0)};
     $('#ppBtn').onclick=()=>{view.papers=true;renderStudy();scrollTo(0,0)};
-    $('#csBtn').onclick=()=>{const T=levelData().topics||[];showModal('Print a cheat sheet',`<p style="margin-top:0">Pick a topic: you get every key point and diagram on one printable page, or save it as a PDF.</p><div class="cs-list">${T.map((t,i)=>`<button class="cs-item" data-cs="${i}"><span>${esc(t.n)}</span>${esc(t.title)}<em>🖨️</em></button>`).join('')}</div>`);
+    $('#csBtn').onclick=()=>{const T=levelData().topics||[];showModal('Download a cheat sheet',`<p style="margin-top:0">Pick a topic and we’ll save a PDF with every key point and diagram, ready to print or keep on your phone.</p><div class="cs-list">${T.map((t,i)=>`<button class="cs-item" data-cs="${i}"><span>${esc(t.n)}</span>${esc(t.title)}<em>⬇️</em></button>`).join('')}</div>`);
       $$('#modal [data-cs]').forEach(b=>b.onclick=()=>{$('#modal').classList.remove('on');printCheat(T[+b.dataset.cs])})};
     $('#mixBtn').onclick=()=>premium?startSession({title:'Mixed practice',qs:shuffle(allQs(d)).slice(0,10)}):startSession({title:'Mixed practice (free)',qs:shuffle(freeQs(d)).slice(0,5),lockAfter:'Mixed practice across every topic is included in full access.'});
     $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(allQs(d)).slice(0,25),timed:30*60,exam:true}):($('#rootLock').innerHTML=lockCard('Timed exams draw 25 questions from every topic, with a 30-minute timer and a full review at the end.'));
@@ -1368,7 +1387,7 @@ function renderStudy(){
   const t=d.topics[view.topic];
   if(view.sub==null){
     main.innerHTML=`<div class="topichead"><span class="tnum">Topic ${t.n}</span><h2>${esc(t.title)}</h2></div>
-      <div class="actions"><button class="btn" id="topicTest">Topic test · all ${t.subs.reduce((a,x)=>a+nq(x),0)} questions</button><button class="btn ghost" id="cheatBtn">🖨️ Cheat sheet</button><button class="btn ghost" id="backRoot">All topics</button></div><div id="topicLock"></div>
+      <div class="actions"><button class="btn" id="topicTest">Topic test · all ${t.subs.reduce((a,x)=>a+nq(x),0)} questions</button><button class="btn ghost" id="cheatBtn">⬇️ Cheat sheet PDF</button><button class="btn ghost" id="backRoot">All topics</button></div><div id="topicLock"></div>
       <div class="sublist">${t.subs.map((x,i)=>{const fr=!premium&&x.notes.length>0,open=fr||premium,sc=P[pkey(x.n)];
         return `<button class="subrow" style="--i:${i}" data-s="${i}"><span class="subn">${x.n}</span><span class="subt"><strong>${esc(x.title)}</strong><small>${nn(x)} key points · ${nq(x)} questions${sc!=null?` · best ${sc}%`:''}</small></span>${x.d||x.hasD?`<span class="tag dg">📊 diagram</span>`:""}<span class="tag ${fr?'free':'pro'}">${fr?'Free':open?'Unlocked':'Premium'}</span></button>`}).join('')}</div>`;
     main.querySelectorAll('.subrow').forEach(r=>r.onclick=()=>{view.sub=+r.dataset.s;view.tab='notes';renderStudy();scrollTo(0,0)});
@@ -1382,7 +1401,7 @@ function renderStudy(){
   main.innerHTML=`<div class="topichead"><span class="tnum">${x.n}</span><h2>${esc(x.title)}</h2></div>
     <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">Key notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">Practice · ${nq(x)}</button></div>
     <div id="subBody"></div>
-    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">🖨️ Cheat sheet for topic ${esc(t.n)}</button></div>
+    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet PDF for topic ${esc(t.n)}</button></div>
     <div class="pager">${prev?`<button class="btn ghost" data-go="${view.sub-1}">← ${prev.n} ${esc(prev.title)}</button>`:'<span></span>'}${next?`<button class="btn ghost" data-go="${view.sub+1}">${next.n} ${esc(next.title)} →</button>`:''}</div>`;
   main.querySelector('.tabs').onclick=e=>{const b=e.target.dataset.tab;if(b){view.tab=b;renderStudy()}};
   $('#cheatSub').onclick=()=>printCheat(t);
@@ -1499,19 +1518,19 @@ const GAMES=[
 const bestKey=id=>`go-best-${id}-${subject}:${level}`;
 const trialUsed=id=>store.get('go-trial-'+id,'0')==='1';
 function PLAY(){return {speed:playSpeed,survival:playSurvival,match:playMatch,daily:playDaily,flash:playFlash,boss:playBoss,swipe:playSwipe,ladder:playLadder,mistakes:playMistakes}}
-const FREE_GAMES=['match','daily','flash','boss','swipe','mistakes'];
-const canPlay=id=>premium||FREE_GAMES.includes(id)||!trialUsed(id);
+const FREE_GAMES=['match','daily','flash','swipe'];
+const canPlay=id=>premium||FREE_GAMES.includes(id);
 
 function renderGames(){
   stopGame();
   $('#gCtx').textContent=`${SUBJECTS[subject].name} · ${level}`;
   const gm=$('#gamesMain');
   gm.innerHTML=`<div class="gcards">${GAMES.map((g,gi)=>{const best=store.get(bestKey(g.id),''),dd=store.get('fm-daily-'+today(),'');
-    const label=g.id==='daily'?(dd!==''?`Done today · ${dd}/5 · play again`:'Play today\u2019s challenge'):premium||FREE_GAMES.includes(g.id)?'Play':trialUsed(g.id)?'Unlock with full access':'Play free once';
-    return `<div class="gcard" style="--i:${gi};--gc:${g.color}">${['boss','swipe','ladder','mistakes'].includes(g.id)?'<span class="newb">NEW</span>':''}<div class="gicon" aria-hidden="true">${g.icon}</div><h3>${g.name}</h3><p>${g.desc}</p><p class="muted">${g.id==='flash'?`${(PAIRS[subject]||[]).length} key terms`:g.id==='mistakes'?`${Mist.list().length} question${Mist.list().length===1?'':'s'} to fix`:g.id==='boss'?bossTally():best?`Best: ${g.id==='match'?best+' s':g.id==='daily'?best+'/5':best}`:'No best score yet'}</p><button class="btn${canPlay(g.id)?'':' ghost'}" data-g="${g.id}">${label}</button></div>`}).join('')}</div><div class="lb" id="lb"></div>`;
+    const label=g.id==='daily'?(dd!==''?`Done today · ${dd}/5 · play again`:'Play today\u2019s challenge'):canPlay(g.id)?'Play':'🔓 Unlock with full access';
+    return `<div class="gcard${canPlay(g.id)?'':' locked'}" style="--i:${gi};--gc:${g.color}">${canPlay(g.id)?['boss','swipe','ladder','mistakes'].includes(g.id)?'<span class="newb">NEW</span>':'':'<span class="lockb">🔒 Premium</span>'}<div class="gicon" aria-hidden="true">${g.icon}</div><h3>${g.name}</h3><p>${g.desc}</p><p class="muted">${g.id==='flash'?`${(PAIRS[subject]||[]).length} key terms`:g.id==='mistakes'?`${Mist.list().length} question${Mist.list().length===1?'':'s'} to fix`:g.id==='boss'?bossTally():best?`Best: ${g.id==='match'?best+' s':g.id==='daily'?best+'/5':best}`:'No best score yet'}</p><button class="btn${canPlay(g.id)?'':' gold'}" data-g="${g.id}">${label}</button></div>`}).join('')}</div><div class="lb" id="lb"></div>`;
+  if(!premium)gm.insertAdjacentHTML('afterbegin',`<div class="gfree"><span>🎮</span><div><b>Daily Challenge, Flashcards, Match Up and Swipe are free.</b><small>Boss Battle, The Ladder, Speed Round, Survival and Fix your mistakes unlock with full access${Mist.list().length?`, and ${Mist.list().length} of your mistakes are already waiting there`:''}.</small></div><a class="btn gold sm" href="#pricing">Unlock all games</a></div>`);
   gm.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const id=b.dataset.g;
     if(!canPlay(id)){location.hash='pricing';return}
-    if(!premium&&!FREE_GAMES.includes(id))store.set('go-trial-'+id,'1');
     PLAY()[id]();scrollTo(0,0)});
   renderLb();
 }
@@ -1989,7 +2008,7 @@ async function renderLb(){const el=$('#lb');if(!el)return;if(!API_BASE){el.remov
     $('#lbBody').innerHTML=lbBoard(j);
     if(j.resetsAt){const ms=Math.max(0,j.resetsAt-Date.now()),d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5);$('#lbReset').textContent=`New week in ${d?d+'d ':''}${hh}h · ${j.players} player${j.players===1?'':'s'} this week`}
     else $('#lbReset').textContent=`${j.players} player${j.players===1?'':'s'} all time · best score per player`;
-    const pl=$('#lbPlay');if(pl)pl.onclick=()=>{const id=tab;if(!canPlay(id)){location.hash='pricing';return}if(!premium&&!FREE_GAMES.includes(id))store.set('go-trial-'+id,'1');PLAY()[id]();scrollTo(0,0)};
+    const pl=$('#lbPlay');if(pl)pl.onclick=()=>{const id=tab;if(!canPlay(id)){location.hash='pricing';return}PLAY()[id]();scrollTo(0,0)};
   }catch(e){clearTimeout(slow);if($('#lbBody'))$('#lbBody').innerHTML='<p class="muted lb-wake">The leaderboard is taking a break. Try again in a minute.</p>'}}
 function lbAfterGame(id,score){const el=$('#lbRes');if(!el||!API_BASE||!['speed','survival','match','swipe','ladder'].includes(id)||(id!=='match'&&score<=0))return;
   const send=async()=>{el.innerHTML='<div class="lbres"><span class="spin"></span> Saving to the leaderboard…</div>';const j=await LB.submit(id,score);
@@ -2275,11 +2294,21 @@ function playMistakes(){stopGame();const token={};game=token;const gm=$('#gamesM
   draw()}
 
 /* ---------- printable cheat sheet for a topic ---------- */
-function printCheat(t){const s=SUBJECTS[subject],ps=document.createElement('div');ps.id='printSheet';
-  ps.innerHTML=`<header><b>FULL MARKS</b><span>${esc(s.name)} ${level} · ${esc(boardLabel())}</span></header><h1>Topic ${esc(t.n)}: ${esc(t.title)}</h1>
-    ${t.subs.map(x=>{const open=premium||x.notes.length>0;return `<section><h2>${esc(x.n)} ${esc(x.title)}</h2>${open?`${x.d?`<div class="ps-diag">${x.d}</div>`:''}<ul>${x.notes.map(n=>`<li>${md(n)}</li>`).join('')}</ul>`:'<p class="ps-lock">Included in full access at fullmarkss.com</p>'}</section>`}).join('')}
-    <footer>fullmarkss.com · notes, questions and games for every topic</footer>`;
-  $('#printSheet')?.remove();document.body.appendChild(ps);const clean=()=>{ps.remove();removeEventListener('afterprint',clean)};addEventListener('afterprint',clean);setTimeout(()=>window.print(),80)}
+function loadPdfLib(){return window.html2pdf?Promise.resolve(window.html2pdf):new Promise((ok,no)=>{const s=document.createElement('script');s.src='vendor/html2pdf.bundle.min.js';s.onload=()=>window.html2pdf?ok(window.html2pdf):no(new Error('pdf'));s.onerror=no;document.head.appendChild(s)})}
+const svgImg=svg=>{const s=svg.replace(/<svg\b([^>]*)>/,(m,a)=>`<svg${a.replace(/\s(width|height)="[^"]*"/g,'')} width="800" height="520">`);return `<img alt="" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(s.includes('xmlns=')?s:s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"'))}">`};
+function cheatHtml(t,forPdf){const s=SUBJECTS[subject];
+  return `<header><b>FULL MARKS</b><span>${esc(s.name)} ${level} · ${esc(boardLabel())}</span></header><h1>Topic ${esc(t.n)}: ${esc(t.title)}</h1>
+    ${t.subs.map(x=>{const open=premium||x.notes.length>0;return `<section><h2>${esc(x.n)} ${esc(x.title)}</h2>${open?`${x.d?`<div class="ps-diag">${forPdf?svgImg(x.d):x.d}</div>`:''}<ul>${x.notes.map(n=>`<li>${md(n)}</li>`).join('')}</ul>`:'<p class="ps-lock">Included in full access at fullmarkss.com</p>'}</section>`}).join('')}
+    <footer>fullmarkss.com · notes, questions and games for every topic</footer>`}
+let _pdfBusy=false;
+async function printCheat(t){if(_pdfBusy)return;_pdfBusy=true;const s=SUBJECTS[subject],name=`Full-Marks-${s.name}-${level}-Topic-${t.n}`.replace(/[^\w.-]+/g,'-')+'.pdf';
+  toast('📄','Making your cheat sheet PDF…');const wrap=document.createElement('div'),el=document.createElement('div');wrap.style.cssText='position:fixed;left:-10000px;top:0;width:700px';el.className='pdfsheet';el.innerHTML=cheatHtml(t,true);wrap.appendChild(el);document.body.appendChild(wrap);
+  try{const h2p=await loadPdfLib();
+    await h2p().set({margin:[10,10,12,10],filename:name,image:{type:'jpeg',quality:.95},html2canvas:{scale:2,backgroundColor:'#ffffff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy'],avoid:['section','li','.ps-diag']}}).from(el).save();
+    toast('✅',`Saved ${name}`)}
+  catch(e){// no PDF library (offline or blocked): fall back to the print dialog, where "Save as PDF" works too
+    const ps=document.createElement('div');ps.id='printSheet';ps.innerHTML=cheatHtml(t);$('#printSheet')?.remove();document.body.appendChild(ps);const clean=()=>{ps.remove();removeEventListener('afterprint',clean)};addEventListener('afterprint',clean);setTimeout(()=>window.print(),80)}
+  finally{wrap.remove();_pdfBusy=false}}
 
 /* routing */
 const PAGES=['home','study','games','me','pricing'];
