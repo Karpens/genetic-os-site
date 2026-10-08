@@ -950,6 +950,11 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
   #printSheet .ps-lock{color:#888;margin:0}
   #printSheet footer{margin-top:8px;font-size:8pt;color:#777;text-align:center}
 }
+.cs-list{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow:auto;margin-top:6px}
+.cs-item{display:flex;align-items:center;gap:12px;text-align:left;border:0;border-radius:14px;padding:11px 14px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink);font-weight:700;transition:transform .25s cubic-bezier(.2,1.5,.3,1),box-shadow .2s}
+.cs-item span{flex:none;min-width:30px;font:800 13px "IBM Plex Sans",sans-serif;color:var(--stain)}
+.cs-item em{margin-left:auto;font-style:normal}
+.cs-item:hover{transform:translateX(4px);box-shadow:inset 0 0 0 2px var(--stain)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -1343,7 +1348,7 @@ function renderStudy(){
       <div class="actions">
         <button class="btn" id="mixBtn">Mixed practice · 10 questions</button>
         <button class="btn ghost" id="examBtn">Timed exam · 25 questions · 30 min</button>
-        <button class="btn gold" id="ppBtn">📄 Past papers &amp; mocks</button><button class="btn ghost" id="chkBtn">${boardLabel()} checklist</button>
+        <button class="btn gold" id="ppBtn">📄 Past papers &amp; mocks</button><button class="btn" id="csBtn">🖨️ Cheat sheets</button><button class="btn ghost" id="chkBtn">${boardLabel()} checklist</button>
       </div>
       <div id="rootLock"></div>
       <div class="tcards">${d.topics.map((t,i)=>{
@@ -1353,6 +1358,8 @@ function renderStudy(){
     main.querySelectorAll('.tcard').forEach(c=>c.onclick=()=>{view.topic=+c.dataset.t;view.sub=null;renderStudy();scrollTo(0,0)});
     $('#chkBtn').onclick=()=>{view.check=true;renderStudy();scrollTo(0,0)};
     $('#ppBtn').onclick=()=>{view.papers=true;renderStudy();scrollTo(0,0)};
+    $('#csBtn').onclick=()=>{const T=levelData().topics||[];showModal('Print a cheat sheet',`<p style="margin-top:0">Pick a topic: you get every key point and diagram on one printable page, or save it as a PDF.</p><div class="cs-list">${T.map((t,i)=>`<button class="cs-item" data-cs="${i}"><span>${esc(t.n)}</span>${esc(t.title)}<em>🖨️</em></button>`).join('')}</div>`);
+      $$('#modal [data-cs]').forEach(b=>b.onclick=()=>{$('#modal').classList.remove('on');printCheat(T[+b.dataset.cs])})};
     $('#mixBtn').onclick=()=>premium?startSession({title:'Mixed practice',qs:shuffle(allQs(d)).slice(0,10)}):startSession({title:'Mixed practice (free)',qs:shuffle(freeQs(d)).slice(0,5),lockAfter:'Mixed practice across every topic is included in full access.'});
     $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(allQs(d)).slice(0,25),timed:30*60,exam:true}):($('#rootLock').innerHTML=lockCard('Timed exams draw 25 questions from every topic, with a 30-minute timer and a full review at the end.'));
     return;
@@ -1375,8 +1382,10 @@ function renderStudy(){
   main.innerHTML=`<div class="topichead"><span class="tnum">${x.n}</span><h2>${esc(x.title)}</h2></div>
     <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">Key notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">Practice · ${nq(x)}</button></div>
     <div id="subBody"></div>
+    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">🖨️ Cheat sheet for topic ${esc(t.n)}</button></div>
     <div class="pager">${prev?`<button class="btn ghost" data-go="${view.sub-1}">← ${prev.n} ${esc(prev.title)}</button>`:'<span></span>'}${next?`<button class="btn ghost" data-go="${view.sub+1}">${next.n} ${esc(next.title)} →</button>`:''}</div>`;
   main.querySelector('.tabs').onclick=e=>{const b=e.target.dataset.tab;if(b){view.tab=b;renderStudy()}};
+  $('#cheatSub').onclick=()=>printCheat(t);
   main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{view.sub=+b.dataset.go;view.tab='notes';renderStudy();scrollTo(0,0)});
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
