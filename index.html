@@ -973,6 +973,13 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 .gcard .lockb{position:absolute;top:16px;right:16px;z-index:2;font:800 11px "IBM Plex Sans",sans-serif;letter-spacing:.06em;background:var(--gold);color:#1D1A15;border-radius:999px;padding:4px 10px}
 .gfree{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px;padding:14px 18px;border-radius:20px;background:linear-gradient(120deg,var(--gold-soft),var(--stain-soft))}
 .gfree>span{font-size:28px}.gfree>div{flex:1;min-width:220px}.gfree b{display:block}.gfree small{color:var(--muted)}
+
+.wr{margin-top:8px}.wr label{display:block;font-weight:800;color:var(--violet);margin-bottom:8px}
+.wr-row{display:flex;gap:10px;flex-wrap:wrap}.wr small{display:block;margin-top:6px}
+.wrin{flex:1;min-width:220px;font-family:inherit;font-size:18px;font-weight:600;padding:14px 16px;border:0;border-radius:16px;background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);transition:box-shadow .2s,background .3s}
+.wrin:focus{outline:none;box-shadow:inset 0 0 0 2px var(--stain)}
+.wrin.ok{box-shadow:inset 0 0 0 2px var(--ok);background:var(--ok-soft)}.wrin.no{box-shadow:inset 0 0 0 2px var(--bad);background:var(--bad-soft)}
+.review [data-wok]{margin-top:8px}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .rv{opacity:1;transform:none}
@@ -1418,6 +1425,159 @@ function renderStudy(){
   }
 }
 
+/* ---------- written answers: type the answer instead of picking it (same checker as the app) ---------- */
+const WR=(()=>{
+// Written answers: questions where you type the answer instead of picking it.
+// They come from the same question bank: a question qualifies when it still makes sense
+// with the options hidden and its answer is short (a term, a name or a number).
+const BAD_Q = /\b(which (of the following|of these|statement|option|one of|pair|row|sequence|graph|diagram|line|set|combination|list|table|best|most|correctly|explanation|describes|shows|is (not|NOT|correct|incorrect|true|false|the best|most))|true or false|is (correct|incorrect)\b|NOT\b|not true|correctly (describes|explains)|best (describes|explains)|most likely|evaluate|suggest|why\b|how does|how do|explain|what happens|what would)/i;
+const BAD_A = /^(all of the above|none of the above|both|neither|true|false|yes|no)\b|[→⇌⟶]/i;
+const NUMERIC = /^[−\-+]?[\d.,  ]+(\s*[×x]\s*10[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)?\s*[a-zA-Zµμ°%Ω/²³⁻¹π ]{0,10}$/;
+const answerOf = (q) => q[1][q[2]];
+function isWritable(q) {
+    const a = answerOf(q).trim();
+    if (BAD_Q.test(q[0]) || BAD_A.test(a))
+        return false;
+    return NUMERIC.test(a) || (a.split(/\s+/).length <= 4 && a.length <= 32);
+}
+/** Same text gives the same number, so a question is written (or not) everywhere. */
+function hash(s) {
+    let h = 7;
+    for (let i = 0; i < s.length; i++)
+        h = (h * 31 + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+}
+/** Two in three suitable questions are asked as written ones in quizzes and papers (about 3 in 10 overall). */
+const asWritten = (q) => isWritable(q) && hash(q[0]) % 3 !== 0;
+const SUP = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁺': '+', '⁻': '-', '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4', '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9' };
+const GREEK = { α: 'alpha', β: 'beta', γ: 'gamma', δ: 'delta', ε: 'epsilon', θ: 'theta', λ: 'lambda', μ: 'mu', µ: 'mu', ω: 'omega', Ω: 'ohm', σ: 'sigma', ρ: 'rho', Δ: 'delta', π: 'pi' };
+const STOP = new Set(['the', 'a', 'an', 'of', 'and', 'to', 'from', 'into', 'in', 'at', 'as', 'is', 'it', 'be', 'by', 'only', 'are', 'its', 'their', 'on', 'for', 'with']);
+function normalize(s) {
+    return s
+        .replace(/[αβγδεθλμµωΩσρΔπ]/g, (c) => ` ${GREEK[c]} `)
+        .toLowerCase()
+        .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻₀₁₂₃₄₅₆₇₈₉]/g, (c) => SUP[c])
+        .replace(/[−–—]/g, '-')
+        .replace(/[×✕]/g, 'x')
+        .replace(/[^a-z0-9.+\-/%:^ ]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+function tokens(s) {
+    return s
+        .replace(/[αβγδεθλμµωΩσρΔπ]/g, (c) => ` ${GREEK[c]} `)
+        .split(/[\s,;()/]+/)
+        .filter(Boolean)
+        .flatMap((raw) => {
+        const w = normalize(raw).replace(/^[.:]+|[.:]+$/g, '');
+        if (!w || STOP.has(w))
+            return [];
+        const exact = /\d/.test(raw) || (raw.length >= 2 && raw === raw.toUpperCase() && /[A-Z]/.test(raw)) || w.length < 5;
+        return [{ w, exact }];
+    });
+}
+const stem = (w) => w.replace(/ies$/, 'y').replace(/(es|s)$/, '');
+function close(a, b) {
+    const max = a.length >= 9 ? 2 : 1;
+    if (Math.abs(a.length - b.length) > max)
+        return false;
+    // Levenshtein distance, stopping early once it can't be within `max`.
+    let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+        const cur = [i];
+        let best = i;
+        for (let j = 1; j <= b.length; j++) {
+            cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+            best = Math.min(best, cur[j]);
+        }
+        if (best > max)
+            return false;
+        prev = cur;
+    }
+    return prev[b.length] <= max;
+}
+const SCI = /[-+]?\d*\.?\d+(?:\s*(?:x|\*)\s*10\s*\^?\s*([-+]?\d+)|e([-+]?\d+))?/;
+/** The first number in an answer: "6.02 × 10²³" → 6.02e23, "14 000 J" → 14000, "×1500" → 1500. */
+function numberIn(s) {
+    const n = normalize(s).replace(/(\d)[ ,](?=\d{3}\b)/g, '$1');
+    const m = n.match(SCI);
+    if (!m)
+        return null;
+    const exp = m[1] ?? m[2];
+    return exp != null ? parseFloat(m[0].split(/x|\*|e/)[0]) * 10 ** Number(exp) : parseFloat(m[0]);
+}
+/** Significant figures in the first number written: "0.060" → 2, "14 000" → 2, "15.5" → 3. */
+function sigFigs(s) {
+    const m = normalize(s).replace(/(\d)[ ,](?=\d{3}\b)/g, '$1').match(/\d*\.?\d+/);
+    if (!m)
+        return 0;
+    const digits = m[0].replace('.', '').replace(/^0+/, '');
+    return m[0].includes('.') ? digits.length : digits.replace(/0+$/, '').length || 1;
+}
+const isNumeric = (s) => NUMERIC.test(s.trim().replace(/^[×x]\s*/, ''));
+/**
+ * Marks a typed answer against the right option, using the wrong options to stay fair:
+ * typing a wrong option is always wrong, and a typo never turns one answer into another.
+ */
+function checkWritten(typed, q) {
+    const t = typed.trim();
+    if (!t)
+        return { ok: false };
+    const right = answerOf(q), wrong = q[1].filter((_, k) => k !== q[2]);
+    const nt = normalize(t);
+    // Options that differ only in capitals (genotypes like Bb, BB, bb): capitals count.
+    if (wrong.some((o) => normalize(o) === normalize(right)))
+        return { ok: t.replace(/\s+/g, '') === right.trim().replace(/\s+/g, '') };
+    if (nt === normalize(right))
+        return { ok: true };
+    if (wrong.some((o) => normalize(o) === nt))
+        return { ok: false };
+    if (isNumeric(right)) {
+        const rn = numberIn(right), tn = numberIn(t);
+        if (rn == null || tn == null)
+            return { ok: false };
+        // "20π" needs the π.
+        if (/π|pi/i.test(right) && !/π|pi/i.test(t))
+            return { ok: false };
+        const nums = wrong.map((o) => (isNumeric(o) ? numberIn(o) : null));
+        // A wrong option with the same number as the answer means the units are the point: type them.
+        if (nums.includes(rn))
+            return { ok: false };
+        if (tn === rn)
+            return { ok: true };
+        if (nums.includes(tn))
+            return { ok: false };
+        // Whole numbers (counts, bonds, marks) must be exact.
+        if (Number.isInteger(rn) && !/\./.test(right))
+            return { ok: false };
+        const sf = sigFigs(t);
+        return { ok: Math.abs(tn - rn) <= Math.abs(rn) * 0.005 || (sf >= 2 && Number(rn.toPrecision(sf)) === tn) };
+    }
+    const tt = tokens(t);
+    const wrongOnly = new Set(wrong.flatMap((o) => tokens(o).map((x) => x.w)).filter((w) => !tokens(right).some((r) => r.w === w)));
+    const same = (r, x) => r.w === x.w || stem(r.w) === stem(x.w) || (!r.exact && !x.exact && !wrongOnly.has(x.w) && close(r.w, x.w));
+    const fit = (opt) => {
+        const ow = tokens(opt);
+        if (!ow.length)
+            return { cover: 0, prec: 0, order: [] };
+        const order = ow.map((r) => tt.findIndex((x) => same(r, x)));
+        const found = order.filter((i) => i >= 0).length;
+        const used = tt.filter((x) => ow.some((r) => same(r, x))).length;
+        return { cover: found / ow.length, prec: tt.length ? used / tt.length : 0, order };
+    };
+    const mine = fit(right);
+    if (mine.cover < 1)
+        return { ok: false };
+    const rivals = wrong.map(fit).filter((f) => f.cover === 1);
+    if (rivals.some((f) => f.prec > mine.prec))
+        return { ok: false };
+    // Same words as a wrong option ("roots to leaves" / "leaves to roots"): the order decides.
+    if (rivals.some((f) => f.prec === mine.prec))
+        return { ok: mine.order.every((v, i, a) => i === 0 || v > a[i - 1]) && !rivals.some((f) => f.order.every((v, i, a) => i === 0 || v > a[i - 1])) };
+    return { ok: true };
+}
+
+return {isWritable,asWritten,checkWritten};})();
 function startSession(o){
   endSession();
   const qs=o.limit?o.qs.slice(0,o.limit):o.qs;
@@ -1440,16 +1600,18 @@ function renderSession(){
     main.innerHTML=`<div class="quiz result">${resultRing(pct)}<div class="xpgain">⚡ +${Math.round(pct/5)+10} XP bonus</div><h3>${S.score} out of ${total} correct${S.exam&&S.answers.length<total?` · ${total-S.answers.length} unanswered`:''}</h3><p class="muted">${msg}</p>
       <div class="actions"><button class="btn" id="again">Try again</button><button class="btn ghost" id="exit">Back</button></div></div>
       ${S.lockAfter&&!premium?lockCard(S.lockAfter):''}
-      ${wrong.length?`<h3 style="margin-top:28px">Review your mistakes</h3>${wrong.map(a=>`<div class="review"><strong>${esc(a.q[0])}</strong><div>Your answer: <span class="badans">${esc(a.q[1][a.pick])}</span></div><div>Correct answer: <span class="goodans">${esc(a.q[1][a.q[2]])}</span></div><p class="muted">${esc(a.q[3])}</p></div>`).join('')}`:''}`;
+      ${wrong.length?`<h3 style="margin-top:28px">Review your mistakes</h3>${wrong.map(a=>`<div class="review"><strong>${esc(a.q[0])}</strong><div>Your answer: <span class="badans">${esc(a.written?a.typed:a.q[1][a.pick])}</span>${a.written?' <small class="muted">(written)</small>':''}</div><div>Correct answer: <span class="goodans">${esc(a.q[1][a.q[2]])}</span></div><p class="muted">${esc(a.q[3])}</p>${a.written?`<button class="btn ghost sm" data-wok="${S.answers.indexOf(a)}">I was right, count it</button>`:''}</div>`).join('')}`:''}`;
     $('#again').onclick=()=>startSession({title:S.title,qs:S.exam||S.title.startsWith('Mixed')?shuffle(S.qs):S.qs,key:S.key,timed:S.timed,exam:S.exam,lockAfter:S.lockAfter,mockKey:S.mockKey});
     $('#exit').onclick=()=>{endSession();renderStudy()};
     main.querySelectorAll('.review').forEach((r,i)=>r.style.setProperty('--i',i));animateRing(pct);
+    main.querySelectorAll('[data-wok]').forEach(b=>b.onclick=()=>{const a=S.answers[+b.dataset.wok];if(!a||a.ok)return;a.ok=true;S.score++;Mist.track(a.q,true);
+      const p2=Math.round(S.score/S.qs.length*100);if(S.key)saveProg(S.key,p2);if(S.mockKey&&p2>+store.get(S.mockKey,'0'))store.set(S.mockKey,String(p2));renderSession()});
     return;
   }
-  const q=S.qs[S.qi],total=S.qs.length;
+  const q=S.qs[S.qi],total=S.qs.length,W=WR.asWritten(q);
   main.innerHTML=`<div class="quiz"><div class="qtop"><span class="muted">${esc(S.title)} · Question ${S.qi+1} of ${total}</span>${S.exam?'':`<span class="streakpill" id="runStreak">🔥 ${runStreak}</span>`}${S.timed?`<span class="timer" id="timer">${fmt(S.end-Date.now())}</span>`:''}<button class="btn ghost sm" id="quit">${S.exam?'Finish exam':'Exit'}</button></div>
     <div class="progress"><i style="width:${S.qi/total*100}%"></i></div>
-    <h3 style="font-size:21px" class="stem">${wordsIn(q[0])}</h3>${q[1].map((o,i)=>`<button class="opt" data-i="${i}"><span class="ol">${'ABCD'[i]}</span>${esc(o)}</button>`).join('')}<div id="after"></div><div class="kbd">Keys: 1–4 or A–D to answer · Enter for next</div></div>`;
+    <h3 style="font-size:21px" class="stem">${wordsIn(q[0])}</h3>${W?`<div class="wr"><label for="wrIn">✏️ Write your answer</label><div class="wr-row"><input id="wrIn" class="wrin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type your answer"><button class="btn" id="wrGo">${S.exam?'Save answer':'Check'}</button></div><small class="muted">Small typos and other units are fine.</small></div>`:q[1].map((o,i)=>`<button class="opt" data-i="${i}"><span class="ol">${'ABCD'[i]}</span>${esc(o)}</button>`).join('')}<div id="after"></div><div class="kbd">${W?'Enter to check · Enter again for the next question':'Keys: 1–4 or A–D to answer · Enter for next'}</div></div>`;
   $('#quit').onclick=()=>{if(S.exam)finish();else{endSession();renderStudy()}};
   let answered=false;
   main.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
@@ -1464,6 +1626,19 @@ function renderSession(){
     $('#after').innerHTML=`${explainHtml(q,ok)}<button class="btn" id="next">${last?'See results':'Next question'}</button>`;
     $('#next').onclick=()=>{S.qi++;if(last)finish();else renderSession()};$('#next').focus();
   });
+  if(W){const inp=$('#wrIn'),go=$('#wrGo');inp.focus();
+    const submit=()=>{const typed=inp.value.trim();if(!typed||answered)return;answered=true;
+      const a={q,typed,ok:WR.checkWritten(typed,q).ok,written:true};S.answers.push(a);Mist.track(q,a.ok);if(a.ok)S.score++;
+      if(S.exam){XP.answer(a.ok);if(a.ok)XP.add(8)}
+      const last=S.qi+1>=total;
+      if(S.exam){S.qi++;if(last)finish();else renderSession();return}
+      inp.disabled=true;go.disabled=true;inp.classList.add(a.ok?'ok':'no');onAnswer(a.ok,inp);
+      // "I was right": another wording or other units the checker didn't know. It counts.
+      const show=()=>{$('#after').innerHTML=`${explainHtml(q,a.ok)}<div class="actions">${a.ok?'':'<button class="btn ghost" id="wrOk">I was right, count it</button>'}<button class="btn" id="next">${last?'See results':'Next question'}</button></div>`;
+        const wo=$('#wrOk');if(wo)wo.onclick=()=>{a.ok=true;S.score++;Mist.track(q,true);inp.classList.replace('no','ok');show()};
+        $('#next').onclick=()=>{S.qi++;if(last)finish();else renderSession()};$('#next').focus()};
+      show()};
+    go.onclick=submit;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submit()}}}
 }
 
 /* ---------- spec view (all boards, subjects, levels) ---------- */
