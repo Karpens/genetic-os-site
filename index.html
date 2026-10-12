@@ -1226,6 +1226,134 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 :root[data-theme="dark"] .btn.watch{background:#fff;color:#1D1A15}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.watch{background:#fff;color:#1D1A15}}
 #printSheet .ps-more{font-weight:800;color:#B07A16;margin:8px 0 2px}
+/* My Plan */
+.pl-setup{max-width:880px}
+.pl-steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;padding:0;list-style:none}
+.pl-steps li{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--paper);box-shadow:0 0 0 1px var(--line);font-weight:700;font-size:14px;color:var(--muted)}
+.pl-steps i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;background:var(--bg2);color:var(--muted)}
+.pl-steps .on{color:var(--ink);box-shadow:0 0 0 2px var(--stain)}
+.pl-steps .on i,.pl-steps .done i{background:var(--stain);color:#fff}
+.pl-card{background:var(--paper);border-radius:28px;padding:30px;box-shadow:var(--shadow),0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.3,1)}
+.pl-q{font:800 26px/1.15 "Bricolage Grotesque",sans-serif;margin:0 0 6px}
+.pl-card .muted{margin:0}
+.pl-levels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.pl-lv{border:0;border-radius:22px;padding:22px 18px;text-align:left;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.3,1),box-shadow .2s,background .2s;animation:popIn .5s cubic-bezier(.2,1.2,.3,1) backwards;animation-delay:calc(var(--i,0)*60ms)}
+.pl-lv b{font:800 20px/1.2 "Bricolage Grotesque",sans-serif}
+.pl-lv small{color:var(--muted);font-weight:600;font-size:14px}
+.pl-lv:hover{transform:translateY(-3px)}
+.pl-lv.on{box-shadow:inset 0 0 0 2.5px var(--stain);background:var(--stain-soft)}
+.pl-subs{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px;margin-top:18px}
+.pl-sub{--c:var(--stain);position:relative;border:0;border-radius:20px;padding:16px 8px 13px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--ink);cursor:pointer;transition:transform .35s cubic-bezier(.2,1.4,.3,1),box-shadow .2s,background .2s;animation:popIn .5s cubic-bezier(.2,1.2,.3,1) backwards;animation-delay:calc(var(--i,0)*35ms)}
+.pl-sub .gl{width:40px;height:40px;color:var(--c)}
+.pl-sub b{font-size:14px}
+.pl-sub .tick{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center;transform:scale(0);transition:transform .3s cubic-bezier(.2,1.6,.4,1)}
+.pl-sub:hover{transform:translateY(-3px)}
+.pl-sub.on{box-shadow:inset 0 0 0 2.5px var(--c);background:color-mix(in srgb,var(--c) 12%,var(--bg))}
+.pl-sub.on .tick{transform:scale(1)}
+.pl-count{font-weight:700;color:var(--muted);margin:14px 0 0}
+.pl-boards{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.pl-brow{--c:var(--stain);display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;padding:12px 14px;border-radius:18px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
+.pl-bname{display:flex;align-items:center;gap:10px;min-width:170px}
+.pl-bname .gl{width:30px;height:30px;color:var(--c)}
+.pl-chips{display:flex;gap:8px;flex-wrap:wrap}
+.pl-chip{border:0;border-radius:999px;padding:9px 15px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:transform .25s cubic-bezier(.2,1.4,.3,1),background .2s}
+.pl-chip:hover{transform:translateY(-2px)}
+.pl-chip.on{background:var(--stain);color:#fff;box-shadow:none}
+.pl-chip small{opacity:.65;font-weight:700;margin-left:2px}
+.pl-date{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.pl-date .lbinput{width:auto;margin:0}
+.pl-card .pl-chips{margin-top:14px}
+.pl-nav{display:flex;justify-content:space-between;gap:10px;margin-top:28px}
+.pl-free{margin-top:14px;font-size:14px}
+.pl-setup.still .pl-card,.pl-setup.still .pl-card *{animation:none!important}
+.pl-hero{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;border-radius:36px;padding:34px;background:var(--stage);color:var(--stage-ink)}
+.pl-hero .mesh{opacity:.45}
+.pl-ring{position:relative;width:170px;height:170px}
+.pl-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pl-ring circle{fill:none;stroke-width:14}
+.pl-ring .bg{stroke:rgba(255,255,255,.1)}
+.pl-ring .fg{stroke:url(#plGrad);stroke-linecap:round;stroke-dasharray:452;stroke-dashoffset:452;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)}
+.pl-ring div{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 22px}
+.pl-ring b{font:800 50px/1 "Bricolage Grotesque",sans-serif;color:#fff}
+.pl-ring small{color:var(--stage-muted);font-weight:600;font-size:13px;margin-top:4px}
+.pl-hi{min-width:0}
+.pl-hi>small{color:var(--stage-muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px}
+.pl-hi h2{color:#fff;margin:4px 0 6px}
+.pl-hi p{color:var(--stage-muted);margin:0;max-width:620px}
+.pl-hi p b{color:#fff}
+.pl-stats{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.pl-stats>div{background:rgba(255,255,255,.07);border-radius:18px;padding:12px 16px;min-width:118px}
+.pl-stats span{display:block;font-size:12px;color:var(--stage-muted);font-weight:700}
+.pl-stats b{font:800 24px "Bricolage Grotesque",sans-serif;color:#fff}
+.pl-stats b.pl-small{font-size:17px;line-height:1.75}
+.pl-gbar{height:6px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:6px}
+.pl-gbar i{display:block;height:100%;background:linear-gradient(90deg,#3DDB93,#F0C168);border-radius:4px;animation:grow 1.2s cubic-bezier(.2,.8,.2,1) backwards}
+.pl-acts{display:flex;gap:10px;flex-wrap:wrap}
+.pl-hero .btn.ghost{color:#fff;background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28)}
+.pl-sync{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:14px 18px;border-radius:20px;background:var(--paper);box-shadow:0 0 0 1px var(--line);font-size:14px}
+.pl-sync .dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.pl-sync.ok .dot{background:var(--ok)}
+.pl-sync.err .dot{background:var(--bad)}
+.pl-sync span{flex:1;min-width:200px}
+.pl-sec{padding-top:46px}
+.pl-h{font:800 28px/1.15 "Bricolage Grotesque",sans-serif;margin:0 0 6px}
+.pl-tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-top:16px}
+.pl-task{--c:var(--stain);position:relative;overflow:hidden;background:var(--paper);border-radius:24px;padding:18px 18px 18px 22px;box-shadow:var(--shadow),0 0 0 1px var(--line);display:flex;flex-direction:column;justify-content:space-between;gap:16px;animation:popIn .5s cubic-bezier(.2,1.2,.3,1) backwards;animation-delay:calc(var(--i,0)*80ms)}
+.pl-task::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.pl-tt{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.pl-tt .gl{width:38px;height:38px;flex:none;color:var(--c)}
+.pl-tt span{min-width:0}
+.pl-tt small{display:block;color:var(--muted);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.pl-tt b{display:block;font-size:17px;line-height:1.3;overflow-wrap:anywhere}
+.pl-tb{display:flex;gap:8px;flex-wrap:wrap}
+.pl-upsell{margin:12px 0 0;font-weight:600;color:var(--muted)}
+.pl-scards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin-top:16px}
+.pl-scard{--c:var(--stain);background:var(--paper);border-radius:24px;padding:18px;box-shadow:var(--shadow),0 0 0 1px var(--line);display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;cursor:pointer;transition:transform .35s cubic-bezier(.2,1.3,.3,1),box-shadow .2s;animation:popIn .5s cubic-bezier(.2,1.2,.3,1) backwards;animation-delay:calc(var(--i,0)*60ms);min-width:0}
+.pl-scard:hover{transform:translateY(-3px)}
+.pl-scard:focus-visible{outline:none;box-shadow:var(--shadow),0 0 0 2.5px var(--c)}
+.pl-sr{--p:0;width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--bg2) 0);display:grid;place-items:center}
+.pl-sr b{width:58px;height:58px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font:800 17px "Bricolage Grotesque",sans-serif}
+.pl-si{min-width:0}
+.pl-si b{display:block;font-size:19px}
+.pl-si small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pl-strip{grid-column:1/-1;display:flex;gap:3px;margin-top:8px}
+.pl-strip i{flex:1;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--c) calc(var(--f)*100%),var(--bg2) 0)}
+.pl-scard .btn{grid-column:1/-1;justify-content:space-between;margin-top:8px;text-align:left;min-width:0}
+.pl-scard .btn span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pl-wk{--c:var(--stain);display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;background:var(--paper);box-shadow:0 0 0 1px var(--line);margin-top:8px;border-left:5px solid var(--c)}
+.pl-wk .sc{font:800 20px "Bricolage Grotesque",sans-serif;color:var(--bad);min-width:52px}
+.pl-wk span{flex:1;min-width:0}
+.pl-wk small{display:block;color:var(--muted);font-weight:700;font-size:12px}
+.pl-wk span b{overflow-wrap:anywhere}
+.pl-nhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pl-filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 14px}
+.pl-notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;align-items:start}
+.pl-note{--c:var(--muted);background:var(--paper);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow),0 0 0 1px var(--line);display:flex;flex-direction:column;gap:6px;border-top:5px solid var(--c);animation:popIn .4s cubic-bezier(.2,1.2,.3,1) backwards;animation-delay:calc(var(--i,0)*40ms);transition:box-shadow .2s}
+.pl-note:focus-within{box-shadow:var(--shadow),0 0 0 2px var(--c)}
+.pl-nt{display:flex;gap:8px;align-items:center}
+.pl-nt select{flex:1;min-width:0;border:0;border-radius:10px;padding:7px 10px;background:var(--bg2);color:var(--ink);font-family:inherit;font-weight:700;font-size:13px}
+.pl-ndel{border:0;background:none;font-size:16px;cursor:pointer;opacity:.55;padding:6px;border-radius:8px}
+.pl-ndel:hover{opacity:1;background:var(--bad-soft)}
+.pl-note input,.pl-note textarea{border:0;background:transparent;color:var(--ink);width:100%;outline:none;padding:4px 2px}
+.pl-note input{font:800 18px "Bricolage Grotesque",sans-serif}
+.pl-note textarea{min-height:110px;resize:vertical;font-family:inherit;font-size:15px;line-height:1.55}
+.pl-note ::placeholder{color:var(--muted);opacity:.8}
+.pl-nat{color:var(--muted);font-size:12px;font-weight:600}
+.pl-empty{grid-column:1/-1;padding:26px;border-radius:22px;background:var(--bg2);text-align:center;color:var(--muted);font-weight:600;margin-top:16px}
+.pl-notes .pl-empty{margin-top:0}
+.pl-homelink{display:block;text-align:center;margin-top:12px;font-weight:700;color:var(--stain);text-decoration:none}
+.pl-homelink:hover{text-decoration:underline}
+@media (max-width:700px){
+  .pl-hero{grid-template-columns:1fr;gap:20px;padding:24px;border-radius:28px}
+  .pl-ring{width:132px;height:132px}.pl-ring b{font-size:40px}
+  .pl-levels{grid-template-columns:1fr}
+  .pl-card{padding:20px;border-radius:24px}
+  .pl-q{font-size:22px}
+  .pl-tasks,.pl-scards,.pl-notes{grid-template-columns:1fr}
+  .pl-stats>div{min-width:0;flex:1 1 40%}
+  .pl-bname{min-width:0;width:100%}
+  .pl-nav .btn{flex:1}
+}
 </style>
 </head>
 <body>
@@ -1251,6 +1379,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <button id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
     <nav class="navlinks" id="navlinks">
       <a class="l" href="#home">Subjects</a>
+      <a class="l" href="#plan">My Plan</a>
       <a class="l" href="#study">Study</a>
       <a class="l" href="#games">Games</a>
       <a class="l" href="#me">Progress</a>
@@ -1332,6 +1461,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
           <div class="climb" id="homeLevels"></div>
           <p class="picknote" id="pickNote"></p>
           <button class="btn lg" id="startBtn" style="width:100%;margin-top:14px">Start revising</button>
+          <a class="pl-homelink" href="#plan">or build your study plan →</a>
         </div>
         <div class="preview ticket rv" style="--d:2" id="preview">
           <div class="tk-head"><span>FULL MARKS · REVISION PASS</span><span id="pvNo">No. 1000</span></div>
@@ -1489,6 +1619,13 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <div id="meMain"></div>
   </div>
 </section>
+<section class="page" id="p-plan">
+  <div class="wrap">
+    <span class="eyebrow">My plan</span>
+    <h2 style="margin-bottom:24px" id="planH">Build your <span class="grad">study plan</span></h2>
+    <div id="planMain"></div>
+  </div>
+</section>
 <section class="page" id="p-voices">
   <div class="wrap">
     <span class="eyebrow">Explainer narration</span>
@@ -1555,7 +1692,7 @@ let level=store.get('go-lvl','GCSE'); if(!LEVELS.some(l=>l[0]===level))level='GC
 
 
 function save(){store.set('go-sub',subject);store.set('go-lvl',level)}
-function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy();if(location.hash==='#me')renderMe();renderOwned()}
+function setPremium(v){premium=v;if(location.hash==='#games')renderGames();else renderStudy();if(location.hash==='#me')renderMe();if(location.hash==='#plan'&&typeof renderPlan==='function')renderPlan();renderOwned()}
 
 /* home picker */
 let boards={};try{boards=JSON.parse(store.get('go-boards','{}'))||{}}catch(e){boards={}}
@@ -1607,7 +1744,9 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
 function getProg(){try{return JSON.parse(store.get('go-prog','{}'))}catch(e){return {}}}
 function saveProg(key,pct){const p=getProg();if(p[key]==null||pct>p[key])p[key]=pct;store.set('go-prog',JSON.stringify(p))}
 const pkey=n=>`${subject}:${level}:${n}`;
-const _ld={};function levelData(){const raw=SUBJECTS[subject][level];if(!raw||!raw.full)return raw;const b=boardOf(subject);if(_ld.raw!==raw||_ld.b!==b){_ld.raw=raw;_ld.b=b;const vb=raw.views&&(raw.views[b]?b:raw.views[contentBoard(b)]?contentBoard(b):null);if(vb){const by=new Map(raw.topics.flatMap(t=>t.subs.map(x=>[x.n,x])));_ld.v={...raw,vb,topics:raw.views[vb].map(vt=>({n:vt.n,title:vt.title,i:vt.i,from:vt.from||[],key:vb+':'+vt.n,subs:vt.s.map((sn,k)=>by.has(sn)?{...by.get(sn),key:sn,n:vt.n+'.'+(k+1)}:null).filter(Boolean)})).filter(t=>t.subs.length)}}else _ld.v={...raw,topics:raw.topics.map(t=>({...t,subs:t.subs.filter(s=>!s.b||s.b.includes(contentBoard(b)))})).filter(t=>t.subs.length)}}return _ld.v}
+// A level's topics on one board (its own topic order when the content has a view for it), cached per board.
+const _ldc=new WeakMap();function ldFor(raw,b){if(!raw||!raw.full)return raw;let m=_ldc.get(raw);if(!m){m=new Map();_ldc.set(raw,m)}if(!m.has(b)){let v;const vb=raw.views&&(raw.views[b]?b:raw.views[contentBoard(b)]?contentBoard(b):null);if(vb){const by=new Map(raw.topics.flatMap(t=>t.subs.map(x=>[x.n,x])));v={...raw,vb,topics:raw.views[vb].map(vt=>({n:vt.n,title:vt.title,i:vt.i,from:vt.from||[],key:vb+':'+vt.n,subs:vt.s.map((sn,k)=>by.has(sn)?{...by.get(sn),key:sn,n:vt.n+'.'+(k+1)}:null).filter(Boolean)})).filter(t=>t.subs.length)}}else v={...raw,topics:raw.topics.map(t=>({...t,subs:t.subs.filter(s=>!s.b||s.b.includes(contentBoard(b)))})).filter(t=>t.subs.length)};m.set(b,v)}return m.get(b)}
+function levelData(){return ldFor(SUBJECTS[subject][level],boardOf(subject))}
 // How a topic connects across GCSE, AS and A2 on this board: what it builds on, and where it leads next.
 function topicLinks(t){const out={from:[],to:[]},s=SUBJECTS[subject],b=boardOf(subject),li=LEVELS.findIndex(l=>l[0]===level);const vOf=l=>{const r=s[l];return r&&r.views?(r.views[b]||r.views[contentBoard(b)]):null};for(const f of t.from||[]){const [fl,fn]=f.split(':'),v=vOf(fl),x=v&&v.find(y=>y.n===fn);if(x)out.from.push({l:fl,n:fn,title:x.title})}const nl=LEVELS[li+1]&&LEVELS[li+1][0],nv=nl&&vOf(nl);if(nv)for(const x of nv)if((x.from||[]).includes(level+':'+t.n))out.to.push({l:nl,n:x.n,title:x.title});return out}
 function tlinksHtml(t){const k=topicLinks(t);if(!k.from.length&&!k.to.length)return '';return `<div class="tlinks">${k.from.map(x=>`<button class="tlink" data-l="${x.l}" data-n="${esc(x.n)}"><i>⤴</i><span><small>Builds on ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}${k.to.map(x=>`<button class="tlink next" data-l="${x.l}" data-n="${esc(x.n)}"><i>→</i><span><small>Next at ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}</div>`}
@@ -1721,10 +1860,10 @@ function renderStudy(){
   main.innerHTML=`<div class="topichead"><span class="tnum">${x.n}</span><h2>${esc(x.title)}</h2></div>
     <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">Key notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">Practice · ${nq(x)}</button></div>
     <div id="subBody"></div>
-    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet PDF for topic ${esc(t.n)}</button></div>
+    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet PDF for topic ${esc(t.n)}</button><button class="btn ghost sm" id="noteSub">📝 Add a note</button></div>
     <div class="pager">${prev?`<button class="btn ghost" data-go="${view.sub-1}">← ${prev.n} ${esc(prev.title)}</button>`:'<span></span>'}${next?`<button class="btn ghost" data-go="${view.sub+1}">${next.n} ${esc(next.title)} →</button>`:''}</div>`;
   main.querySelector('.tabs').onclick=e=>{const b=e.target.dataset.tab;if(b){view.tab=b;renderStudy()}};
-  $('#cheatSub').onclick=()=>printCheat(t);
+  $('#cheatSub').onclick=()=>printCheat(t);$('#noteSub').onclick=()=>noteFromStudy(x);
   main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{view.sub=+b.dataset.go;view.tab='notes';renderStudy();scrollTo(0,0)});
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
@@ -3107,14 +3246,226 @@ async function renderVoices(){const main=$('#voicesMain');if(!main)return;main.i
     vPlaying=card;card.classList.add('playing');b.innerHTML=xpIco('pause');vAud.src=b.dataset.url;vAud.play().catch(()=>{stopVoicePreview();toast('🔇','That sample can’t play right now.')})});
   main.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);toast('📋','Voice ID copied')}catch(e){toast('📋',b.dataset.copy)}})}
 
+/* ---------- My Plan: the student's own level, subjects, boards and exam date, a dashboard, and their notes ----------
+   Saved on this device (fm-plan) and, once signed in, to the account (GET/PUT /me/plan) so it follows them.
+   The plan only shapes this page: every subject stays open in Subjects and Study. */
+const PLAN_LEVELS=[['GCSE','GCSE','Years 10–11'],['AS','A-level · Year 12','First year (AS)'],['A2','A-level · Year 13','Second year (A2)']];
+let PLAN=(()=>{try{const p=JSON.parse(store.get('fm-plan','null'));return p&&typeof p==='object'?p:null}catch(e){return null}})();
+let planDraft=null,planStep=0,noteFilter='all';
+const planReady=()=>!!(PLAN&&PLAN.level&&Array.isArray(PLAN.subjects)&&PLAN.subjects.some(x=>SUBJECTS[x.s]&&SUBJECTS[x.s][PLAN.level]));
+const planSubs=()=>planReady()?PLAN.subjects.filter(x=>SUBJECTS[x.s]&&SUBJECTS[x.s][PLAN.level]):[];
+const liveNotes=()=>(PLAN&&Array.isArray(PLAN.notes)?PLAN.notes:[]).filter(n=>n&&!n.del);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const offeredBoards=(k,l)=>BOARDS.filter(([b])=>SPECS[k]&&SPECS[k][b]&&SPECS[k][b][l]).map(([b])=>b);
+function nextExamDate(){const now=new Date();let y=now.getFullYear(),d=new Date(y,4,11);if(d<now)d=new Date(y+1,4,11);return dayKey(d)}
+const fmtDate=s=>new Date(s+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+function fmtAgo(t){const s=(Date.now()-t)/1000;if(s<60)return 'just now';if(s<3600)return `${Math.floor(s/60)} min ago`;if(s<86400)return `${Math.floor(s/3600)} h ago`;return new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function planSaveLocal(){store.set('fm-plan',JSON.stringify(PLAN))}
+function planChanged(){planSaveLocal();PlanSync.push()}
+
+// Two copies (this device and the account) merge: the newer plan settings win, notes merge one by one
+// (the newer edit of each note wins, and deleted notes stay deleted).
+function mergePlan(a,b){if(!b||typeof b!=='object')return a;if(!a)return b;
+  const base=(b.pAt||0)>(a.pAt||0)?b:a,m=new Map();
+  for(const n of [...(a.notes||[]),...(b.notes||[])]){if(!n||!n.id)continue;const o=m.get(n.id);if(!o||(n.at||0)>(o.at||0))m.set(n.id,n)}
+  return {...base,notes:[...m.values()]}}
+
+const PlanSync={t:null,busy:false,again:false,state:'',msg:'',
+  on(){return !!(API_BASE&&authToken())},
+  push(){if(!this.on()||!PLAN)return;this.set('saving');clearTimeout(this.t);this.t=setTimeout(()=>this.send(),1200)},
+  async send(){if(this.busy){this.again=true;return}this.busy=true;
+    try{const r=await fetch(`${API_BASE}/me/plan`,{method:'PUT',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify({data:PLAN})});
+      const j=await r.json().catch(()=>({}));
+      if(r.status===401)this.set('signin');else if(!r.ok)this.set('error',j.error||'');else this.set('saved')}
+    catch(e){this.set('error','')}
+    this.busy=false;if(this.again){this.again=false;this.send()}},
+  async pull(){if(!this.on())return;
+    try{const r=await fetch(`${API_BASE}/me/plan`,{headers:{Authorization:'Bearer '+authToken()}});
+      if(r.status===401){this.set('signin');return}if(!r.ok)return;
+      const j=await r.json(),merged=mergePlan(PLAN,j.data);
+      if(merged&&JSON.stringify(merged)!==JSON.stringify(PLAN)){const was=planReady();PLAN=merged;planSaveLocal();applyPlanBoards();if(!was&&planReady()){planDraft=null;planStep=0}if(location.hash==='#plan')renderPlan()}
+      if(PLAN&&JSON.stringify(PLAN)!==JSON.stringify(j.data))this.send();else this.set('saved')}
+    catch(e){/* offline: the copy on this device still works */}},
+  set(s,msg=''){this.state=s;this.msg=msg;const el=$('#plSync');if(el)el.outerHTML=syncCard()}};
+
+function syncCard(){const em=store.get('go-auth-email',''),s=PlanSync.state;
+  if(!PlanSync.on())return `<div class="pl-sync" id="plSync"><i class="dot"></i><span><b>Saved on this device.</b> Sign in to keep your plan, notes and progress on your phone and every other device.</span><button class="btn sm" data-plsign>Save to my account</button></div>`;
+  if(s==='signin')return `<div class="pl-sync err" id="plSync"><i class="dot"></i><span><b>You’ve been signed out.</b> Sign in again to keep saving to your account.</span><button class="btn sm" data-plsign>Sign in</button></div>`;
+  if(s==='error')return `<div class="pl-sync err" id="plSync"><i class="dot"></i><span><b>Couldn’t save to your account just now.</b> ${esc(PlanSync.msg||'It’s kept on this device and we’ll try again with your next change.')}</span><button class="btn ghost sm" data-plretry>Try again</button></div>`;
+  return `<div class="pl-sync ok" id="plSync"><i class="dot"></i><span>${s==='saving'?'Saving…':`<b>✓ Saved to your account</b>`} ${em?`· ${esc(em)}`:''}</span><button class="btn ghost sm" data-plout>Sign out</button></div>`}
+
+// Sign in with a 6-digit code from email (anyone can have an account; it keeps their plan and notes).
+function planSignIn(){
+  if(!API_BASE){toast('⚠️','Accounts aren’t connected on this copy of the site.');return}
+  showModal('Keep your plan everywhere',`<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
+    <input type="email" id="siEmail" class="lbinput" placeholder="you@example.com" autocomplete="email" value="${esc(store.get('go-auth-email',''))}">
+    <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
+  const send=$('#siSend');$('#siEmail').focus();
+  $('#siEmail').onkeydown=e=>{if(e.key==='Enter')send.click()};
+  send.onclick=async()=>{const email=$('#siEmail').value.trim().toLowerCase();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('#siMsg').textContent='Enter a valid email address.';return}
+    send.disabled=true;send.textContent='Sending…';
+    try{const r=await fetch(`${API_BASE}/auth/code`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+      const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Please try again in a moment.');
+      $('#mBody').innerHTML=`<p style="margin-top:0">${esc(j.message||`We’ve sent a code to ${email}.`)} It can take a minute, so check your spam folder too.</p>
+        <input id="siCode" class="lbinput" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit code">
+        <button class="btn" id="siVerify">Sign in</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`;
+      const v=$('#siVerify'),code=$('#siCode');code.focus();
+      code.oninput=()=>{code.value=code.value.replace(/\D/g,'').slice(0,6);if(code.value.length===6)v.click()};
+      v.onclick=async()=>{if(v.disabled)return;if(code.value.length!==6){$('#siMsg').textContent='Enter the 6 digits from the email.';return}
+        v.disabled=true;v.textContent='Signing in…';
+        try{const r2=await fetch(`${API_BASE}/auth/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code:code.value})});
+          const j2=await r2.json().catch(()=>({}));if(!r2.ok||!j2.token)throw new Error(j2.error||'That code didn’t work. Try again.');
+          setAuthToken(j2.token,j2.email||email);$('#modal').classList.remove('on');toast('✓','Signed in. Your plan is saved to your account.');
+          PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();if(location.hash==='#plan')renderPlan();
+        }catch(e){$('#siMsg').textContent=e.message;v.disabled=false;v.textContent='Sign in'}};
+    }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
+}
+function planSignOut(){if(!confirm('Sign out on this device? Your plan and notes stay saved in your account.'))return;
+  try{localStorage.removeItem('go-auth-token');localStorage.removeItem('go-auth-email')}catch(e){}
+  location.hash='plan';location.reload()}
+
+// Per-subject numbers for the dashboard, on the student's own board and level.
+function planSubject(p){const l=PLAN.level,raw=SUBJECTS[p.s]&&SUBJECTS[p.s][l];if(!raw)return null;
+  const d=ldFor(raw,p.b),s=SUBJECTS[p.s];if(!d||!d.full)return {p,s,subs:[],done:0,total:0,pct:0,avg:null,next:null,weak:[],locked:0,topics:[]};
+  const P=getProg(),pk=x=>`${p.s}:${l}:${x.key||x.n}`;
+  const subs=d.topics.flatMap((t,ti)=>t.subs.map((x,si)=>({t,ti,x,si,sc:P[pk(x)],open:premium||x.notes.length>0})));
+  const tried=subs.filter(u=>u.sc!=null),avg=tried.length?Math.round(tried.reduce((a,u)=>a+u.sc,0)/tried.length):null;
+  return {p,s,d,subs,done:tried.length,total:subs.length,pct:subs.length?Math.round(tried.length/subs.length*100):0,avg,
+    next:subs.find(u=>u.sc==null&&u.open)||null,weak:tried.filter(u=>u.sc<60),locked:subs.filter(u=>!u.open&&u.sc==null).length,
+    topics:d.topics.map(t=>({t,f:t.subs.length?t.subs.filter(x=>P[pk(x)]!=null).length/t.subs.length:0}))}}
+
+function applyPlanBoards(){if(!planReady())return;for(const x of planSubs())boards[x.s]=x.b;store.set('go-boards',JSON.stringify(boards))}
+// Open a subject from the plan on the student's own board and level.
+function planUse(k){const x=planSubs().find(y=>y.s===k);subject=k;level=PLAN.level;if(x){boards[k]=x.b;store.set('go-boards',JSON.stringify(boards))}save()}
+function planOpen(k,ti,si,tab){planUse(k);view={topic:ti==null?null:+ti,sub:si==null?null:+si,tab:tab||'notes',check:false,papers:false};endSession();renderPicker();location.hash='study'}
+function planWatch(k,ti,si){planUse(k);const t=levelData().topics[+ti];if(t)watchTopic(t,+si)}
+
+function renderPlan(){const main=$('#planMain');if(!main)return;
+  const h=$('#planH');
+  if(planDraft||!planReady()){if(!planDraft)planDraft={level:(PLAN&&PLAN.level)||level,subjects:[],exam:'',goal:20};
+    if(h)h.innerHTML=planReady()?'Edit your <span class="grad">study plan</span>':'Build your <span class="grad">study plan</span>';renderPlanSetup(main);return}
+  if(h)h.innerHTML='Your plan, <span class="grad">day by day</span>';
+  renderPlanBoard(main)}
+
+function renderPlanSetup(main){const D=planDraft,steps=['Level','Subjects','Exam boards','Exam date'];let body='';
+  if(planStep===0)body=`<h3 class="pl-q">What are you studying?</h3><p class="muted">This picks the right notes, questions and videos for you.</p>
+    <div class="pl-levels">${PLAN_LEVELS.map(([l,n,y],i)=>`<button class="pl-lv${D.level===l?' on':''}" data-l="${l}" style="--i:${i}" aria-pressed="${D.level===l}"><b>${n}</b><small>${y}</small></button>`).join('')}</div>`;
+  if(planStep===1){const n=D.subjects.length;
+    body=`<h3 class="pl-q">Pick your subjects</h3><p class="muted">${D.level==='GCSE'?'Most students take 8–10 GCSEs. Add the ones you want to revise here.':'Most students take 3 A-levels, and some take 4.'} You can change them any time.</p>
+      <div class="pl-subs">${Object.entries(SUBJECTS).filter(([,s])=>s[D.level]).map(([k,s],i)=>{const on=D.subjects.some(x=>x.s===k);return `<button class="pl-sub${on?' on':''}" data-s="${k}" style="--c:${s.color};--i:${i}" aria-pressed="${on}">${glyph(k)}<b>${esc(s.name)}</b><i class="tick" aria-hidden="true">✓</i></button>`}).join('')}</div>
+      <p class="pl-count">${n?`${n} subject${n>1?'s':''} picked`:'Pick at least one subject'}</p>`}
+  if(planStep===2)body=`<h3 class="pl-q">Which exam board is each one?</h3><p class="muted">It’s printed on your past papers, or ask your teacher. Not sure? Leave our guess and change it later.</p>
+    <div class="pl-boards">${D.subjects.map(x=>{const s=SUBJECTS[x.s];return `<div class="pl-brow" style="--c:${s.color}"><span class="pl-bname">${glyph(x.s)}<b>${esc(s.name)}</b></span><div class="pl-chips">${offeredBoards(x.s,D.level).map(b=>`<button class="pl-chip${x.b===b?' on':''}" data-s="${x.s}" data-b="${b}" aria-pressed="${x.b===b}">${esc(bName(b,x.s))}</button>`).join('')}</div></div>`}).join('')}</div>`;
+  if(planStep===3){const sug=nextExamDate();
+    body=`<h3 class="pl-q">When do your exams start?</h3><p class="muted">We’ll count down and work out how much to do each day. Leave it empty if you don’t know yet.</p>
+      <div class="pl-date"><input type="date" id="plExam" class="lbinput" value="${esc(D.exam||'')}" min="${today()}" aria-label="First exam date"><button class="pl-chip${D.exam===sug?' on':''}" id="plSug">Summer exams · ${fmtDate(sug)}</button>${D.exam?'<button class="pl-chip" id="plNoDate">I don’t know yet</button>':''}</div>
+      <h3 class="pl-q" style="margin-top:28px">Your daily goal</h3><p class="muted">Questions to answer each day. Little and often works best.</p>
+      <div class="pl-chips">${[10,20,30,50].map(g=>`<button class="pl-chip${D.goal===g?' on':''}" data-goal="${g}" aria-pressed="${D.goal===g}">${g} a day</button>`).join('')}</div>`}
+  const can=planStep===0?!!D.level:planStep===1?D.subjects.length>0:true,still=main.dataset.step===String(planStep);main.dataset.step=planStep;
+  main.innerHTML=`<div class="pl-setup${still?' still':''}"><ol class="pl-steps">${steps.map((s,i)=>`<li class="${i<planStep?'done':i===planStep?'on':''}"><i>${i<planStep?'✓':i+1}</i>${s}</li>`).join('')}</ol>
+    <div class="pl-card">${body}<div class="pl-nav">${planStep?'<button class="btn ghost" id="plBack">← Back</button>':planReady()?'<button class="btn ghost" id="plCancel">Cancel</button>':'<span></span>'}<button class="btn" id="plNext"${can?'':' disabled'}>${planStep===3?'Save my plan ✓':'Next →'}</button></div></div>
+    <p class="muted pl-free">Your plan only changes this page. Every subject stays open in <a href="#home">Subjects</a>, so you can try anything.</p></div>`;
+  main.querySelectorAll('.pl-lv').forEach(b=>b.onclick=()=>{D.level=b.dataset.l;D.subjects=D.subjects.filter(x=>SUBJECTS[x.s][D.level]).map(x=>{const o=offeredBoards(x.s,D.level);return {s:x.s,b:o.includes(x.b)?x.b:o[0]||x.b}});renderPlanSetup(main)});
+  main.querySelectorAll('.pl-sub').forEach(b=>b.onclick=()=>{const k=b.dataset.s,i=D.subjects.findIndex(x=>x.s===k);
+    if(i>=0)D.subjects.splice(i,1);else{const o=offeredBoards(k,D.level);D.subjects.push({s:k,b:o.includes(boardOf(k))?boardOf(k):o[0]||'aqa'});const [cx,cy]=centre(b);burst(cx,cy,14,.45)}
+    renderPlanSetup(main)});
+  main.querySelectorAll('.pl-chip[data-b]').forEach(b=>b.onclick=()=>{const x=D.subjects.find(y=>y.s===b.dataset.s);if(x)x.b=b.dataset.b;renderPlanSetup(main)});
+  main.querySelectorAll('.pl-chip[data-goal]').forEach(b=>b.onclick=()=>{D.goal=+b.dataset.goal;renderPlanSetup(main)});
+  const ex=$('#plExam');if(ex)ex.onchange=()=>{D.exam=ex.value;renderPlanSetup(main)};
+  const sg=$('#plSug');if(sg)sg.onclick=()=>{D.exam=nextExamDate();renderPlanSetup(main)};
+  const nd=$('#plNoDate');if(nd)nd.onclick=()=>{D.exam='';renderPlanSetup(main)};
+  const bk=$('#plBack');if(bk)bk.onclick=()=>{planStep--;renderPlanSetup(main)};
+  const cn=$('#plCancel');if(cn)cn.onclick=()=>{planDraft=null;planStep=0;renderPlan()};
+  $('#plNext').onclick=()=>{if(planStep<3){planStep++;renderPlanSetup(main);main.scrollIntoView({block:'nearest'});return}
+    PLAN={...(PLAN||{}),v:1,level:D.level,subjects:D.subjects.map(x=>({s:x.s,b:x.b})),exam:D.exam||'',goal:D.goal||20,pAt:Date.now(),notes:(PLAN&&PLAN.notes)||[]};
+    level=PLAN.level;subject=PLAN.subjects[0].s;applyPlanBoards();save();renderPicker();planChanged();
+    const [cx,cy]=centre($('#plNext'));planDraft=null;planStep=0;renderPlan();scrollTo(0,0);burst(cx,cy,70,1);toast('🎯','Your study plan is ready')}}
+
+function renderPlanBoard(main){main.dataset.step='';
+  const S=planSubs().map(planSubject).filter(Boolean),L=PLAN_LEVELS.find(x=>x[0]===PLAN.level);
+  const done=S.reduce((a,x)=>a+x.done,0),total=S.reduce((a,x)=>a+x.total,0),pctAll=total?Math.round(done/total*100):0,left=total-done;
+  const days=PLAN.exam?Math.ceil((new Date(PLAN.exam+'T09:00')-new Date())/864e5):null,hasDays=days!=null&&days>=0;
+  const todayN=XP.days()[today()]||0,goal=PLAN.goal||20,st=XP.streak(),hr=new Date().getHours();
+  const greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+  const pace=!left?'Every subtopic in your plan is done. Keep testing yourself to stay sharp.':hasDays&&days>0?`${fmtN(left)} subtopics to go. About <b>${Math.ceil(left/days)} a day</b> gets you through them all before ${fmtDate(PLAN.exam)}.`:hasDays?'Your exams start today. Good luck, you’ve got this!':`${fmtN(left)} subtopics to go. Add your exam date and we’ll give you a daily target.`;
+  const picks=S.filter(x=>x.next).sort((a,b)=>a.pct-b.pct||PLAN.subjects.findIndex(y=>y.s===a.p.s)-PLAN.subjects.findIndex(y=>y.s===b.p.s)).slice(0,3);
+  const locked=S.reduce((a,x)=>a+x.locked,0);
+  const weak=S.flatMap(x=>x.weak.map(u=>({...u,k:x.p.s,s:x.s}))).sort((a,b)=>a.sc-b.sc).slice(0,5);
+  const ringV=hasDays?days:pctAll,ringF=hasDays?Math.max(0,Math.min(1,1-days/240)):pctAll/100;
+  const ref=u=>`${u.p?u.p.s:u.k}|${u.ti}|${u.si}`;
+  const task=(x,i)=>{const u=x.next;return `<div class="pl-task" style="--c:${x.s.color};--i:${i}"><div class="pl-tt">${glyph(x.p.s)}<span><small>${esc(x.s.name)} · Topic ${esc(u.t.n)}</small><b>${esc(u.x.n)} ${esc(u.x.title)}</b></span></div>
+    <div class="pl-tb"><button class="btn watch sm" data-pwatch="${ref({p:x.p,ti:u.ti,si:u.si})}">▶ Watch</button><button class="btn sm" data-popen="${ref({p:x.p,ti:u.ti,si:u.si})}|notes">Read notes</button><button class="btn ghost sm" data-popen="${ref({p:x.p,ti:u.ti,si:u.si})}|practice">Practise</button></div></div>`};
+  const notes=liveNotes(),noteSubs=[...new Set([...PLAN.subjects.map(x=>x.s),...notes.map(n=>n.s).filter(Boolean)])].filter(k=>SUBJECTS[k]);
+  if(noteFilter!=='all'&&noteFilter!==''&&!noteSubs.includes(noteFilter))noteFilter='all';
+  main.innerHTML=`<div class="pl-hero"><div class="mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="pl-ring"><svg viewBox="0 0 170 170" aria-hidden="true"><defs><linearGradient id="plGrad"><stop offset="0" stop-color="#3DDB93"/><stop offset="1" stop-color="#F0C168"/></linearGradient></defs><circle class="bg" cx="85" cy="85" r="72"/><circle class="fg" id="plFg" cx="85" cy="85" r="72"/></svg>
+        <div><b>${hasDays?fmtN(ringV):ringV+'%'}</b><small>${hasDays?(days===1?'day to exams':'days to exams'):'of your plan done'}</small></div></div>
+      <div class="pl-hi"><small>${esc(L?L[1]:PLAN.level)} · ${S.length} subject${S.length===1?'':'s'}</small><h2>${greet} 👋</h2><p>${pace}</p>
+        <div class="pl-stats"><div><span>Today</span><b>${fmtN(todayN)} / ${goal}</b><div class="pl-gbar"><i style="width:${Math.min(100,todayN/goal*100)}%"></i></div></div><div><span>Streak</span><b>${st?`🔥 ${st}`:'0'}</b></div><div><span>Plan done</span><b>${pctAll}%</b></div>${hasDays?`<div><span>Exams</span><b class="pl-small">${fmtDate(PLAN.exam)}</b></div>`:''}</div>
+        <div class="pl-acts">${picks.length?'<button class="btn sm" id="plGo">▶ Start today’s first task</button>':''}<button class="btn ghost sm" id="plEdit">✎ Edit plan</button></div></div></div>
+    ${syncCard()}
+    <div class="pl-sec"><h3 class="pl-h">Today’s plan</h3><p class="muted">One subtopic from each of your least-covered subjects. Watch it, read the notes, then practise.</p>
+      ${picks.length?`<div class="pl-tasks">${picks.map(task).join('')}</div>`:`<div class="pl-empty">${locked?`🎉 You’ve done every subtopic you can open. ${fmtN(locked)} more unlock with full access.`:'🎉 You’ve done every subtopic in your plan. Re-test your weak spots below.'}</div>`}
+      ${picks.length&&locked&&!premium?`<p class="pl-upsell">🔒 ${fmtN(locked)} more subtopics in your plan unlock with <a href="#pricing">full access</a>.</p>`:''}</div>
+    <div class="pl-sec"><h3 class="pl-h">Your subjects</h3>
+      <div class="pl-scards">${S.map((x,i)=>`<div class="pl-scard" data-psubj="${x.p.s}" style="--c:${x.s.color};--i:${i}" role="link" tabindex="0" aria-label="Open ${esc(x.s.name)}">
+        <div class="pl-sr" style="--p:${x.pct}"><b>${x.pct}%</b></div><div class="pl-si"><b>${esc(x.s.name)}</b><small>${esc(bName(x.p.b,x.p.s))} · ${esc(PLAN.level)}</small><small>${fmtN(x.done)} of ${fmtN(x.total)} subtopics${x.avg!=null?` · average ${x.avg}%`:''}</small></div>
+        <div class="pl-strip" aria-hidden="true">${x.topics.map(o=>`<i style="--f:${o.f}" title="Topic ${esc(o.t.n)} · ${esc(o.t.title)}"></i>`).join('')}</div>
+        ${x.next?`<button class="btn ghost sm" data-popen="${ref({p:x.p,ti:x.next.ti,si:x.next.si})}|notes"><span>Next: ${esc(x.next.x.n)} ${esc(x.next.x.title)}</span><span>→</span></button>`:`<button class="btn ghost sm" data-psubj-go="${x.p.s}"><span>${x.locked?'Unlock the rest with full access':'All done · revise any topic'}</span><span>→</span></button>`}</div>`).join('')}</div>
+      <p class="muted pl-free">Want to try another subject? Everything stays open in <a href="#home">Subjects</a>.</p></div>
+    ${weak.length?`<div class="pl-sec"><h3 class="pl-h">Needs another look</h3><p class="muted">Your lowest scores. A second try is the fastest way to lock them in.</p>
+      <div>${weak.map(u=>`<div class="pl-wk" style="--c:${u.s.color}"><b class="sc">${u.sc}%</b><span><small>${esc(u.s.name)}</small><b>${esc(u.x.n)} ${esc(u.x.title)}</b></span><button class="btn sm" data-popen="${ref(u)}|practice">Try again</button></div>`).join('')}</div></div>`:''}
+    <div class="pl-sec" id="plNotes"><div class="pl-nhead"><div><h3 class="pl-h">Your notes</h3><p class="muted" style="margin:0">Formulas, mnemonics, what your teacher said: anything you want to remember.</p></div><button class="btn" id="nNew">+ New note</button></div>
+      <div class="pl-filters">${[['all','All'],['','General'],...noteSubs.map(k=>[k,SUBJECTS[k].name])].map(([k,n])=>{const c=k==='all'?notes.length:notes.filter(x=>(x.s||'')===k).length;return `<button class="pl-chip${noteFilter===k?' on':''}" data-nf="${k}">${esc(n)} <small>${c}</small></button>`}).join('')}</div>
+      <div class="pl-notes" id="nList">${notesHtml()}</div></div>`;
+  requestAnimationFrame(()=>{const fg=$('#plFg');if(fg)fg.style.strokeDashoffset=452-452*ringF});
+  wirePlanBoard(main,picks)}
+
+function noteHtml(n,i){const c=n.s&&SUBJECTS[n.s]?SUBJECTS[n.s].color:'var(--muted)';
+  return `<div class="pl-note" data-id="${esc(n.id)}" style="--c:${c};--i:${i}"><div class="pl-nt"><select data-f="s" aria-label="Subject"><option value="">General</option>${Object.entries(SUBJECTS).map(([k,s])=>`<option value="${k}"${n.s===k?' selected':''}>${esc(s.name)}</option>`).join('')}</select><button class="pl-ndel" type="button" title="Delete note" aria-label="Delete note">🗑</button></div>
+    <input data-f="t" maxlength="120" placeholder="Title" value="${esc(n.t||'')}" aria-label="Note title"><textarea data-f="x" maxlength="4000" rows="5" placeholder="Write anything…" aria-label="Note">${esc(n.x||'')}</textarea><small class="pl-nat">Edited ${fmtAgo(n.at||n.c||Date.now())}</small></div>`}
+function notesHtml(){const list=liveNotes().filter(n=>noteFilter==='all'||(n.s||'')===noteFilter).sort((a,b)=>(b.c||0)-(a.c||0));
+  return list.length?list.map(noteHtml).join(''):`<div class="pl-empty">${noteFilter==='all'?'No notes yet. Tap <b>+ New note</b> to write your first one.':'No notes here yet.'}</div>`}
+function addNote(s,t,x){PLAN=PLAN||{v:1,notes:[]};PLAN.notes=PLAN.notes||[];const now=Date.now(),n={id:uid(),s:s||'',t:t||'',x:x||'',c:now,at:now};PLAN.notes.push(n);planChanged();return n}
+
+function wirePlanBoard(main,picks){
+  const go=$('#plGo');if(go&&picks[0]){go.onclick=()=>{const u=picks[0].next;planOpen(picks[0].p.s,u.ti,u.si,'notes')}}
+  $('#plEdit').onclick=()=>{planDraft={level:PLAN.level,subjects:planSubs().map(x=>({...x})),exam:PLAN.exam||'',goal:PLAN.goal||20};planStep=0;renderPlan();scrollTo(0,0)};
+  main.onclick=e=>{const t=e.target;
+    const w=t.closest('[data-pwatch]');if(w){const [k,ti,si]=w.dataset.pwatch.split('|');planWatch(k,ti,si);return}
+    const o=t.closest('[data-popen]');if(o){const [k,ti,si,tab]=o.dataset.popen.split('|');planOpen(k,ti,si,tab);return}
+    const sg=t.closest('[data-psubj-go]');if(sg){planOpen(sg.dataset.psubjGo,null,null);return}
+    if(t.closest('[data-plsign]')){planSignIn();return}
+    if(t.closest('[data-plretry]')){PlanSync.send();return}
+    if(t.closest('[data-plout]')){planSignOut();return}
+    const f=t.closest('[data-nf]');if(f){noteFilter=f.dataset.nf;main.querySelectorAll('[data-nf]').forEach(b=>b.classList.toggle('on',b===f));$('#nList').innerHTML=notesHtml();return}
+    const del=t.closest('.pl-ndel');if(del){const card=del.closest('.pl-note'),n=PLAN.notes.find(x=>x.id===card.dataset.id);if(!n)return;
+      if((n.t||n.x)&&!confirm('Delete this note?'))return;Object.assign(n,{del:1,t:'',x:'',at:Date.now()});planChanged();renderPlanBoard(main);return}
+    const sc=t.closest('[data-psubj]');if(sc&&!t.closest('button'))planOpen(sc.dataset.psubj,null,null)};
+  main.onkeydown=e=>{const sc=e.target.closest&&e.target.closest('[data-psubj]');if(sc&&e.target===sc&&(e.key==='Enter'||e.key===' ')){e.preventDefault();planOpen(sc.dataset.psubj,null,null)}};
+  $('#nNew').onclick=()=>{const n=addNote(noteFilter==='all'?'':noteFilter);renderPlanBoard(main);const el=$(`.pl-note[data-id="${n.id}"] input`);if(el){el.focus();el.closest('.pl-note').scrollIntoView({block:'center',behavior:RM?'auto':'smooth'})}};
+  let saveT=null;
+  const edit=e=>{const card=e.target.closest('.pl-note'),f=e.target.dataset.f;if(!card||!f)return;const n=PLAN.notes.find(x=>x.id===card.dataset.id);if(!n)return;
+    n[f]=e.target.value;n.at=Date.now();card.querySelector('.pl-nat').textContent='Edited just now';
+    if(f==='s'){card.style.setProperty('--c',n.s&&SUBJECTS[n.s]?SUBJECTS[n.s].color:'var(--muted)')}
+    clearTimeout(saveT);saveT=setTimeout(planChanged,500)};
+  $('#nList').addEventListener('input',edit);$('#nList').addEventListener('change',e=>{if(e.target.dataset.f==='s')edit(e)})}
+
+// "Add a note" on any subtopic page: it goes to the student's notes in My Plan.
+function noteFromStudy(x){showModal('Add to your notes',`<p class="muted" style="margin-top:0">${esc(SUBJECTS[subject].name)} · ${esc(x.n)} ${esc(x.title)}</p>
+    <textarea id="snText" class="lbinput" rows="6" maxlength="4000" placeholder="What do you want to remember?"></textarea><button class="btn" id="snSave">Save note</button>`);
+  $('#snText').focus();
+  $('#snSave').onclick=()=>{const v=$('#snText').value.trim();if(!v){$('#snText').focus();return}addNote(subject,`${x.n} ${x.title}`,v);$('#modal').classList.remove('on');toast('📝','Saved to your notes in My Plan')}}
+
 /* routing */
-const PAGES=['home','study','games','me','pricing','voices'];
+const PAGES=['home','plan','study','games','me','pricing','voices'];
 function route(){Explainer.close();const h=location.hash.slice(1),p=PAGES.includes(h)?h:'home';
   $$('section.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));
   $$('.nav a.l').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+p));
   $('#navlinks').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
   document.body.classList.toggle('on-home',p==='home');topbar.classList.toggle('scrolled',p!=='home'&&scrollY>20);
-  if(p!=='games')stopGame();if(p==='study')renderStudy();else endSession();if(p==='games')renderGames();if(p==='me')renderMe();if(p==='voices')renderVoices();else stopVoicePreview();window.scrollTo(0,0)}
+  if(p!=='games')stopGame();if(p==='study')renderStudy();else endSession();if(p==='games')renderGames();if(p==='me')renderMe();if(p==='plan')renderPlan();if(p==='voices')renderVoices();else stopVoicePreview();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 $$('.nav a.l, .brand').forEach(x=>x.addEventListener('click',e=>{if(x.getAttribute('href')===location.hash){e.preventDefault();route()}}));
 $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)};
@@ -3122,7 +3473,7 @@ $('#themeBtn').onclick=()=>{const r=document.documentElement,dark=r.dataset.them
 const th=store.get('go-theme','');if(th)document.documentElement.dataset.theme=th;
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();
+renderPicker();route();PlanSync.pull();
 })();
 </script>
 
