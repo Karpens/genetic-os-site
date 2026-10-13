@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>/* Languages offered automatically to visitors whose browser uses them (others stay in the picker as beta). */window.FM_LIVE=[];
-try{var q=new URLSearchParams(location.search).get('lang'),L=['sk','de','es','ru','fr'],l=q||localStorage.getItem('fm-lang')||'';if(!l){var n=(navigator.language||'').slice(0,2).toLowerCase();if(FM_LIVE.indexOf(n)>=0)l=n}if(L.indexOf(l)>=0)document.documentElement.classList.add('i18n-wait')}catch(e){}</script>
+try{var q=new URLSearchParams(location.search).get('lang'),L=['sk','es','ru'],l=q||localStorage.getItem('fm-lang')||'';if(!l){var n=(navigator.language||'').slice(0,2).toLowerCase();if(FM_LIVE.indexOf(n)>=0)l=n}if(L.indexOf(l)>=0)document.documentElement.classList.add('i18n-wait')}catch(e){}</script>
 <title>Full Marks · GCSE and A-level revision: notes, 5,000+ questions, games</title>
 <meta name="description" content="Choose your subject and level. Topics and exam-style questions for GCSE, AS and A2.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1686,11 +1686,9 @@ const SUBJECTS={"biology":{"name":"Biology","short":"Bi","color":"#2CA891","GCSE
    curriculum in place of the UK exam boards. */
 const LOCALES={
   en:{name:'English',flag:'🇬🇧',html:'en-GB'},
-  sk:{name:'Slovenčina',flag:'🇸🇰',html:'sk',curr:'Slovensko',lv:{GCSE:['ZŠ 8.–9. ročník','Testovanie 9'],AS:['Gymnázium 1.–2. ročník','16–17 rokov'],A2:['Maturita','Gymnázium 3.–4. ročník']}},
-  de:{name:'Deutsch',flag:'🇩🇪',html:'de',curr:'Deutschland',lv:{GCSE:['Klasse 9–10','Mittlerer Schulabschluss'],AS:['Einführungsphase','Oberstufe, 1. Jahr'],A2:['Abitur','Qualifikationsphase']}},
-  es:{name:'Español',flag:'🇪🇸',html:'es',curr:'España',lv:{GCSE:['ESO','3.º y 4.º de ESO'],AS:['1.º de Bachillerato','16–17 años'],A2:['2.º de Bachillerato','PAU']}},
-  ru:{name:'Русский',flag:'🇷🇺',html:'ru',curr:'Россия',lv:{GCSE:['ОГЭ','8–9 класс'],AS:['10 класс','Старшая школа'],A2:['ЕГЭ','11 класс']}},
-  fr:{name:'Français',flag:'🇫🇷',html:'fr',curr:'France',lv:{GCSE:['Brevet','Collège, 4e–3e'],AS:['Première','Lycée'],A2:['Terminale','Baccalauréat']}},
+  sk:{name:'Slovenčina',flag:'🇸🇰',html:'sk',curr:'Slovensko',hero:{get:'Získaj',in:'v predmete',grade:'1',pred:'odhad'},lv:{GCSE:['ZŠ 8.–9. ročník','Testovanie 9'],AS:['Gymnázium 1.–2. ročník','16–17 rokov'],A2:['Maturita','Gymnázium 3.–4. ročník']}},
+  es:{name:'Español',flag:'🇪🇸',html:'es',curr:'España',hero:{get:'Saca',in:'en',grade:'10',pred:'previsto'},lv:{GCSE:['ESO','3.º y 4.º de ESO'],AS:['1.º de Bachillerato','16–17 años'],A2:['2.º de Bachillerato','PAU']}},
+  ru:{name:'Русский',flag:'🇷🇺',html:'ru',curr:'Россия',hero:{get:'Получи',in:'по предмету',grade:'5',pred:'прогноз'},lv:{GCSE:['ОГЭ','8–9 класс'],AS:['10 класс','Старшая школа'],A2:['ЕГЭ','11 класс']}},
 };
 const I18N=(()=>{
   const q=new URLSearchParams(location.search).get('lang');
@@ -1756,6 +1754,10 @@ I18N.load=async function(){
     document.title=trText(document.title);
     const md_=document.querySelector('meta[name=description]');if(md_)md_.content=trText(md_.content);
     renderPicker();route();
+    const H=I18N.L.hero,rot=$('#rotWord');
+    if(H&&rot){const h1=rot.closest('h1');for(const w=document.createTreeWalker(h1,NodeFilter.SHOW_TEXT);w.nextNode();){const n=w.currentNode;if(n.nodeValue==='Get ')n.nodeValue=H.get+' ';else if(n.nodeValue==='in ')n.nodeValue=H.in+' '}
+      Object.values(SUBJECTS).forEach((x,i)=>{if(rot.children[i])rot.children[i].textContent=x.name+'.'});
+      const pc=document.querySelector('.chipf.c2');if(pc)pc.innerHTML=`<big>${esc(H.grade)}</big> ${esc(H.pred)}`}
     trNode(document.body);
     _trObs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:_trAttrs});
   }catch(e){console.warn('language',e);I18N.on=false;toast('🌐','That language couldn’t load, so the page is in English.')}
