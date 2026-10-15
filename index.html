@@ -1712,6 +1712,29 @@ html.i18n .board-ui{display:none!important}
 .l3-seq{font:800 15px ui-monospace,Menlo,monospace;letter-spacing:.2em;margin:8px 0 0;line-height:1.5;word-break:break-all}
 @media (max-width:820px){.l3-main{grid-template-columns:1fr}.lab-sec{padding:16px;border-radius:22px}.l3-stage{aspect-ratio:1/1}}
 @media (prefers-reduced-motion:reduce){.lab-sec,.lab-pop{animation:none}}
+/* ---------- account: sign in and sign out in the top bar ---------- */
+#acctBtn{display:inline-flex;align-items:center;gap:8px;flex:none;border:0;border-radius:999px;padding:9px 16px 9px 13px;background:var(--ink);color:var(--bg);font:700 14px "IBM Plex Sans",sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 8px 20px -12px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s}
+#acctBtn:hover{transform:translateY(-2px)}
+#acctBtn.in{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);padding:4px 12px 4px 4px}
+#acctBtn.in[aria-expanded=true]{box-shadow:inset 0 0 0 2px var(--stain)}
+body.on-home header.top:not(.scrolled) #acctBtn:not(.in){background:#fff;color:#1D1A15}
+body.on-home header.top:not(.scrolled) #acctBtn.in{background:rgba(255,255,255,.1);color:var(--stage-ink);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.25)}
+.acct-ic{font-size:15px;line-height:1}
+.acct-av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--stain),var(--sky));color:#fff;font-weight:800;font-size:13.5px;flex:none}
+.acct-av.lg{width:44px;height:44px;font-size:18px}
+.acct-em{max-width:120px;overflow:hidden;text-overflow:ellipsis}
+.acct-car{font-size:11px;opacity:.6}
+.acct-menu{position:fixed;z-index:130;width:290px;max-width:calc(100vw - 20px);background:var(--paper);color:var(--ink);border-radius:22px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line);padding:8px;animation:dropIn .25s cubic-bezier(.2,1.2,.4,1)}
+.acct-head{display:flex;gap:12px;align-items:center;padding:10px 10px 14px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.acct-head b{display:block;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;max-width:200px;white-space:nowrap}
+.acct-head small{display:block;color:var(--muted);font-weight:600;font-size:12.5px}
+.acct-head .ok{color:var(--ok)}
+.acct-menu a,.acct-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:0;border-radius:14px;background:none;color:var(--ink);font:600 14.5px "IBM Plex Sans",sans-serif;text-decoration:none;cursor:pointer;text-align:left}
+.acct-menu a:hover,.acct-menu button:hover,.acct-menu a:focus-visible,.acct-menu button:focus-visible{background:var(--bg)}
+.acct-menu .acct-out{color:var(--bad);margin-top:6px;border-top:1px solid var(--line);border-radius:0 0 14px 14px;padding-top:13px}
+.acct-menu i{font-style:normal;width:20px;text-align:center}
+@media (max-width:1420px) and (min-width:861px){.acct-em{display:none}#acctBtn.in{padding:4px 10px 4px 4px;gap:5px}}
+@media (max-width:860px){#acctBtn{order:2;padding:8px 13px}#acctBtn.in{padding:4px 9px 4px 4px;gap:5px}.acct-em{display:none}#menuBtn{order:3}}
 </style>
 </head>
 <body>
@@ -1748,6 +1771,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <button class="btn ghost sm" id="themeBtn" aria-label="Switch light or dark">◐</button>
       <a class="btn sm" href="#pricing" id="navCta">Get full access</a>
     </nav>
+    <button type="button" id="acctBtn" aria-haspopup="dialog"><span class="acct-ic" aria-hidden="true">👤</span>Sign in</button>
   </div>
 </header>
 
@@ -2705,7 +2729,7 @@ $('#mClose').onclick=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('on')};
 
 function authToken(){return store.get('go-auth-token','')}
-function setAuthToken(t,email){if(t){store.set('go-auth-token',t)}if(email)store.set('go-auth-email',email)}
+function setAuthToken(t,email){if(t){store.set('go-auth-token',t)}if(email)store.set('go-auth-email',email);document.dispatchEvent(new Event('fm-auth'))}
 async function refreshPremiumFromServer(){
   if(!API_BASE || !authToken())return;
   try{
@@ -3987,7 +4011,7 @@ const SCH={seq:0,role:null,roleAt:0,
   copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('📋','Copied'),()=>prompt(T('Copy this:'),t))},
   signin(main,title,text,then){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🔐</div><h3>${esc(title)}</h3><p class="muted">${esc(text)}</p><button class="btn" data-sign>Sign in with email</button></div>`;
     main.querySelector('[data-sign]').onclick=()=>planSignIn(title,then||route)},
-  signOut(){if(!confirm(T('Sign out on this device?')))return;try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k)}catch(e){}location.reload()},
+  signOut(){Acct.signOut()},
   fail(main,e,again){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">⚠️</div><h3>${esc(e.message)}</h3><p><button class="btn ghost" data-again>Try again</button></p></div>`;main.querySelector('[data-again]').onclick=again},
   foot(){const em=store.get('go-auth-email','');return em?`<p class="sc-note">Signed in as ${esc(em)} · <a href="#" data-out>Sign out</a></p>`:''},
   bindOut(main){main.querySelectorAll('[data-out]').forEach(a=>a.onclick=e=>{e.preventDefault();SCH.signOut()})},
@@ -5038,6 +5062,34 @@ const L3={
     for(let i=0;i<4;i++)for(let j=0;j<3;j++)for(let k=0;k<2;k++)met.atoms.push(['M',(i-1.5)*1.05,(j-1)*1.05,(k-.5)*1.05]);M.metal=met;
     return M})()};
 
+
+/* ---------- account: sign in and sign out from the top bar ---------- */
+const Acct={
+  render(){const b=$('#acctBtn');if(!b)return;const em=store.get('go-auth-email',''),on=!!(API_BASE&&authToken()&&em);b.classList.toggle('in',on);
+    b.innerHTML=on?`<span class="acct-av" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><span class="acct-em">${esc(em.split('@')[0])}</span><span class="acct-car" aria-hidden="true">▾</span>`:`<span class="acct-ic" aria-hidden="true">👤</span>${esc(T('Sign in'))}`;
+    b.setAttribute('aria-label',on?T('Your account: {0}',em):T('Sign in'));b.setAttribute('aria-haspopup',on?'menu':'dialog');b.setAttribute('aria-expanded','false');b.hidden=!API_BASE},
+  open(){if(!authToken()){planSignIn('Sign in to Full Marks',()=>{Acct.render();route()});return}const m=$('.acct-menu');if(m){Acct.close();return}Acct.menu()},
+  close(){const m=$('.acct-menu');if(m)m.remove();const b=$('#acctBtn');if(b)b.setAttribute('aria-expanded','false');document.removeEventListener('pointerdown',Acct._out,true);document.removeEventListener('keydown',Acct._key)},
+  async menu(){const b=$('#acctBtn'),em=store.get('go-auth-email',''),m=document.createElement('div');m.className='acct-menu';m.setAttribute('role','menu');m.setAttribute('aria-label',T('Your account'));
+    const item=(href,ic,label)=>`<a role="menuitem" href="${href}"><i aria-hidden="true">${ic}</i>${esc(label)}</a>`;
+    const draw=role=>{const t=role&&role.teacher&&role.teacher.status==='teacher',admin=role&&role.admin,joined=role?role.joined:0;
+      m.innerHTML=`<div class="acct-head"><span class="acct-av lg" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><div><b>${esc(em)}</b><small class="${premium?'ok':''}">${premium?'✓ '+esc(T('Full access')):esc(T('Free account'))}${t?' · '+esc(T('Teacher')):joined?' · '+esc(T('In a class')):''}</small></div></div>
+        ${item('#plan','📅',T('My plan'))}${item('#me','📈',T('My progress'))}${t?item('#teacher','🧑‍🏫',T('Teacher portal')):item('#school','🏫',T('My classes and grades'))}
+        ${admin?item('#admin','🛡️',T('Teacher approvals')):''}${premium?'':item('#pricing','⭐',T('Get full access'))}
+        <button type="button" role="menuitem" class="acct-out"><i aria-hidden="true">↪</i>${esc(T('Sign out'))}</button>`;
+      m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut()};
+    draw(SCH.role);document.body.appendChild(m);
+    const r=b.getBoundingClientRect();m.style.top=Math.round(r.bottom+8)+'px';m.style.left=Math.round(Math.max(10,Math.min(innerWidth-m.offsetWidth-10,r.right-m.offsetWidth)))+'px';
+    b.setAttribute('aria-expanded','true');(m.querySelector('a')||m).focus();
+    Acct._out=e=>{if(!m.contains(e.target)&&!b.contains(e.target))Acct.close()};Acct._key=e=>{if(e.key==='Escape'){Acct.close();b.focus()}
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){const its=[...m.querySelectorAll('[role=menuitem]')],i=its.indexOf(document.activeElement);its[(i+(e.key==='ArrowDown'?1:-1)+its.length)%its.length].focus();e.preventDefault()}};
+    document.addEventListener('pointerdown',Acct._out,true);document.addEventListener('keydown',Acct._key);
+    try{const role=await SCH.getRole();if(m.isConnected)draw(role)}catch(e){/* offline: the menu still works */}},
+  signOut(){if(!confirm(T('Sign out on this device? Everything stays saved in your account, and you can sign in again any time.')))return;Acct.close();
+    try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k)}catch(e){}
+    location.hash='home';location.reload()}};
+document.addEventListener('fm-auth',()=>{SCH.role=null;Acct.render()});
+
 /* routing */
 const PAGES=['home','plan','study','games','me','pricing','voices','school','teacher','admin'];
 function route(){Explainer.close();const h=location.hash.slice(1),hb=h.split('/')[0],p=PAGES.includes(hb)?hb:'home';
@@ -5053,7 +5105,7 @@ $('#themeBtn').onclick=()=>{const r=document.documentElement,dark=r.dataset.them
 const th=store.get('go-theme','');if(th)document.documentElement.dataset.theme=th;
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();
+renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=`${I18N.L.flag} ${I18N.lang.toUpperCase()}`;lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
   if(API_BASE)fetch(`${API_BASE}/i18n/status`).then(r=>r.ok?r.json():null).then(j=>{if(j)langShare=Object.fromEntries(Object.entries(j.languages||{}).map(([k,v])=>[k,v.share]));showLang()}).catch(()=>{});
