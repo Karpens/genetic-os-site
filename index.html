@@ -1370,6 +1370,240 @@ html.i18n .board-ui{display:none!important}
 .lang-opt i{font-style:normal;color:var(--stain);font-weight:800}
 .lang-opt:hover{box-shadow:inset 0 0 0 1.5px var(--stain)}
 .lang-opt.on{box-shadow:inset 0 0 0 2px var(--stain);background:var(--stain-soft)}
+/* ---------- school: teacher portal, classes and grades ---------- */
+.sc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.sc-head h2{margin:4px 0 2px}
+.sc-head p{margin:0}
+.sc-actions{display:flex;gap:10px;flex-wrap:wrap}
+.sc-back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:10px}
+.sc-back:hover{color:var(--stain)}
+.sc-card{background:var(--paper);border-radius:26px;padding:24px;box-shadow:var(--shadow),0 0 0 1px var(--line);animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both}
+.sc-card+.sc-card{margin-top:16px}
+.sc-card h3{margin:0 0 4px;font:800 21px/1.2 "Bricolage Grotesque",sans-serif}
+.sc-card h4{margin:0 0 10px;font:800 17px/1.25 "Bricolage Grotesque",sans-serif}
+.sc-card>p:first-of-type{margin-top:0}
+.sc-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:16px}
+.sc-cols>.sc-card{margin:0}
+.sc-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.sc-tile{background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;gap:2px;animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both;animation-delay:calc(var(--i,0)*40ms)}
+.sc-tile big{font:800 28px/1.1 "Bricolage Grotesque",sans-serif;display:flex;align-items:baseline;gap:6px}
+.sc-tile big small{font:700 14px "IBM Plex Sans",sans-serif;color:var(--muted)}
+.sc-tile span{color:var(--muted);font-weight:600;font-size:13px}
+.sc-tile .sc-tr{font-size:22px}
+.sc-tile.up big{color:var(--ok)}.sc-tile.down big{color:var(--bad)}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.sc-class{--c:var(--stain);position:relative;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:26px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);color:var(--ink);text-decoration:none;overflow:hidden;transition:transform .25s cubic-bezier(.2,1.4,.3,1),box-shadow .25s;animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both;animation-delay:calc(var(--i,0)*50ms)}
+.sc-class::before{content:'';position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 40%,var(--gold)))}
+.sc-class:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg),0 0 0 1.5px var(--c)}
+.sc-ctop{display:flex;align-items:center;gap:12px}
+.sc-ctop .gl{width:44px;height:44px;color:var(--c);flex:none}
+.sc-ctop b{display:block;font:800 19px/1.2 "Bricolage Grotesque",sans-serif}
+.sc-ctop small{color:var(--muted);font-weight:600}
+.sc-cnum{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sc-cnum div{background:var(--bg);border-radius:16px;padding:10px 12px}
+.sc-cnum big{display:block;font:800 24px/1.1 "Bricolage Grotesque",sans-serif}
+.sc-cnum small{color:var(--muted);font-weight:600;font-size:12.5px}
+.sc-cfoot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:700}
+.sc-cfoot .code{margin-left:auto;color:var(--muted)}
+.sc-cfoot .code b{color:var(--ink);letter-spacing:.12em;font-family:ui-monospace,Menlo,monospace}
+.sc-spark{width:100%;height:46px;display:block;color:var(--c)}
+.sc-empty{text-align:center;padding:40px 24px}
+.sc-empty .big{font-size:46px;line-height:1}
+.sc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;text-align:left}
+.sc-steps div{background:var(--bg);border-radius:18px;padding:14px 16px;font-weight:600;font-size:14px}
+.sc-steps b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--stain);color:#fff;margin-bottom:6px}
+.sc-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:var(--bg2);color:var(--muted)}
+.sc-pill.ok{background:var(--ok-soft);color:var(--ok)}.sc-pill.bad{background:var(--bad-soft);color:var(--bad)}.sc-pill.gold{background:var(--gold-soft);color:color-mix(in srgb,var(--gold) 70%,var(--ink))}
+.sc-tr{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:13px;white-space:nowrap}
+.sc-tr.up{color:var(--ok)}.sc-tr.down{color:var(--bad)}.sc-tr.flat{color:var(--muted)}
+.sc-let{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 7px;border-radius:10px;font:800 15px "Bricolage Grotesque",sans-serif;color:#fff;background:hsl(var(--h,120) 62% 42%)}
+.sc-let.lg{min-width:54px;height:48px;font-size:24px;border-radius:14px}
+.sc-let.none{background:var(--bg2);color:var(--muted)}
+.sc-pct{font-weight:700;color:var(--muted);font-size:13.5px;white-space:nowrap}
+.sc-codebox{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--stage);color:var(--stage-ink);border-radius:24px;padding:18px 22px;margin-bottom:18px}
+.sc-codebox p{margin:0;color:var(--stage-muted);font-size:14px;flex:1 1 220px}
+.sc-codebox p b{color:var(--stage-ink)}
+.sc-code{font:800 34px/1 ui-monospace,Menlo,monospace;letter-spacing:.18em;color:#9BE15D}
+.sc-codebox .btn.ghost{color:var(--stage-ink);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.2)}
+.sc-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;padding:5px;border-radius:18px;background:var(--bg2);width:max-content;max-width:100%}
+.sc-tabs a{padding:9px 16px;border-radius:14px;font-weight:700;font-size:14px;color:var(--muted);text-decoration:none}
+.sc-tabs a.on{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.sc-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.sc-tools .lbinput{margin:0;width:auto;flex:1 1 200px;padding:10px 14px}
+.sc-tools select.lbinput{flex:0 1 auto}
+.sc-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px}
+.sc-table th{text-align:left;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sc-table td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.sc-table tbody tr{transition:background .15s}
+.sc-table tbody tr.go{cursor:pointer}
+.sc-table tbody tr.go:hover{background:var(--bg)}
+.sc-table tr:last-child td{border-bottom:0}
+.sc-who{display:flex;align-items:center;gap:10px;min-width:0}
+.sc-who b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-who small{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
+.sc-av{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;background:hsl(var(--h,150) 45% 45%)}
+.sc-av.lg{width:64px;height:64px;font-size:22px}
+.sc-plus{border:0;width:34px;height:34px;border-radius:12px;background:var(--stain-soft);color:var(--stain);font-size:20px;font-weight:800;cursor:pointer;transition:transform .2s}
+.sc-plus:hover{transform:scale(1.1)}
+.sc-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -6px;padding:0 6px}
+.sc-book td,.sc-book th{text-align:center}
+.sc-book td:first-child,.sc-book th:first-child{text-align:left;position:sticky;left:0;background:var(--paper);z-index:1}
+.sc-book th small{display:block;font-weight:600;text-transform:none;letter-spacing:0}
+.sc-cell{border:0;background:none;cursor:pointer;padding:4px;border-radius:10px;color:var(--ink);font:inherit;min-width:52px}
+.sc-cell:hover{background:var(--bg)}
+.sc-cell.empty{color:var(--line);font-size:18px}
+.sc-cell .sc-pct{display:block;font-size:12px}
+.sc-bars{display:flex;flex-direction:column;gap:9px}
+.sc-bar{display:grid;grid-template-columns:minmax(80px,38%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.sc-bar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.sc-bar i{height:10px;border-radius:99px;background:var(--bg2);overflow:hidden;position:relative}
+.sc-bar i::after{content:'';position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--c,var(--stain));border-radius:99px;animation:grow .9s cubic-bezier(.2,.9,.3,1)}
+.sc-bar b{font-size:13px;min-width:44px;text-align:right}
+.sc-chart{width:100%;height:auto;display:block;overflow:visible}
+.sc-chart .ax{stroke:var(--line);stroke-width:1}
+.sc-chart text{fill:var(--muted);font:600 11px "IBM Plex Sans",sans-serif}
+.sc-chart .ln{fill:none;stroke:var(--c,var(--stain));stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2000;stroke-dashoffset:2000;animation:scDraw 1.4s cubic-bezier(.3,.8,.3,1) forwards}
+.sc-chart .ar{fill:color-mix(in srgb,var(--c,var(--stain)) 14%,transparent)}
+.sc-chart circle{fill:var(--paper);stroke:var(--c,var(--stain));stroke-width:2.5}
+@keyframes scDraw{to{stroke-dashoffset:0}}
+.sc-dist{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:10px}
+.sc-dist div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+.sc-dist i{width:100%;max-width:46px;border-radius:10px 10px 4px 4px;background:hsl(var(--h) 62% 45%);height:var(--v);min-height:3px;transform-origin:bottom;animation:scRise .8s cubic-bezier(.2,1.2,.3,1) both}
+.sc-dist b{font-size:13px}
+.sc-dist small{font-weight:700;color:var(--muted);font-size:12px}
+@keyframes scRise{from{transform:scaleY(0)}}
+.sc-heat{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;margin:8px 0 4px}
+.sc-heat i{aspect-ratio:1;border-radius:3px;background:var(--bg2)}
+.sc-heat i.l1{background:color-mix(in srgb,var(--stain) 30%,var(--bg2))}.sc-heat i.l2{background:color-mix(in srgb,var(--stain) 60%,var(--bg2))}.sc-heat i.l3{background:var(--stain)}
+.sc-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.sc-list li{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:10px 12px;border-radius:14px;background:var(--bg);font-size:14px}
+.sc-list li a{color:var(--ink);font-weight:700;text-decoration:none}
+.sc-list li a:hover{color:var(--stain)}
+.sc-form{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+.sc-form label{display:flex;flex-direction:column;font-weight:700;font-size:13px;color:var(--muted);gap:0}
+.sc-form label.full{grid-column:1/-1}
+.sc-form .lbinput{margin:6px 0 8px}
+.sc-letters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.sc-letters button{border:0;min-width:44px;height:40px;border-radius:12px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);font:800 15px "Bricolage Grotesque",sans-serif;cursor:pointer;transition:transform .15s}
+.sc-letters button:hover{transform:translateY(-2px)}
+.sc-letters button.on{background:hsl(var(--h) 62% 42%);color:#fff;box-shadow:none}
+.sc-msg{min-height:1.2em;font-size:14px;margin:6px 0 0;color:var(--bad)}
+.modal .box.wide{max-width:880px;max-height:calc(100vh - 40px);overflow:auto}
+.sc-bulk td{padding:6px 8px}
+.sc-bulk select,.sc-bulk input{margin:0!important;padding:8px 10px!important}
+.sc-bulk input[type=number]{width:84px}
+.sc-gl{display:grid;gap:8px}
+.sc-gitem{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--bg);animation:popIn .4s both;animation-delay:calc(var(--i,0)*30ms)}
+.sc-gitem b{display:block}
+.sc-gitem small{color:var(--muted);font-size:13px}
+.sc-gitem .note{grid-column:1/-1;font-size:13.5px;color:var(--ink);background:var(--paper);border-radius:10px;padding:8px 10px;margin-top:-2px}
+.sc-gitem.new{box-shadow:inset 0 0 0 2px var(--gold)}
+.sc-new{font-size:11px;font-weight:800;color:#1D1A15;background:var(--gold);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.sc-join{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.sc-join .lbinput{margin:6px 0 0}
+.sc-join label{font-weight:700;font-size:13px;color:var(--muted)}
+.sc-codein{text-transform:uppercase;letter-spacing:.2em;font-family:ui-monospace,Menlo,monospace;font-weight:800}
+.sc-note{font-size:13px;color:var(--muted);margin:12px 0 0;max-width:none}
+.sc-reqs{margin-bottom:18px}
+.sc-cols>.sc-card.wide{grid-column:1/-1}
+.sc-loading{padding:50px 0;text-align:center;color:var(--muted);font-weight:700}
+.sc-loading::before{content:'';display:block;width:34px;height:34px;margin:0 auto 12px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--stain);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sc-hero{position:relative;overflow:hidden;border-radius:32px;padding:34px;background:var(--stage);color:var(--stage-ink);margin-bottom:18px}
+.sc-hero h2{margin:6px 0 10px;color:var(--stage-ink)}
+.sc-hero p{color:var(--stage-muted);max-width:640px;margin:0}
+.sc-hero ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;list-style:none;padding:0;margin:22px 0 0}
+.sc-hero li{background:rgba(255,255,255,.06);border-radius:16px;padding:12px 14px;font-weight:600;font-size:14px}
+.sc-hero li b{display:block;color:#9BE15D}
+.sc-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-left:4px;vertical-align:top;animation:pulseOk 1.6s infinite}
+@media (max-width:700px){
+  .sc-card{padding:18px;border-radius:22px}
+  .sc-form{grid-template-columns:1fr}
+  .sc-join{grid-template-columns:1fr}
+  .sc-code{font-size:28px}
+  .sc-tabs{width:100%}
+  .sc-tabs a{flex:1;text-align:center;padding:9px 8px}
+  .sc-table.cards thead{display:none}
+  .sc-table.cards,.sc-table.cards tbody,.sc-table.cards tr,.sc-table.cards td{display:block}
+  .sc-table.cards tr{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 4px;border-bottom:1px solid var(--line)}
+  .sc-table.cards td{border:0;padding:2px 0}
+  .sc-table.cards td[data-l]::before{content:attr(data-l)': ';color:var(--muted);font-size:12px;font-weight:700}
+  .sc-table.cards td.nm{grid-column:1/-1}
+  .sc-table.cards td.act{grid-column:2;grid-row:1;align-self:center}
+  .sc-hero{padding:24px;border-radius:26px}
+}
+/* ---------- AI tutor under the explanation ---------- */
+.why-ai{display:inline-flex;align-items:center;gap:8px;margin:12px 12px 0 0;border:0;border-radius:999px;padding:9px 16px;font:700 14px "IBM Plex Sans",sans-serif;color:#fff;cursor:pointer;background:linear-gradient(110deg,var(--violet),var(--sky));box-shadow:0 10px 24px -12px var(--violet);transition:transform .2s}
+.why-ai:hover{transform:translateY(-2px)}
+.why-ai[aria-expanded=true]{background:var(--bg2);color:var(--ink);box-shadow:none}
+.ai-box{margin:14px 0 6px;border-radius:24px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1.5px color-mix(in srgb,var(--violet) 35%,var(--line));overflow:hidden;animation:popIn .4s cubic-bezier(.2,1.2,.3,1)}
+.ai-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(110deg,color-mix(in srgb,var(--violet) 12%,var(--paper)),color-mix(in srgb,var(--sky) 10%,var(--paper)))}
+.ai-orb{width:30px;height:30px;border-radius:50%;flex:none;background:conic-gradient(from 0deg,var(--violet),var(--sky),var(--pink),var(--violet));animation:spin 6s linear infinite;box-shadow:0 0 18px -4px var(--violet)}
+.ai-head b{font:800 16px "Bricolage Grotesque",sans-serif}
+.ai-head small{display:block;color:var(--muted);font-size:12.5px;font-weight:600}
+.ai-left{margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.ai-x{border:0;background:none;font-size:22px;line-height:1;color:var(--muted);cursor:pointer;padding:2px 6px}
+.ai-log{display:flex;flex-direction:column;gap:10px;padding:14px 16px;max-height:460px;overflow-y:auto}
+.ai-log:empty{display:none}
+.ai-m{max-width:88%;padding:10px 14px;border-radius:18px;font-size:15px;line-height:1.55;animation:popIn .3s both;overflow-wrap:anywhere}
+.ai-m.u{align-self:flex-end;background:var(--stain);color:#fff;border-bottom-right-radius:6px}
+.ai-m.a{align-self:flex-start;background:var(--bg);border-bottom-left-radius:6px}
+.ai-m.a p{margin:0 0 8px}.ai-m.a p:last-child{margin:0}
+.ai-m.a ul,.ai-m.a ol{margin:4px 0 8px;padding-left:20px}
+.ai-m.err{background:var(--bad-soft);color:var(--bad);align-self:stretch;max-width:none;font-weight:600;font-size:14px}
+.ai-m img{display:block;max-width:220px;max-height:220px;border-radius:12px;margin-bottom:6px}
+.ai-m .ph{display:inline-block;font-size:12px;font-weight:700;opacity:.85;margin-bottom:4px}
+.ai-typing{display:inline-flex;gap:4px;padding:4px 0}
+.ai-typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:aiDot 1s infinite}
+.ai-typing i:nth-child(2){animation-delay:.15s}.ai-typing i:nth-child(3){animation-delay:.3s}
+@keyframes aiDot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.ai-chips{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 12px}
+.ai-chips button{border:0;border-radius:999px;padding:7px 13px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);font:600 13.5px "IBM Plex Sans",sans-serif;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.ai-chips button:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--violet)}
+.ai-form{display:flex;gap:8px;align-items:flex-end;padding:12px 16px;border-top:1px solid var(--line)}
+.ai-form textarea{flex:1;resize:none;min-height:44px;max-height:140px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:15px/1.4 "IBM Plex Sans",sans-serif}
+.ai-att{flex:none;width:44px;height:44px;border-radius:14px;border:0;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);font-size:19px;cursor:pointer}
+.ai-att.on{box-shadow:inset 0 0 0 2px var(--violet);background:color-mix(in srgb,var(--violet) 10%,var(--bg))}
+.ai-prev{display:flex;align-items:center;gap:10px;padding:0 16px 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.ai-prev:empty{display:none}
+.ai-prev img{width:54px;height:54px;object-fit:cover;border-radius:10px}
+.ai-prev button{border:0;background:none;color:var(--bad);font-weight:700;cursor:pointer}
+.ai-foot{padding:0 16px 12px;font-size:12px;color:var(--muted);margin:0}
+.ai-gate{padding:16px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;font-size:14.5px}
+.ai-gate p{margin:0}
+.ai-gate div{display:flex;gap:8px;flex-wrap:wrap}
+.sc-list li{flex-wrap:wrap}
+.nav a.l,.brand,#navCta{white-space:nowrap}
+@media (min-width:861px) and (max-width:1420px){.nav{gap:8px}.navlinks{gap:6px}.nav a.l{padding:8px 3px;font-size:14.5px}}
+@media (min-width:861px) and (max-width:1180px){#navCta{display:none}}
+/* ---------- who are you (first visit) ---------- */
+.who{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:20px;background:rgba(15,13,10,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:fadeIn .35s;overflow-y:auto}
+.who-box{position:relative;width:100%;max-width:1000px;background:var(--paper);border-radius:36px;padding:40px;box-shadow:var(--shadow-lg);animation:popIn .55s cubic-bezier(.2,1.3,.3,1);text-align:center;margin:auto}
+.who-box h2{margin:8px 0 6px;font-size:clamp(32px,5vw,50px)}
+.who-box>p{max-width:540px;margin:0 auto}
+.who-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.who-o{--c:var(--stain);position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;border:0;border-radius:28px;padding:26px 22px 22px;background:color-mix(in srgb,var(--c) 9%,var(--bg));box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 30%,var(--line));color:var(--ink);font-family:inherit;cursor:pointer;overflow:hidden;transition:transform .3s cubic-bezier(.2,1.4,.3,1),box-shadow .3s;animation:popIn .55s cubic-bezier(.2,1.3,.3,1) both;animation-delay:calc(160ms + var(--i)*90ms)}
+.who-o::after{content:'';position:absolute;z-index:-1;width:180px;height:180px;border-radius:50%;right:-70px;top:-70px;background:radial-gradient(circle,color-mix(in srgb,var(--c) 38%,transparent),transparent 70%);transition:transform .5s}
+.who-o:hover,.who-o:focus-visible{transform:translateY(-6px);box-shadow:inset 0 0 0 2.5px var(--c),0 26px 44px -24px var(--c);outline:none}
+.who-o:hover::after,.who-o:focus-visible::after{transform:scale(1.5)}
+.who-ic{font-size:48px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.15));transition:transform .4s cubic-bezier(.2,1.6,.3,1)}
+.who-o:hover .who-ic{transform:scale(1.12) rotate(-6deg)}
+.who-o b{font:800 22px/1.2 "Bricolage Grotesque",sans-serif}
+.who-o small{color:var(--muted);font-size:14.5px;font-weight:500;line-height:1.45}
+.who-o i{font-style:normal;font-weight:800;color:var(--c);margin-top:auto;padding-top:10px;font-size:22px;transition:transform .3s}
+.who-o:hover i{transform:translateX(6px)}
+.who-x{margin-top:22px}
+@media (max-width:760px){
+  .who{place-items:start center}
+  .who-box{padding:26px 16px;border-radius:28px}
+  .who-opts{grid-template-columns:1fr;gap:10px;margin-top:20px}
+  .who-o{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2px 14px;padding:16px 18px;border-radius:22px}
+  .who-ic{grid-row:span 2;font-size:36px;margin:0}
+  .who-o b{font-size:18px}
+  .who-o small{grid-column:2;font-size:13.5px}
+  .who-o i{grid-row:1/span 2;grid-column:3;padding:0;margin:0}
+}
+@media (prefers-reduced-motion:reduce){.who,.who-box,.who-o,.sc-card,.sc-class,.sc-tile,.sc-gitem,.ai-box,.ai-m{animation:none!important}.sc-chart .ln{animation:none;stroke-dashoffset:0}}
 </style>
 </head>
 <body>
@@ -1399,6 +1633,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <a class="l" href="#study">Study</a>
       <a class="l" href="#games">Games</a>
       <a class="l" href="#me">Progress</a>
+      <a class="l" href="#school" id="navSchool">School</a>
       <a class="l" href="#pricing">Pricing</a>
       <a class="xpchip" href="#me" id="xpChip" title="Your level and streak"><span class="ring"><b id="xpLv">1</b></span><span id="xpTxt">0 XP</span><span class="fl" id="xpFl"></span></a>
       <button class="btn ghost sm langbtn" id="langBtn" aria-label="Language" translate="no"></button>
@@ -1643,6 +1878,23 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <div id="planMain"></div>
   </div>
 </section>
+<section class="page" id="p-school">
+  <div class="wrap">
+    <span class="eyebrow">School</span>
+    <h2 style="margin-bottom:24px">My classes and <span class="grad">grades</span></h2>
+    <div id="schoolMain"></div>
+  </div>
+</section>
+<section class="page" id="p-teacher">
+  <div class="wrap"><div id="teacherMain"></div></div>
+</section>
+<section class="page" id="p-admin">
+  <div class="wrap">
+    <span class="eyebrow">Owner</span>
+    <h2 style="margin-bottom:24px">Teacher <span class="grad">approvals</span></h2>
+    <div id="adminMain"></div>
+  </div>
+</section>
 <section class="page" id="p-voices">
   <div class="wrap">
     <span class="eyebrow">Explainer narration</span>
@@ -1653,7 +1905,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </section>
 </main>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="#" id="langFoot" translate="no"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="#teacher">For teachers</a> · <a href="#" id="whoFoot">Teacher or student?</a> · <a href="#" id="langFoot" translate="no"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -2153,7 +2405,7 @@ const fmt=ms=>{const s=Math.ceil(ms/1000);return `${Math.floor(s/60)}:${String(s
 function finish(){if(!session||session.done)return;session.done=true;clearInterval(timerInt);timerInt=null;
   const pct=Math.round(session.score/session.qs.length*100);if(session.key)saveProg(session.key,pct);
   if(session.mockKey){const pb=+store.get(session.mockKey,'0');if(pct>pb)store.set(session.mockKey,String(pct))}
-  if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);renderStudy();LB.pushXp()}
+  if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);StuAct.log({subject,level,topic:session.title,pct,n:session.qs.length,kind:session.exam?'exam':'quiz'});StuAct.push(true);renderStudy();LB.pushXp()}
 
 function renderSession(){
   const S=session,main=$('#studyMain');
@@ -2186,7 +2438,7 @@ function renderSession(){
     main.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.i===q[2])x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     onAnswer(ok,ok?b:main.querySelector(`.opt[data-i="${q[2]}"]`));
-    $('#after').innerHTML=`${explainHtml(q,ok)}<button class="btn" id="next">${last?'See results':'Next question'}</button>`;
+    $('#after').innerHTML=`${explainHtml(q,ok,subject,{mine:q[1][i]})}<button class="btn" id="next">${last?'See results':'Next question'}</button>`;
     $('#next').onclick=()=>{S.qi++;if(last)finish();else renderSession()};$('#next').focus();
   });
   if(W){const inp=$('#wrIn'),go=$('#wrGo');inp.focus();
@@ -2197,7 +2449,7 @@ function renderSession(){
       if(S.exam){S.qi++;if(last)finish();else renderSession();return}
       inp.disabled=true;go.disabled=true;inp.classList.add(a.ok?'ok':'no');onAnswer(a.ok,inp);
       // "I was right": another wording or other units the checker didn't know. It counts.
-      const show=()=>{$('#after').innerHTML=`${explainHtml(q,a.ok)}<div class="actions">${a.ok?'':'<button class="btn ghost" id="wrOk">I was right, count it</button>'}<button class="btn" id="next">${last?'See results':'Next question'}</button></div>`;
+      const show=()=>{$('#after').innerHTML=`${explainHtml(q,a.ok,subject,{mine:a.typed,written:true})}<div class="actions">${a.ok?'':'<button class="btn ghost" id="wrOk">I was right, count it</button>'}<button class="btn" id="next">${last?'See results':'Next question'}</button></div>`;
         const wo=$('#wrOk');if(wo)wo.onclick=()=>{a.ok=true;S.score++;Mist.track(q,true);inp.classList.replace('no','ok');show()};
         $('#next').onclick=()=>{S.qi++;if(last)finish();else renderSession()};$('#next').focus()};
       show()};
@@ -2339,7 +2591,7 @@ function playMatch(){
 }
 
 /* checkout + accounts (Stripe backend) */
-function showModal(title, html){$('#mTitle').textContent=title;$('#mBody').innerHTML=html;$('#modal').classList.add('on');$('#mClose').focus()}
+function showModal(title, html){$('#modal .box').classList.remove('wide');$('#mTitle').textContent=title;$('#mBody').innerHTML=html;$('#modal').classList.add('on');$('#mClose').focus()}
 $('#mClose').onclick=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('on')};
 
@@ -2475,7 +2727,7 @@ const XP={get xp(){return +store.get('fm-xp','0')||0},
     if(lvlOf(after)>lvlOf(before))levelUp(lvlOf(after))},
   answer(ok){const d=this.days(),k=today(),had=this.streak();d[k]=(d[k]||0)+1;store.set('fm-days',JSON.stringify(d));
     const s=this.stats();s.answered++;if(ok)s.correct++;s.subjects[subject]=(s.subjects[subject]||0)+1;store.set('fm-stats',JSON.stringify(s));
-    const now=this.streak();if(now>had&&now>1)toast('🔥',`${now}-day streak! Keep it going.`);renderXpChip()},
+    const now=this.streak();if(now>had&&now>1)toast('🔥',`${now}-day streak! Keep it going.`);renderXpChip();StuAct.push()},
   bump(key){const s=this.stats();s[key]=(s[key]||0)+1;store.set('fm-stats',JSON.stringify(s))}};
 function renderXpChip(pop){const xp=XP.xp,l=lvlOf(xp),p=Math.round((xp-xpFor(l))/(xpFor(l+1)-xpFor(l))*100),st=XP.streak();
   const ring=$('#xpChip .ring');if(!ring)return;ring.style.setProperty('--p',p);$('#xpLv').textContent=l;$('#xpTxt').textContent=`${fmtN(xp)} XP`;$('#xpFl').textContent=st?`🔥${st}`:'';
@@ -2561,7 +2813,7 @@ function renderTry(){const card=$('#tryCard');if(!card)return;const pool=[];
   let done=false;card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(done)return;done=true;const i=+b.dataset.i,ok=i===q[2];
     card.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.i===q[2])x.classList.add('right')});if(!ok)b.classList.add('wrong');
     onAnswer(ok,ok?b:card.querySelector(`.opt[data-i="${q[2]}"]`));
-    $('#tryAfter').innerHTML=`${explainHtml(q,ok,k)}<div class="actions"><button class="btn" id="tryGo">Revise ${esc(s.name)} ${l} →</button></div>`;
+    $('#tryAfter').innerHTML=`${explainHtml(q,ok,k,{mine:q[1][i],level:l})}<div class="actions"><button class="btn" id="tryGo">Revise ${esc(s.name)} ${l} →</button></div>`;
     $('#tryGo').onclick=()=>{subject=k;level=l;save();renderPicker();resetView();location.hash='study'}})}
 $('#tryNext')&&($('#tryNext').onclick=()=>{renderTry();if(!RM)$('#tryCard').animate([{transform:'rotateY(90deg)',opacity:0},{transform:'none',opacity:1}],{duration:500,easing:'cubic-bezier(.2,1.2,.3,1)'})});
 
@@ -2575,7 +2827,7 @@ function playDaily(){stopGame();const qs=dailyQs();if(!qs.length){$('#gamesMain'
     $('#gStop').onclick=renderGames;let done=false;
     gm.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(done)return;done=true;const ok=+b.dataset.i===q[2];if(ok){score++;b.classList.add('right')}else{b.classList.add('wrong');gm.querySelector(`.opt[data-i="${q[2]}"]`).classList.add('right')}
       onAnswer(ok,ok?b:gm.querySelector(`.opt[data-i="${q[2]}"]`));
-      gm.querySelector('.quiz').insertAdjacentHTML('beforeend',`${explainHtml(q,ok)}<button class="btn" id="dNext">${i===4?'See result':'Next'}</button>`);
+      gm.querySelector('.quiz').insertAdjacentHTML('beforeend',`${explainHtml(q,ok,subject,{mine:q[1][+b.dataset.i]})}<button class="btn" id="dNext">${i===4?'See result':'Next'}</button>`);
       $('#dNext').onclick=()=>{i++;if(i<5)draw();else end()};$('#dNext').focus()})};
   const end=()=>{const k='fm-daily-'+today(),first=!store.get(k,'');store.set(k,String(score));if(first){XP.add(score*10+30);XP.bump('daily')}
     if(score>=4)rain();finishGame('daily',score,`${score} of 5 correct${first?` · +${score*10+30} XP daily bonus`:' · come back tomorrow for a new set'}`)};
@@ -2655,14 +2907,14 @@ function eqTiles(e){e=e.trim().replace(/[.,;:]+$/,'');const i=e.lastIndexOf('=')
   const toks=lhs.split(/(\s*[×÷+\-−*\/]\s*)/).filter(t=>t.trim());
   return `<div class="eqrow">${toks.map(t=>`<span class="${/^\s*[×÷+\-−*\/]\s*$/.test(t)?'op':'tk'}" style="--t:${k++}">${esc(t.trim())}</span>`).join('')}<span class="op" style="--t:${k++}">=</span><span class="tk res" style="--t:${k++}">${esc(rhs.trim())}</span></div>`}
 function whyKeys(q){const txt=(q[1][q[2]]+' '+q[3]).toLowerCase();return [...new Set(txt.match(/[a-z][a-z-]{3,}/g)||[])].filter(w=>!STOPW.has(w)).slice(0,40)}
-function explainHtml(q,ok,subj=subject){const parts=String(q[3]).split(/(?<=[.!?])\s+(?=\S)/);const x=subOfQ(q),ans=q[1][q[2]],col=(SUBJECTS[subj]||{}).color||'#0E9F5D';
+function explainHtml(q,ok,subj=subject,o={}){const parts=String(q[3]).split(/(?<=[.!?])\s+(?=\S)/);const x=subOfQ(q),ans=q[1][q[2]],col=(SUBJECTS[subj]||{}).color||'#0E9F5D';
   const hi=s=>esc(s).replace(/(?<![#\w])(\d[\d.,]*\s?(?:%|°C|kJ|J|N|W|V|A|Ω|m\/s²|m\/s|mol|dm³|cm³|g|kg|m|s|Hz|Pa|eV)?)/g,'<b class="num">$1</b>');
   const eqs=[...new Set(String(q[3]).match(EQ_RE)||[])].slice(0,2),hasD=!!(x&&x.d);
   const top=`<div class="why-top"><strong class="verdict ${ok?'ok':'no'}">${ok?'✓ Correct!':'✗ Not quite.'}</strong><span class="why-tag">Here’s why</span></div>
     <div class="why-ans"><span>${ok?'Your answer':'Right answer'}</span><b>${esc(ans)}</b></div>`;
   const rest=`${eqs.length?`<div class="why-eq"><span class="why-lbl">The working</span>${eqs.map(eqTiles).join('')}</div>`:''}
     <div class="why-steps">${parts.map((s,i)=>`<span class="xs" style="--s:${i}">${hi(s.trim())} </span>`).join('')}</div>
-    <button class="why-report" type="button" data-rq="${esc(q[0])}" data-ra="${esc(ans)}" data-rs="${esc(subj)}" data-rt="${esc(x?x.title:'')}">⚑ Report a mistake</button>`;
+    <button class="why-ai" type="button" data-ai="${AIT.reg(q,ok,subj,o)}" aria-expanded="false">✨ Ask AI about this</button><button class="why-report" type="button" data-rq="${esc(q[0])}" data-ra="${esc(ans)}" data-rs="${esc(subj)}" data-rt="${esc(x?x.title:'')}">⚑ Report a mistake</button>`;
   if(hasD)return `<div class="why has-d ${ok?'ok':'no'}" style="--wc:${col}"><div class="why-body">${top}</div>
     <figure class="why-fig diag spot" data-kw="${esc(whyKeys(q).join(' '))}" title="Tap to draw it again">${x.d}<i class="scan" aria-hidden="true"></i><button class="replay" type="button" aria-label="Draw the diagram again">↻</button><figcaption>📊 ${esc(x.title)} <span class="hlcount"></span></figcaption></figure>
     <div class="why-body">${rest}</div></div>`;
@@ -3028,7 +3280,7 @@ function playMistakes(){stopGame();const token={};game=token;const gm=$('#gamesM
     $('#gStop').onclick=renderGames;let once=false;
     gm.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(once)return;once=true;const ok=+b.dataset.i===q[2],right=gm.querySelector(`.opt[data-i="${q[2]}"]`);gm.querySelectorAll('.opt').forEach(o=>o.disabled=true);right.classList.add('right');if(!ok)b.classList.add('wrong');
       onAnswer(ok,ok?b:right,6);if(Mist.track(q,ok)){mastered++;const s=document.createElement('div');s.className='mastered';s.textContent='MASTERED';gm.querySelector('.quiz').appendChild(s)}
-      $('#mxAfter').innerHTML=`${explainHtml(q,ok)}<button class="btn" id="mxNext">${i+1<list.length?'Next':'Finish'}</button>`;$('#mxNext').onclick=()=>{i++;draw();scrollTo(0,0)};$('#mxNext').focus()})};
+      $('#mxAfter').innerHTML=`${explainHtml(q,ok,subject,{mine:q[1][+b.dataset.i]})}<button class="btn" id="mxNext">${i+1<list.length?'Next':'Finish'}</button>`;$('#mxNext').onclick=()=>{i++;draw();scrollTo(0,0)};$('#mxNext').focus()})};
   const done=()=>{stopGame();const left=Mist.list().length;gm.innerHTML=`<div class="quiz result"><div class="bigscore">${mastered}</div><h3>${mastered===1?'mistake':'mistakes'} mastered</h3><p class="muted">${left?`${left} still to fix. A question needs two right answers in a row to leave the list.`:'Your list is empty. Brilliant!'}</p><div class="actions">${left?'<button class="btn" id="mxAgain">Go again</button>':''}<button class="btn ghost" id="mxAll">All games</button></div></div>`;
     if(!left&&mastered)rain();$('#mxAll').onclick=renderGames;if($('#mxAgain'))$('#mxAgain').onclick=playMistakes};
   draw()}
@@ -3408,9 +3660,9 @@ function syncCard(){const em=store.get('go-auth-email',''),s=PlanSync.state;
   return `<div class="pl-sync ok" id="plSync"><i class="dot"></i><span>${s==='saving'?'Saving…':`<b>✓ Saved to your account</b>`} ${em?`· ${esc(em)}`:''}</span><button class="btn ghost sm" data-plout>Sign out</button></div>`}
 
 // Sign in with a 6-digit code from email (anyone can have an account; it keeps their plan and notes).
-function planSignIn(){
+function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof done!=='function')done=null;
   if(!API_BASE){toast('⚠️','Accounts aren’t connected on this copy of the site.');return}
-  showModal('Keep your plan everywhere',`<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
+  showModal(title||'Keep your plan everywhere',`<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
     <input type="email" id="siEmail" class="lbinput" placeholder="you@example.com" autocomplete="email" value="${esc(store.get('go-auth-email',''))}">
     <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
   const send=$('#siSend');$('#siEmail').focus();
@@ -3429,8 +3681,8 @@ function planSignIn(){
         v.disabled=true;v.textContent='Signing in…';
         try{const r2=await fetch(`${API_BASE}/auth/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code:code.value})});
           const j2=await r2.json().catch(()=>({}));if(!r2.ok||!j2.token)throw new Error(j2.error||'That code didn’t work. Try again.');
-          setAuthToken(j2.token,j2.email||email);$('#modal').classList.remove('on');toast('✓','Signed in. Your plan is saved to your account.');
-          PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();if(location.hash==='#plan')renderPlan();
+          setAuthToken(j2.token,j2.email||email);$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
+          PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done();
         }catch(e){$('#siMsg').textContent=e.message;v.disabled=false;v.textContent='Sign in'}};
     }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
 }
@@ -3571,14 +3823,473 @@ function noteFromStudy(x){showModal('Add to your notes',`<p class="muted" style=
   $('#snText').focus();
   $('#snSave').onclick=()=>{const v=$('#snText').value.trim();if(!v){$('#snText').focus();return}addNote(subject,`${x.n} ${x.title}`,v);$('#modal').classList.remove('on');toast('📝','Saved to your notes in My Plan')}}
 
+/* ---------- school: who are you, teacher portal, classes and grades ---------- */
+const SCH={seq:0,role:null,roleAt:0,
+  async api(method,path,body){
+    const r=await fetch(`${API_BASE}${path}`,{method,headers:{'Content-Type':'application/json',...(authToken()?{Authorization:'Bearer '+authToken()}:{})},body:body?JSON.stringify(body):undefined});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){const e=new Error(j.error||T('Something went wrong, please try again.'));e.status=r.status;throw e}
+    return j},
+  async getRole(force){if(force||!this.role||Date.now()-this.roleAt>60000){this.role=await this.api('GET','/role');this.roleAt=Date.now()}return this.role},
+  types:[['test','Test'],['quiz','Quiz'],['homework','Homework'],['exam','Exam'],['mock','Mock exam'],['practical','Practical'],['oral','Oral'],['project','Project'],['other','Other']],
+  sName(k){return SUBJECTS[k]?SUBJECTS[k].name:T('Other')},
+  sCol(k){return (SUBJECTS[k]||{}).color||'#7A7264'},
+  sGlyph(k){return SUBJECTS[k]?glyph(k):'<span class="gl" style="display:grid;place-items:center;font-size:26px">📘</span>'},
+  tName(k){const t=this.types.find(x=>x[0]===k);return t?t[1]:k},
+  opts(list,sel){return list.map(([v,l])=>`<option value="${esc(v)}"${String(v)===String(sel)?' selected':''}>${esc(l)}</option>`).join('')},
+  subOpts(sel){return this.opts([...Object.keys(SUBJECTS).map(k=>[k,this.sName(k)]),['other','Other']],sel)},
+  lvOpts(sel){return this.opts(LEVELS.map(([k])=>[k,LV(k)]),sel)},
+  typeOpts(sel){return this.opts(this.types,sel)},
+  wOpts(sel){const w=[...new Set([0.5,1,2,3,+sel||1])].sort((a,b)=>a-b);return this.opts(w.map(x=>[x,x===1?'Normal (×1)':`×${x}`]),+sel||1)},
+  scaleOf(lv){return lv==='GCSE'?['A*','A','B','C','D','E','F','G','U']:['A*','A','B','C','D','E','U']},
+  d(s){return new Date(String(s).length===10?s+'T12:00:00':s)},
+  date(s){if(!s)return '';const x=this.d(s);return isNaN(x)?'':x.toLocaleDateString(I18N.on?I18N.L.html:'en-GB',{day:'numeric',month:'short',year:'numeric'})},
+  short(s){if(!s)return '';const x=this.d(s);return isNaN(x)?'':x.toLocaleDateString(I18N.on?I18N.L.html:'en-GB',{day:'numeric',month:'short'})},
+  month(m){const x=new Date(m+'-15T12:00:00');return isNaN(x)?m:x.toLocaleDateString(I18N.on?I18N.L.html:'en-GB',{month:'short',year:'2-digit'})},
+  ago(s){if(!s)return T('never');const n=Math.floor((Date.now()-this.d(s))/864e5);return n<=0?T('today'):n===1?T('yesterday'):n<14?T('{0} days ago',n):this.date(s)},
+  hue(l,sc){const i=sc.indexOf(l);return i<0?0:Math.round(135*(1-i/Math.max(1,sc.length-1)))},
+  let(l,sc,big){return l?`<b class="sc-let${big?' lg':''}" style="--h:${this.hue(l,sc)}">${esc(l)}</b>`:`<b class="sc-let none${big?' lg':''}">—</b>`},
+  badge(g,sc){return g.letter?this.let(g.letter,sc):g.pct!=null?`<b class="sc-let" style="--h:${Math.round(g.pct*1.35)}">${g.pct}%</b>`:this.let(null,sc)},
+  trend(t){if(t==null)return '<span class="sc-tr flat">—</span>';const c=t>=5?'up':t<=-5?'down':'flat';return `<span class="sc-tr ${c}" title="${esc(T('Latest grades compared with the ones before'))}">${t>0?'▲':t<0?'▼':'■'} ${t>0?'+':''}${t}</span>`},
+  score(g,sc){if(g.pct!=null)return g.pct;const i=g.letter?sc.indexOf(g.letter):-1;return i<0?null:(sc.length-1-i)/(sc.length-1)*100},
+  initials(n){return String(n||'?').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'?'},
+  av(name,key,lg){let h=0;for(const c of String(key||name))h=(h*31+c.charCodeAt(0))%360;return `<span class="sc-av${lg?' lg':''}" style="--h:${h}">${esc(this.initials(name))}</span>`},
+  pct(p){return p==null?'':`<span class="sc-pct">${p}%</span>`},
+  gtxt(g){return [g.letter,g.pct!=null?g.pct+'%':''].filter(Boolean).join(' · ')},
+  loading(){return '<div class="sc-loading">Loading…</div>'},
+  tiles(list){return `<div class="sc-tiles">${list.map(([v,l,c],i)=>`<div class="sc-tile ${c||''}" style="--i:${i}"><big>${v}</big><span>${esc(l)}</span></div>`).join('')}</div>`},
+  // A line chart of 0–100 values: [{l: label, v: value, t: tooltip}]
+  chart(pts,col){pts=pts.filter(p=>p.v!=null);if(!pts.length)return '<p class="muted">No grades yet.</p>';
+    const W=600,H=210,pl=34,pr=14,pt=14,pb=30,iw=W-pl-pr,ih=H-pt-pb,n=pts.length,X=i=>pl+(n===1?iw/2:i*iw/(n-1)),Y=v=>pt+ih-Math.max(0,Math.min(100,v))/100*ih;
+    const grid=[0,25,50,75,100].map(v=>`<line class="ax" x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${pl-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`).join('');
+    const d=pts.map((p,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(p.v).toFixed(1)}`).join(' '),every=Math.ceil(n/7);
+    const labels=pts.map((p,i)=>i%every===0||i===n-1?`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${esc(p.l)}</text>`:'').join('');
+    const dots=pts.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p.v)}" r="4.5"><title>${esc(p.t||'')}</title></circle>`).join('');
+    return `<svg class="sc-chart" viewBox="0 0 ${W} ${H}" style="--c:${col||'var(--stain)'}" role="img" aria-label="${esc(T('Results over time'))}">${grid}${n>1?`<path class="ar" d="${d} L${X(n-1).toFixed(1)},${Y(0)} L${X(0).toFixed(1)},${Y(0)} Z"/><path class="ln" d="${d}"/>`:''}${dots}${labels}</svg>`},
+  spark(m){if(!m||m.length<2)return '<svg class="sc-spark" viewBox="0 0 100 30" aria-hidden="true"></svg>';const n=m.length,X=i=>i*100/(n-1),Y=v=>28-v*.26,d=m.map((p,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(p.avg).toFixed(1)}`).join(' ');
+    return `<svg class="sc-spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="${d} L100,30 L0,30 Z" fill="currentColor" opacity=".12"/><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg>`},
+  bars(items){return items.length?`<div class="sc-bars">${items.map(x=>`<div class="sc-bar" style="--c:${x.c||'var(--stain)'}"><span title="${esc(x.l)}">${x.h||esc(x.l)}</span><i style="--w:${Math.max(2,Math.min(100,x.v||0))}%"></i><b>${x.t}</b></div>`).join('')}</div>`:'<p class="muted">Nothing yet.</p>'},
+  // "biology:GCSE:1.1" → "Biology · GCSE · 1.1 Cell structure"
+  topic(key){const [s,l,...r]=String(key).split(':'),n=r.join(':'),S=SUBJECTS[s],d=S&&S[l];let title=n;
+    if(d&&d.topics)for(const t of d.topics)for(const x of t.subs||[])if(String(x.key||x.n)===n)title=`${x.n} ${x.title}`;
+    return `${S?S.name:s} · ${LV(l)} · ${title}`},
+  modal(title,html,wide){showModal(title,html);$('#modal .box').classList.toggle('wide',!!wide)},
+  close(){$('#modal').classList.remove('on')},
+  copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('📋','Copied'),()=>prompt(T('Copy this:'),t))},
+  signin(main,title,text,then){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🔐</div><h3>${esc(title)}</h3><p class="muted">${esc(text)}</p><button class="btn" data-sign>Sign in with email</button></div>`;
+    main.querySelector('[data-sign]').onclick=()=>planSignIn(title,then||route)},
+  signOut(){if(!confirm(T('Sign out on this device?')))return;try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k)}catch(e){}location.reload()},
+  fail(main,e,again){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">⚠️</div><h3>${esc(e.message)}</h3><p><button class="btn ghost" data-again>Try again</button></p></div>`;main.querySelector('[data-again]').onclick=again},
+  foot(){const em=store.get('go-auth-email','');return em?`<p class="sc-note">Signed in as ${esc(em)} · <a href="#" data-out>Sign out</a></p>`:''},
+  bindOut(main){main.querySelectorAll('[data-out]').forEach(a=>a.onclick=e=>{e.preventDefault();SCH.signOut()})},
+  who(){return store.get('fm-who','')},
+  nav(){const a=$('#navSchool');if(!a)return;const t=this.who()==='teacher';a.setAttribute('href',t?'#teacher':'#school');a.textContent=t?T('Teacher'):T('School')},
+  navDot(on){const a=$('#navSchool');if(!a)return;const d=a.querySelector('.sc-dot');if(on&&!d)a.insertAdjacentHTML('beforeend','<i class="sc-dot" aria-hidden="true"></i>');if(!on&&d)d.remove()}};
+
+/* who are you: teacher, student at a school, or studying alone */
+const WHO={
+  open(again){if($('.who'))return;const o=document.createElement('div');o.className='who';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-labelledby','whoH');
+    o.innerHTML=`<div class="who-box"><span class="eyebrow">Welcome to Full Marks</span><h2 id="whoH">Who are <span class="grad">you?</span></h2><p class="muted">Pick one and we’ll take you to the right place. You can change it any time at the bottom of the page.</p>
+      <div class="who-opts">
+        <button class="who-o" data-w="teacher" style="--c:var(--violet);--i:0"><span class="who-ic" aria-hidden="true">🧑‍🏫</span><b>I’m a teacher</b><small>Create classes, approve your students, add grades and follow everyone’s progress.</small><i aria-hidden="true">→</i></button>
+        <button class="who-o" data-w="school" style="--c:var(--sky);--i:1"><span class="who-ic" aria-hidden="true">🏫</span><b>I’m a student at a school</b><small>Choose your school and subject, enter your class code and see your grades.</small><i aria-hidden="true">→</i></button>
+        <button class="who-o" data-w="solo" style="--c:var(--stain);--i:2"><span class="who-ic" aria-hidden="true">🚀</span><b>I study on my own</b><small>Pick your subjects and start revising straight away.</small><i aria-hidden="true">→</i></button>
+      </div>${again?'<button class="btn ghost sm who-x" data-w="">Close</button>':''}</div>`;
+    document.body.appendChild(o);document.body.style.overflow='hidden';setTimeout(()=>{const b=o.querySelector('.who-o');if(b)b.focus()},400);
+    const close=()=>{o.remove();document.body.style.overflow=''};
+    o.onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const w=b.dataset.w;close();if(!w)return;store.set('fm-who',w);SCH.nav();
+      if(w==='teacher')location.hash='teacher';else if(w==='school')location.hash='school';
+      else{if(location.hash&&location.hash!=='#home')location.hash='home';setTimeout(()=>{const p=$('#build');if(p)p.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})},250)}};
+    o.onkeydown=e=>{if(e.key==='Escape'&&again)close()}},
+  boot(){SCH.nav();const f=$('#whoFoot');if(f)f.onclick=e=>{e.preventDefault();WHO.open(true)};
+    const h=location.hash.slice(1);if(!SCH.who()&&(!h||h==='home'))setTimeout(()=>{if(!SCH.who()&&!$('#modal').classList.contains('on'))WHO.open(false)},900)}};
+
+/* a student's practice, shared with the teachers of the classes they are in */
+const StuAct={t:null,
+  joined(){return store.get('fm-in-class','')==='1'},
+  setJoined(v){store.set('fm-in-class',v?'1':'')},
+  log(e){const a=jget('fm-recent',[]),list=Array.isArray(a)?a:[];list.unshift({at:new Date().toISOString(),...e});store.set('fm-recent',JSON.stringify(list.slice(0,60)))},
+  snap(){const s=XP.stats(),mist={};for(const m of Mist.all())mist[m.k]=(mist[m.k]||0)+1;
+    return {xp:XP.xp,streak:XP.streak(),answered:s.answered||0,correct:s.correct||0,exams:s.exams||0,perfect:s.perfect||0,days:XP.days(),topics:getProg(),mistakes:mist,recent:jget('fm-recent',[])}},
+  push(now){if(!API_BASE||!authToken()||!this.joined())return;clearTimeout(this.t);this.t=setTimeout(()=>this.send(),now?800:15000)},
+  async send(){try{await fetch(`${API_BASE}/me/activity`,{method:'PUT',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify({data:this.snap()})})}catch(e){/* offline: sent with the next answer */}},
+  // On page load: are they in a class, and has a teacher added a grade since their last visit?
+  async boot(){if(!API_BASE||!authToken())return;
+    try{const d=await SCH.api('GET','/me/classes');this.setJoined(d.classes.length>0);if(!d.classes.length)return;this.push(true);
+      const ids=d.classes.flatMap(c=>c.grades.map(g=>g.id));
+      if(!store.get('fm-seen-init','')){store.set('fm-seen-grades',JSON.stringify(ids.slice(-3000)));store.set('fm-seen-init','1');return}
+      const seen=new Set(jget('fm-seen-grades',[])),fresh=d.classes.flatMap(c=>c.grades.filter(g=>!seen.has(g.id)).map(g=>[c,g]));
+      if(fresh.length&&!location.hash.startsWith('#school')){SCH.navDot(true);const [c,g]=fresh[0];
+        setTimeout(()=>toast('📬',fresh.length>1?T('{0} new grades. Open School to see them.',fresh.length):T('New grade in {0}: {1}',c.name,SCH.gtxt(g))),1500)}}
+    catch(e){/* signed out or offline */}}};
+
+/* ---------- students: School page ---------- */
+const SchoolPage={timer:null,schools:null};
+function schoolTeacherCta(){return `<p class="sc-note" style="text-align:center;margin-top:22px">Are you a teacher? <a href="#teacher">Open the teacher portal →</a></p>`}
+async function renderSchool(h){const main=$('#schoolMain');if(!main)return;const seq=++SCH.seq;clearInterval(SchoolPage.timer);
+  const parts=(h||'school').split('/'),join=parts[1]==='join'?{code:(parts[2]||'').replace(/\D/g,'').slice(0,6),subject:parts[3]||'',school:decodeURIComponent(parts[4]||'')}:null;
+  if(join&&join.code)store.set('fm-join',JSON.stringify(join));
+  if(!API_BASE){main.innerHTML='<div class="sc-card">Accounts aren’t connected on this copy of the site.</div>';return}
+  if(!authToken()){main.dataset.ok='';main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🏫</div><h3>Join your class</h3><p class="muted" style="max-width:560px;margin:8px auto 18px">Your teacher gives you a 6-digit class code. Sign in with your email, choose your school and subject, and type the code. As soon as your teacher approves you, your grades appear here, and the AI tutor is free for you.</p><button class="btn" data-sign>Sign in with email</button></div>${schoolTeacherCta()}`;
+    main.querySelector('[data-sign]').onclick=()=>planSignIn('Join your class',route);return}
+  if(main.dataset.ok!=='1')main.innerHTML=SCH.loading();
+  try{const [d,sc]=await Promise.all([SCH.api('GET','/me/classes'),SCH.api('GET','/schools').then(x=>x.schools).catch(()=>SchoolPage.schools||[])]);
+    if(seq!==SCH.seq)return;SchoolPage.schools=sc;main.dataset.ok='1';schoolDraw(main,d);
+    SchoolPage.timer=setInterval(()=>{if(!location.hash.startsWith('#school')){clearInterval(SchoolPage.timer);return}
+      if(!document.hidden&&!$('#modal').classList.contains('on')&&!main.contains(document.activeElement))schoolRefresh(main)},20000)}
+  catch(e){if(seq!==SCH.seq)return;main.dataset.ok='';if(e.status===401)return SCH.signin(main,'Join your class','You’ve been signed out. Sign in again to see your classes.');SCH.fail(main,e,()=>renderSchool(h))}}
+async function schoolRefresh(main){try{const d=await SCH.api('GET','/me/classes');if(!location.hash.startsWith('#school'))return;
+  if(JSON.stringify(d)!==main.dataset.sig){const was=(JSON.parse(main.dataset.sig||'{}').requests||[]).filter(r=>r.status==='pending').length,now=(d.requests||[]).filter(r=>r.status==='pending').length;
+    schoolDraw(main,d);if(now<was&&d.classes.length)toast('🎉','Your teacher approved you!')}}catch(e){}}
+function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classes,rq=d.requests||[];StuAct.setJoined(cl.length>0);if(cl.length)StuAct.push(true);
+  const init=!!store.get('fm-seen-init',''),seen=new Set(jget('fm-seen-grades',[])),pend=rq.filter(r=>r.status==='pending'),dec=rq.filter(r=>r.status==='declined');
+  const reqs=pend.map(r=>`<div class="sc-card" style="--c:${SCH.sCol(r.subject)}"><div class="sc-ctop" style="flex-wrap:wrap">${SCH.sGlyph(r.subject)}<div><b>${esc(r.name)}</b><small>${esc(SCH.sName(r.subject))} · ${esc(LV(r.level))}${r.teacher.name?' · '+esc(r.teacher.name):''}</small></div><span class="sc-pill gold" style="margin-left:auto">⏳ Waiting for your teacher</span></div>
+      <p class="muted" style="margin:12px 0 0">You asked to join as <b>${esc(r.you||'')}</b> ${esc(SCH.ago(r.at))}. Your teacher sees your request now and will approve you. This page updates by itself.</p><p class="sc-note"><a href="#" data-leave="${esc(r.id)}" data-msg="Cancel this request?">Cancel request</a></p></div>`).join('')
+    +dec.map(r=>`<div class="sc-card"><b>Your teacher didn’t approve your request to join ${esc(r.name)}.</b><p class="muted" style="margin:6px 0 0">Check the school, subject and code with your teacher and try again.</p><p class="sc-note"><a href="#" data-leave="${esc(r.id)}">OK, hide this</a></p></div>`).join('');
+  const joinWait=jget('fm-join',null),cards=cl.map((c,i)=>schoolClassCard(c,i,seen,init)).join(''),jc=schoolJoinCard(cl.length>0||pend.length>0,joinWait);
+  main.innerHTML=(joinWait&&joinWait.code?jc+reqs+cards:cl.length||pend.length?reqs+cards+jc:jc+reqs)+schoolTeacherCta()+SCH.foot();
+  store.set('fm-seen-grades',JSON.stringify(cl.flatMap(c=>c.grades.map(g=>g.id)).slice(-3000)));store.set('fm-seen-init','1');SCH.navDot(false);
+  SCH.bindOut(main);schoolJoinBind(main);
+  main.querySelectorAll('[data-leave]').forEach(a=>a.onclick=async e=>{e.preventDefault();if(a.dataset.msg&&!confirm(T(a.dataset.msg)))return;
+    try{await SCH.api('POST',`/class/${a.dataset.leave}/leave`);renderSchool('school')}catch(err){toast('⚠️',err.message)}})}
+function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=p.school||store.get('fm-school','');
+  const pick=S.find(s=>s.name.toLowerCase()===String(want).toLowerCase());
+  return `<div class="sc-card" id="joinCard"><h3>${more?'Join another class':'Join your class'}</h3><p class="muted">Choose your school and subject, then type the 6-digit code from your teacher.</p>
+    ${S.length?`<div class="sc-form">
+      <label>School<select class="lbinput" id="jSchool"><option value="">Choose your school…</option>${S.map(s=>`<option${pick&&s.name===pick.name?' selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+      <label>Subject<select class="lbinput" id="jSub" data-want="${esc(p.subject||'')}"></select></label>
+      <label>Class code<input class="lbinput sc-codein" id="jCode" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="225544" value="${esc(p.code||'')}"></label>
+      <label>Your full name<input class="lbinput" id="jName" maxlength="60" autocomplete="name" placeholder="First and last name" value="${esc(store.get('fm-school-name',''))}"></label></div>
+      <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p>`
+    :'<p class="muted"><b>No schools use Full Marks yet.</b> Your school appears here as soon as your teacher creates a class.</p>'}
+    <p class="sc-note">🔒 When your teacher approves you, they can see your grades and your practice on Full Marks (questions answered and scores by topic). You can leave a class at any time.</p></div>`}
+function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)return;const sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg');
+  const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value),list=s?s.subjects:[],want=sub.dataset.want||sub.value;
+    sub.innerHTML=list.length?(list.length>1?'<option value="">Choose the subject…</option>':'')+SCH.opts(list.map(k=>[k,SCH.sName(k)]),want):'<option value="">Choose your school first</option>';sub.disabled=!list.length};
+  fill();sch.onchange=()=>{sub.dataset.want='';fill()};
+  code.oninput=()=>{code.value=code.value.replace(/\D/g,'').slice(0,6)};
+  go.onclick=async()=>{const name=main.querySelector('#jName').value.trim(),body={school:sch.value,subject:sub.value,code:code.value,name};
+    msg.textContent=!body.school?T('Choose your school.'):!body.subject?T('Choose the subject.'):body.code.length!==6?T('The class code has 6 digits.'):name.length<2?T('Enter your full name so your teacher knows who you are.'):'';
+    if(msg.textContent)return;go.disabled=true;go.textContent=T('Sending…');
+    try{const r=await SCH.api('POST','/class/join',body);store.set('fm-school',body.school);store.set('fm-school-name',name);try{localStorage.removeItem('fm-join')}catch(e){}
+      if(store.get('fm-who','')!=='teacher'){store.set('fm-who','school');SCH.nav()}
+      toast(r.status==='member'?'✓':'📨',r.status==='member'?T('You’re already in {0}.',r.class.name):T('Request sent to {0}. You’ll see your grades as soon as they approve you.',r.class.teacher||T('your teacher')));
+      if(location.hash!=='#school')location.hash='school';else renderSchool('school')}
+    catch(e){msg.textContent=e.message;go.disabled=false;go.textContent=T('Send request to my teacher')}}}
+function schoolClassCard(c,i,seen,init){const sc=c.scale,m=c.summary,col=SCH.sCol(c.subject),asc=[...c.grades].reverse(),isNew=g=>init&&!seen.has(g.id),subs=Object.entries(m.bySubject||{});
+  return `<div class="sc-card" style="--c:${col};--i:${i}">
+    <div class="sc-ctop" style="margin-bottom:16px">${SCH.sGlyph(c.subject)}<div><b>${esc(c.name)}</b><small>${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}${c.teacher.name?' · '+esc(c.teacher.name):''}${c.teacher.school?', '+esc(c.teacher.school):''}</small></div></div>
+    ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Your average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades']])}
+    ${asc.length>1?`<h4>Your results over time</h4>${SCH.chart(asc.map(g=>({l:SCH.short(g.date),v:SCH.score(g,sc),t:`${g.title||SCH.tName(g.type)}: ${SCH.gtxt(g)}`})),col)}`:''}
+    ${subs.length>1?`<h4 style="margin-top:16px">By subject</h4>${SCH.bars(subs.map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}`:''}
+    <h4 style="margin-top:16px">Your grades</h4>
+    <div class="sc-gl">${c.grades.map((g,j)=>`<div class="sc-gitem${isNew(g)?' new':''}" style="--i:${j}">${SCH.badge(g,sc)}<div><b>${esc(g.title||SCH.tName(g.type))}${isNew(g)?'<span class="sc-new">NEW</span>':''}</b><small>${esc(SCH.date(g.date))} · ${esc(SCH.tName(g.type))}${g.subject!==c.subject?' · '+esc(SCH.sName(g.subject)):''}${g.weight&&g.weight!==1?` · ×${g.weight}`:''}</small></div>${g.letter?SCH.pct(g.pct):'<span></span>'}${g.note?`<div class="note">💬 ${esc(g.note)}</div>`:''}</div>`).join('')||'<p class="muted">No grades yet. They appear here as soon as your teacher adds them.</p>'}</div>
+    <p class="sc-note"><a href="#" data-leave="${esc(c.id)}" data-msg="Leave this class? Your teacher will no longer see your grades or practice.">Leave this class</a></p></div>`}
+
+/* ---------- teachers: portal ---------- */
+const TCH={timer:null,pend:-1,f:{q:'',f:'all',s:'name'},gsub:'',bsub:''};
+const tRefresh=()=>renderTeacher(location.hash.slice(1)||'teacher');
+async function renderTeacher(h,quiet){const main=$('#teacherMain');if(!main)return;const seq=++SCH.seq,parts=(h||'teacher').split('/').slice(1);
+  if(!quiet){clearInterval(TCH.timer);TCH.timer=setInterval(()=>{if(location.hash.slice(1).split('/')[0]!=='teacher'){clearInterval(TCH.timer);return}
+    const a=document.activeElement;if(document.hidden||$('#modal').classList.contains('on')||(a&&main.contains(a)&&/INPUT|SELECT|TEXTAREA/.test(a.tagName)))return;renderTeacher(location.hash.slice(1),true)},20000)}
+  if(!API_BASE){main.innerHTML='<div class="sc-card">Accounts aren’t connected on this copy of the site.</div>';return}
+  if(!authToken()){clearInterval(TCH.timer);main.dataset.view='';return SCH.signin(main,'Teacher portal','Sign in with your school email. If you’re new, you can ask for a teacher account straight after.')}
+  if(!quiet&&main.dataset.view!==h){main.innerHTML=SCH.loading();main.dataset.sig=''}main.dataset.view=h;
+  try{const role=await SCH.getRole(quiet||!parts.length);if(seq!==SCH.seq)return;
+    if((role.teacher||{}).status!=='teacher'){const sig=JSON.stringify(role);if(!quiet||main.dataset.sig!==sig){main.dataset.sig=sig;tRequest(main,role)}return}
+    if(parts[0]==='c'&&parts[1]){if(parts[2]==='s'&&parts[3])await tStudent(main,seq,parts[1],decodeURIComponent(parts[3]),quiet);else await tClass(main,seq,parts[1],parts[2]||'students',quiet)}
+    else await tDash(main,seq,quiet)}
+  catch(e){if(seq!==SCH.seq||quiet)return;main.dataset.view='';if(e.status===401)return SCH.signin(main,'Teacher portal','You’ve been signed out. Sign in again to continue.');SCH.fail(main,e,()=>renderTeacher(h))}}
+// Re-draws only when something changed, so the 20-second refresh doesn't flicker.
+function tSame(main,data,quiet){const s=JSON.stringify(data);if(quiet&&main.dataset.sig===s)return true;main.dataset.sig=s;return false}
+function tNotify(n,quiet){if(quiet&&TCH.pend>=0&&n>TCH.pend)toast('🙋',n-TCH.pend>1?T('{0} new requests to join your classes',n-TCH.pend):T('A student asked to join your class'));TCH.pend=n}
+
+function tRequest(main,role){const t=role.teacher,em=role.email;
+  const hero=`<div class="sc-hero"><span class="eyebrow">For teachers</span><h2>Your classes, grades and progress in <span class="grad">one place</span></h2><p>See every class you teach, approve your students, add grades in seconds and follow each student’s progress and practice on Full Marks.</p>
+    <ul><li><b>Classes</b>All your classes on one dashboard, each with its own code</li><li><b>Grades</b>A*–U and percentages, one by one or the whole class at once</li><li><b>Progress</b>Averages, trends, and who is improving or slipping</li><li><b>Practice</b>What each student revised, their strong and weak topics</li></ul></div>`;
+  let body;
+  if(t&&t.status==='pending')body=`<div class="sc-card"><h3>⏳ Your request is waiting for approval</h3><p class="muted">We check every teacher account by hand. You’ll get an email at <b>${esc(em)}</b> when it’s ready, and this page opens your dashboard by itself.</p><p class="sc-note">Sent ${esc(SCH.date(t.requestedAt))} · ${esc(t.name)}, ${esc(t.school)}</p></div>`;
+  else if(t&&(t.status==='rejected'||t.status==='revoked'))body=`<div class="sc-card"><h3>Your teacher account isn’t active</h3><p class="muted">If you think this is a mistake, email us at <a href="mailto:${esc(SUPPORT_EMAIL)}">${esc(SUPPORT_EMAIL)}</a>.</p></div>`;
+  else body=`<div class="sc-card"><h3>Ask for a teacher account</h3><p class="muted">Tell us who you are. We check every request and email you at <b>${esc(em)}</b> when your account is ready.</p>
+    <div class="sc-form" style="margin-top:14px"><label>Your name, as students know you<input class="lbinput" id="trName" maxlength="80" autocomplete="name" placeholder="Mrs Novak"></label>
+      <label>School<input class="lbinput" id="trSchool" maxlength="120" list="trSchools" placeholder="CATS Cambridge UK"><datalist id="trSchools"></datalist></label>
+      <label class="full">Subjects and classes you teach (optional)<textarea class="lbinput" id="trNote" rows="3" maxlength="500" placeholder="Biology and chemistry, Years 10–13"></textarea></label></div>
+    <p class="sc-note" style="margin:0 0 12px">Students find your classes by this school name, so write it the way your school is known. If it’s in the list, pick it.</p>
+    <button class="btn" id="trGo">Send request</button><p class="sc-msg" id="trMsg"></p></div>`;
+  main.innerHTML=hero+body+SCH.foot();SCH.bindOut(main);
+  const go=main.querySelector('#trGo');if(!go)return;
+  SCH.api('GET','/schools').then(x=>{const dl=main.querySelector('#trSchools');if(dl)dl.innerHTML=x.schools.map(s=>`<option value="${esc(s.name)}">`).join('')}).catch(()=>{});
+  go.onclick=async()=>{const name=$('#trName').value.trim(),school=$('#trSchool').value.trim(),msg=$('#trMsg');
+    if(name.length<2||school.length<2){msg.textContent=T('Please enter your name and your school.');return}
+    go.disabled=true;go.textContent=T('Sending…');
+    try{const r=await SCH.api('POST','/teacher/request',{name,school,note:$('#trNote').value.trim()});store.set('fm-who','teacher');SCH.nav();SCH.role=null;
+      toast(r.teacher.status==='teacher'?'🎉':'📨',r.teacher.status==='teacher'?T('Your teacher account is ready.'):T('Request sent. We’ll email you when it’s approved.'));tRefresh()}
+    catch(e){msg.textContent=e.message;go.disabled=false;go.textContent=T('Send request')}}}
+
+function tReqCard(reqs,showClass){return `<div class="sc-card sc-reqs"><div class="sc-head" style="margin-bottom:12px"><div><h3>🙋 Waiting for your approval <span class="sc-pill gold">${reqs.length}</span></h3><p class="muted">These students asked to join with your class code. Approve the ones you know.</p></div>${reqs.length>1?'<button class="btn sm" data-rq-all>Approve all</button>':''}</div>
+  <ul class="sc-list">${reqs.map(r=>`<li><div class="sc-who">${SCH.av(r.name,r.email)}<div><b>${esc(r.name)}</b><small>${esc(r.email)}${showClass?' · '+esc(r.cls.name):''} · ${esc(SCH.ago(r.at))}</small></div></div><div class="sc-actions"><button class="btn sm" data-rq="approve" data-c="${esc(r.cls.id)}" data-e="${esc(r.email)}">Approve</button><button class="btn ghost sm" data-rq="reject" data-c="${esc(r.cls.id)}" data-e="${esc(r.email)}">Reject</button></div></li>`).join('')}</ul></div>`}
+function tReqBind(main,reqs){
+  main.querySelectorAll('[data-rq]').forEach(b=>b.onclick=async()=>{b.disabled=true;const ok=b.dataset.rq==='approve';
+    try{await SCH.api('POST',`/teacher/classes/${b.dataset.c}/requests/${encodeURIComponent(b.dataset.e)}/${b.dataset.rq}`);toast(ok?'✅':'🚫',ok?T('Student approved'):T('Request rejected'));tRefresh()}catch(e){toast('⚠️',e.message);b.disabled=false}});
+  const all=main.querySelector('[data-rq-all]');if(all)all.onclick=async()=>{all.disabled=true;let n=0;
+    for(const r of reqs){try{await SCH.api('POST',`/teacher/classes/${r.cls.id}/requests/${encodeURIComponent(r.email)}/approve`);n++}catch(e){}}toast('✅',T('{0} students approved',n));tRefresh()}}
+
+async function tDash(main,seq,quiet){const d=await SCH.api('GET','/teacher/overview');if(seq!==SCH.seq||tSame(main,d,quiet))return;
+  const t=d.teacher,act=d.classes.filter(c=>!c.archived),arch=d.classes.filter(c=>c.archived),reqs=act.flatMap(c=>(c.pending||[]).map(p=>({...p,cls:c})));tNotify(reqs.length,quiet);
+  const sum=act.reduce((a,c)=>{a.st+=c.stats.students;a.up+=c.stats.improving.length;a.dn+=c.stats.declining.length;a.wk+=c.stats.activeWeek;if(c.stats.avgScore!=null){a.sc+=c.stats.avgScore;a.n++}return a},{st:0,up:0,dn:0,wk:0,sc:0,n:0});
+  const card=(c,i)=>`<a class="sc-class" href="#teacher/c/${esc(c.id)}" style="--c:${SCH.sCol(c.subject)};--i:${i}"><div class="sc-ctop">${SCH.sGlyph(c.subject)}<div><b>${esc(c.name)}</b><small>${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}</small></div>${(c.pending||[]).length?`<span class="sc-pill gold" style="margin-left:auto">🙋 ${c.pending.length}</span>`:''}</div>
+    <div class="sc-cnum"><div><big>${c.stats.students}</big><small>students</small></div><div><big>${esc(c.stats.avgLetter||'—')}${c.stats.avgPct!=null?` <small class="sc-pct">${c.stats.avgPct}%</small>`:''}</big><small>class average</small></div></div>
+    ${SCH.spark(c.stats.monthly)}<div class="sc-cfoot"><span class="sc-tr up">▲ ${c.stats.improving.length}</span><span class="sc-tr down">▼ ${c.stats.declining.length}</span><span class="code">Code <b>${esc(c.code)}</b></span></div></a>`;
+  const empty=`<div class="sc-card sc-empty"><div class="big">🍎</div><h3>Create your first class</h3><p class="muted">It takes a few seconds. Each class gets its own 6-digit code.</p>
+    <div class="sc-steps"><div><b>1</b>Create a class, for example “10B Biology”.</div><div><b>2</b>Students choose <em>${esc(t.school)}</em>, the subject and type the code.</div><div><b>3</b>You approve them, then add grades and follow their progress.</div></div><button class="btn" data-new>＋ Create a class</button></div>`;
+  main.innerHTML=`<div class="sc-head"><div><span class="eyebrow">Teacher portal</span><h2>Hello, ${esc(t.name)}</h2><p class="muted">${esc(t.school)}</p></div><div class="sc-actions">${act.length?'<button class="btn" data-new>＋ New class</button>':''}</div></div>
+    ${reqs.length?tReqCard(reqs,true):''}
+    ${act.length?SCH.tiles([[act.length,'Classes'],[sum.st,'Students'],[sum.n?Math.round(sum.sc/sum.n)+'%':'—','Average result'],[sum.up,'Improving','up'],[sum.dn,'Slipping','down'],[sum.wk,'Practised this week']])+`<div class="sc-grid">${act.map(card).join('')}</div>`:empty}
+    ${arch.length?`<details style="margin-top:22px"><summary class="muted" style="cursor:pointer;font-weight:700">Archived classes (${arch.length})</summary><div class="sc-grid" style="margin-top:14px">${arch.map(card).join('')}</div></details>`:''}
+    ${SCH.foot()}`;
+  SCH.bindOut(main);tReqBind(main,reqs);main.querySelectorAll('[data-new]').forEach(b=>b.onclick=tNewClass)}
+
+function tNewClass(){SCH.modal('New class',`<div class="sc-form"><label class="full">Class name<input class="lbinput" id="ncName" maxlength="60" placeholder="10B Biology"></label>
+    <label>Subject<select class="lbinput" id="ncSub">${SCH.subOpts(SUBJECTS[subject]?subject:'biology')}</select></label><label>Level<select class="lbinput" id="ncLv">${SCH.lvOpts(level)}</select></label></div>
+    <button class="btn" id="ncGo">Create class</button><p class="sc-msg" id="ncMsg"></p>`);
+  $('#ncName').focus();$('#ncName').onkeydown=e=>{if(e.key==='Enter')$('#ncGo').click()};
+  $('#ncGo').onclick=async()=>{const b=$('#ncGo'),name=$('#ncName').value.trim();if(!name){$('#ncMsg').textContent=T('Give the class a name, for example 10B Biology.');return}
+    b.disabled=true;try{const r=await SCH.api('POST','/teacher/classes',{name,subject:$('#ncSub').value,level:$('#ncLv').value});SCH.close();toast('🎉',T('Class created. Its code is {0}.',r.class.code));location.hash=`teacher/c/${r.class.id}`}
+    catch(e){$('#ncMsg').textContent=e.message;b.disabled=false}}}
+
+async function tClass(main,seq,id,tab,quiet){const d=await SCH.api('GET',`/teacher/classes/${id}`);if(seq!==SCH.seq||tSame(main,d,quiet))return;
+  const c=d.class,st=d.students,reqs=(d.pending||[]).map(p=>({...p,cls:c}));tNotify(reqs.length,quiet);
+  const school=((SCH.role||{}).teacher||{}).school||'',link=`${location.origin}${location.pathname}#school/join/${c.code}/${c.subject}/${encodeURIComponent(school)}`;
+  const tabs=[['students',`Students (${st.length})`],['grades','Gradebook'],['stats','Statistics']];
+  main.innerHTML=`<a class="sc-back" href="#teacher">← All classes</a>
+    <div class="sc-head"><div class="sc-ctop" style="--c:${SCH.sCol(c.subject)}">${SCH.sGlyph(c.subject)}<div><h2 style="margin:0">${esc(c.name)}</h2><p class="muted">${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}${c.archived?' · <span class="sc-pill">Archived</span>':''}</p></div></div>
+      <div class="sc-actions"><button class="btn" data-bulk${st.length?'':' disabled'}>＋ Grades for the class</button><button class="btn ghost" data-add>Add students</button><button class="btn ghost" data-set aria-label="Class settings">⚙︎</button></div></div>
+    <div class="sc-codebox"><div><small style="color:var(--stage-muted);font-weight:700;letter-spacing:.1em">CLASS CODE</small><div class="sc-code">${esc(c.code)}</div></div>
+      <p>Students open <b>School</b> on Full Marks, choose <b>${esc(school)}</b> and <b>${esc(SCH.sName(c.subject))}</b>, and type this code. You approve each one.</p>
+      <div class="sc-actions"><button class="btn sm" data-copy="${esc(c.code)}">Copy code</button><button class="btn ghost sm" data-copy="${esc(link)}">Copy invite link</button></div></div>
+    ${reqs.length?tReqCard(reqs,false):''}
+    <nav class="sc-tabs" aria-label="Class views">${tabs.map(([k,l])=>`<a href="#teacher/c/${esc(id)}${k==='students'?'':'/'+k}" class="${k===tab?'on':''}">${l}</a>`).join('')}</nav><div id="tcBody"></div>`;
+  tReqBind(main,reqs);
+  main.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>SCH.copy(b.dataset.copy));
+  main.querySelector('[data-bulk]').onclick=()=>tBulk(d);main.querySelector('[data-add]').onclick=()=>tAddStudents(d);main.querySelector('[data-set]').onclick=()=>tSettings(d);
+  const body=$('#tcBody');if(tab==='grades')tBook(body,d);else if(tab==='stats')tStats(body,d);else tStudents(body,d)}
+
+function tStudents(el,d){const sc=d.scale,F=TCH.f,id=d.class.id,week=Date.now()-7*864e5;
+  if(!d.students.length){el.innerHTML=`<div class="sc-card sc-empty"><div class="big">👋</div><h3>No students yet</h3><p class="muted">Share the class code <b>${esc(d.class.code)}</b>. When students ask to join, you approve them here. You can also add students by email.</p></div>`;return}
+  el.innerHTML=`<div class="sc-card"><div class="sc-tools"><input class="lbinput" id="tsQ" type="search" placeholder="Search students" value="${esc(F.q)}" aria-label="Search students">
+    <select class="lbinput" id="tsF" aria-label="Filter">${SCH.opts([['all','All students'],['up','Improving'],['down','Slipping'],['none','No grades yet'],['idle','Not practising this week']],F.f)}</select>
+    <select class="lbinput" id="tsS" aria-label="Sort">${SCH.opts([['name','Sort by name'],['hi','Highest average'],['lo','Lowest average'],['trend','Biggest change'],['active','Last active']],F.s)}</select></div><div id="tsList"></div></div>`;
+  const draw=()=>{const q=F.q.toLowerCase(),idle=s=>!(s.activity&&s.activity.lastActive&&SCH.d(s.activity.lastActive)>=week);
+    let list=d.students.filter(s=>(!q||(s.name+' '+s.email).toLowerCase().includes(q))&&(F.f==='all'||(F.f==='up'&&s.summary.trend>=5)||(F.f==='down'&&s.summary.trend<=-5)||(F.f==='none'&&!s.summary.count)||(F.f==='idle'&&idle(s))));
+    const sv=s=>s.summary.avgScore==null?-1:s.summary.avgScore;
+    list.sort(F.s==='hi'?(a,b)=>sv(b)-sv(a):F.s==='lo'?(a,b)=>(sv(a)<0?999:sv(a))-(sv(b)<0?999:sv(b)):F.s==='trend'?(a,b)=>Math.abs(b.summary.trend||0)-Math.abs(a.summary.trend||0):F.s==='active'?(a,b)=>String((b.activity||{}).lastActive||'').localeCompare(String((a.activity||{}).lastActive||'')):(a,b)=>a.name.localeCompare(b.name));
+    $('#tsList').innerHTML=list.length?`<table class="sc-table cards"><thead><tr><th>Student</th><th>Average</th><th>Trend</th><th>Grades</th><th>Last grade</th><th>Practice this week</th><th>Last active</th><th></th></tr></thead><tbody>${list.map(s=>{const m=s.summary,last=s.grades[s.grades.length-1],a=s.activity;
+      return `<tr class="go" data-s="${esc(s.email)}"><td class="nm"><div class="sc-who">${SCH.av(s.name,s.email)}<div><b>${esc(s.name)}</b><small>${esc(s.email)}</small></div></div></td>
+        <td data-l="Average">${SCH.let(m.avgLetter,sc)} ${SCH.pct(m.avgPct)}</td><td data-l="Trend">${SCH.trend(m.trend)}</td><td data-l="Grades">${m.count}</td>
+        <td data-l="Last grade">${last?`${SCH.badge(last,sc)} <small class="muted">${esc(last.title||SCH.tName(last.type))}</small>`:'—'}</td>
+        <td data-l="This week">${a?esc(T('{0} questions',a.week)):'—'}</td><td data-l="Last active">${a?esc(SCH.ago(a.lastActive)):'<span class="muted">not yet</span>'}</td>
+        <td class="act"><button class="sc-plus" data-g="${esc(s.email)}" title="Add a grade" aria-label="Add a grade for ${esc(s.name)}">＋</button></td></tr>`}).join('')}</tbody></table>`:'<p class="muted">No students match.</p>';
+    $$('#tsList tr.go').forEach(tr=>tr.onclick=e=>{if(e.target.closest('[data-g]'))return;location.hash=`teacher/c/${id}/s/${encodeURIComponent(tr.dataset.s)}`});
+    $$('#tsList [data-g]').forEach(b=>b.onclick=()=>tGrade(d,b.dataset.g))};
+  draw();$('#tsQ').oninput=e=>{F.q=e.target.value;draw()};$('#tsF').onchange=e=>{F.f=e.target.value;draw()};$('#tsS').onchange=e=>{F.s=e.target.value;draw()}}
+
+function tGradeKey(g){return `${g.date}|${g.title}|${g.type}|${g.subject}`}
+function tBook(el,d){const sc=d.scale,st=d.students,cols=new Map();
+  for(const s of st)for(const g of s.grades){const k=tGradeKey(g);if(!cols.has(k))cols.set(k,{k,date:g.date,title:g.title,type:g.type,subject:g.subject})}
+  const subs=[...new Set([...cols.values()].map(c=>c.subject))],sub=subs.includes(TCH.bsub)?TCH.bsub:'',list=[...cols.values()].filter(c=>!sub||c.subject===sub).sort((a,b)=>a.date.localeCompare(b.date)||a.title.localeCompare(b.title));
+  if(!cols.size){el.innerHTML=`<div class="sc-card sc-empty"><div class="big">📒</div><h3>No grades yet</h3><p class="muted">Use <b>＋ Grades for the class</b> to enter a whole test at once.</p></div>`;return}
+  const avg=xs=>{const v=xs.filter(x=>x!=null);return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null};
+  el.innerHTML=`<div class="sc-card">${subs.length>1?`<div class="sc-tools"><select class="lbinput" id="bkSub" aria-label="Subject">${SCH.opts([['','All subjects'],...subs.map(k=>[k,SCH.sName(k)])],sub)}</select></div>`:''}
+    <p class="sc-note" style="margin:0 0 10px">Click a grade to change it, or an empty box to add one.</p><div class="sc-scroll"><table class="sc-table sc-book"><thead><tr><th>Student</th>${list.map(c=>`<th title="${esc(c.title||'')}">${esc((c.title||SCH.tName(c.type)).slice(0,22))}<small>${esc(SCH.short(c.date))} · ${esc(SCH.tName(c.type))}</small></th>`).join('')}<th>Average</th></tr></thead>
+    <tbody>${st.map(s=>{const by=new Map();for(const g of s.grades){const k=tGradeKey(g);if(!by.has(k))by.set(k,g)}const mine=s.grades.filter(g=>!sub||g.subject===sub),ms=sub?s.summary.bySubject[sub]||{}:s.summary;
+      return `<tr><td><div class="sc-who">${SCH.av(s.name,s.email)}<b>${esc(s.name)}</b></div></td>${list.map(c=>{const g=by.get(c.k);return `<td>${g?`<button class="sc-cell" data-s="${esc(s.email)}" data-id="${esc(g.id)}">${SCH.badge(g,sc)}${g.letter&&g.pct!=null?`<span class="sc-pct">${g.pct}%</span>`:''}</button>`:`<button class="sc-cell empty" data-s="${esc(s.email)}" data-k="${esc(c.k)}" aria-label="Add a grade">＋</button>`}</td>`}).join('')}
+        <td>${mine.length?`${SCH.let(ms.avgLetter,sc)}${ms.avgPct!=null?`<span class="sc-pct" style="display:block">${ms.avgPct}%</span>`:''}`:'—'}</td></tr>`}).join('')}
+      <tr><td><b>Class average</b></td>${list.map(c=>{const v=avg(st.map(s=>{const g=s.grades.find(x=>tGradeKey(x)===c.k);return g?SCH.score(g,sc):null}));return `<td><b>${v==null?'—':v+'%'}</b></td>`}).join('')}<td></td></tr></tbody></table></div></div>`;
+  const bs=$('#bkSub');if(bs)bs.onchange=e=>{TCH.bsub=e.target.value;tBook(el,d)};
+  el.querySelectorAll('.sc-cell').forEach(b=>b.onclick=()=>{const s=st.find(x=>x.email===b.dataset.s);if(b.dataset.id)return tGrade(d,s.email,s.grades.find(g=>g.id===b.dataset.id));
+    const [date,title,type,subject]=b.dataset.k.split('|');tGrade(d,s.email,null,{date,title,type,subject})})}
+
+function tStats(el,d){const S=d.stats,sc=d.scale,st=d.students,nm=e=>(st.find(s=>s.email===e)||{}).name||e,col=SCH.sCol(d.class.subject),id=d.class.id;
+  const maxD=Math.max(1,...Object.values(S.distribution)),bySub={};for(const s of st)for(const g of s.grades){const v=SCH.score(g,sc);if(v!=null)(bySub[g.subject]||(bySub[g.subject]=[])).push(v)}
+  const who=list=>list.length?`<ul class="sc-list">${list.map(e=>{const s=st.find(x=>x.email===e);return `<li><a href="#teacher/c/${esc(id)}/s/${encodeURIComponent(e)}">${esc(nm(e))}</a><span>${SCH.let(s.summary.avgLetter,sc)} ${SCH.trend(s.summary.trend)}</span></li>`}).join('')}</ul>`:'<p class="muted">Nobody right now.</p>';
+  const prac=st.filter(s=>s.activity).sort((a,b)=>b.activity.week-a.activity.week),maxW=Math.max(1,...prac.map(s=>s.activity.week));
+  el.innerHTML=SCH.tiles([[`${esc(S.avgLetter||'—')}${S.avgPct!=null?` <small>${S.avgPct}%</small>`:''}`,'Class average'],[S.count,'Grades entered'],[S.students,'Students'],[S.activeWeek,'Practised this week'],[S.improving.length,'Improving','up'],[S.declining.length,'Slipping','down']])
+    +`<div class="sc-cols"><div class="sc-card wide"><h4>Class average over time</h4>${S.monthly.length?SCH.chart(S.monthly.map(m=>({l:SCH.month(m.month),v:m.avg,t:`${SCH.month(m.month)}: ${m.avg}% (${m.n})`})),col):'<p class="muted">No grades yet.</p>'}</div>
+      <div class="sc-card"><h4>Average grades in the class</h4><div class="sc-dist">${sc.map((l,i)=>`<div><b>${S.distribution[l]||''}</b><i style="--v:${(S.distribution[l]||0)/maxD*100}%;--h:${SCH.hue(l,sc)};animation-delay:${i*50}ms"></i><small>${esc(l)}</small></div>`).join('')}</div></div>
+      <div class="sc-card"><h4>▲ Improving</h4>${who(S.improving)}</div><div class="sc-card"><h4>▼ Slipping</h4>${who(S.declining)}</div>
+      <div class="sc-card"><h4>Assessments</h4>${SCH.bars(S.assessments.slice(0,12).map(a=>({l:`${a.title||SCH.tName(a.type)} · ${SCH.short(a.date)}`,v:a.avg,t:a.avg==null?'—':a.avg+'%',c:SCH.sCol(a.subject)})))}</div>
+      ${Object.keys(bySub).length>1?`<div class="sc-card"><h4>By subject</h4>${SCH.bars(Object.entries(bySub).map(([k,v])=>({l:SCH.sName(k),v:v.reduce((a,b)=>a+b,0)/v.length,t:Math.round(v.reduce((a,b)=>a+b,0)/v.length)+'%',c:SCH.sCol(k)})))}</div>`:''}
+      <div class="sc-card"><h4>Practice on Full Marks this week</h4>${prac.length?SCH.bars(prac.slice(0,15).map(s=>({l:s.name,v:s.activity.week/maxW*100,t:T('{0} questions',s.activity.week)}))):'<p class="muted">No practice yet. It shows up once students sign in to Full Marks and revise.</p>'}</div></div>`}
+
+function tGrade(d,email,g,preset){const c=d.class,sc=d.scale,s=d.students.find(x=>x.email===email)||{name:email},v=g||Object.assign({subject:c.subject,type:'test',date:today(),weight:1},preset||{});let letter=v.letter||'';
+  SCH.modal(g?'Edit grade':'Add a grade',`<p class="muted" style="margin-top:0">${esc(s.name)} · ${esc(c.name)}</p><div class="sc-form">
+    <label class="full">Assessment<input class="lbinput" id="gTitle" maxlength="80" placeholder="Cell biology test" value="${esc(v.title||'')}"></label>
+    <label>Type<select class="lbinput" id="gType">${SCH.typeOpts(v.type)}</select></label><label>Date<input class="lbinput" type="date" id="gDate" value="${esc(v.date||today())}"></label>
+    <label class="full">Grade<div class="sc-letters" id="gLet">${sc.map(l=>`<button type="button" data-l="${esc(l)}" style="--h:${SCH.hue(l,sc)}" class="${letter===l?'on':''}">${esc(l)}</button>`).join('')}</div></label>
+    <label>Percentage<input class="lbinput" type="number" inputmode="decimal" id="gPct" min="0" max="100" step="0.5" placeholder="e.g. 72" value="${v.pct??''}"></label>
+    <label>Weight<select class="lbinput" id="gW">${SCH.wOpts(v.weight)}</select></label>
+    <label class="full">Subject<select class="lbinput" id="gSub">${SCH.subOpts(v.subject)}</select></label>
+    <label class="full">Note for the student (optional)<textarea class="lbinput" id="gNote" rows="2" maxlength="500" placeholder="What went well, what to work on">${esc(v.note||'')}</textarea></label></div>
+    <div class="sc-actions"><button class="btn" id="gSave">Save grade</button>${g?'<button class="btn ghost" id="gDel">Delete</button>':''}</div><p class="sc-msg" id="gMsg"></p>`);
+  $$('#gLet button').forEach(b=>b.onclick=()=>{letter=letter===b.dataset.l?'':b.dataset.l;$$('#gLet button').forEach(x=>x.classList.toggle('on',x.dataset.l===letter))});
+  const url=`/teacher/classes/${c.id}/students/${encodeURIComponent(email)}/grades`;
+  $('#gSave').onclick=async()=>{const b=$('#gSave'),pct=$('#gPct').value.trim();if(!letter&&!pct){$('#gMsg').textContent=T('Choose a grade, type a percentage, or both.');return}
+    b.disabled=true;const body={title:$('#gTitle').value.trim(),type:$('#gType').value,date:$('#gDate').value,letter:letter||null,pct:pct===''?null:pct,weight:+$('#gW').value,subject:$('#gSub').value,note:$('#gNote').value.trim()};
+    try{await SCH.api(g?'PATCH':'POST',g?`${url}/${g.id}`:url,body);SCH.close();toast('✓',g?T('Grade updated'):T('Grade saved'));tRefresh()}catch(e){$('#gMsg').textContent=e.message;b.disabled=false}};
+  const del=$('#gDel');if(del)del.onclick=async()=>{if(!confirm(T('Delete this grade?')))return;try{await SCH.api('DELETE',`${url}/${g.id}`);SCH.close();toast('🗑️',T('Grade deleted'));tRefresh()}catch(e){$('#gMsg').textContent=e.message}}}
+
+function tBulk(d){const c=d.class,sc=d.scale;
+  SCH.modal('Grades for the whole class',`<div class="sc-form"><label class="full">Assessment<input class="lbinput" id="bTitle" maxlength="80" placeholder="Enzymes test"></label>
+    <label>Type<select class="lbinput" id="bType">${SCH.typeOpts('test')}</select></label><label>Date<input class="lbinput" type="date" id="bDate" value="${today()}"></label>
+    <label>Subject<select class="lbinput" id="bSub">${SCH.subOpts(c.subject)}</select></label><label>Weight<select class="lbinput" id="bW">${SCH.wOpts(1)}</select></label></div>
+    <p class="sc-note" style="margin:2px 0 10px">Fill in a grade, a percentage or both. Leave a row empty to skip that student. Tab moves to the next box.</p>
+    <div class="sc-scroll"><table class="sc-table sc-bulk"><thead><tr><th>Student</th><th>Grade</th><th>%</th><th>Note</th></tr></thead><tbody>
+    ${d.students.map(s=>`<tr data-e="${esc(s.email)}"><td><div class="sc-who">${SCH.av(s.name,s.email)}<b>${esc(s.name)}</b></div></td><td><select class="lbinput" data-k="letter" aria-label="Grade for ${esc(s.name)}"><option value=""></option>${sc.map(l=>`<option>${esc(l)}</option>`).join('')}</select></td>
+      <td><input class="lbinput" type="number" inputmode="decimal" min="0" max="100" step="0.5" data-k="pct" aria-label="Percentage for ${esc(s.name)}"></td><td><input class="lbinput" data-k="note" maxlength="500" aria-label="Note for ${esc(s.name)}"></td></tr>`).join('')}
+    </tbody></table></div><div class="sc-actions" style="margin-top:14px"><button class="btn" id="bSave">Save grades</button></div><p class="sc-msg" id="bMsg"></p>`,true);
+  $('#bTitle').focus();
+  $('#bSave').onclick=async()=>{const b=$('#bSave'),entries=$$('.sc-bulk tbody tr').map(tr=>({email:tr.dataset.e,letter:tr.querySelector('[data-k=letter]').value||null,pct:tr.querySelector('[data-k=pct]').value.trim()||null,note:tr.querySelector('[data-k=note]').value.trim()})).filter(e=>e.letter||e.pct);
+    if(!entries.length){$('#bMsg').textContent=T('Enter at least one grade or percentage.');return}
+    b.disabled=true;try{const r=await SCH.api('POST',`/teacher/classes/${c.id}/grades/bulk`,{title:$('#bTitle').value.trim(),type:$('#bType').value,date:$('#bDate').value,subject:$('#bSub').value,weight:+$('#bW').value,entries});
+      SCH.close();toast('✓',T('Saved {0} grades',r.added));tRefresh()}catch(e){$('#bMsg').textContent=e.message;b.disabled=false}}}
+
+function tAddStudents(d){SCH.modal('Add students',`<p class="muted" style="margin-top:0">The easiest way: students choose your school and subject and type the code <b>${esc(d.class.code)}</b>, then you approve them. You can also add them here by email, one per line. Grades you add show up for them as soon as they sign in with that email.</p>
+    <textarea class="lbinput" id="asList" rows="7" placeholder="Anna Kováčová, anna@school.org&#10;ben@school.org"></textarea><button class="btn" id="asGo">Add students</button><p class="sc-msg" id="asMsg"></p>`);
+  $('#asGo').onclick=async()=>{const students=$('#asList').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const parts=l.split(/[,;\t]+/).map(x=>x.trim()),email=parts.find(x=>x.includes('@'))||'';return {email,name:parts.filter(x=>x!==email).join(' ')}});
+    if(!students.length){$('#asMsg').textContent=T('Type at least one email address.');return}
+    try{const r=await SCH.api('POST',`/teacher/classes/${d.class.id}/students`,{students});SCH.close();toast('✓',r.bad.length?T('Added {0}. Check these emails: {1}',r.added.length,r.bad.join(', ')):T('Added {0} students',r.added.length));tRefresh()}catch(e){$('#asMsg').textContent=e.message}}}
+
+function tSettings(d){const c=d.class;
+  SCH.modal('Class settings',`<div class="sc-form"><label class="full">Class name<input class="lbinput" id="csName" maxlength="60" value="${esc(c.name)}"></label>
+    <label>Subject<select class="lbinput" id="csSub">${SCH.subOpts(c.subject)}</select></label><label>Level<select class="lbinput" id="csLv">${SCH.lvOpts(c.level)}</select></label></div>
+    <div class="sc-actions"><button class="btn" id="csSave">Save</button><button class="btn ghost" id="csCsv">Export grades (CSV)</button></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><div class="sc-actions"><button class="btn ghost sm" id="csCode">New class code</button><button class="btn ghost sm" id="csArch">${c.archived?'Restore class':'Archive class'}</button><button class="btn ghost sm" id="csDel" style="color:var(--bad)">Delete class</button></div><p class="sc-msg" id="csMsg"></p>`);
+  const run=async(fn,after)=>{try{await fn();SCH.close();if(after)after();else tRefresh()}catch(e){$('#csMsg').textContent=e.message}};
+  $('#csSave').onclick=()=>run(()=>SCH.api('PATCH',`/teacher/classes/${c.id}`,{name:$('#csName').value.trim(),subject:$('#csSub').value,level:$('#csLv').value}));
+  $('#csCode').onclick=()=>{if(confirm(T('Make a new code? The old code stops working, but students already in the class stay.')))run(()=>SCH.api('POST',`/teacher/classes/${c.id}/code`))};
+  $('#csArch').onclick=()=>run(()=>SCH.api('PATCH',`/teacher/classes/${c.id}`,{archived:!c.archived}));
+  $('#csDel').onclick=()=>{if(prompt(T('This deletes the class and all its grades for good. Type DELETE to confirm.'))==='DELETE')run(()=>SCH.api('DELETE',`/teacher/classes/${c.id}`),()=>{location.hash='teacher';toast('🗑️',T('Class deleted'))})};
+  $('#csCsv').onclick=()=>{const q=v=>`"${String(v??'').replace(/"/g,'""')}"`,rows=[['Student','Email','Date','Assessment','Type','Subject','Grade','Percentage','Weight','Note']];
+    for(const s of d.students)for(const g of s.grades)rows.push([s.name,s.email,g.date,g.title,SCH.tName(g.type),SCH.sName(g.subject),g.letter||'',g.pct??'',g.weight||1,g.note||'']);
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv'}));a.download=`${c.name.replace(/[^\w-]+/g,'_')}_grades.csv`;document.body.appendChild(a);a.click();a.remove()}}
+
+async function tStudent(main,seq,id,email,quiet){const p=await SCH.api('GET',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`);if(seq!==SCH.seq||tSame(main,p,quiet))return;
+  const c=p.class,sc=p.scale,m=p.summary,a=p.activitySummary,act=p.activity,stu=p.student,col=SCH.sCol(c.subject),d={class:c,scale:sc,students:[{...stu,grades:p.grades}]};
+  const subs=[...new Set(p.grades.map(g=>g.subject))],gsub=subs.includes(TCH.gsub)?TCH.gsub:'',shown=p.grades.filter(g=>!gsub||g.subject===gsub).slice().reverse();
+  const days=[];for(let i=55;i>=0;i--){const x=new Date(Date.now()-i*864e5),k=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`,n=act&&act.days?act.days[k]||0:0;days.push(`<i class="${n>=30?'l3':n>=10?'l2':n>0?'l1':''}" title="${esc(SCH.short(k))}: ${n}"></i>`)}
+  const topicList=list=>list.length?SCH.bars(list.map(t=>({l:SCH.topic(t.key),v:t.pct,t:t.pct+'%',c:t.pct>=70?'var(--ok)':t.pct<50?'var(--bad)':'var(--gold)'}))):'<p class="muted">Not enough practice yet.</p>';
+  main.innerHTML=`<a class="sc-back" href="#teacher/c/${esc(id)}">← ${esc(c.name)}</a>
+    <div class="sc-head"><div class="sc-who">${SCH.av(stu.name,stu.email,true)}<div><h2 style="margin:0">${esc(stu.name)}</h2><p class="muted">${esc(stu.email)} · ${stu.joinedAt?esc(T('joined {0}',SCH.date(stu.joinedAt))):esc(T('added {0}',SCH.date(stu.addedAt)))}</p></div></div>
+      <div class="sc-actions"><button class="btn" data-g>＋ Add grade</button><button class="btn ghost" data-ren>Rename</button><button class="btn ghost" data-rm>Remove</button></div></div>
+    ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades'],[a?a.answered:'—','Questions answered'],[a&&a.accuracy!=null?a.accuracy+'%':'—','Accuracy'],[a?a.active30:'—','Active days (30)'],[a?(a.streak?'🔥 '+a.streak:0):'—','Streak']])}
+    <div class="sc-cols"><div class="sc-card"><h4>Results over time</h4>${SCH.chart(p.grades.map(g=>({l:SCH.short(g.date),v:SCH.score(g,sc),t:`${g.title||SCH.tName(g.type)}: ${SCH.gtxt(g)}`})),col)}</div>
+      <div class="sc-card"><h4>By subject</h4>${SCH.bars(Object.entries(m.bySubject||{}).map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}</div></div>
+    <div class="sc-card" style="margin-top:16px"><div class="sc-head" style="margin-bottom:10px"><h4 style="margin:0">Grades</h4>${subs.length>1?`<select class="lbinput" id="gsSub" style="width:auto;margin:0" aria-label="Subject">${SCH.opts([['','All subjects'],...subs.map(k=>[k,SCH.sName(k)])],gsub)}</select>`:''}</div>
+      ${shown.length?`<table class="sc-table cards"><thead><tr><th>Date</th><th>Assessment</th><th>Grade</th><th>Weight</th><th>Note</th><th></th></tr></thead><tbody>${shown.map(g=>`<tr class="go" data-id="${esc(g.id)}"><td data-l="Date">${esc(SCH.date(g.date))}</td><td class="nm"><b>${esc(g.title||SCH.tName(g.type))}</b> <small class="muted">${esc(SCH.tName(g.type))}${subs.length>1?' · '+esc(SCH.sName(g.subject)):''}</small></td><td data-l="Grade">${SCH.badge(g,sc)} ${g.letter?SCH.pct(g.pct):''}</td><td data-l="Weight">×${g.weight||1}</td><td data-l="Note">${esc(g.note||'')}</td><td class="act"><button class="btn ghost sm" data-e="${esc(g.id)}">Edit</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">No grades yet. Use ＋ Add grade.</p>'}</div>
+    <div class="sc-card" style="margin-top:16px"><h4>Practice on Full Marks</h4>${act?`<p class="muted" style="margin:0">Last active <b>${esc(SCH.ago(a.lastActive))}</b> · ${esc(T('{0} questions this week',a.week))} · ${a.xp} XP · ${a.exams} timed exams · updated ${esc(SCH.ago(act.at))}</p>
+      <div class="sc-heat" aria-label="Questions answered per day, last 8 weeks">${days.join('')}</div><p class="sc-note" style="margin:0">Last 8 weeks, one square a day</p>
+      <div class="sc-cols"><div><h4>💪 Strong topics</h4>${topicList(p.strong)}</div><div><h4>🎯 Needs work</h4>${topicList(p.weak)}</div></div>
+      ${(act.recent||[]).length?`<h4 style="margin-top:16px">Recent practice</h4><ul class="sc-list">${act.recent.slice(0,8).map(r=>`<li><span>${esc(SCH.sName(r.subject))} · ${esc(r.topic||'')}</span><span>${r.pct!=null?`<b>${r.pct}%</b> · `:''}<small class="muted">${esc(SCH.ago(r.at))}</small></span></li>`).join('')}</ul>`:''}`
+      :`<p class="muted" style="margin:0">No practice yet. It shows up here once ${esc(stu.name)} signs in to Full Marks with ${esc(stu.email)} and revises.</p>`}</div>`;
+  const gs=$('#gsSub');if(gs)gs.onchange=e=>{TCH.gsub=e.target.value;main.dataset.sig='';tStudent(main,SCH.seq,id,email)};
+  main.querySelector('[data-g]').onclick=()=>tGrade(d,email);
+  main.querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>tGrade(d,email,p.grades.find(g=>g.id===tr.dataset.id)));
+  main.querySelector('[data-ren]').onclick=()=>{const n=prompt(T('Student’s name'),stu.name);if(n&&n.trim())SCH.api('PATCH',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`,{name:n.trim()}).then(tRefresh,e=>toast('⚠️',e.message))};
+  main.querySelector('[data-rm]').onclick=()=>{if(confirm(T('Remove {0} from {1}? Their grades in this class are deleted too.',stu.name,c.name)))SCH.api('DELETE',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`).then(()=>{toast('✓',T('Student removed'));location.hash=`teacher/c/${id}`},e=>toast('⚠️',e.message))}}
+
+/* ---------- owner: approve teacher accounts ---------- */
+async function renderAdmin(){const main=$('#adminMain');if(!main)return;const seq=++SCH.seq;
+  if(!API_BASE||!authToken())return SCH.signin(main,'Teacher approvals','Sign in with the owner’s email.');
+  main.innerHTML=SCH.loading();
+  try{const d=await SCH.api('GET','/admin/teachers');if(seq!==SCH.seq)return;
+    const g={pending:[],teacher:[],other:[]};for(const t of d.teachers)(g[t.status]||g.other).push(t);
+    const row=t=>`<li style="flex-wrap:wrap"><div class="sc-who">${SCH.av(t.name,t.email)}<div><b>${esc(t.name)}</b><small>${esc(t.email)} · ${esc(t.school)}</small>${t.note?`<small>“${esc(t.note)}”</small>`:''}<small>Asked ${esc(SCH.date(t.requestedAt))}${t.classes?` · ${t.classes} classes`:''}</small></div></div>
+      <div class="sc-actions">${t.status==='pending'?`<button class="btn sm" data-a="approve" data-e="${esc(t.email)}">Approve</button><button class="btn ghost sm" data-a="reject" data-e="${esc(t.email)}">Reject</button>`:t.status==='teacher'?`<button class="btn ghost sm" data-a="revoke" data-e="${esc(t.email)}">Revoke</button>`:`<span class="sc-pill bad">${esc(t.status)}</span><button class="btn ghost sm" data-a="approve" data-e="${esc(t.email)}">Approve</button>`}</div></li>`;
+    const sec=(h,l)=>`<div class="sc-card"><h3>${h} <span class="sc-pill">${l.length}</span></h3>${l.length?`<ul class="sc-list" style="margin-top:12px">${l.map(row).join('')}</ul>`:'<p class="muted">None.</p>'}</div>`;
+    main.innerHTML=sec('Waiting for approval',g.pending)+sec('Teachers',g.teacher)+(g.other.length?sec('Rejected or revoked',g.other):'')+SCH.foot();SCH.bindOut(main);
+    main.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{if(b.dataset.a!=='approve'&&!confirm(T('{0} {1}?',b.dataset.a==='revoke'?T('Revoke'):T('Reject'),b.dataset.e)))return;b.disabled=true;
+      try{await SCH.api('POST',`/admin/teachers/${encodeURIComponent(b.dataset.e)}/${b.dataset.a}`);toast('✓',T('Done'));renderAdmin()}catch(e){toast('⚠️',e.message);b.disabled=false}})}
+  catch(e){if(seq!==SCH.seq)return;if(e.status===403){main.innerHTML='<div class="sc-card sc-empty"><div class="big">🔒</div><h3>Only the owner can see this page.</h3></div>';return}SCH.fail(main,e,renderAdmin)}}
+
+/* ---------- AI tutor under every explanation ---------- */
+const AIT={ctx:new Map(),n:0,imgs:new Map(),st:null,stAt:0,
+  reg(q,ok,subj,o){const id='q'+(++this.n);this.ctx.set(id,{q,ok,subj,level:o.level||level,mine:o.mine,written:!!o.written,board:boards[subj]||''});if(this.ctx.size>300)this.ctx.delete(this.ctx.keys().next().value);return id},
+  key(c){let h=0;const s=c.subj+'|'+c.q[0];for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return 'k'+(h>>>0).toString(36)},
+  all(){const a=jget('fm-ai',{});return a&&typeof a==='object'&&!Array.isArray(a)?a:{}},
+  hist(c){return ((this.all()[this.key(c)]||{}).m||[]).slice()},
+  save(c,m){const a=this.all();a[this.key(c)]={t:Date.now(),m:m.slice(-30)};for(const k of Object.keys(a).sort((x,y)=>a[y].t-a[x].t).slice(60))delete a[k];store.set('fm-ai',JSON.stringify(a))},
+  async status(force){if(!force&&this.st&&Date.now()-this.stAt<60000)return this.st;const r=await fetch(`${API_BASE}/ai/status`,{headers:authToken()?{Authorization:'Bearer '+authToken()}:{}});this.st=await r.json();this.stAt=Date.now();return this.st},
+  md(s){const e=esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'),out=[];let list=null;
+    for(const raw of e.split('\n')){const l=raw.trimEnd(),ul=/^\s*[-•*]\s+(.*)/.exec(l),ol=/^\s*\d+[.)]\s+(.*)/.exec(l);
+      if(ul||ol){const t=ul?'ul':'ol';if(!list||list!==t){if(list)out.push(`</${list}>`);list=t;out.push(`<${t}>`)}out.push(`<li>${(ul||ol)[1]}</li>`);continue}
+      if(list){out.push(`</${list}>`);list=null}if(l.trim())out.push(`<p>${l}</p>`)}
+    if(list)out.push(`</${list}>`);return out.join('')},
+  chips(c){const calc=/\d/.test(c.q[0])&&['maths','physics','chemistry','economics'].includes(c.subj);
+    return [...(c.ok?[]:['Why is my answer wrong?']),'Why is this the right answer?','Explain it more simply','Give me another example',...(calc?['Show me every step']:[]),'What gets the marks in the exam?']},
+  bubble(m){if(m.role==='assistant')return `<div class="ai-m a">${this.md(m.text)}</div>`;const img=m.ik&&this.imgs.get(m.ik);
+    return `<div class="ai-m u">${m.img?(img?`<img src="data:${img.type};base64,${img.data}" alt="${esc(T('Your photo'))}">`:`<span class="ph">📷 ${esc(T('Photo of your working'))}</span><br>`):''}${esc(m.text||'')}</div>`},
+  scroll(box){const l=box.querySelector('.ai-log');l.scrollTop=l.scrollHeight},
+  async open(btn){const id=btn.dataset.ai,c=this.ctx.get(id),why=btn.closest('.why');if(!c||!why)return;
+    const nx=why.nextElementSibling;if(nx&&nx.classList.contains('ai-box')){nx.remove();btn.setAttribute('aria-expanded','false');return}
+    btn.setAttribute('aria-expanded','true');const box=document.createElement('div');box.className='ai-box';box.dataset.for=id;
+    box.innerHTML=`<div class="ai-head"><span class="ai-orb" aria-hidden="true"></span><div><b>AI tutor</b><small>Ask anything about this question</small></div><span class="ai-left"></span><button class="ai-x" type="button" aria-label="Close">×</button></div><div class="ai-log no-tr" aria-live="polite"></div><div class="ai-body"><div class="sc-loading" style="padding:20px 0">Loading…</div></div>`;
+    why.after(box);box.querySelector('.ai-x').onclick=()=>{box.remove();btn.setAttribute('aria-expanded','false')};
+    box.querySelector('.ai-log').innerHTML=this.hist(c).map(m=>this.bubble(m)).join('');this.scroll(box);
+    const body=box.querySelector('.ai-body');
+    if(!API_BASE){body.innerHTML='<div class="ai-gate"><p>The AI tutor isn’t connected on this copy of the site.</p></div>';return}
+    if(!authToken()){body.innerHTML='<div class="ai-gate"><p><b>Sign in to ask the AI tutor.</b> It explains this question step by step, answers your follow-ups and can check a photo of your working.</p><div><button class="btn sm" data-si>Sign in</button></div></div>';
+      body.querySelector('[data-si]').onclick=()=>planSignIn('Sign in to use the AI tutor',()=>{this.st=null;box.remove();this.open(btn)});return}
+    let s;try{s=await this.status()}catch(e){body.innerHTML='<div class="ai-gate"><p>The AI tutor can’t be reached right now. Check your connection and try again.</p></div>';return}
+    if(!s.on){body.innerHTML='<div class="ai-gate"><p><b>The AI tutor is almost here.</b> It’s being switched on. Check back soon!</p></div>';return}
+    if(!s.allowed){body.innerHTML='<div class="ai-gate"><p><b>The AI tutor comes with Full Marks full access.</b> It’s also free for students whose teacher uses Full Marks.</p><div><a class="btn sm" href="#pricing">Get full access</a><a class="btn ghost sm" href="#school">Join your class</a></div></div>';return}
+    this.left(box,s.left);
+    body.innerHTML=`<div class="ai-chips">${this.chips(c).map(t=>`<button type="button">${esc(t)}</button>`).join('')}</div><div class="ai-prev"></div>
+      <form class="ai-form"><button class="ai-att" type="button" title="Add a photo of your working" aria-label="Add a photo of your working">📷</button><input type="file" accept="image/*" hidden>
+        <textarea rows="1" maxlength="2000" placeholder="Ask a follow-up question…" aria-label="Your question"></textarea><button class="btn sm" type="submit">Send</button></form>
+      <p class="ai-foot">The AI tutor can make mistakes. Check important facts in your notes.</p>`;
+    const ta=body.querySelector('textarea'),file=body.querySelector('input[type=file]'),att=body.querySelector('.ai-att');
+    body.querySelectorAll('.ai-chips button').forEach(b=>b.onclick=()=>this.send(box,c,b.textContent));
+    ta.oninput=()=>{ta.style.height='auto';ta.style.height=Math.min(140,ta.scrollHeight)+'px'};
+    ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();body.querySelector('form').requestSubmit()}};
+    body.querySelector('form').onsubmit=e=>{e.preventDefault();const t=ta.value.trim();if(!t&&!box._img)return;ta.value='';ta.style.height='auto';this.send(box,c,t)};
+    att.onclick=()=>file.click();
+    file.onchange=async()=>{const f=file.files[0];file.value='';if(!f)return;try{box._img=await this.shrink(f);this.preview(box)}catch(e){toast('⚠️',T('That photo could not be read. Try a JPG or PNG.'))}}},
+  left(box,n){const el=box.querySelector('.ai-left');if(el&&n!=null)el.textContent=T('{0} left today',n)},
+  preview(box){const p=box.querySelector('.ai-prev'),i=box._img;box.querySelector('.ai-att').classList.toggle('on',!!i);
+    p.innerHTML=i?`<img src="data:${i.type};base64,${i.data}" alt=""><span>Photo added. Ask a question about it, or just press Send.</span><button type="button">Remove</button>`:'';
+    if(i)p.querySelector('button').onclick=()=>{box._img=null;this.preview(box)}},
+  // Photos of working are made smaller on the device before they are sent: 1600 px, JPEG.
+  shrink(f){return new Promise((ok,no)=>{const url=URL.createObjectURL(f),im=new Image();im.onload=()=>{const k=Math.min(1,1600/Math.max(im.width,im.height)),cv=document.createElement('canvas');
+      cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,cv.width,cv.height);g.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);
+      ok({type:'image/jpeg',data:cv.toDataURL('image/jpeg',.82).split(',')[1]})};im.onerror=()=>{URL.revokeObjectURL(url);no(new Error('bad image'))};im.src=url})},
+  async send(box,c,text){if(box._busy)return;const img=box._img,hist=this.hist(c);if(!text&&!img)return;box._busy=true;
+    const msg={role:'user',text:text||''};if(img){const ik=this.key(c)+':'+Date.now();this.imgs.set(ik,img);msg.img=1;msg.ik=ik}
+    hist.push(msg);this.save(c,hist);box._img=null;this.preview(box);
+    const log=box.querySelector('.ai-log');log.insertAdjacentHTML('beforeend',this.bubble(msg));
+    const bub=document.createElement('div');bub.className='ai-m a';bub.innerHTML='<span class="ai-typing" aria-label="Thinking"><i></i><i></i><i></i></span>';log.appendChild(bub);this.scroll(box);
+    const x=subOfQ(c.q),payload={subject:c.subj,level:c.level,board:c.board,topic:x?x.title:'',question:c.q[0],options:c.written?[]:c.q[1],answer:c.mine||'',correct:c.q[1][c.q[2]],result:c.ok?'correct':'wrong',explanation:c.q[3],lang:I18N.lang,
+      messages:hist.map(m=>({role:m.role,text:m.text||(m.img?'Here is a photo of my working.':''),image:(m.ik&&this.imgs.get(m.ik))||undefined}))};
+    let out='';
+    try{const r=await fetch(`${API_BASE}/ai/tutor`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify(payload)});
+      if(!r.ok||!r.body){const j=await r.json().catch(()=>({}));if(j.left!=null)this.left(box,j.left);throw new Error(j.error||T('The AI tutor could not answer right now. Please try again.'))}
+      const rd=r.body.getReader(),dec=new TextDecoder();let buf='',err='';
+      for(;;){const {value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let i;
+        while((i=buf.indexOf('\n'))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+1);if(!line)continue;let o;try{o=JSON.parse(line)}catch(e){continue}
+          if(o.t){out+=o.t;bub.innerHTML=this.md(out);this.scroll(box)}else if(o.error)err=o.error;else if(o.done){this.left(box,o.left);if(this.st)this.st.left=o.left}}}
+      if(!out)throw new Error(err||T('The AI tutor could not answer right now. Please try again.'));
+      hist.push({role:'assistant',text:out});this.save(c,hist)}
+    catch(e){hist.pop();this.save(c,hist);bub.className='ai-m err';bub.textContent=e.message;const ta=box.querySelector('textarea');if(ta&&text&&!ta.value)ta.value=text;if(img){box._img=img;this.preview(box)}}
+    box._busy=false;this.scroll(box)}};
+document.addEventListener('click',e=>{const b=e.target.closest('.why-ai');if(b)AIT.open(b)});
+
 /* routing */
-const PAGES=['home','plan','study','games','me','pricing','voices'];
-function route(){Explainer.close();const h=location.hash.slice(1),p=PAGES.includes(h)?h:'home';
+const PAGES=['home','plan','study','games','me','pricing','voices','school','teacher','admin'];
+function route(){Explainer.close();const h=location.hash.slice(1),hb=h.split('/')[0],p=PAGES.includes(hb)?hb:'home';
   $$('section.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));
   $$('.nav a.l').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+p));
   $('#navlinks').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
   document.body.classList.toggle('on-home',p==='home');topbar.classList.toggle('scrolled',p!=='home'&&scrollY>20);
-  if(p!=='games')stopGame();if(p==='study')renderStudy();else endSession();if(p==='games')renderGames();if(p==='me')renderMe();if(p==='plan')renderPlan();if(p==='voices')renderVoices();else stopVoicePreview();window.scrollTo(0,0)}
+  if(p!=='games')stopGame();if(p==='study')renderStudy();else endSession();if(p==='games')renderGames();if(p==='me')renderMe();if(p==='plan')renderPlan();if(p==='voices')renderVoices();else stopVoicePreview();if(p==='school')renderSchool(h);if(p==='teacher')renderTeacher(h);if(p==='admin')renderAdmin();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 $$('.nav a.l, .brand').forEach(x=>x.addEventListener('click',e=>{if(x.getAttribute('href')===location.hash){e.preventDefault();route()}}));
 $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)};
@@ -3586,7 +4297,7 @@ $('#themeBtn').onclick=()=>{const r=document.documentElement,dark=r.dataset.them
 const th=store.get('go-theme','');if(th)document.documentElement.dataset.theme=th;
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();PlanSync.pull();
+renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=`${I18N.L.flag} ${I18N.lang.toUpperCase()}`;lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
   if(API_BASE)fetch(`${API_BASE}/i18n/status`).then(r=>r.ok?r.json():null).then(j=>{if(j)langShare=Object.fromEntries(Object.entries(j.languages||{}).map(([k,v])=>[k,v.share]));showLang()}).catch(()=>{});
