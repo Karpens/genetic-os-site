@@ -3723,15 +3723,17 @@ const Explainer=(()=>{
   const SILENT=(()=>{const b=new Uint8Array(46),v=new DataView(b.buffer),w=(o,t)=>{for(let i=0;i<t.length;i++)b[o+i]=t.charCodeAt(i)};
     w(0,'RIFF');v.setUint32(4,38,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,8000,true);v.setUint32(28,16000,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,2,true);
     return 'data:audio/wav;base64,'+btoa(String.fromCharCode(...b))})();
-  let vinfoP=null;
+  const vinfo=new Map();
   const LQ=I18N.on?`lang=${I18N.lang}`:'';
-  const voiceInfo=()=>vinfoP||(vinfoP=API_BASE?fetch(`${API_BASE}/voice/info${LQ?'?'+LQ:''}`).then(r=>r.ok?r.json():null).catch(()=>null):Promise.resolve(null));
-  const clips=new Map();
-  async function getClip(c){const info=await voiceInfo();if(!info||!info.voice||!info.ready)return null;
-    const q=new URLSearchParams({...(c.sub!=null?{s:c.s,l:c.l,sub:c.sub}:{s:c.s,l:c.l,topic:c.topic,...(c.b?{b:c.b}:{})}),...(I18N.on?{lang:I18N.lang}:{})}).toString();
+  const voiceInfo=(lq=LQ)=>vinfo.get(lq)||vinfo.set(lq,API_BASE?fetch(`${API_BASE}/voice/info${lq?'?'+lq:''}`).then(r=>r.ok?r.json():null).catch(()=>null):Promise.resolve(null)).get(lq);
+  const clips=new Map(),joinLines=ls=>ls.map(l=>String(l).replace(/\s+/g,' ').trim()).filter(Boolean).join(' ');
+  async function clipFor(c,lang){const info=await voiceInfo(lang?LQ:'');if(!info||!info.voice||!info.ready)return null;
+    const q=new URLSearchParams({...(c.c?{c:c.c}:c.sub!=null?{s:c.s,l:c.l,sub:c.sub}:{s:c.s,l:c.l,topic:c.topic,...(c.b?{b:c.b}:{})}),...(lang?{lang:I18N.lang}:{})}).toString();
     if(!clips.has(q))clips.set(q,fetch(`${API_BASE}/voice/clip?${q}`,{headers:authToken()?{Authorization:'Bearer '+authToken()}:{}})
       .then(r=>r.ok?r.json():null).then(j=>j&&j.src?{...j,src:API_BASE+j.src,q,name:info.voice.name}:null).catch(()=>null));
     return clips.get(q)}
+  // In another language, a part that isn't translated yet still gets the English narration, as long as it says exactly what is on screen.
+  async function getClip(c,lines){if(!I18N.on)return clipFor(c,false);const a=await clipFor(c,true);if(a)return a;const b=await clipFor(c,false);return b&&b.text===joinLines(lines)?b:null}
 
   // ---- captions, key points and diagram labels ----
   const spoken=s=>s.replace(/\*\*/g,'').replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/→/g,' to ').replace(/≈/g,' about ').replace(/µm/g,' micrometres')
@@ -3766,6 +3768,8 @@ const Explainer=(()=>{
   async function run(){stopAll();const my=tok,sc=deck.scenes[si];showLine();
     if(!muted&&sc.clip&&!sc.noclip){const c=await getClip(sc.clip);if(my!==tok)return;
       if(c&&Array.isArray(c.lines)&&c.lines.length===sc.lines.length)return playClip(sc,c,my)}
+    // When the recorded narration is there, a part without a recording plays its captions quietly instead of using a robot voice.
+    if(!muted&&!deck.quiet){if(deck.hq)deck.quiet=1;else{const info=await voiceInfo('');if(my!==tok)return;if(info&&info.voice&&info.ready)deck.quiet=1}}
     speakLine(my)}
   function playClip(sc,c,my){hq(c);
     if(aud.dataset.src!==c.src){aud.src=c.src;aud.dataset.src=c.src}
@@ -3785,7 +3789,7 @@ const Explainer=(()=>{
   function speakLine(my){const sc=deck.scenes[si],line=sc.lines[li]||'',t0=Date.now(),full=readMs(line);
     const after=ms=>{timer=setTimeout(()=>{if(my===tok&&playing)advance()},ms)};
     // After a recorded part, parts without a recording stay quiet rather than switch to a robot voice.
-    if(muted||broken||!canSpeak||(deck.hq&&!sc.clip)){estimate(line,full*.85,my);return after(full)}
+    if(muted||broken||!canSpeak||deck.quiet||(deck.hq&&!sc.clip)){estimate(line,full*.85,my);return after(full)}
     estimate(line,full,my);
     const say=spoken(line),parts=say.match(/[^.!?]+[.!?]*/g)||[say],total=words(say)||1,shown=words(line)||1;let k=0,off=0,bnd=false;
     // If the voice "finishes" far too fast it isn't really speaking (no voices installed, blocked
@@ -3868,21 +3872,24 @@ function watchCard(t){const w=t.subs.reduce((a,x)=>a+(x.v||[]).join(' ').split(/
 // A short name for a subtopic on the title slide (practicals are named by what they investigate).
 function chipTitle(t){const m=t.match(/^(?:Required\/core practical|Required practical|Core practical|Practical)\s*:\s*(.+)$/i);t=m?'🧪 '+m[1]:t.split(':')[0];return t.length>46?t.slice(0,44).replace(/\s+\S*$/,'')+'…':t}
 // One topic as an explainer: a title slide, a slide for each subtopic you can open, and an ending.
+// Lines every explainer shares, recorded once (the backend's voice/clips.js COMMON: keep the two the same).
+const XP_COMMON={intro:"Let's go through this topic one part at a time, with a quick summary of each.",end:"That's the end of this topic! Now test yourself with the topic questions, or save the cheat sheet to revise on the go.",lock:'The rest of this explainer comes with full access, together with every note, question and game.'};
 function topicDeck(t,startSub){const s=SUBJECTS[subject],ld=levelData(),scenes=[];
   const mins=Math.max(1,Math.round(t.subs.reduce((a,x)=>a+(x.v||[]).join(' ').split(/\s+/).length,0)/140));
   const chips=t.subs.slice(0,6).map((x,i)=>`<span style="--i:${i}"><b>${esc(x.n)}</b>${esc(chipTitle(x.title))}</span>`).join('')+(t.subs.length>6?`<span style="--i:6">+${t.subs.length-6} more</span>`:'');
-  scenes.push({label:'Introduction',lines:t.i&&t.i.length?t.i:[`Topic ${t.n}: ${t.title}. Let's go through its ${t.subs.length} subtopics one by one.`],
-    clip:t.i&&t.i.length?(t.key&&ld&&ld.vb?{s:subject,l:level,topic:t.n,b:ld.vb}:{s:subject,l:level,topic:t.n}):null,
+  scenes.push({label:'Introduction',lines:t.i&&t.i.length?t.i:[XP_COMMON.intro],
+    clip:t.i&&t.i.length?(t.key&&ld&&ld.vb?{s:subject,l:level,topic:t.n,b:ld.vb}:{s:subject,l:level,topic:t.n}):{c:'intro'},
     html:`<div class="xs-title"><div class="xs-ring"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bg" cx="50" cy="50" r="48"/><circle class="fg" cx="50" cy="50" r="48"/></svg><b>${esc(t.n)}</b></div>
       <div class="xs-kick">${esc(s.name)} · ${esc(LV(level))}</div><h2 class="xs-h">${esc(t.title).split(' ').map((w,i)=>`<span class="wd" style="--i:${i}">${w}</span>`).join(' ')}</h2>
       <div class="xs-meta">${t.subs.length} part${t.subs.length>1?'s':''} · about ${mins} min</div><div class="xs-chap">${chips}</div></div>`});
   let locked=0;
   t.subs.forEach((x,i)=>{if(!(premium||x.notes.length>0)){locked++;return}
     const lines=x.v&&x.v.length?x.v:x.notes.map(n=>n.replace(/\*\*/g,''));
-    scenes.push({sub:i,label:`${x.n} ${x.title}`,lines,clip:x.v&&x.v.length?{s:subject,l:level,sub:x.key||x.n}:null,html:subSlide(x,lines)})});
-  if(locked)scenes.push({stop:1,label:'More with full access',lines:[`The other ${locked} part${locked>1?'s':''} of this explainer come${locked>1?'':'s'} with full access, together with every note, question and game.`],
+    const u=/^(AS|A2):(.+)$/.exec(x.key||'');
+    scenes.push({sub:i,label:`${x.n} ${x.title}`,lines,clip:x.v&&x.v.length?(u?{s:subject,l:u[1],sub:u[2]}:{s:subject,l:level,sub:x.key||x.n}):null,html:subSlide(x,lines)})});
+  if(locked)scenes.push({stop:1,label:'More with full access',lines:[XP_COMMON.lock],clip:{c:'lock'},
     html:`<div class="xp-scene xp-lock"><div class="xp-art"><span>🔒</span></div><h2>Watch the whole topic</h2><p>${locked} more part${locked>1?'s':''} of this explainer, plus every note, question and game, come with full access.</p><div class="actions"><a class="btn gold" href="#pricing" data-xpclose>See plans</a></div></div>`});
-  else scenes.push({stop:1,end:1,label:'The end',lines:[`That's the end of topic ${t.n}, ${t.title}. Now test yourself with the topic questions, or save the cheat sheet to revise on the go.`],
+  else scenes.push({stop:1,end:1,label:'The end',lines:[XP_COMMON.end],clip:{c:'end'},
     html:`<div class="xp-scene"><div class="xp-art"><span>🎉</span></div><h2>Topic ${esc(t.n)} done!</h2><p>${esc(t.title)}</p><div class="actions"><button class="btn" data-xpact="test">Take the topic test</button><button class="btn ghost" style="color:#fff" data-xpact="cheat">⬇️ Cheat sheet PDF</button></div></div>`});
   const start=startSub==null?0:Math.max(0,scenes.findIndex(sc=>sc.sub===startSub));
   return {kicker:`${s.name} ${level} · Topic ${t.n}`,title:t.title,color:s.color,scenes,start,
