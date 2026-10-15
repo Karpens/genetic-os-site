@@ -1679,38 +1679,112 @@ html.i18n .board-ui{display:none!important}
 .sm-spd select{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--bg);color:var(--ink);font-weight:700}
 .dotk{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle}.dotk.p{background:var(--bad)}.dotk.n{background:var(--muted)}.dotk.e{background:var(--sky)}
 /* 3D */
-.l3-main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(240px,1fr);gap:16px;align-items:start}
-.l3-stage{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 50% 30%,#2a2440 0%,#141019 70%);touch-action:none;outline-offset:3px;user-select:none;-webkit-user-select:none;cursor:grab}
-.l3-stage:active{cursor:grabbing}
+/* ---------- 3D models: stage, labels, info card, tour and game ---------- */
+.l3{display:flex;flex-direction:column;gap:12px}
+.l3-vars{margin:0}
+.l3-wrap{position:relative}
+.l3-stage{position:relative;aspect-ratio:16/9;max-height:74vh;border-radius:18px;overflow:hidden;background:radial-gradient(120% 95% at 50% 26%,#FFFFFF 0%,#EEF1FB 50%,#DCE2F3 100%);box-shadow:inset 0 0 0 1px var(--line);touch-action:pan-y;outline-offset:3px;user-select:none;-webkit-user-select:none;cursor:grab}
+:root[data-theme=dark] .l3-stage{background:radial-gradient(120% 95% at 50% 26%,#2B3454 0%,#1B2238 58%,#131A2C 100%)}
+@media (max-width:700px){.l3-stage{aspect-ratio:1/1}}
+.l3-stage.drag{cursor:grabbing}.l3-stage.hot{cursor:pointer}
+.l3-stage.flat{aspect-ratio:auto;min-height:0;cursor:default;background:none;box-shadow:none}
+.l3-stage.flat canvas,.l3-stage.flat .lab-tools{display:none}
 .l3-stage canvas{display:block;width:100%;height:100%}
-.l3-tags{position:absolute;inset:0;pointer-events:none}
-.l3-tag{position:absolute;left:0;top:0;transform-origin:0 0;margin:-11px 0 0 8px;padding:3px 9px;border-radius:999px;background:rgba(20,16,25,.72);color:#fff;font:700 11.5px "Inter",sans-serif;white-space:nowrap;box-shadow:0 0 0 1px rgba(255,255,255,.18);transition:opacity .25s}
-.l3-tag::before{content:'';position:absolute;left:-8px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#fff}
-.l3-tag.on{background:var(--stain);box-shadow:0 0 0 2px #fff}
-.l3-tag.back{opacity:.25}
-.l3-msg{position:absolute;inset:0;display:grid;place-items:center;color:#cfc6e0;font-weight:700;padding:20px;text-align:center}
+.l3-tags,.l3-lead{position:absolute;inset:0;pointer-events:none}
+.l3-lead{width:100%;height:100%;overflow:visible;opacity:0;transition:opacity .3s}
+.l3-lead path{fill:none;stroke:var(--c,var(--stain));stroke-width:2;stroke-dasharray:5 5;stroke-linecap:round}
+.l3-lead circle{fill:var(--c,var(--stain));stroke:#fff;stroke-width:2.5}
+.l3-tag{position:absolute;left:0;top:0;margin:-12px 0 0 10px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.93);color:#1B2236;font:700 11.5px "Inter",sans-serif;white-space:nowrap;box-shadow:0 4px 14px -6px rgba(27,34,54,.45),0 0 0 1px rgba(27,34,54,.08);pointer-events:auto;cursor:pointer;transition:opacity .25s,background .2s,color .2s}
+.l3-tag::before{content:'';position:absolute;left:-10px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--tc,var(--stain));box-shadow:0 0 0 2px #fff,0 1px 4px rgba(0,0,0,.25)}
+.l3-tag.lf{translate:-100% 0;margin-left:-10px}.l3-tag.lf::before{left:auto;right:-10px}
+.l3-tag:hover{background:#fff;color:var(--tc)}
+.l3-tag.on{background:var(--tc);color:#fff;z-index:2}
+.l3-tag.ax{font-size:10.5px;padding:2px 8px;background:rgba(255,255,255,.8)}
+.l3-tag.dim{opacity:.16}.l3-tag.back{opacity:.18}
+.l3.quiz .l3-tags{display:none}
+.l3-hov{position:absolute;left:0;top:0;z-index:3;pointer-events:none;padding:4px 10px;border-radius:8px;background:#1B2236;color:#fff;font:700 12px "Inter",sans-serif;white-space:nowrap;transform:translate(14px,16px)}
+.l3-hov[hidden]{display:none}
+.l3-stage .lab-tools{left:10px;right:auto;top:10px;flex-wrap:wrap;max-width:calc(100% - 20px)}
+.l3-stage .lab-tools button{width:34px;height:34px;border-radius:10px;font-size:15px;background:rgba(255,255,255,.88);color:#1B2236;box-shadow:0 0 0 1px rgba(27,34,54,.1),0 4px 12px -6px rgba(27,34,54,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.l3-stage .lab-tools button[aria-pressed=true]{background:var(--stain);color:#fff}
+.l3-msg{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:12px;color:var(--muted);font-weight:700;text-align:center;padding:20px}
 .l3-msg[hidden]{display:none}
-.l3-tag.lf{translate:-100% 0;margin-left:-8px}.l3-tag.lf::before{left:auto;right:-8px}
-.l3-msg.err{position:static;color:var(--muted);background:var(--bg);border-radius:14px;margin-bottom:10px}
-.l3-hint{position:absolute;left:12px;bottom:10px;font:700 11.5px "Inter",sans-serif;color:rgba(255,255,255,.6);pointer-events:none}
-.l3-stage .lab-tools button{background:rgba(255,255,255,.12);color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
-.l3-stage .lab-tools button.on{background:var(--stain)}
-.l3-side{display:flex;flex-direction:column;gap:12px}
-.l3-info{background:var(--bg);border-radius:18px;padding:14px 16px;font-size:14.5px;min-height:90px}
-.l3-info p{margin:6px 0 0;line-height:1.5}
-.l3-name{font:800 18px "Plus Jakarta Sans",sans-serif}
-.l3-intro{margin:0!important}
+.l3-msg.err{position:static;display:block;background:var(--bg2);border-radius:14px;padding:14px 16px;font-weight:600}
+.l3-ld{width:34px;height:34px;border-radius:50%;border:3px solid var(--stain-soft);border-top-color:var(--stain);animation:spin .8s linear infinite}
+.l3-coach{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 15px;border-radius:999px;background:rgba(27,34,54,.8);color:#fff;font:700 13px "Inter",sans-serif;pointer-events:none;white-space:nowrap;animation:popIn .45s cubic-bezier(.2,1.3,.3,1)}
+.l3-coach span{display:inline-block;animation:l3Hand 1.6s ease-in-out infinite}
+.l3-coach[hidden]{display:none}
+@keyframes l3Hand{0%,100%{transform:translateX(-7px) rotate(-8deg)}50%{transform:translateX(7px) rotate(8deg)}}
+/* the info card: beside the model on wide screens, under it on phones */
+.l3-card{--c:var(--stain);position:relative;margin-top:12px;background:var(--paper);border-radius:18px;padding:15px 17px 13px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line);border-top:4px solid var(--c)}
+.l3-card[hidden]{display:none}
+.l3.wide .l3-card{position:absolute;top:14px;right:14px;width:min(350px,40%);max-height:calc(100% - 28px);overflow:auto;margin:0;z-index:4;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.l3-card.in{animation:l3In .5s cubic-bezier(.2,1.1,.3,1) both}
+.l3.wide .l3-card.in{animation-name:l3InR}
+@keyframes l3In{from{opacity:0;transform:translateY(16px) scale(.97)}}
+@keyframes l3InR{from{opacity:0;transform:translateX(26px) scale(.97)}}
+.l3-ch{display:flex;align-items:flex-start;gap:12px}
+.l3-ch>i{width:36px;height:36px;border-radius:12px;flex:none;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.95) 0 10%,var(--c) 58%);box-shadow:0 8px 18px -8px var(--c);animation:l3Pop .6s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes l3Pop{from{transform:scale(.3) rotate(-30deg);opacity:0}}
+.l3-ch small{display:block;font:700 11px "Inter",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.l3-ch h4{margin:2px 0 0;font:800 21px/1.15 "Plus Jakarta Sans",sans-serif;letter-spacing:-.02em}
+.l3-x{margin-left:auto;border:0;background:none;font-size:24px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+.l3-x:hover{color:var(--ink)}
+.l3-cd{margin:10px 0 9px;font-size:15px;line-height:1.55;max-width:none}
+.l3-cd span{opacity:0;animation:l3W .45s ease forwards;animation-delay:calc(.15s + var(--w)*30ms)}
+@keyframes l3W{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:none}}
+.l3-facts{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:7px}
+.l3-facts li{font-size:13.5px;line-height:1.45;padding:8px 11px;border-radius:12px;background:color-mix(in srgb,var(--c) 8%,var(--paper));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 20%,transparent);opacity:0;animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(.75s + var(--d)*.22s)}
+.l3-facts b{display:block;font-size:12px;letter-spacing:.02em;margin-bottom:2px;color:color-mix(in srgb,var(--c) 70%,var(--ink))}
+.l3-cf{display:flex;align-items:center;gap:8px}
+.l3-cf .why-ai{margin:0 auto}
+.l3-nav{flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--bg2);color:var(--ink);font-weight:800;font-size:16px;cursor:pointer;transition:background .2s,color .2s}
+.l3-nav:hover{background:var(--stain-soft);color:var(--stain)}
+@media (prefers-reduced-motion:reduce){.l3-cd span,.l3-facts li{animation:none;opacity:1}.l3-card.in{animation:none}}
+/* tour bar and the Find it! game */
+.l3-hud{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:5;display:flex;justify-content:center;width:max-content;max-width:calc(100% - 20px);pointer-events:none}
+.l3-hud>*{pointer-events:auto}
+.l3.wide .l3-hud{left:calc(50% - 90px)}
+.l3-quiz{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;text-align:center;background:#1B2236;color:#fff;border-radius:16px;padding:9px 12px 9px 18px;box-shadow:var(--shadow-lg);animation:popIn .35s cubic-bezier(.2,1.3,.3,1)}
+.l3-quiz small{flex-basis:100%;font:700 11px "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+.l3-quiz b{font:800 18px/1.2 "Plus Jakarta Sans",sans-serif}
+.l3-quiz.ok{background:var(--ok)}.l3-quiz.no{background:#DB4A4F;animation:shake .4s}
+.l3-best{font-weight:700;font-size:13px;opacity:.8}
+.l3-hb{border:0;border-radius:999px;padding:5px 11px;background:rgba(255,255,255,.18);color:#fff;font:700 12.5px "Inter",sans-serif;cursor:pointer}
+.l3-hb:hover{background:rgba(255,255,255,.3)}
+.l3-tour{position:relative;display:flex;align-items:center;gap:8px;overflow:hidden;background:var(--paper);color:var(--ink);border-radius:999px;padding:6px 7px 6px 15px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line);font:700 13px "Inter",sans-serif;animation:popIn .35s cubic-bezier(.2,1.3,.3,1)}
+.l3-tour span{color:var(--muted)}
+.l3-tour button{border:0;width:28px;height:28px;border-radius:50%;background:var(--bg2);color:var(--ink);font-size:12px;font-weight:800;cursor:pointer}
+.l3-tour i{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,var(--stain),var(--brand-2))}
+.l3-jy{flex-direction:column;align-items:stretch;gap:4px;border-radius:16px;padding:8px 8px 10px 14px;max-width:min(560px,calc(100vw - 40px))}
+.l3-jt{display:flex;align-items:center;gap:8px}.l3-jt b{margin-right:auto}
+.l3-jy p{margin:0;padding-right:6px;font:600 14.5px/1.45 "Inter",sans-serif;color:var(--ink);animation:fadeUp .4s both}
+/* buttons and sliders under the model, and the list of parts */
+.l3-dock{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.l3-dock:empty{display:none}
+.l3-sl{display:flex;align-items:center;gap:10px;font:700 13.5px "Inter",sans-serif;color:var(--ink);background:var(--paper);border-radius:999px;padding:6px 16px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.l3-dock .btn+.btn+.l3-sl,.l3-dock>.l3-sl:first-child{margin-left:auto}
+.l3-sl input{width:150px;accent-color:var(--stain)}
+@media (max-width:560px){.l3-sl{flex:1 1 100%;margin-left:0!important}.l3-sl input{flex:1;width:auto}}
 .l3-parts{display:flex;flex-wrap:wrap;gap:6px}
-.l3-parts button{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:7px 12px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);font:600 13px "Inter",sans-serif;cursor:pointer}
+.l3-parts button{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:999px;padding:7px 12px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink);font:600 13px "Inter",sans-serif;cursor:pointer;transition:box-shadow .2s,background .2s,transform .2s}
+.l3-parts button:hover{transform:translateY(-1px);box-shadow:inset 0 0 0 1.5px var(--c)}
 .l3-parts button i{width:11px;height:11px;border-radius:50%;background:var(--c)}
-.l3-parts button.on{box-shadow:inset 0 0 0 2px var(--stain);background:var(--stain-soft)}
+.l3-parts button.on{box-shadow:inset 0 0 0 2px var(--c);background:color-mix(in srgb,var(--c) 12%,var(--paper))}
 .l3-parts small{color:var(--muted);font-size:11px}
+.l3-intro{margin:0;font-size:14px}
+.l3-extra:empty{display:none}
+/* full screen */
+.l3.fs{position:fixed;inset:0;z-index:170;background:var(--bg);padding:12px;overflow:auto}
+.l3.fs .l3-stage{aspect-ratio:auto;max-height:none;height:min(80vh,calc(100vh - 140px))}
+/* at the top of the notes */
+.l3-hero{margin:0 0 22px}
+.l3-hero .lab-sech h3 .l3-new{display:inline-block;vertical-align:3px;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--stain);color:#fff;font:800 10.5px "Inter",sans-serif;letter-spacing:.08em}
 .l3-mol b{font:800 18px "Plus Jakarta Sans",sans-serif}
 .l3-f{font-weight:700;color:var(--violet)}
 .l3-mol p{margin:4px 0 0;font-size:14px}
 .l3-note{font-size:13.5px;margin:6px 0 0}
 .l3-seq{font:800 15px ui-monospace,Menlo,monospace;letter-spacing:.2em;margin:8px 0 0;line-height:1.5;word-break:break-all}
-@media (max-width:820px){.l3-main{grid-template-columns:1fr}.lab-sec{padding:16px;border-radius:15px}.l3-stage{aspect-ratio:1/1}}
 @media (prefers-reduced-motion:reduce){.lab-sec,.lab-pop{animation:none}}
 /* ---------- account: sign in and sign out in the top bar ---------- */
 #acctBtn{display:inline-flex;align-items:center;gap:8px;flex:none;border:0;border-radius:999px;padding:9px 16px 9px 13px;background:var(--ink);color:var(--bg);font:700 14px "Inter",sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 8px 20px -12px rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s}
@@ -2485,8 +2559,9 @@ function renderStudy(){
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
   if(view.tab==='notes'){
-    body.innerHTML=`<div class="actions" style="margin-top:0"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div>${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}<ol class="notes">${x.notes.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ol>${x.x&&x.x.length?`<div class="deeper"><h3>🔍 Go deeper</h3><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></div>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
-    $('#goPractice').onclick=()=>startSession({title:`${x.n} ${x.title}`,qs:x.q,key:pkey(x.key||x.n)});$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);
+    const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k)),h3=m3&&Lab.title[m3.k];
+    body.innerHTML=`${m3?`<section class="lab-sec l3-hero"><div class="lab-sech"><h3>${h3[0]} ${esc(T(h3[1]))}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3><p class="muted">${esc(T(h3[2]))}</p></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}<div class="actions" style="margin-top:0"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div>${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}<ol class="notes">${x.notes.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ol>${x.x&&x.x.length?`<div class="deeper"><h3>🔍 Go deeper</h3><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></div>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
+    $('#goPractice').onclick=()=>startSession({title:`${x.n} ${x.title}`,qs:x.q,key:pkey(x.key||x.n)});$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3)Lab.mount($('#heroHost'),m3,x,{hero:1});
   }else if(view.tab==='explore'){Lab.render(body,x,t)
   }else{
     const sc=P[pkey(x.key||x.n)];
@@ -4546,7 +4621,8 @@ const Lab={
     // The subtopic's own title first; the topic's title only when that finds nothing.
     for(const ti of [x.title.toLowerCase(),t.title.toLowerCase()]){const m=re=>re.test(ti);
       if(subj==='biology'||subj==='psychology'){
-        if(m(/brain|nervous system|neurone|neuron|reflex|coordination and control|cerebr|biopsychology/))add('brain');
+        if(m(/neurone|neuron|reflex|synap|nerve impulse|myelin|action potential|resting potential|neurotransmitter|nervous system/))add('neurone',m(/synap|neurotransmitter/)?'synapse':m(/relay/)?'relay':m(/sensory|receptor/)&&!m(/motor/)?'sensory':'motor');
+        if(m(/brain|cerebr|coordination and control|biopsychology|hemispher|lateralis|localisation of function|nervous system/))add('brain');
         if(m(/cell structure|eukaryot|prokaryot|organelle|ultrastructure|cell biology|animal and plant cells|studying cells|microscop/))add('cells');
         if(m(/\bdna\b|nucleic|genetic code|protein synthesis|replication|genome|\bgenes?\b|transcription|translation/))add('dna');
         if(m(/diffusion|osmosis|transport across|active transport|exchange surface|gas exchange/))add('particles','diffusion');}
@@ -4569,8 +4645,8 @@ const Lab={
         if(m(/demand|supply|market|price|elasticit|tax|subsid|equilibrium|competition|labour/))add('market');}
       if(out.length)break}
     return out.slice(0,2)},
-  title:{brain:['🧠','The brain in 3D','Turn it, zoom in and tap each part to see what it does.'],cells:['🔬','Cells in 3D','Look inside animal, plant and bacterial cells. Tap any part.'],dna:['🧬','DNA in 3D','Spin the double helix, tap the bases and unzip it.'],
-    molecules:['⚛️','Molecules in 3D','Rotate each molecule, tap atoms and see the bond angles.'],atom:['⚛️','Build an atom','Pick an element and watch its electrons in their shells.'],particles:['🫧','Particle simulation','Change the conditions and watch the particles.'],
+  title:{neurone:['⚡','Neurones in 3D','Turn the neurone, tap any part and watch a nerve impulse travel along it. Switch to the synapse to see how impulses cross the gap.'],brain:['🧠','The brain in 3D','Turn it, split the two halves and tap any part to see what it does. Try the guided tour, then the Find it! game.'],cells:['🔬','Cells in 3D','Slice animal, plant and bacterial cells open and tap any part to see what it does. Try the guided tour, then the Find it! game.'],dna:['🧬','DNA in 3D','Spin the double helix, tap the bases and unzip it. Try the guided tour, then the Find it! game.'],
+    molecules:['⚛️','Molecules in 3D','Rotate each molecule, tap the atoms and see the shape and bond angles.'],atom:['⚛️','Build an atom','Pick an element and watch its electrons in their shells.'],particles:['🫧','Particle simulation','Change the conditions and watch the particles.'],
     graph:['📈','Graph explorer','Drag the points and move the sliders. The equation updates as you go.'],market:['📊','Supply and demand','Drag the curves or use the sliders and watch the market react.'],ppf:['📊','Production possibility frontier','Drag the point to see efficiency, opportunity cost and growth.'],
     motion:['🚗','Motion graphs','Set the speed and acceleration, then play the journey step by step.'],waves:['🌊','Waves','Change the amplitude, wavelength and frequency and watch the wave.']},
   render(body,x,t){const ms=this.match(x,t),sec=(icon,h,p,inner,id)=>`<section class="lab-sec"${id?` id="${id}"`:''}><div class="lab-sech"><h3>${icon} ${esc(h)}</h3><p class="muted">${esc(p)}</p></div>${inner}</section>`;
@@ -4581,8 +4657,8 @@ const Lab={
     ms.forEach((m,i)=>this.mount(body.querySelector(`[data-m="${i}"]`),m,x));
     if(x.d){this.viewer($('#labDiag'),x.d,x);this.labels($('#labLabel'),x.d,x)}
     $('#labWatch').onclick=()=>watchTopic(t,view.sub)},
-  mount(host,m,x){const f={brain:L3.mount,cells:L3.mount,dna:L3.mount,molecules:L3.mount,atom:Sim.atom,particles:Sim.particles,graph:Plot.graph,market:Plot.market,ppf:Plot.ppf,motion:Sim.motion,waves:Sim.waves}[m.k];
-    try{f.call(f===L3.mount?L3:f===Plot.graph||f===Plot.market||f===Plot.ppf?Plot:Sim,host,m.k,m.p,x)}catch(e){console.error(e);host.innerHTML=`<p class="muted">This model couldn’t start on this device.</p>`}},
+  mount(host,m,x,o){const f={neurone:L3.mount,brain:L3.mount,cells:L3.mount,dna:L3.mount,molecules:L3.mount,atom:Sim.atom,particles:Sim.particles,graph:Plot.graph,market:Plot.market,ppf:Plot.ppf,motion:Sim.motion,waves:Sim.waves}[m.k];
+    try{f.call(f===L3.mount?L3:f===Plot.graph||f===Plot.market||f===Plot.ppf?Plot:Sim,host,m.k,m.p,x,o)}catch(e){console.error(e);host.innerHTML=`<p class="muted">This model couldn’t start on this device.</p>`}},
   // A sentence from the notes about this part of the diagram, if there is one.
   about(label,x){const words=label.toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu,' ').split(/\s+/).filter(w=>w.length>2),all=[...(x.notes||[]),...(x.x||[])].flatMap(n=>String(n).split(/(?<=[.!?])\s+/));
     let best=null,bs=0;for(const s of all){const l=s.toLowerCase();let sc=0;if(l.includes(label.toLowerCase()))sc+=5;for(const w of words)if(l.includes(w))sc++;if(sc>bs){bs=sc;best=s}}
@@ -4941,9 +5017,11 @@ const Sim={
 
 /* 3D models (three.js, loaded only when a model opens): brain, cells, DNA and molecules */
 const L3={
+  // Kinds that are real 3D models (shown at the top of the notes too).
+  KINDS:['neurone','brain','cells','dna','molecules'],
   load(){return this._p||(this._p=new Promise((ok,no)=>{if(window.THREE)return ok(window.THREE);const s=document.createElement('script');s.src='vendor/three.min.js';s.async=true;
     s.onload=()=>window.THREE?ok(window.THREE):no(new Error('no THREE'));s.onerror=()=>{this._p=null;no(new Error('3D could not load'))};document.head.appendChild(s)}))},
-  // Parts and what they do, also shown as a plain list where 3D can't run.
+  // Parts and what they do, also shown as a plain list where 3D can't run. [id, name, what it does, 'A' for A-level only]
   META:{
     brain:{intro:'The four lobes together make the cerebral cortex, the wrinkled outer layer of the cerebrum. It is responsible for consciousness, intelligence, memory and language.',parts:[
       ['frontal','Frontal lobe','Thinking, planning, decisions, problem-solving and personality. The motor cortex at its back edge controls voluntary movement, and Broca’s area (usually on the left) produces speech.'],
@@ -4954,106 +5032,407 @@ const L3={
       ['stem','Brain stem (medulla oblongata)','The medulla controls unconscious activities: heart rate, breathing rate and blood pressure. The pons above it relays signals between the cerebrum and the cerebellum.'],
       ['hypo','Hypothalamus','Keeps conditions in the body steady (homeostasis): body temperature, water balance through ADH, and hunger and thirst. It controls the pituitary gland.'],
       ['pit','Pituitary gland','The “master gland”. It releases hormones such as ADH, growth hormone, FSH, LH and TSH, which control other glands.'],
-      ['cord','Spinal cord','Carries nerve impulses between the brain and the rest of the body, and handles many reflexes.']]},
-    animal:{intro:'Animal cells are eukaryotic: their DNA is inside a nucleus and they have membrane-bound organelles.',parts:[
+      ['cord','Spinal cord','Carries nerve impulses between the brain and the rest of the body, and handles many reflexes.'],
+      ['cc','Corpus callosum','A thick band of nerve fibres that joins the left and right hemispheres so they can share information.','A']]},
+    animal:{intro:'Animal cells are eukaryotic: their DNA is inside a nucleus and they have membrane-bound organelles. A typical animal cell is about 10–30 µm across.',parts:[
       ['membrane','Cell membrane','Controls what enters and leaves the cell. It is partially permeable.'],['cyto','Cytoplasm','A jelly-like liquid where most chemical reactions happen, controlled by enzymes.'],
-      ['nucleus','Nucleus','Contains the genetic material (DNA in chromosomes) and controls the cell’s activities.'],['nucleolus','Nucleolus','Inside the nucleus; makes ribosomes.','A'],
-      ['mito','Mitochondria','Where aerobic respiration happens, releasing energy (making ATP).'],['ribo','Ribosomes','Where proteins are made (protein synthesis).'],
-      ['rer','Rough endoplasmic reticulum','Membranes covered in ribosomes; makes and transports proteins.','A'],['ser','Smooth endoplasmic reticulum','Makes and processes lipids.','A'],
-      ['golgi','Golgi apparatus','Modifies and packages proteins, often into vesicles for secretion.','A'],['lyso','Lysosomes','Contain digestive enzymes that break down worn-out organelles and pathogens.','A'],['centri','Centrioles','Help form the spindle fibres in cell division.','A']]},
-    plant:{intro:'Plant cells have everything an animal cell has, plus a cell wall, a permanent vacuole and chloroplasts.',parts:[
-      ['wall','Cell wall','Made of cellulose. Strengthens the cell and stops it bursting.'],['membrane','Cell membrane','Controls what enters and leaves the cell.'],
-      ['vac','Permanent vacuole','Filled with cell sap. Keeps the cell rigid (turgid) to support the plant.'],['chloro','Chloroplasts','Contain chlorophyll, which absorbs light for photosynthesis.'],
-      ['nucleus','Nucleus','Contains the genetic material and controls the cell’s activities.'],['mito','Mitochondria','Where aerobic respiration happens.'],['ribo','Ribosomes','Where proteins are made.'],['cyto','Cytoplasm','Where most chemical reactions happen.']]},
-    bacteria:{intro:'Bacteria are prokaryotic: much smaller than eukaryotic cells, with no nucleus and no membrane-bound organelles.',parts:[
-      ['capsule','Capsule (slime layer)','Protects the bacterium and helps it stick to surfaces.','A'],['wall','Cell wall','Made of peptidoglycan (murein), not cellulose. Gives the cell its shape.'],
-      ['membrane','Cell membrane','Controls what enters and leaves the cell.'],['dna','Chromosomal DNA','One loop of DNA free in the cytoplasm (no nucleus).'],
+      ['nucleus','Nucleus','Contains the genetic material (DNA in chromosomes) and controls the cell’s activities.'],['nucleolus','Nucleolus','A dense region inside the nucleus that makes ribosomes.','A'],
+      ['pores','Nuclear pores','Gaps in the double membrane around the nucleus. mRNA leaves the nucleus through them to reach the ribosomes.','A'],
+      ['mito','Mitochondria','Where aerobic respiration happens, releasing energy (as ATP).'],['ribo','Ribosomes','Where proteins are made (protein synthesis), by joining amino acids in the order the mRNA codes for.'],
+      ['rer','Rough endoplasmic reticulum','Folded membranes covered in ribosomes. It makes proteins and carries them through the cell.','A'],['ser','Smooth endoplasmic reticulum','Folded membranes with no ribosomes. It makes and processes lipids.','A'],
+      ['golgi','Golgi apparatus','Modifies proteins (for example adding carbohydrates) and packages them into vesicles for transport or secretion.','A'],
+      ['vesicle','Vesicles','Small membrane sacs that carry substances around the cell, for example proteins from the Golgi apparatus to the cell membrane.','A'],
+      ['lyso','Lysosomes','Vesicles full of digestive enzymes that break down worn-out organelles and pathogens.','A'],['centri','Centrioles','Hollow cylinders of microtubules that help form the spindle fibres in cell division.','A']]},
+    plant:{intro:'Plant cells have everything an animal cell has, plus a cell wall, a permanent vacuole and chloroplasts. They are often 10–100 µm long.',parts:[
+      ['wall','Cell wall','Made of cellulose. Strengthens the cell and supports the plant, and stops the cell bursting when it takes in water.'],['membrane','Cell membrane','Controls what enters and leaves the cell.'],
+      ['cyto','Cytoplasm','Where most chemical reactions happen, controlled by enzymes.'],['vac','Permanent vacuole','Filled with cell sap. It keeps the cell rigid (turgid) to support the plant.'],
+      ['chloro','Chloroplasts','Contain chlorophyll, which absorbs light for photosynthesis.'],['nucleus','Nucleus','Contains the genetic material and controls the cell’s activities.'],
+      ['mito','Mitochondria','Where aerobic respiration happens, releasing energy.'],['ribo','Ribosomes','Where proteins are made.'],
+      ['plasmo','Plasmodesmata','Tiny channels through the cell walls that join the cytoplasm of neighbouring cells.','A']]},
+    bacteria:{intro:'Bacteria are prokaryotic: much smaller than eukaryotic cells (about 1–5 µm), with no nucleus and no membrane-bound organelles.',parts:[
+      ['capsule','Capsule (slime layer)','Protects the bacterium and helps it stick to surfaces.','A'],['wall','Cell wall','Made of peptidoglycan (murein), not cellulose. Gives the cell its shape and stops it bursting.'],
+      ['membrane','Cell membrane','Controls what enters and leaves the cell.'],['cyto','Cytoplasm','Where the cell’s chemical reactions happen.'],
+      ['dna','Chromosomal DNA','One long loop of DNA free in the cytoplasm. There is no nucleus.'],
       ['plasmid','Plasmids','Small extra rings of DNA. They can carry genes such as antibiotic resistance.'],['ribo','Ribosomes','Smaller (70S) ribosomes that make proteins.'],
-      ['flag','Flagellum','A tail-like structure that rotates to move the bacterium.'],['pili','Pili','Hair-like structures for sticking to surfaces and swapping DNA.','A'],['cyto','Cytoplasm','Where the cell’s reactions happen.']]},
+      ['flag','Flagellum','A tail-like structure that spins to move the bacterium.'],['pili','Pili','Hair-like structures for sticking to surfaces and swapping DNA.','A']]},
     dna:{intro:'DNA is a polymer of nucleotides. Two strands twist into a double helix, held together by hydrogen bonds between complementary bases.',parts:[
       ['back','Sugar–phosphate backbone','Alternating deoxyribose sugars and phosphate groups joined by strong covalent bonds. The two strands run in opposite directions (antiparallel).'],
       ['A','Adenine (A)','Always pairs with thymine (T) with two hydrogen bonds.'],['T','Thymine (T)','Always pairs with adenine (A).'],
       ['C','Cytosine (C)','Always pairs with guanine (G) with three hydrogen bonds.'],['G','Guanine (G)','Always pairs with cytosine (C).'],
       ['hb','Hydrogen bonds','Weak bonds between complementary bases. They are easy to break, so the strands can separate for replication and transcription.']]},
+    motor:{intro:'A motor neurone carries nerve impulses from the central nervous system (brain and spinal cord) to an effector, such as a muscle or a gland.',parts:[
+      ['dend','Dendrites','Short branches on the cell body that receive impulses from other neurones (here, from relay neurones).'],
+      ['body','Cell body','Contains the nucleus and the organelles that keep the neurone alive, such as mitochondria and ribosomes.'],['nucleus','Nucleus','Contains the genetic material and controls the cell.'],
+      ['axon','Axon','A long, thin extension that carries nerve impulses away from the cell body.'],
+      ['myelin','Myelin sheath','A fatty layer that insulates the axon and speeds up nerve impulses.'],
+      ['nodes','Nodes of Ranvier','Tiny gaps in the myelin sheath. The impulse jumps from node to node (saltatory conduction), which makes it much faster.','A'],
+      ['term','Axon terminals','The branched endings of the axon. They pass the impulse on across a synapse.'],
+      ['effector','Effector (muscle)','The muscle or gland the motor neurone controls. A muscle responds to impulses by contracting.']]},
+    sensory:{intro:'A sensory neurone carries nerve impulses from a receptor to the central nervous system. Its cell body sits to one side, partway along.',parts:[
+      ['receptor','Receptor','Detects a stimulus, such as heat, pressure or light, and starts a nerve impulse.'],
+      ['dendron','Dendron','A long extension that carries impulses from the receptor to the cell body.'],
+      ['body','Cell body','Contains the nucleus. In a sensory neurone it sits off to one side, partway along the neurone.'],['nucleus','Nucleus','Contains the genetic material and controls the cell.'],
+      ['axon','Axon','Carries impulses away from the cell body, on towards the central nervous system.'],
+      ['myelin','Myelin sheath','A fatty layer that insulates the neurone and speeds up nerve impulses.'],
+      ['nodes','Nodes of Ranvier','Gaps in the myelin sheath that the impulse jumps between (saltatory conduction).','A'],
+      ['term','Axon terminals','The branched endings that pass the impulse on, across a synapse, to a relay neurone.']]},
+    relay:{intro:'A relay neurone is found only in the central nervous system. It passes impulses from sensory neurones to motor neurones. It is short and has no myelin sheath.',parts:[
+      ['dend','Dendrites','Many branches that receive impulses from sensory neurones.'],['body','Cell body','Contains the nucleus and the cell’s organelles.'],['nucleus','Nucleus','Contains the genetic material and controls the cell.'],
+      ['axon','Axon','A short axon that carries the impulse on to motor neurones.'],['term','Axon terminals','The branched endings that pass the impulse on across synapses.']]},
+    synapse:{intro:'A synapse is the junction between two neurones. The impulse can’t jump the tiny gap, so it crosses it as a chemical: the neurotransmitter.',parts:[
+      ['knob','Synaptic knob','The swollen end of the first neurone’s axon, where the impulse arrives.'],
+      ['vesicle','Vesicles','Tiny sacs that store neurotransmitter. When an impulse arrives they fuse with the membrane and release it.'],
+      ['nt','Neurotransmitter','The chemical that carries the signal across the gap by diffusion.'],
+      ['cleft','Synaptic cleft','The very small gap between the two neurones.'],
+      ['rec','Receptors','Proteins on the next neurone. The neurotransmitter binds to them and starts a new impulse.'],
+      ['post','Next neurone','The neurone that receives the signal and carries the new impulse on.'],
+      ['mito','Mitochondria','Release energy (as ATP) to make the neurotransmitter and move the vesicles.','A']]},
   },
-  mount(host,k,p,x){const variants=k==='cells'?[['animal','Animal cell'],['plant','Plant cell'],['bacteria','Bacterium']]:k==='molecules'?L3.molList(p).map(m=>[m,L3.MOL[m].name]):null;
-    host.innerHTML=`<div class="l3">${variants?`<div class="pl-chips" role="tablist">${variants.map(([v,l],i)=>`<button type="button" role="tab" data-v="${v}" aria-selected="${!i}" class="${i?'':'on'}">${esc(l)}</button>`).join('')}</div>`:''}
-      <div class="l3-main"><div class="l3-stage" tabindex="0" aria-label="${esc(T('3D model. Drag to turn it, pinch or use + and − to zoom, and tap a part.'))}"><canvas></canvas><div class="l3-tags" aria-hidden="true"></div>
-        <div class="lab-tools"><button type="button" data-a="in" aria-label="Zoom in">＋</button><button type="button" data-a="out" aria-label="Zoom out">−</button><button type="button" data-a="reset" aria-label="Reset the view">⟲</button><button type="button" data-a="spin" aria-label="Turn by itself" aria-pressed="false">⟳</button><button type="button" data-a="tags" aria-label="Show labels" aria-pressed="true">🏷</button><button type="button" data-a="fs" aria-label="Full screen">⛶</button></div>
-        <div class="l3-msg">${esc(T('Loading 3D…'))}</div><div class="l3-hint">${esc(T('Drag to turn · pinch to zoom · tap a part'))}</div></div>
-      <div class="l3-side"><div class="l3-info"></div><div class="l3-extra"></div><div class="l3-parts" role="list"></div></div></div></div>`;
-    const st={k,v:variants?variants[0][0]:k,x,p};host._l3=st;
-    if(variants)host.querySelector('.pl-chips').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;host.querySelectorAll('[data-v]').forEach(z=>{z.classList.toggle('on',z===b);z.setAttribute('aria-selected',z===b)});st.v=b.dataset.v;if(st.rebuild)st.rebuild()};
-    this.load().then(T3=>this.start(host,st,T3)).catch(()=>this.flat(host,st))},
-  // No WebGL: the same parts as a list (also what screen readers use).
-  flat(host,st){const m=host.querySelector('.l3-msg');m.textContent=T('3D isn’t available on this device, so here are the parts as a list.');m.classList.add('err');this.side(host,st,this.metaOf(st),null)},
+  // Extra lines for the info card: [exam tip, picture it, did you know].
+  MORE:{
+    animal:{membrane:['Mark schemes want: “controls what enters and leaves the cell”.','Like a security gate: some things are let through, others are kept out.','It is a phospholipid bilayer with proteins floating in it: the fluid mosaic model.'],
+      cyto:['Mention enzymes: they control the reactions that happen here.','Like the factory floor, where most of the work gets done.','It is mostly water, with ions, sugars and enzymes dissolved in it.'],
+      nucleus:['Say it “contains genetic material that controls the activities of the cell”.','Like the head office that keeps the instruction manual (DNA).','It is wrapped in a double membrane, the nuclear envelope.'],
+      nucleolus:['It is not surrounded by a membrane.','Like a ribosome factory inside the head office.','It is the darkest part of the nucleus in electron micrographs.'],
+      pores:['DNA is too big to leave the nucleus, so a copy (mRNA) goes out instead.','Like doors in the wall of the head office.','One nucleus can have thousands of pores.'],
+      mito:['Respiration releases energy. Never write that it “makes” or “creates” energy.','Like the power station of the cell.','Muscle and sperm cells are packed with them because they need lots of energy. The folded inner membrane (cristae) gives a big surface for respiration.'],
+      ribo:['They are too small to see with a light microscope: you need an electron microscope.','Like tiny 3D printers that build proteins from amino acids.','Ribosomes in our cells are 80S and only about 20–30 nm across.'],
+      rer:['“Rough” because it is studded with ribosomes.','Like a conveyor belt for new proteins.','Cells that secrete lots of protein, like pancreas cells making enzymes, are full of RER.'],
+      ser:['No ribosomes, so it is smooth, and it makes lipids, not proteins.','Like the oil and fat department.','Liver cells have lots of smooth ER to break down toxins.'],
+      golgi:['The protein route: RER → vesicle → Golgi → vesicle → cell membrane.','Like the post office: it labels and packages proteins for delivery.','It also makes lysosomes.'],
+      vesicle:['A vesicle fusing with the membrane to release its contents is exocytosis.','Like delivery vans.','They pinch off from the Golgi apparatus and the ER.'],
+      lyso:['The enzymes are hydrolytic: they break molecules down by hydrolysis.','Like the recycling centre.','White blood cells use lysosomes to digest the pathogens they engulf.'],
+      centri:['Found in animal cells but not in most plant cells.','Like anchor points for the ropes that pull chromosomes apart.','Each centriole is a ring of nine groups of three microtubules.']},
+    plant:{wall:['The cell wall is fully permeable. It is the membrane that controls what gets in.','Like a strong box around a balloon.','Cellulose is a polymer of glucose, and its fibres are very strong.'],
+      membrane:['It sits just inside the wall and controls what enters and leaves.','Like the security gate inside the walls.','When a cell loses lots of water the membrane pulls away from the wall: this is plasmolysis.'],
+      cyto:['Mention enzymes: they control the reactions here.','Like the factory floor.','In many plant cells it is a thin layer squeezed against the wall by the vacuole.'],
+      vac:['A turgid cell is firm. When the vacuole loses water the cell becomes flaccid and the plant wilts.','Like a water balloon pushing out on the box.','It can fill most of the cell. Its membrane is called the tonoplast.'],
+      chloro:['Root cells have no chloroplasts: there is no light underground.','Like solar panels that store light energy as chemical energy in glucose.','The stacks of discs (grana) do the light-dependent reaction; the fluid around them (stroma) does the light-independent reaction.'],
+      nucleus:['It “contains genetic material that controls the activities of the cell”.','Like the head office.','It has a double membrane with pores in it.'],
+      mito:['Plants respire all the time, day and night.','Like the power station.','Respiration releases the energy stored in glucose made by photosynthesis.'],
+      ribo:['Too small to see with a light microscope.','Like tiny 3D printers.','They read mRNA and join amino acids into proteins.'],
+      plasmo:['They let substances move from cell to cell without crossing a membrane.','Like doorways between houses in a terrace.','This route through the cytoplasm is the symplast pathway.']},
+    bacteria:{capsule:['Not all bacteria have a capsule.','Like a slimy raincoat.','It helps bacteria avoid being engulfed by white blood cells.'],
+      wall:['Bacterial walls are peptidoglycan (murein), never cellulose.','Like a mesh cage that holds the shape.','Penicillin kills bacteria by stopping them building this wall.'],
+      membrane:['Bacteria have no mitochondria: respiration happens on the membrane and in the cytoplasm.','Like the security gate.','It is a phospholipid bilayer, just like ours.'],
+      cyto:['Protein synthesis and respiration both happen here.','Like the factory floor.','A bacterium is roughly 10 times smaller than an animal cell.'],
+      dna:['There is no nucleus: the DNA is free in the cytoplasm.','Like an instruction manual left out on the desk.','It is one long circular chromosome, folded up in a region called the nucleoid.'],
+      plasmid:['Plasmids carry genes into bacteria in genetic engineering.','Like bonus pages that can be swapped with other bacteria.','Genes for antibiotic resistance are often on plasmids.'],
+      ribo:['Bacterial ribosomes are 70S, smaller than the 80S ribosomes in our cells.','Like smaller 3D printers.','Some antibiotics stop 70S ribosomes without harming our 80S ones.'],
+      flag:['Not all bacteria have a flagellum.','Like a spinning propeller.','It is turned by a tiny rotary motor in the membrane, driven by a flow of ions.'],
+      pili:['Pili help bacteria stick to cells and surfaces.','Like Velcro hooks.','Some pili pass plasmids from one bacterium to another.']},
+    brain:{frontal:['Damage to the frontal lobe can change personality and decision-making.','Like the brain’s CEO.','It is the largest lobe.'],
+      parietal:['The sensory cortex here maps touch for the whole body.','Like the brain’s touch and map centre.','Body parts with lots of nerve endings, like the lips and fingertips, get more cortex.'],
+      temporal:['Hearing: temporal lobe. Seeing: occipital lobe.','Like the brain’s sound studio and archive.','Wernicke’s area, for understanding language, is usually in the left temporal lobe.'],
+      occipital:['The visual cortex is at the back of the brain, far from the eyes.','Like the brain’s cinema screen.','What you see on your left is processed by the right occipital lobe.'],
+      cerebellum:['Cerebellum: coordination and balance.','Like an autopilot for movement.','It holds more than half of all the brain’s neurones.'],
+      stem:['The medulla controls heart rate and breathing: involuntary actions.','Like the life-support control panel.','Damage to the medulla can be fatal.'],
+      hypo:['The hypothalamus detects changes, then the pituitary releases hormones: they work as a team.','Like the body’s thermostat.','It monitors the temperature and water content of the blood.'],
+      pit:['It is the “master gland” because its hormones control other glands.','Like a manager giving orders to other glands.','It is about the size of a pea.'],
+      cord:['In a reflex arc the relay neurone is in the spinal cord, so the brain isn’t needed.','Like the motorway for nerve impulses.','The vertebrae of the backbone protect it.'],
+      cc:['Split-brain studies (Sperry) tested people whose corpus callosum had been cut.','Like the bridge between the two halves.','It contains about 200 million nerve fibres.']},
+    motor:{dend:['Dendrites carry impulses towards the cell body; the axon carries them away.','Like the antennae picking up messages.','One neurone can connect to thousands of others.'],
+      body:['It is the part with the nucleus: in a motor neurone it sits at one end, in the spinal cord.','Like the neurone’s control room.','The cell bodies of motor neurones are in the grey matter of the spinal cord.'],
+      nucleus:['Neurones are cells, so they have a nucleus like other animal cells.','Like the instruction manual.','Most neurones never divide again once they are made.'],
+      axon:['Axons carry impulses as electrical signals.','Like a long electrical cable.','The motor neurone to your big toe has an axon about 1 metre long.'],
+      myelin:['Myelin insulates the axon and makes impulses faster.','Like the plastic coating on a wire.','Impulses in myelinated neurones can travel at over 100 metres per second.'],
+      nodes:['The impulse jumps from node to node: saltatory conduction.','Like stepping stones the impulse leaps between.','Only the nodes need to depolarise, which saves time and energy.'],
+      term:['At the ends, the signal crosses a synapse as a chemical.','Like the end of the line, where the message is handed on.','Each terminal ends in a swelling called a synaptic knob.'],
+      effector:['Effectors are muscles or glands. Muscles contract; glands release hormones.','Like the worker who carries out the order.','In a reflex arc the effector responds before you even feel the stimulus.']},
+    sensory:{receptor:['Receptors detect stimuli; effectors bring about responses.','Like a sensor or a microphone.','There are receptors for light, sound, touch, temperature, pressure and chemicals.'],
+      dendron:['A dendron carries impulses towards the cell body.','Like the cable from a sensor.','In a sensory neurone the dendron is long and myelinated.'],
+      body:['In a sensory neurone the cell body is partway along, not at one end.','Like a junction box on the cable.','These cell bodies sit in a swelling just outside the spinal cord.'],
+      nucleus:['It controls the cell, like in any other cell.','Like the instruction manual.','Neurones are some of the longest-lived cells in your body.'],
+      axon:['The axon carries the impulse into the spinal cord or brain.','Like the cable into the control room.','It connects to relay neurones in the spinal cord.'],
+      myelin:['Myelin speeds up impulses.','Like the insulation on a wire.','Diseases like multiple sclerosis damage myelin and slow impulses down.'],
+      nodes:['Impulses jump between nodes: saltatory conduction.','Like stepping stones.','Nodes are about 1 mm apart.'],
+      term:['Sensory → relay → motor: the order in a reflex arc.','Like handing a message to the next person.','The signal crosses to the relay neurone at a synapse.']},
+    relay:{dend:['Relay neurones connect sensory neurones to motor neurones.','Like a switchboard.','One relay neurone can link to many other neurones.'],
+      body:['Relay neurones are only found in the brain and spinal cord.','Like a junction in the middle of the system.','Most of the neurones in your brain are relay neurones.'],
+      nucleus:['It controls the cell.','Like the instruction manual.','Every neurone has one nucleus, in its cell body.'],
+      axon:['A relay neurone’s axon is short and has no myelin.','Like a short cable inside a building.','Short distances mean no myelin is needed.'],
+      term:['The impulse crosses a synapse to a motor neurone next.','Like passing the baton.','In a reflex arc this happens in the spinal cord, without the brain deciding.']},
+    synapse:{knob:['The impulse arrives as an electrical signal and crosses as a chemical.','Like the end of a relay runner’s lap.','A synapse is only about 20 nm wide.'],
+      vesicle:['Vesicles release neurotransmitter only when an impulse arrives.','Like parcels waiting to be posted.','Each vesicle holds thousands of neurotransmitter molecules.'],
+      nt:['Neurotransmitter crosses the gap by diffusion.','Like a message in a bottle drifting across.','Drugs like caffeine and some painkillers work by affecting neurotransmitters or their receptors.'],
+      cleft:['Name it: the synaptic cleft.','Like a river between two banks.','It takes only about half a millisecond to cross.'],
+      rec:['Receptors are only on the next neurone, so impulses travel in one direction only.','Like a lock that only the right key (neurotransmitter) fits.','After binding, the neurotransmitter is broken down or taken back up so the signal stops.'],
+      post:['A new electrical impulse starts in the next neurone.','Like the next runner setting off.','Some synapses stop the next neurone firing instead (inhibitory synapses).'],
+      mito:['Lots of mitochondria because making and releasing neurotransmitter needs ATP.','Like the power supply.','Synaptic knobs are packed with mitochondria.']},
+    dna:{back:['The backbone is held by strong covalent bonds; the two strands by weak hydrogen bonds.','Like the sides of a twisted ladder.','The strands run in opposite directions: they are antiparallel.'],
+      A:['A pairs with T: “Apple in the Tree”.','Like a jigsaw piece that only fits one partner.','A and G are purines: the bigger bases, with two rings.'],
+      T:['In RNA, thymine is replaced by uracil (U).','Like the partner piece for A.','T and C are pyrimidines: the smaller bases, with one ring.'],
+      C:['C pairs with G: “Car in the Garage”.','Like a three-pin plug for G.','C–G pairs have three hydrogen bonds, A–T pairs have two.'],
+      G:['The amount of G always equals the amount of C.','Like the socket for C.','Three bases in a row (a triplet) code for one amino acid.'],
+      hb:['Hydrogen bonds are weak on their own but strong together, so DNA is stable but can still unzip.','Like the teeth of a zip.','The enzyme helicase breaks them in DNA replication.']}},
+
+  mount(host,k,p,x,o={}){const variants=k==='cells'?[['animal','Animal cell'],['plant','Plant cell'],['bacteria','Bacterium']]:k==='neurone'?[['motor','Motor neurone'],['sensory','Sensory neurone'],['relay','Relay neurone'],['synapse','Synapse']]:k==='molecules'?L3.molList(p).map(m=>[m,L3.MOL[m].name]):null;
+    const tb=(a,l,ic,pr)=>`<button type="button" data-a="${a}" aria-label="${esc(T(l))}" title="${esc(T(l))}"${pr!=null?` aria-pressed="${pr}"`:''}>${ic}</button>`;
+    const v0=variants?(k==='neurone'&&variants.some(z=>z[0]===p)?p:variants[0][0]):k;
+    host.innerHTML=`<div class="l3${o.hero?' l3-at-top':''}">${variants?`<div class="pl-chips l3-vars" role="tablist">${variants.map(([v,l])=>`<button type="button" role="tab" data-v="${v}" aria-selected="${v===v0}" class="${v===v0?'on':''}">${esc(T(l))}</button>`).join('')}</div>`:''}
+      <div class="l3-wrap"><div class="l3-stage" tabindex="0" aria-label="${esc(T('3D model. Drag to turn it, use + and − to zoom, and tap a part to learn about it.'))}"><canvas></canvas>
+        <svg class="l3-lead" aria-hidden="true"><path/><circle r="4.5"/></svg><div class="l3-tags" aria-hidden="true"></div><div class="l3-hov" hidden></div><div class="l3-hud"></div>
+        <div class="lab-tools">${tb('in','Zoom in','＋')}${tb('out','Zoom out','−')}${tb('reset','Reset the view','⟲')}${tb('spin','Turn by itself','⟳',false)}${tb('tags','Labels','🏷',true)}${'speechSynthesis' in window?tb('say','Read aloud','🔈',false):''}${tb('fs','Full screen','⛶')}</div>
+        <div class="l3-msg"><i class="l3-ld"></i>${esc(T('Loading 3D…'))}</div><div class="l3-coach" hidden><span>👆</span>${esc(T('Drag to turn · tap any part'))}</div></div>
+        <div class="l3-card" hidden></div></div>
+      <div class="l3-dock"></div><div class="l3-parts" role="list"></div><p class="muted l3-intro"></p><div class="l3-extra"></div></div>`;
+    const st={k,v:v0,x,p,hero:!!o.hero};host._l3=st;
+    if(variants)host.querySelector('.l3-vars').onclick=e=>{const b=e.target.closest('[data-v]');if(!b||b.dataset.v===st.v)return;host.querySelectorAll('.l3-vars [data-v]').forEach(z=>{z.classList.toggle('on',z===b);z.setAttribute('aria-selected',z===b)});st.v=b.dataset.v;if(st.rebuild)st.rebuild();else L3.flatList(host,st)};
+    this.load().then(T3=>this.start(host,st,T3)).catch(e=>{console.error(e);this.flat(host,st)})},
+  // No WebGL: the same parts as a list with the same cards (also what screen readers use).
+  flat(host,st){const m=host.querySelector('.l3-msg');m.textContent=T('3D isn’t available on this device, so here are the parts as a list. Tap one to learn about it.');m.classList.add('err');host.querySelector('.l3-stage').classList.add('flat');this.flatList(host,st)},
+  flatList(host,st){const meta=this.metaOf(st);host.querySelector('.l3-intro').textContent=meta.intro;const go=id=>this.card(host,st,id,{go});this.chips(host,st,meta,go)},
   metaOf(st){if(st.k==='molecules'){const M=this.MOL[st.v];return {intro:`${M.name} (${M.f}): ${M.shape}${M.angle?`, bond angle ${M.angle}`:''}. ${M.note}`,parts:[...new Set(M.atoms.map(a=>a[0]))].map(e=>[e,this.EL[e][2]+(M.lattice||M.metal?'':' atom'),this.EL[e][3]])
       .concat(M.bonds&&M.bonds.length?[['bond',v2(M),v3(M)]]:[]).concat(M.lp?[['lp','Lone pair','A pair of electrons not used in bonding. Lone pairs repel more strongly than bonding pairs, which squeezes the bond angles.']]:[]).concat(M.metal?[['e','Delocalised electrons','Free to move through the whole structure, so metals conduct electricity and heat. They hold the positive ions together (metallic bonding).']]:[])};
       function v2(M){return M.f==='NaCl'?'Ionic bonds':M.ring?'Bonds and the delocalised ring':'Covalent bonds'}
       function v3(M){return M.f==='NaCl'?'The lines show the ionic bonding: strong electrostatic attraction between oppositely charged ions, acting in every direction.':M.ring?'Each carbon makes single bonds to two carbons and one hydrogen; the remaining electrons form a delocalised ring (purple) shared by all six carbons.':M.lattice?'Strong covalent bonds: shared pairs of electrons between carbon atoms, throughout the whole structure.':'A covalent bond is a shared pair of electrons between two atoms. A double bond shares two pairs.'}}
-    return this.META[st.k==='cells'?st.v:st.k]},
-  side(host,st,meta,pick){const info=host.querySelector('.l3-info'),list=host.querySelector('.l3-parts');
-    info.innerHTML=`<p class="muted l3-intro">${esc(meta.intro)}</p>`;
-    list.innerHTML=meta.parts.map(([id,name,txt,lv])=>`<button type="button" role="listitem" data-part="${esc(id)}"><i style="--c:${st.cols&&st.cols[id]?'#'+st.cols[id].toString(16).padStart(6,'0'):'var(--muted)'}"></i>${esc(name)}${lv==='A'?' <small>A-level</small>':''}</button>`).join('');
-    const show=id=>{const it=meta.parts.find(z=>z[0]===id);if(!it)return;list.querySelectorAll('[data-part]').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
-      info.innerHTML=`<b class="l3-name">${esc(it[1])}</b>${it[3]==='A'?' <span class="sc-pill">A-level</span>':''}<p>${esc(it[2])}</p>${Lab.aiBtn(subject,(st.x&&st.x.title)||it[1],it[1],st.x,it[2])}`;if(pick)pick(id)};
-    list.onclick=e=>{const b=e.target.closest('[data-part]');if(b)show(b.dataset.part)};return show},
-  start(host,st,T3){const stage=host.querySelector('.l3-stage'),cv=stage.querySelector('canvas'),tagsEl=stage.querySelector('.l3-tags'),msg=stage.querySelector('.l3-msg');
-    let R;try{R=new T3.WebGLRenderer({canvas:cv,antialias:true,alpha:true})}catch(e){return this.flat(host,st)}
-    R.setPixelRatio(Math.min(2,devicePixelRatio||1));if('outputEncoding' in R)R.outputEncoding=T3.sRGBEncoding;msg.hidden=true;
-    const scene=new T3.Scene(),cam=new T3.PerspectiveCamera(38,1,.05,200);
-    scene.add(new T3.HemisphereLight(0xffffff,0x6a6a80,.85));const d1=new T3.DirectionalLight(0xffffff,.85);d1.position.set(3,5,6);scene.add(d1);const d2=new T3.DirectionalLight(0xbfd4ff,.35);d2.position.set(-5,-2,-4);scene.add(d2);
-    const V={rx:.2,ry:-.6,dist:6,px:0,py:0,spin:false,tags:true,need:true,sel:null};let M=null,show=null,clock=performance.now();
-    const fit=()=>{const w=stage.clientWidth,h=stage.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();V.need=true};
-    const build=()=>{if(M){scene.remove(M.group);M.group.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)[].concat(o.material).forEach(m=>m.dispose())})}
-      M=this.MODELS[st.k](T3,st.v,st);scene.add(M.group);st.cols=M.cols||{};V.rx=M.view?M.view[0]:.2;V.ry=M.view?M.view[1]:-.6;V.dist=M.radius*2.9;V.px=V.py=0;V.sel=null;
-      tagsEl.innerHTML=M.tags.map(t=>`<span class="l3-tag" data-part="${esc(t.id)}">${esc(t.name)}</span>`).join('');
-      show=this.side(host,st,this.metaOf(st),id=>select(id,true));host.querySelector('.l3-extra').innerHTML='';if(M.extra)M.extra(host.querySelector('.l3-extra'),()=>{V.need=true});V.need=true};
-    const select=(id,fromList)=>{V.sel=id;if(M.highlight)M.highlight(id);tagsEl.querySelectorAll('.l3-tag').forEach(t=>t.classList.toggle('on',t.dataset.part===id));if(!fromList&&show)show(id);V.need=true};
-    st.rebuild=build;build();fit();new ResizeObserver(fit).observe(stage);
-    // Turning, zooming and panning with mouse, touch or keys.
-    const pts=new Map();let moved=0,pinch=null,last=null;
-    stage.addEventListener('pointerdown',e=>{if(e.target.closest('.lab-tools'))return;stage.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;last={x:e.clientX,y:e.clientY,b:e.button,sh:e.shiftKey};
-      if(pts.size===2){const [a,b]=[...pts.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),dist:V.dist,mx:(a.x+b.x)/2,my:(a.y+b.y)/2}}V.spin=false;setSpin()});
-    stage.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-      if(pts.size===2&&pinch){const [a,b]=[...pts.values()],d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;V.dist=Math.max(M.radius*1.1,Math.min(M.radius*7,pinch.dist*pinch.d/d));
-        const k=V.dist/stage.clientHeight*.8;V.px-=(mx-pinch.mx)*k;V.py+=(my-pinch.my)*k;pinch.mx=mx;pinch.my=my;moved=9;V.need=true;return}
-      const dx=e.clientX-last.x,dy=e.clientY-last.y;last.x=e.clientX;last.y=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
-      if(last.b===2||last.sh){const k=V.dist/stage.clientHeight*.8;V.px-=dx*k;V.py+=dy*k}else{V.ry+=dx*.009;V.rx=Math.max(-1.5,Math.min(1.5,V.rx+dy*.009))}V.need=true});
-    const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(moved<6&&!pts.size&&!e.target.closest('.lab-tools'))pickAt(e.clientX,e.clientY)};
-    stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);pinch=null});stage.addEventListener('contextmenu',e=>e.preventDefault());
-    stage.addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey||document.activeElement===stage||stage.classList.contains('fs')))return;e.preventDefault();V.dist=Math.max(M.radius*1.1,Math.min(M.radius*7,V.dist*(e.deltaY<0?.9:1.1)));V.need=true},{passive:false});
-    stage.addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowLeft')V.ry-=.15;else if(k==='ArrowRight')V.ry+=.15;else if(k==='ArrowUp')V.rx-=.15;else if(k==='ArrowDown')V.rx+=.15;else if(k==='+'||k==='=')V.dist*=.88;else if(k==='-')V.dist*=1.12;else if(k==='0')reset();else if(k==='Escape'&&stage.classList.contains('fs'))fs();else return;e.preventDefault();V.need=true});
-    const ray=new T3.Raycaster(),pickAt=(cx,cy)=>{const r=cv.getBoundingClientRect();ray.setFromCamera(new T3.Vector2((cx-r.left)/r.width*2-1,-(cy-r.top)/r.height*2+1),cam);
-      const hit=ray.intersectObjects(M.group.children,true).find(h=>h.object.visible&&(h.object.userData.part||h.object.userData.pick));if(!hit){return}
-      const o=hit.object,id=o.userData.pick?o.userData.pick(o.worldToLocal(hit.point.clone())):o.userData.part;if(id)select(id)};
-    const reset=()=>{V.rx=M.view?M.view[0]:.2;V.ry=M.view?M.view[1]:-.6;V.dist=M.radius*2.9;V.px=V.py=0;V.need=true};
-    const setSpin=()=>{const b=stage.querySelector('[data-a=spin]');b.setAttribute('aria-pressed',V.spin);b.classList.toggle('on',V.spin)};
-    const fs=()=>{stage.classList.toggle('fs');document.body.style.overflow=stage.classList.contains('fs')?'hidden':'';requestAnimationFrame(fit)};
-    stage.querySelector('.lab-tools').onclick=e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.a;
-      if(a==='in')V.dist=Math.max(M.radius*1.1,V.dist*.8);if(a==='out')V.dist=Math.min(M.radius*7,V.dist*1.25);if(a==='reset')reset();if(a==='spin'){V.spin=!V.spin;setSpin()}
-      if(a==='tags'){V.tags=!V.tags;b.setAttribute('aria-pressed',V.tags);b.classList.toggle('on',!V.tags);tagsEl.hidden=!V.tags}if(a==='fs')fs();V.need=true};
-    const v3=new T3.Vector3(),camL=new T3.Vector3();
-    const frame=t=>{if(!host.isConnected){R.dispose();if(R.forceContextLoss)R.forceContextLoss();return}requestAnimationFrame(frame);const dt=Math.min(.05,(t-clock)/1000);clock=t;
-      if(stage.getBoundingClientRect().bottom<0||stage.getBoundingClientRect().top>innerHeight)return;
-      if(V.spin){V.ry+=dt*.45;V.need=true}if(M.tick&&M.tick(dt))V.need=true;if(!V.need)return;V.need=false;
-      M.group.rotation.set(V.rx,V.ry,0);cam.position.set(V.px,V.py,V.dist);cam.lookAt(V.px,V.py,0);M.group.updateMatrixWorld();R.render(scene,cam);
-      if(V.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const w=stage.clientWidth,h=stage.clientHeight;
-        tagsEl.querySelectorAll('.l3-tag').forEach((el,i)=>{const tg=M.tags[i];v3.set(tg.mirror&&camL.x<0?-tg.p[0]:tg.p[0],tg.p[1],tg.p[2]);
-          const facing=tg.inner?1:v3.clone().normalize().dot(camL.clone().sub(v3).normalize());M.group.localToWorld(v3);v3.project(cam);
-          const sx=(v3.x*.5+.5)*w;el.style.transform=`translate(${sx}px,${(-v3.y*.5+.5)*h}px)`;el.classList.toggle('lf',sx>w*.6);el.classList.toggle('back',facing<-.35);el.style.display=v3.z>1?'none':''})}};
-    requestAnimationFrame(frame);
-    tagsEl.onclick=e=>{const t=e.target.closest('.l3-tag');if(t)select(t.dataset.part)}},
+    return this.META[this.vk(st)]},
+  vk(st){return st.k==='cells'||st.k==='neurone'?st.v:st.k},
+  // GCSE parts first, then the A-level extras.
+  order(meta){return [...meta.parts.filter(p=>p[3]!=='A'),...meta.parts.filter(p=>p[3]==='A')].map(p=>p[0])},
+  forLevel(meta,id){const p=meta.parts.find(z=>z[0]===id);return !!p&&(p[3]!=='A'||level!=='GCSE')},
+  hex(st,id){const c=st.cols&&st.cols[id];return c!=null?'#'+c.toString(16).padStart(6,'0'):'var(--stain)'},
+  chips(host,st,meta,pick){const list=host.querySelector('.l3-parts');
+    list.innerHTML=this.order(meta).map(id=>{const [,name,,lv]=meta.parts.find(z=>z[0]===id);return `<button type="button" role="listitem" data-part="${esc(id)}" style="--c:${this.hex(st,id)}"><i></i>${esc(name)}${lv==='A'?` <small>${esc(T('A-level'))}</small>`:''}</button>`}).join('');
+    list.onclick=e=>{const b=e.target.closest('[data-part]');if(b)pick(b.dataset.part,'list')}},
+  // The info card for one part: name, what it does (word by word), an exam tip, a picture and a fact.
+  card(host,st,id,o={}){const el=host.querySelector('.l3-card'),meta=this.metaOf(st);host.querySelectorAll('.l3-parts [data-part]').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
+    if(!id){el.hidden=true;el.classList.remove('in');return null}
+    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
+    el.style.setProperty('--c',this.hex(st,id));
+    el.innerHTML=`<div class="l3-ch"><i aria-hidden="true"></i><div><small>${esc(T('Part {0} of {1}',i+1,ord.length))}${lv==='A'?' · '+esc(T('A-level')):''}</small><h4>${esc(name)}</h4></div><button type="button" class="l3-x" aria-label="${esc(T('Close'))}">×</button></div>
+      <p class="l3-cd">${txt.split(/\s+/).map((w,j)=>`<span style="--w:${j}">${esc(w)} </span>`).join('')}</p>${more?`<ul class="l3-facts">${[['💡','Exam tip',more[0]],['🧠','Picture it',more[1]],['✨','Did you know?',more[2]]].filter(z=>z[2]).map((z,j)=>`<li style="--d:${j}"><b>${z[0]} ${esc(T(z[1]))}</b>${esc(z[2])}</li>`).join('')}</ul>`:''}
+      <div class="l3-cf"><button type="button" class="l3-nav" data-nav="-1" aria-label="${esc(T('Previous part'))}">←</button>${Lab.aiBtn(subject,(st.x&&st.x.title)||name,name,st.x,txt)}<button type="button" class="l3-nav" data-nav="1" aria-label="${esc(T('Next part'))}">→</button></div>`;
+    el.hidden=false;el.classList.remove('in');void el.offsetWidth;el.classList.add('in');
+    el.querySelector('.l3-x').onclick=()=>o.close?o.close():this.card(host,st,null);
+    el.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{const j=(i+Number(b.dataset.nav)+ord.length)%ord.length;(o.go||(n=>this.card(host,st,n,o)))(ord[j],'nav')});
+    return {name,txt,more}},
 
-  // Shared helpers for building models.
-  mat(T3,c,o={}){return new T3.MeshStandardMaterial(Object.assign({color:c,roughness:.55,metalness:.04},o))},
-  glow(list,on){for(const m of list){const ms=[].concat(m.material);for(const mt of ms){if(mt.emissive){if(mt.userData.e==null)mt.userData.e=mt.emissive.getHex();mt.emissive.setHex(on?0x553311:mt.userData.e)}}}},
-  parted(T3,parts){const by={};return {add(id,obj){obj.userData.part=id;(by[id]||(by[id]=[])).push(obj);return obj},hl(id){for(const k in by)L3.glow(by[k],k===id)}}},
+  start(host,st,T3){const root=host.querySelector('.l3'),stage=host.querySelector('.l3-stage'),cv=stage.querySelector('canvas'),tagsEl=stage.querySelector('.l3-tags'),msg=stage.querySelector('.l3-msg'),
+      hud=stage.querySelector('.l3-hud'),hov=stage.querySelector('.l3-hov'),lead=stage.querySelector('.l3-lead'),coach=stage.querySelector('.l3-coach'),cardEl=host.querySelector('.l3-card'),dock=host.querySelector('.l3-dock');
+    let R;try{R=new T3.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return this.flat(host,st)}
+    const touch=matchMedia('(pointer:coarse)').matches;
+    R.setPixelRatio(Math.min(touch?1.75:2,devicePixelRatio||1));R.outputEncoding=T3.sRGBEncoding;R.toneMapping=T3.NoToneMapping;R.localClippingEnabled=true;msg.hidden=true;
+    const scene=new T3.Scene(),cam=new T3.PerspectiveCamera(34,1,.05,200);scene.environment=this.env(T3,R);
+    scene.add(new T3.HemisphereLight(0xffffff,0xb8b2d8,.42));const key=new T3.DirectionalLight(0xffffff,1.0);key.position.set(4,7,5);scene.add(key);const rim=new T3.DirectionalLight(0xd6e4ff,.4);rim.position.set(-6,2,-5);scene.add(rim);
+    const shadow=new T3.Mesh(new T3.PlaneGeometry(1,1),new T3.MeshBasicMaterial({map:this.tex(T3,'shadow'),transparent:true,depthWrite:false,opacity:.5,toneMapped:false}));shadow.rotation.x=-Math.PI/2;scene.add(shadow);
+    const halo=new T3.Sprite(new T3.SpriteMaterial({map:this.tex(T3,'glow'),transparent:true,depthWrite:false,opacity:0,toneMapped:false}));scene.add(halo);
+    const planes=[new T3.Plane(),new T3.Plane()],ray=new T3.Raycaster(),v2=new T3.Vector2(),v3=new T3.Vector3(),tmp=new T3.Vector3(),camL=new T3.Vector3();
+    const V={yaw:0,pitch:0,dist:6,off:0,t:new T3.Vector3()},G={yaw:0,pitch:0,dist:6,off:0,t:new T3.Vector3()};
+    let M=null,meta=null,mats=[],home=6,sel=null,gsel=null,hover=null,fade=0,cut=0,cutGoal=0,spin=true,vel=0,drag=false,need=true,clock=performance.now(),tagsOn=true,flash=null,tour=null,quiz=null,speak=false,seen=false,wide=false,raf=0,intro=0;
+    const partOf=o=>{while(o&&!o.userData.part&&!o.userData.parts)o=o.parent;return o?o.userData.part:null};
+    const own=(o,id)=>{if(!id)return false;let q=o;while(q){if(q.userData.part)return q.userData.part===id;if(q.userData.parts)return q.userData.parts.includes(id);q=q.parent}return false};
+    const ease=(a,b,k)=>a+(b-a)*k,wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
+    const homeD=()=>M.radius*2.95*(M.long&&cam.aspect<1.4?M.long:1);
+    const fit=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();wide=w>=640;root.classList.toggle('wide',wide);if(M){const h2=homeD();if(Math.abs(h2-home)>1e-6){G.dist*=h2/home;V.dist*=h2/home;home=h2}}need=true};
+    const name=id=>{const p=meta&&meta.parts.find(z=>z[0]===id);return p?p[1]:id};
+
+    // Build (or rebuild for another variant) the model.
+    const build=()=>{stopTour();stopQuiz();stopJourney();hud.innerHTML='';if(M){scene.remove(M.group);M.group.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)[].concat(o.material).forEach(m=>m.dispose())})}
+      M=this.MODELS[st.k](T3,st.v,st);scene.add(M.group);M.group.updateMatrixWorld(true);st.cols=M.cols||{};meta=this.metaOf(st);sel=gsel=hover=null;fade=0;flash=null;
+      const box=new T3.Box3().setFromObject(M.group);M.c=box.getCenter(new T3.Vector3());home=homeD();
+      mats=[];M.group.traverse(o=>{if(!o.material||!(o.isMesh))return;for(const m of [].concat(o.material)){if(!m.userData.o)m.userData.o={op:m.opacity,tr:m.transparent,dw:m.depthWrite,em:m.emissive?m.emissive.getHex():0,ei:m.emissiveIntensity||1};
+        if(o.userData.clip||(o.parent&&o.parent.userData.clip)){m.clippingPlanes=planes;m.clipIntersection=true}mats.push({m,o,gh:false})}});
+      const [pi,ya]=M.view||[.3,.6];G.pitch=V.pitch=pi;G.yaw=ya;V.yaw=ya-.7;G.dist=home;V.dist=home*1.5;G.t.copy(M.c);V.t.copy(M.c);G.off=V.off=0;spin=!RM;setSpin();
+      if(M.cut){const u=M.cut.u.map(a=>new T3.Vector3(...a).normalize());planes.forEach((pl,i)=>pl.normal.copy(u[i]).negate());cut=0;cutGoal=0;intro=setTimeout(()=>{cutGoal=M.cut.def;syncSl()},700)}
+      shadow.position.set(M.c.x,M.c.y-(M.ground||M.radius*.92),M.c.z);shadow.scale.setScalar(M.radius*3.1);shadow.visible=M.ground!==0;
+      M.tags=M.tags||[];M.tags.forEach(t=>{t.minor=!L3.forLevel(meta,t.id)&&meta.parts.some(z=>z[0]===t.id)});tagsEl.innerHTML=M.tags.map(t=>{const lv=(meta.parts.find(z=>z[0]===t.id)||[])[3];return `<span class="l3-tag${lv==='A'?' ax':''}" data-part="${esc(t.id)}" style="--tc:${this.hex(st,t.id)}">${esc(t.name||name(t.id))}</span>`}).join('');
+      this.chips(host,st,meta,(id,how)=>{stopTour();stopJourney();if(quiz)return;select(id,{how})});host.querySelector('.l3-intro').textContent=meta.intro;
+      const ex=host.querySelector('.l3-extra');ex.innerHTML='';if(M.extra)M.extra(ex,()=>{need=true});
+      const sl=[...(M.cut?[{icon:'✂️',label:'Cut open',v:M.cut.def,set:v=>{cutGoal=v},cut:1}]:[]),...(M.sliders||[])];M.sl=sl;
+      M.js=(M.journeys||[]).filter(j=>!j.a||level!=='GCSE');dock.innerHTML=`${M.noGames?'':`<button type="button" class="btn sm" data-d="tour">▶ ${esc(T('Guided tour'))}</button><button type="button" class="btn ghost sm" data-d="quiz">🎯 ${esc(T('Find it!'))}</button>`}${M.js.map((j,i)=>`<button type="button" class="btn ghost sm l3-jb" data-j="${i}">🎬 ${esc(T(j.name))}</button>`).join('')}${sl.map((s,i)=>`<label class="l3-sl"><span>${s.icon} ${esc(T(s.label))}</span><input type="range" min="0" max="1" step=".01" value="${s.cut?0:s.v}" data-s="${i}" aria-label="${esc(T(s.label))}"></label>`).join('')}`;
+      this.card(host,st,null);applyGhost();if(M.highlight)M.highlight(null);need=true};
+    const syncSl=()=>{const i=M.sl.findIndex(s=>s.cut);const inp=dock.querySelector(`[data-s="${i}"]`);if(inp)inp.value=cutGoal};
+    dock.oninput=e=>{const i=e.target.dataset.s;if(i==null)return;clearTimeout(intro);M.sl[+i].set(+e.target.value);need=true;stopIdle()};
+    dock.onclick=e=>{const j=e.target.closest('[data-j]');if(j){stopIdle();return startJourney(M.js[+j.dataset.j])}const b=e.target.closest('[data-d]');if(!b)return;b.dataset.d==='tour'?startTour():startQuiz()};
+
+    // Selecting a part: fly to it, light it up, fade the rest and open its card.
+    const focusOf=id=>{if(M.focus&&M.focus[id])return {c:new T3.Vector3(...M.focus[id][0]),r:M.focus[id][1]};const box=new T3.Box3();
+      M.group.traverse(o=>{if(!o.isMesh||!own(o,id))return;if(o.userData.pts){for(const p of o.userData.pts)box.expandByPoint(tmp.set(p[0],p[1],p[2]).applyMatrix4(o.matrixWorld))}else box.expandByObject(o)});
+      if(box.isEmpty())return null;const s=box.getSize(new T3.Vector3());return {c:box.getCenter(new T3.Vector3()),r:s.length()/2}};
+    const anchorOf=id=>{const t=(M.tags||[]).find(z=>z.id===id);if(t){const p=typeof t.p==='function'?t.p():t.p;v3.set(p[0],p[1],p[2]);if(t.mirror){camL.copy(cam.position);M.group.worldToLocal(camL);if(camL.x<0)v3.x=-v3.x}return M.group.localToWorld(v3).clone()}const f=focusOf(id);return f&&f.c};
+    const fly=id=>{const f=focusOf(id);if(!f||f.r>M.radius*.6){G.t.copy(M.c);G.dist=home*.98;return f}
+      G.t.copy(f.c);G.dist=Math.max(M.radius*.75,Math.min(home*.85,f.r*3.6+M.radius*.45));const d=tmp.copy(f.c).sub(M.c);
+      if(d.length()>M.radius*.22&&!M.keepView){G.yaw=V.yaw+wrap(Math.atan2(d.x,d.z)-V.yaw);G.pitch=Math.max(-.7,Math.min(.8,Math.asin(Math.max(-1,Math.min(1,d.y/d.length())))*.7+.12))}return f};
+    const select=(id,o={})=>{if(id&&id===sel&&o.how!=='tour'){need=true;return}sel=id;if(id)gsel=id;stopIdle();if(M.highlight)M.highlight(id);
+      if(!id){this.card(host,st,null);G.t.copy(M.c);G.dist=home;G.off=0;halo.material.opacity=0;say('');applyGhost();need=true;return}
+      const f=fly(id);halo.userData.f=f&&f.r<=M.radius*.6?f:null;
+      const c=o.nocard?null:this.card(host,st,id,{go:(n,how)=>{if(tour&&how)stopTour();select(n)},close:()=>{stopTour();select(null)}});
+      G.off=c&&wide?Math.min(200,cardEl.offsetWidth/2+12):0;
+      if(c&&!wide){const r=cardEl.getBoundingClientRect(),want=innerHeight-Math.min(300,innerHeight*.38);if(r.top>want)scrollBy({top:r.top-want,behavior:RM?'auto':'smooth'})}
+      if(c)say(`${c.name}. ${c.txt}`);applyGhost();need=true};
+    const applyGhost=()=>{for(const q of mats){const g=q.m.userData.o,gh=!!gsel&&!quiz&&!own(q.o,gsel);q.gh=gh;const tr=gh?true:g.tr;if(q.m.transparent!==tr){q.m.transparent=tr;q.m.needsUpdate=true}q.m.depthWrite=gh?false:g.dw}};
+
+    // Reading aloud (the browser's own voice; nothing is sent anywhere).
+    const say=t=>{if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(!speak||!t)return;const u=new SpeechSynthesisUtterance(t),vs=speechSynthesis.getVoices();u.lang='en-GB';u.rate=1;
+      const v=vs.find(v=>/en-GB/i.test(v.lang)&&/natural|google|daniel|serena|kate/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)};
+
+    // Guided tour: every part in turn, with its card.
+    function startTour(){stopQuiz();stopJourney();const ids=L3.order(meta).filter(id=>L3.forLevel(meta,id));if(!ids.length)return;tour={ids,i:-1,t:0,dur:6,paused:false};spin=false;setSpin();nextTour()}
+    function nextTour(){if(!tour)return;tour.i++;if(tour.i>=tour.ids.length){const n=tour.ids.length;stopTour();select(null);
+        hud.innerHTML=`<div class="l3-quiz ok"><small>${esc(T('Tour complete'))}</small><b>${esc(T('You met all {0} parts!',n))}</b> <button type="button" class="l3-hb" data-q>🎯 ${esc(T('Find it!'))}</button></div>`;hud.querySelector('[data-q]').onclick=startQuiz;return}
+      const id=tour.ids[tour.i];select(id,{how:'tour'});const words=(meta.parts.find(z=>z[0]===id)[2]||'').split(' ').length;tour.t=0;tour.dur=Math.max(6.5,words*.33+4.5);drawTour()}
+    function drawTour(){if(!tour)return;hud.innerHTML=`<div class="l3-tour"><b>▶ ${esc(T('Guided tour'))}</b><span>${tour.i+1}/${tour.ids.length}</span><button type="button" data-t="p" aria-label="${esc(T(tour.paused?'Play':'Pause'))}">${tour.paused?'▶':'❚❚'}</button><button type="button" data-t="n" aria-label="${esc(T('Next part'))}">⏭</button><button type="button" data-t="x" aria-label="${esc(T('Stop the tour'))}">✕</button><i></i></div>`;
+      hud.querySelector('[data-t=p]').onclick=()=>{tour.paused=!tour.paused;drawTour()};hud.querySelector('[data-t=n]').onclick=()=>nextTour();hud.querySelector('[data-t=x]').onclick=()=>{stopTour()}}
+    function stopTour(){if(!tour)return;tour=null;hud.innerHTML='';say('')}
+
+    // Find it! A quick game: tap the part that's named.
+    function startQuiz(){stopTour();stopJourney();if(sel)select(null);const pool=L3.order(meta).filter(id=>L3.forLevel(meta,id)&&!(M.quizSkip||[]).includes(id));if(pool.length<3)return;
+      quiz={ids:shuffle(pool).slice(0,Math.min(8,pool.length)),i:0,score:0,tries:0,busy:false};if(M.cut){cutGoal=Math.max(cutGoal,M.cut.def);syncSl()}if(M.onQuiz)M.onQuiz();root.classList.add('quiz');applyGhost();askQuiz();stopIdle()}
+    function askQuiz(msg,cls){if(!quiz)return;const id=quiz.ids[quiz.i];hud.innerHTML=`<div class="l3-quiz ${cls||''}"><small>🎯 ${esc(T('Find it'))} · ${quiz.i+1}/${quiz.ids.length} · ⭐ ${quiz.score}</small><b>${msg||esc(T('Tap the {0}',name(id).replace(/ \(.*\)/,'')))}</b><button type="button" class="l3-hb" data-x aria-label="${esc(T('Stop the game'))}">✕</button></div>`;hud.querySelector('[data-x]').onclick=()=>stopQuiz()}
+    function answer(id,cx,cy){if(!quiz||quiz.busy)return;const want=quiz.ids[quiz.i];
+      if(id===want){if(!quiz.tries)quiz.score++;flash={id,c:new T3.Color(0x22C55E),t:0,d:.9};burst(cx,cy,22,.55);quiz.busy=true;askQuiz(`✓ ${esc(T('Yes! That’s the {0}',name(id)))}`,'ok');setTimeout(nextQ,950)}
+      else{quiz.tries++;flash={id,c:new T3.Color(0xEF4444),t:0,d:.8};
+        if(quiz.tries>=2){quiz.busy=true;flash={id:want,c:new T3.Color(0xF59E0B),t:0,d:1.8};fly(want);askQuiz(`${esc(T('Here it is: the {0}',name(want)))}`,'no');setTimeout(()=>{G.t.copy(M.c);G.dist=home;nextQ()},1900)}
+        else askQuiz(`✗ ${esc(id?T('That’s the {0}. Try again!',name(id)):T('Not quite. Try again!'))}`,'no')}need=true}
+    function nextQ(){if(!quiz)return;quiz.i++;quiz.tries=0;quiz.busy=false;if(quiz.i<quiz.ids.length)return askQuiz();
+      const n=quiz.ids.length,s=quiz.score,key=`fm-l3-best-${st.k}-${st.v}`,best=Math.max(s,+store.get(key,'0')||0);store.set(key,String(best));
+      hud.innerHTML=`<div class="l3-quiz ${s===n?'ok':''}"><small>${esc(T('Find it · result'))}</small><b>${s===n?'🏆 ':''}${esc(T('{0} of {1} first time',s,n))}</b> <span class="l3-best">${esc(T('Best: {0}',best))}</span> <button type="button" class="l3-hb" data-again>${esc(T('Play again'))}</button><button type="button" class="l3-hb" data-x aria-label="${esc(T('Close'))}">✕</button></div>`;
+      hud.querySelector('[data-again]').onclick=startQuiz;hud.querySelector('[data-x]').onclick=()=>{hud.innerHTML=''};
+      if(s)XP.add(s*2+(s===n?6:0),hud.firstElementChild);if(s===n)rain();try{StuAct.push()}catch(e){}quiz=null;root.classList.remove('quiz');applyGhost()}
+    function stopQuiz(){if(!quiz)return;quiz=null;root.classList.remove('quiz');hud.innerHTML='';applyGhost()}
+
+    // Journeys: watch something travel through the model, step by step, with a caption for each step.
+    const jfx=new T3.Group(),glowM=()=>new T3.SpriteMaterial({map:this.tex(T3,'glow'),transparent:true,depthWrite:false,depthTest:false,toneMapped:false});
+    const jdot=new T3.Sprite(glowM()),jcore=new T3.Mesh(new T3.SphereGeometry(1,20,14),new T3.MeshBasicMaterial({color:0xffffff,depthTest:false,transparent:true,toneMapped:false})),trail=[];jcore.renderOrder=jdot.renderOrder=10;jfx.add(jdot,jcore);
+    for(let i=0;i<12;i++){const s=new T3.Sprite(glowM());s.renderOrder=9;jfx.add(s);trail.push(s)}jfx.visible=false;scene.add(jfx);let jy=null,jhl=null;const hist=[];
+    const setJc=c=>{const col=new T3.Color(c);jdot.material.color.copy(col);trail.forEach(s=>s.material.color.copy(col));jcore.material.color.copy(col).lerp(new T3.Color(0xffffff),.55)};
+    function startJourney(j){stopTour();stopQuiz();if(sel)select(null);spin=false;setSpin();const pts=[],at=[];for(const s of j.steps){for(const v of s.via||[])pts.push(new T3.Vector3(...v));pts.push(new T3.Vector3(...s.p));at.push(pts.length-1)}
+      jy={j,curve:new T3.CatmullRomCurve3(pts,false,'centripetal'),at,n:pts.length,i:-1,t:0,paused:false};hist.length=0;jfx.visible=true;setJc(j.c||0xFFD54A);G.dist=home*.66;nextStep()}
+    function nextStep(){if(!jy)return;jy.i++;const st2=jy.j.steps;if(jy.i>=st2.length){const nm=jy.j.name;stopJourney();hud.innerHTML=`<div class="l3-quiz ok"><small>🎬 ${esc(T(nm))}</small><b>${esc(T('That’s the whole journey!'))}</b> <button type="button" class="l3-hb" data-r>${esc(T('Watch again'))}</button><button type="button" class="l3-hb" data-x aria-label="${esc(T('Close'))}">✕</button></div>`;
+        const jj=M.journeys.find(z=>z.name===nm);hud.querySelector('[data-r]').onclick=()=>startJourney(jj);hud.querySelector('[data-x]').onclick=()=>{hud.innerHTML=''};return}
+      const s=st2[jy.i];jy.u0=jy.i?jy.at[jy.i-1]/(jy.n-1):0;jy.u1=jy.at[jy.i]/(jy.n-1);jy.t=0;jy.move=jy.i?Math.min(2.6,.9+(jy.at[jy.i]-jy.at[jy.i-1])*.5):.01;jy.dur=Math.max(jy.move+3.2,s.text.split(' ').length*.31+jy.move+1.2);
+      jhl=s.part||null;if(s.c!=null)setJc(s.c);if(s.on)s.on();drawJ();say(T(s.text))}
+    function drawJ(){if(!jy)return;const s=jy.j.steps[jy.i];hud.innerHTML=`<div class="l3-tour l3-jy"><div class="l3-jt"><b>🎬 ${esc(T(jy.j.name))}</b><span>${jy.i+1}/${jy.j.steps.length}</span><button type="button" data-t="p" aria-label="${esc(T(jy.paused?'Play':'Pause'))}">${jy.paused?'▶':'❚❚'}</button><button type="button" data-t="n" aria-label="${esc(T('Next step'))}">⏭</button><button type="button" data-t="x" aria-label="${esc(T('Stop'))}">✕</button></div><p>${esc(T(s.text))}</p><i></i></div>`;
+      hud.querySelector('[data-t=p]').onclick=()=>{jy.paused=!jy.paused;drawJ()};hud.querySelector('[data-t=n]').onclick=()=>{jy.t=jy.move;nextStep()};hud.querySelector('[data-t=x]').onclick=()=>{stopJourney();hud.innerHTML=''}}
+    function stopJourney(){if(!jy)return;jy=null;jhl=null;jfx.visible=false;G.t.copy(M.c);G.dist=home;if(M.jEnd)M.jEnd();hud.innerHTML='';say('')}
+
+    // Tapping: organelles win over the see-through shells; the cut-away part of a shell can't be hit.
+    const cutAway=(o,p)=>{const m=[].concat(o.material)[0];return !!(m&&m.clippingPlanes&&m.clippingPlanes.length&&cut>.001&&planes.every(pl=>pl.distanceToPoint(p)<0))};
+    // Thin parts (DNA, tubes, hairs) are hard to hit exactly, so a near miss around the tap counts too.
+    const isShell=o=>!!(o.userData.shell||(o.parent&&o.parent.userData.shell));
+    const castAt=(cx,cy,r)=>{ray.setFromCamera(v2.set((cx-r.left)/r.width*2-1,-(cy-r.top)/r.height*2+1),cam);
+      return ray.intersectObjects(M.group.children,true).filter(h=>h.object.isMesh&&h.object.visible&&(partOf(h.object)||h.object.userData.pick)&&!cutAway(h.object,h.point))};
+    const idOf=h=>{const o=h.object;return o.userData.pick?o.userData.pick(o.worldToLocal(h.point.clone())):partOf(o)};
+    const pickAt=(cx,cy,coarse)=>{const r=cv.getBoundingClientRect(),hits=castAt(cx,cy,r);
+      // a shell hit side-on (near its outline) means the tap was meant for that shell
+      const f=hits[0];if(f&&isShell(f.object)&&f.face&&Math.abs(tmp.copy(f.face.normal).transformDirection(f.object.matrixWorld).dot(ray.ray.direction))<.42)return idOf(f);
+      let h=hits.find(z=>!isShell(z.object));if(h)return idOf(h);
+      for(const rad of coarse?[9,18]:[6,12])for(let i=0;i<8;i++){const a=i/8*Math.PI*2,hs=castAt(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad,r).find(z=>!isShell(z.object));if(hs)return idOf(hs)}
+      if(!hits.length)return null;const top=Math.max(...hits.map(z=>z.object.userData.rank||0));return idOf(hits.find(z=>(z.object.userData.rank||0)===top))};
+
+    // Turning, zooming and panning with mouse, touch or keys.
+    const pts=new Map();let moved=0,pinch=null,last=null,lastMove=0,hoverT=0;
+    const stopIdle=()=>{if(!seen){seen=true;coach.hidden=true;try{store.set('fm-l3-coach',String((+store.get('fm-l3-coach','0')||0)+1))}catch(e){}}};
+    stage.addEventListener('pointerdown',e=>{if(e.target.closest('.lab-tools,.l3-hud,.l3-tag'))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(pts.size===1){drag=true;moved=0;vel=0;last={x:e.clientX,y:e.clientY,b:e.button,sh:e.shiftKey,t:performance.now()};stage.classList.add('drag')}
+      if(pts.size===2){const [a,b]=[...pts.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),dist:G.dist,mx:(a.x+b.x)/2,my:(a.y+b.y)/2}}
+      if(e.pointerType==='mouse'||root.classList.contains('fs'))try{stage.setPointerCapture(e.pointerId)}catch(_){}
+      spin=false;setSpin();if(tour&&!tour.paused){tour.paused=true;drawTour()}stopIdle()});
+    stage.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId)){if(e.pointerType==='mouse'&&M&&!drag){const n=performance.now();if(n-hoverT>60){hoverT=n;const id=pickAt(e.clientX,e.clientY);
+        if(id!==hover){hover=id;need=true}stage.classList.toggle('hot',!!id);if(id&&!quiz){const r=stage.getBoundingClientRect();hov.hidden=false;hov.textContent=name(id);hov.style.left=(e.clientX-r.left)+'px';hov.style.top=(e.clientY-r.top)+'px'}else hov.hidden=true}}return}
+      pts.set(e.pointerId,{x:e.clientX,y:e.clientY});hov.hidden=true;
+      if(pts.size===2&&pinch){const [a,b]=[...pts.values()],d=Math.hypot(a.x-b.x,a.y-b.y),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;G.dist=V.dist=Math.max(M.radius*.6,Math.min(home*2.2,pinch.dist*pinch.d/d));pan(mx-pinch.mx,my-pinch.my);pinch.mx=mx;pinch.my=my;moved=99;need=true;return}
+      const dx=e.clientX-last.x,dy=e.clientY-last.y,n=performance.now(),dt=Math.max(8,n-last.t);last.x=e.clientX;last.y=e.clientY;last.t=n;moved+=Math.abs(dx)+Math.abs(dy);
+      if(last.b===2||last.sh)pan(dx,dy);else{G.yaw-=dx*.0085;V.yaw=G.yaw;G.pitch=V.pitch=Math.max(-1.35,Math.min(1.35,G.pitch+dy*.0085));vel=-dx*.0085/dt*1000}need=true});
+    const pan=(dx,dy)=>{const k=V.dist/stage.clientHeight*.62,right=tmp.set(Math.cos(V.yaw),0,-Math.sin(V.yaw));G.t.addScaledVector(right,-dx*k);G.t.y+=dy*k;V.t.copy(G.t)};
+    const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(pts.size)return;drag=false;stage.classList.remove('drag');
+      if(performance.now()-last.t>90)vel=0;
+      if(moved<7&&!e.target.closest('.lab-tools,.l3-hud,.l3-tag')){const id=pickAt(e.clientX,e.clientY,e.pointerType!=='mouse');if(quiz)answer(id,e.clientX,e.clientY);else if(id){stopTour();stopJourney();select(id)}else if(sel){stopTour();select(null)}}};
+    stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',e=>{pts.delete(e.pointerId);pinch=null;if(!pts.size){drag=false;stage.classList.remove('drag')}});
+    stage.addEventListener('pointerleave',()=>{if(hover){hover=null;need=true}hov.hidden=true;stage.classList.remove('hot')});
+    stage.addEventListener('contextmenu',e=>e.preventDefault());
+    stage.addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey||document.activeElement===stage||root.classList.contains('fs')))return;e.preventDefault();G.dist=Math.max(M.radius*.6,Math.min(home*2.2,G.dist*(e.deltaY<0?.9:1.1)));need=true},{passive:false});
+    stage.addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowLeft')G.yaw+=.2;else if(k==='ArrowRight')G.yaw-=.2;else if(k==='ArrowUp')G.pitch=Math.min(1.35,G.pitch+.15);else if(k==='ArrowDown')G.pitch=Math.max(-1.35,G.pitch-.15);
+      else if(k==='+'||k==='=')G.dist*=.85;else if(k==='-')G.dist*=1.15;else if(k==='0')reset();else if(k==='Escape'){if(root.classList.contains('fs'))fs();else if(sel)select(null);else return}else return;e.preventDefault();spin=false;setSpin();need=true});
+    tagsEl.addEventListener('click',e=>{const t=e.target.closest('.l3-tag');if(!t||quiz)return;stopTour();select(t.dataset.part)});
+    const reset=()=>{stopTour();select(null);const [pi,ya]=M.view||[.3,.6];G.pitch=pi;G.yaw=V.yaw+wrap(ya-V.yaw);G.dist=home;G.t.copy(M.c);need=true};
+    const setSpin=()=>{const b=stage.querySelector('[data-a=spin]');if(b)b.setAttribute('aria-pressed',spin)};
+    const fs=()=>{const on=!root.classList.contains('fs');root.classList.toggle('fs',on);document.body.style.overflow=on?'hidden':'';stage.style.touchAction=on?'none':'';requestAnimationFrame(fit)};
+    stage.querySelector('.lab-tools').onclick=e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.a;
+      if(a==='in')G.dist=Math.max(M.radius*.6,G.dist*.8);if(a==='out')G.dist=Math.min(home*2.2,G.dist*1.25);if(a==='reset')reset();if(a==='spin'){spin=!spin;setSpin()}
+      if(a==='tags'){tagsOn=!tagsOn;b.setAttribute('aria-pressed',tagsOn);tagsEl.hidden=!tagsOn}if(a==='say'){speak=!speak;b.setAttribute('aria-pressed',speak);b.textContent=speak?'🔊':'🔈';if(speak&&sel){const it=meta.parts.find(z=>z[0]===sel);if(it)say(`${it[1]}. ${it[2]}`)}else say('')}
+      if(a==='fs')fs();stopIdle();need=true};
+
+    st.rebuild=()=>{build();fit()};st.pick=(x,y)=>pickAt(x,y);build();fit();const ro=new ResizeObserver(fit);ro.observe(stage);
+    if((+store.get('fm-l3-coach','0')||0)<3)setTimeout(()=>{if(!seen&&host.isConnected){coach.hidden=false;setTimeout(()=>{coach.hidden=true},6000)}},1200);
+
+    const frame=now=>{if(!host.isConnected){ro.disconnect();clearTimeout(intro);say('');if(root.classList.contains('fs'))document.body.style.overflow='';R.dispose();if(R.forceContextLoss)R.forceContextLoss();return}
+      raf=requestAnimationFrame(frame);const rdt=Math.min(.5,(now-clock)/1000),dt=Math.min(.05,rdt);clock=now;const r=stage.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||document.hidden)return;
+      let active=need||drag;need=false;
+      if(spin&&!sel&&!quiz&&!drag){G.yaw+=dt*.16;active=true}
+      if(!drag&&Math.abs(vel)>.002){G.yaw+=vel*dt;vel*=Math.pow(.03,dt);active=true}
+      const k=1-Math.exp(-dt*(drag?30:5.5));
+      for(const f of ['yaw','pitch','dist','off']){const d=G[f]-V[f];if(Math.abs(d)>1e-4){V[f]+=d*k;active=true}}
+      if(V.t.distanceToSquared(G.t)>1e-7){V.t.lerp(G.t,k);active=true}
+      if(Math.abs(cutGoal-cut)>1e-4){cut+=(cutGoal-cut)*(1-Math.exp(-dt*4));active=true}
+      const fg=sel?1:0;if(Math.abs(fade-fg)>.002){fade+=(fg-fade)*(1-Math.exp(-dt*7));active=true}else if(fade!==fg){fade=fg;if(!sel&&gsel){gsel=null;applyGhost()}}
+      if(flash){flash.t+=rdt;if(flash.t>flash.d)flash=null;active=true}
+      if(M.tick&&M.tick(dt,now))active=true;
+      if(sel||hover||tour||jy)active=true;
+      if(tour&&!tour.paused){tour.t+=rdt;const bar=hud.querySelector('.l3-tour i');if(bar)bar.style.width=Math.min(100,tour.t/tour.dur*100)+'%';if(tour.t>=tour.dur&&!(speak&&speechSynthesis.speaking))nextTour()}
+      if(jy){if(!jy.paused)jy.t+=rdt;const k2=Math.min(1,jy.t/jy.move),e2=k2<.5?2*k2*k2:1-Math.pow(-2*k2+2,2)/2,P=jy.curve.getPoint(Math.min(1,jy.u0+(jy.u1-jy.u0)*e2)),sz=M.radius*.03;
+        jcore.position.copy(P);jdot.position.copy(P);jcore.scale.setScalar(sz);jdot.scale.setScalar(sz*8*(1+.18*Math.sin(now*.012)));hist.unshift(P.clone());if(hist.length>trail.length*2)hist.length=trail.length*2;
+        trail.forEach((s2,i)=>{const h=hist[i*2]||P;s2.position.copy(h);s2.scale.setScalar(sz*6*(1-i/trail.length));s2.material.opacity=.55*(1-i/trail.length)});G.t.lerp(P,.06);
+        const bar=hud.querySelector('.l3-jy>i');if(bar)bar.style.width=Math.min(100,jy.t/jy.dur*100)+'%';(M.sl||[]).forEach((s3,i)=>{if(s3.get){const inp=dock.querySelector(`[data-s="${i}"]`);if(inp)inp.value=s3.get()}});
+        if(jy.t>=jy.dur&&!jy.paused&&!(speak&&speechSynthesis.speaking))nextStep();active=true}
+      if(!active)return;
+      if(M.cut){const kk=M.cut.r-(M.cut.r+.08)*cut;for(const pl of planes)pl.constant=kk;if(M.caps)M.caps(kk,cut)}
+      // materials: ghosting, the selected part's glow, hover, and the game's green/red flash
+      const pulse=.2+.14*Math.sin(now*.0055);
+      for(const q of mats){const m=q.m,g=m.userData.o;m.opacity=q.gh?g.op*(1-.86*fade):g.op;if(!m.emissive)continue;let c=null,i=0;const multi=q.o.userData.parts;
+        if(flash&&own(q.o,flash.id)&&!multi){c=flash.c;i=.9*(1-flash.t/flash.d)}else if(sel&&own(q.o,sel)&&!multi){c=m.color;i=pulse}else if(jhl&&own(q.o,jhl)&&!multi){c=m.color;i=pulse+.06}else if(hover&&own(q.o,hover)&&!multi&&!quiz){c=m.color;i=.16}
+        if(c){m.emissive.copy(c);m.emissiveIntensity=i}else if(m.emissiveIntensity!==g.ei||m.emissive.getHex()!==g.em){m.emissive.setHex(g.em);m.emissiveIntensity=g.ei}}
+      const hf=halo.userData.f;if(sel&&hf){halo.position.copy(hf.c);halo.scale.setScalar(hf.r*3.4);halo.material.color.set(this.hex(st,sel));halo.material.opacity=fade*(.32+.12*Math.sin(now*.004))}else halo.material.opacity=0;
+      // camera
+      const w=stage.clientWidth,h=stage.clientHeight,cp=Math.cos(V.pitch);cam.position.set(V.t.x+V.dist*cp*Math.sin(V.yaw),V.t.y+V.dist*Math.sin(V.pitch),V.t.z+V.dist*cp*Math.cos(V.yaw));cam.lookAt(V.t);
+      if(V.off>.5)cam.setViewOffset(w,h,V.off,0,w,h);else if(cam.view&&cam.view.enabled)cam.clearViewOffset();
+      R.render(scene,cam);
+      // labels that follow the model
+      if(tagsOn&&M.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const els=tagsEl.children;
+        for(let i=0;i<els.length;i++){const el=els[i],tg=M.tags[i],p=typeof tg.p==='function'?tg.p():tg.p;v3.set(tg.mirror&&camL.x<0?-p[0]:p[0],p[1],p[2]);
+          const facing=tg.inner?1:tmp.copy(v3).sub(M.group.worldToLocal(M.c.clone())).normalize().dot(camL.clone().sub(v3).normalize());M.group.localToWorld(v3);v3.project(cam);
+          const sx=(v3.x*.5+.5)*w,sy=(-v3.y*.5+.5)*h;el.style.transform=`translate(${sx}px,${sy}px)`;el.classList.toggle('lf',sx>w*.62);el.classList.toggle('back',facing<-.3);
+          el.classList.toggle('on',tg.id===sel);el.classList.toggle('dim',!!sel&&tg.id!==sel);el.style.display=v3.z>1||sx<-40||sx>w+40||(tg.minor&&tg.id!==sel&&tg.id!==hover&&V.dist>home*.8)?'none':''}}
+      // the leader line from the part to its card
+      if(sel&&wide&&!cardEl.hidden){const a=anchorOf(sel);if(a){a.project(cam);const sx=(a.x*.5+.5)*w,sy=(-a.y*.5+.5)*h,sr=stage.getBoundingClientRect(),cr=cardEl.getBoundingClientRect(),ex=cr.left-sr.left-2,ey=Math.min(h-20,cr.top-sr.top+42),mx=(sx+ex)/2;
+          lead.style.setProperty('--c',this.hex(st,sel));lead.firstElementChild.setAttribute('d',`M${sx},${sy} C${mx},${sy} ${mx},${ey} ${ex},${ey}`);lead.lastElementChild.setAttribute('cx',sx);lead.lastElementChild.setAttribute('cy',sy);lead.style.opacity=a.z<1&&sx<ex-20?Math.min(1,fade*1.4):0}}
+      else lead.style.opacity=0};
+    raf=requestAnimationFrame(frame)},
+
+  // A soft studio environment so the glossy parts have something to reflect.
+  env(T3,R){const pm=new T3.PMREMGenerator(R),sc=new T3.Scene(),geo=new T3.SphereGeometry(10,32,16),col=[];const p=geo.attributes.position;
+    for(let i=0;i<p.count;i++){const y=p.getY(i)/10,c=new T3.Color(0xEEF1FF).lerp(new T3.Color(0x9AA3C7),Math.max(0,-y)).lerp(new T3.Color(0xFFFFFF),Math.max(0,y));col.push(c.r,c.g,c.b)}
+    geo.setAttribute('color',new T3.Float32BufferAttribute(col,3));sc.add(new T3.Mesh(geo,new T3.MeshBasicMaterial({vertexColors:true,side:T3.BackSide})));
+    for(const [x,y,z,s,k] of [[0,8,2,7,3],[7,2,4,3,2],[-7,3,-3,4,1.6]]){const m=new T3.Mesh(new T3.PlaneGeometry(s,s),new T3.MeshBasicMaterial({color:new T3.Color(k,k,k),side:T3.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);sc.add(m)}
+    const t=pm.fromScene(sc,.04).texture;pm.dispose();geo.dispose();return t},
+  tex(T3,kind){this._tx=this._tx||{};if(this._tx[kind])return this._tx[kind];const c=document.createElement('canvas'),s=c.width=c.height=kind==='fibre'?256:128,x=c.getContext('2d');
+    if(kind==='shadow'){const g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(40,44,90,.55)');g.addColorStop(.55,'rgba(40,44,90,.18)');g.addColorStop(1,'rgba(40,44,90,0)');x.fillStyle=g;x.fillRect(0,0,s,s)}
+    else if(kind==='glow'){const g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.35,'rgba(255,255,255,.55)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,s,s)}
+    else if(kind==='muscle'){x.fillStyle='#E85A6A';x.fillRect(0,0,s,s);for(let i=0;i<s;i+=8){x.fillStyle=i%16?'rgba(120,20,40,.35)':'rgba(255,255,255,.18)';x.fillRect(0,i,s,4)}}
+    else{x.fillStyle='#fff';x.fillRect(0,0,s,s);const r=L3.rnd(4);x.lineCap='round';for(let i=0;i<260;i++){x.strokeStyle=`rgba(30,90,40,${.08+r()*.16})`;x.lineWidth=1+r()*2.2;const a=(r()<.5?.6:-.6)+r()*.3,cx=r()*s,cy=r()*s,l=40+r()*120;x.beginPath();x.moveTo(cx-Math.cos(a)*l,cy-Math.sin(a)*l);x.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l);x.stroke()}}
+    const t=new T3.CanvasTexture(c);t.encoding=T3.sRGBEncoding;if(kind==='fibre'){t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(3,2)}if(kind==='muscle'){t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(1,6)}return this._tx[kind]=t},
+
+  // Materials and shapes shared by the models.
+  mat(T3,c,o={}){return new T3.MeshStandardMaterial(Object.assign({color:c,roughness:.5,metalness:0},o))},
+  skin(T3,c,o={}){const q=Object.assign({color:c,roughness:.45,metalness:0,envMapIntensity:.6},o);for(const k of ['clearcoat','clearcoatRoughness','sheen','sheenRoughness','sheenColor'])delete q[k];return new T3.MeshStandardMaterial(q)},
+  gloss(T3,c,o={}){return new T3.MeshPhysicalMaterial(Object.assign({color:c,roughness:.28,metalness:0,clearcoat:1,clearcoatRoughness:.08,envMapIntensity:.7},o))},
+  glass(T3,c,op=.3,o={}){return new T3.MeshPhysicalMaterial(Object.assign({color:c,roughness:.22,metalness:0,clearcoat:1,clearcoatRoughness:.12,transparent:true,opacity:op,depthWrite:false,side:T3.DoubleSide,envMapIntensity:.8},o))},
+  // Flat faces where the cut-away slices through a shell, so the cut looks like a real section.
+  cap(T3,g,geo,c,op,clip,order){const m=new T3.Mesh(geo,L3.glass(T3,c,op,{roughness:.6,clearcoat:.2,clippingPlanes:[clip],side:T3.DoubleSide}));m.renderOrder=order||0;g.add(m);return m},
+  superShape(T3,n,hole){const pts=[];for(let i=0;i<=96;i++){const t=i/96*Math.PI*2,c=Math.cos(t),s=Math.sin(t);pts.push(new T3.Vector2(Math.sign(c)*Math.pow(Math.abs(c),2/n),Math.sign(s)*Math.pow(Math.abs(s),2/n)))}const sh=new T3.Shape(pts);if(hole)sh.holes.push(new T3.Path(pts.map(p=>p.clone().multiplyScalar(hole)).reverse()));return new T3.ShapeGeometry(sh,1)},
   rnd(seed){return ()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646}},
+  nz(x,y,z,s){return Math.sin(x*3.1+s)*Math.cos(y*2.7+s*1.3)+.6*Math.sin(z*3.7+s*.7)+.3*Math.sin((x+y+z)*5.3+s*2.1)},
+  blob(T3,r,s=1,a=.04,seg=64,sc=[1,1,1]){const g=new T3.SphereGeometry(1,seg,Math.round(seg*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=r*(1+a*L3.nz(x,y,z,s));p.setXYZ(i,x*k*sc[0],y*k*sc[1],z*k*sc[2])}g.computeVertexNormals();return g},
+  sbox(T3,a,b,c,n=8,seg=64,amp=0,s=1){const g=new T3.SphereGeometry(1,seg,Math.round(seg*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=Math.pow(Math.pow(Math.abs(x),n)+Math.pow(Math.abs(y),n)+Math.pow(Math.abs(z),n),-1/n)*(1+amp*L3.nz(x,y,z,s));p.setXYZ(i,x*k*a,y*k*b,z*k*c)}g.computeVertexNormals();return g},
+  fib(n,i){const y=1-(i+.5)/n*2,r=Math.sqrt(1-y*y),a=i*2.399963;return [Math.cos(a)*r,y,Math.sin(a)*r]},
+  tube(T3,pts,r,mat,closed=false,seg=64){return new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(pts.map(p=>p.isVector3?p:new T3.Vector3(...p)),closed),seg,r,8,closed),mat)},
+  dots(T3,pts,geo,mat){const im=new T3.InstancedMesh(geo,mat,pts.length),m=new T3.Matrix4();pts.forEach((p,i)=>{m.makeTranslation(p[0],p[1],p[2]);im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true;im.userData.pts=pts;return im},
+  kit(g){return {add(id,o,f){o.userData.part=id;if(f)Object.assign(o.userData,f);g.add(o);return o}}},
 
   MODELS:{
-    brain(T3){const g=new T3.Group(),cols={frontal:0x7DB4FF,parietal:0xFFD36E,temporal:0x86D99A,occipital:0xFF93AA,cerebellum:0xB894E6,stem:0xE5A86E,hypo:0xC17ADB,pit:0xF06292,cord:0xEFC79C};
-      const lobe=(y,z)=>z>.3&&y>-.5?'frontal':z<-.6?'occipital':y<-.14?'temporal':'parietal',hemis=[],P=L3.parted(T3);
+    brain(T3){const g=new T3.Group(),cols={frontal:0x7DB4FF,parietal:0xFFD36E,temporal:0x86D99A,occipital:0xFF93AA,cerebellum:0xB894E6,stem:0xE5A86E,hypo:0xC17ADB,pit:0xF06292,cord:0xEFC79C,cc:0xEBDDBF},B=L3.kit(g),S=L3.skin;
+      const lobe=(y,z)=>z>.3&&y>-.5?'frontal':z<-.6?'occipital':y<-.14?'temporal':'parietal',hemis=[];let split=0;
       for(const side of [1,-1]){const geo=new T3.SphereGeometry(1,128,96),pos=geo.attributes.position,col=new Float32Array(pos.count*3),lob=new Array(pos.count),base=new Float32Array(pos.count*3);
         for(let i=0;i<pos.count;i++){let x=pos.getX(i),y=pos.getY(i),z=pos.getZ(i);const L=lob[i]=lobe(y,z);
           const gy=.045*(Math.sin(9.1*x+2.3*y)*Math.cos(8.3*z+1.7*y)+.6*Math.sin(15.7*y+4.1*z)*Math.cos(13.1*x))+.02*Math.sin(23*z+11*y),medial=x*side<0,r=1+(medial?gy*.3:gy);
@@ -5061,94 +5440,245 @@ const L3={
           pos.setXYZ(i,side*.15+sx*.68*r,sy*.74*r+.05,sz*1.05*r);
           const c=new T3.Color(cols[L]),sh=Math.max(.62,Math.min(1.08,.86+gy*3.2));base[i*3]=c.r*sh;base[i*3+1]=c.g*sh;base[i*3+2]=c.b*sh}
         col.set(base);geo.setAttribute('color',new T3.BufferAttribute(col,3));geo.computeVertexNormals();
-        const m=new T3.Mesh(geo,new T3.MeshStandardMaterial({vertexColors:true,roughness:.78,metalness:0}));m.userData.pick=p=>lobe((p.y-.05)/.74,p.z/1.05);m.userData.lob=lob;m.userData.base=base;g.add(m);hemis.push(m)}
+        const m=new T3.Mesh(geo,S(T3,0xffffff,{vertexColors:true,roughness:.62,clearcoat:.25,sheen:.35}));m.userData.pick=p=>lobe((p.y-.05)/.74,p.z/1.05);m.userData.parts=['frontal','parietal','temporal','occipital'];m.userData.lob=lob;m.userData.base=base;m.userData.side=side;g.add(m);hemis.push(m)}
       const cer=new T3.SphereGeometry(1,96,64),cp=cer.attributes.position;for(let i=0;i<cp.count;i++){const x=cp.getX(i),y=cp.getY(i),z=cp.getZ(i),s=1+.06*Math.sin(38*y)+.02*Math.sin(17*x);cp.setXYZ(i,x*.6*s,y*.33*s,z*.42*s)}cer.computeVertexNormals();
-      const cm=P.add('cerebellum',new T3.Mesh(cer,L3.mat(T3,cols.cerebellum,{roughness:.75})));cm.position.set(0,-.56,-.68);g.add(cm);
-      const pons=P.add('stem',new T3.Mesh(new T3.SphereGeometry(.22,32,24),L3.mat(T3,cols.stem)));pons.scale.set(1,1.05,.9);pons.position.set(0,-.6,-.16);g.add(pons);
-      const med=P.add('stem',new T3.Mesh(new T3.CylinderGeometry(.14,.1,.7,32),L3.mat(T3,cols.stem)));med.position.set(0,-.98,-.28);med.rotation.x=.35;g.add(med);
-      const cord=P.add('cord',new T3.Mesh(new T3.CylinderGeometry(.095,.09,.75,32),L3.mat(T3,cols.cord)));cord.position.set(0,-1.62,-.5);cord.rotation.x=.3;g.add(cord);
-      const hypo=P.add('hypo',new T3.Mesh(new T3.SphereGeometry(.11,24,16),L3.mat(T3,cols.hypo)));hypo.position.set(0,-.42,.14);g.add(hypo);
-      const pit=P.add('pit',new T3.Mesh(new T3.SphereGeometry(.075,24,16),L3.mat(T3,cols.pit)));pit.position.set(0,-.66,.25);g.add(pit);
-      const stalk=P.add('pit',new T3.Mesh(new T3.CylinderGeometry(.025,.025,.2,12),L3.mat(T3,cols.pit)));stalk.position.set(0,-.55,.2);g.add(stalk);
-      const recolor=id=>{for(const h of hemis){const a=h.geometry.attributes.color,b=h.userData.base,l=h.userData.lob;for(let i=0;i<l.length;i++){const f=!id||!['frontal','parietal','temporal','occipital'].includes(id)?1:l[i]===id?1.22:.62;a.array[i*3]=Math.min(1,b[i*3]*f);a.array[i*3+1]=Math.min(1,b[i*3+1]*f);a.array[i*3+2]=Math.min(1,b[i*3+2]*f)}a.needsUpdate=true}};
-      const M=L3.META.brain.parts,name=id=>M.find(p=>p[0]===id)[1].replace(/ \(.*/,'');
-      return {group:g,radius:1.35,cols,view:[.12,-1.15],highlight:id=>{recolor(id);P.hl(id)},
-        tags:[['frontal',[.62,.42,.72]],['parietal',[.55,.78,-.3]],['temporal',[.86,-.32,.18]],['occipital',[.45,.22,-1.02]],['cerebellum',[.5,-.62,-.86]],['stem',[.16,-1.02,-.22]],['pit',[.1,-.7,.3],1],['cord',[.1,-1.7,-.55],1]].map(([id,p,inner])=>({id,name:name(id),p,mirror:!inner,inner:!!inner}))}},
+      B.add('cerebellum',new T3.Mesh(cer,S(T3,cols.cerebellum,{roughness:.6}))).position.set(0,-.56,-.68);
+      const pons=B.add('stem',new T3.Mesh(new T3.SphereGeometry(.22,32,24),S(T3,cols.stem)));pons.scale.set(1,1.05,.9);pons.position.set(0,-.6,-.16);
+      const med=B.add('stem',new T3.Mesh(new T3.CylinderGeometry(.14,.1,.7,32),S(T3,cols.stem)));med.position.set(0,-.98,-.28);med.rotation.x=.35;
+      const cord=B.add('cord',new T3.Mesh(new T3.CylinderGeometry(.095,.09,.75,32),S(T3,cols.cord)));cord.position.set(0,-1.62,-.5);cord.rotation.x=.3;
+      B.add('hypo',new T3.Mesh(new T3.SphereGeometry(.11,24,16),S(T3,cols.hypo))).position.set(0,-.42,.14);
+      B.add('pit',new T3.Mesh(new T3.SphereGeometry(.075,24,16),S(T3,cols.pit))).position.set(0,-.66,.25);
+      const stalk=B.add('pit',new T3.Mesh(new T3.CylinderGeometry(.025,.025,.2,12),S(T3,cols.pit)));stalk.position.set(0,-.55,.2);
+      const cc=B.add('cc',L3.tube(T3,[[0,.0,.6],[0,.24,.36],[0,.3,0],[0,.24,-.36],[0,.04,-.62]],.075,S(T3,cols.cc,{roughness:.55}),false,48));cc.scale.set(2.2,1,1);
+      const recolor=id=>{for(const h of hemis){const a=h.geometry.attributes.color,b=h.userData.base,l=h.userData.lob;for(let i=0;i<l.length;i++){const f=!id||!['frontal','parietal','temporal','occipital'].includes(id)?1:l[i]===id?1.22:.6;a.array[i*3]=Math.min(1,b[i*3]*f);a.array[i*3+1]=Math.min(1,b[i*3+1]*f);a.array[i*3+2]=Math.min(1,b[i*3+2]*f)}a.needsUpdate=true}};
+      const tag=(id,p,inner)=>({id,p:inner?p:()=>[p[0]+split*.55,p[1],p[2]],mirror:!inner,inner:!!inner});
+      const journeys=[{name:'Follow a nerve impulse',c:0xFDE047,steps:[{p:[.3,-.38,1.45],text:'Light hits the eyes. Nerve impulses travel along the optic nerves to the brain.'},
+          {p:[.42,.12,-.98],via:[[.28,-.42,.75],[.28,-.4,0],[.36,-.18,-.62]],part:'occipital',text:'The occipital lobe at the back of the brain processes what you see.'},
+          {p:[.5,.45,.66],via:[[.62,.62,-.35],[.62,.72,.1]],part:'frontal',text:'The frontal lobe decides what to do.'},
+          {p:[.12,-.62,-.18],via:[[.3,.55,.15],[.18,.0,-.05]],part:'stem',text:'The motor cortex sends impulses down through the brain stem.'},
+          {p:[0,-1.95,-.6],via:[[0,-1.05,-.3],[0,-1.5,-.48]],part:'cord',text:'They travel down the spinal cord and out along motor neurones to the muscles.'}]}];
+      return {group:g,radius:1.72,cols,view:[.12,1.15],highlight:recolor,journeys,quizSkip:['hypo','pit','cc'],
+        focus:{frontal:[[.45,.4,.62],.55],parietal:[[.45,.72,-.25],.55],temporal:[[.7,-.3,.15],.5],occipital:[[.4,.2,-.95],.45]},
+        sliders:[{icon:'↔️',label:'Split the hemispheres',v:0,set:v=>{split=v;for(const h of hemis)h.position.x=h.userData.side*v*.55}}],
+        tags:[tag('frontal',[.62,.42,.72]),tag('parietal',[.55,.78,-.3]),tag('temporal',[.86,-.32,.18]),tag('occipital',[.45,.22,-1.02]),tag('cerebellum',[.5,-.62,-.86]),tag('stem',[.16,-1.02,-.22],1),tag('pit',[.1,-.7,.3],1),tag('cord',[.1,-1.7,-.55],1),tag('cc',[0,.34,0],1)]}},
 
-    cells(T3,v){const g=new T3.Group(),P=L3.parted(T3),r=L3.rnd(v==='plant'?7:v==='bacteria'?3:11),add=(id,o)=>{g.add(P.add(id,o));return o},cols={},clear=c=>L3.mat(T3,c,{transparent:true,opacity:.28,depthWrite:false,side:T3.DoubleSide});
-      const rib=(n,inside,c=0x2b2b33)=>{const im=new T3.InstancedMesh(new T3.SphereGeometry(.035,8,6),L3.mat(T3,c),n),m=new T3.Matrix4();for(let i=0;i<n;i++){const p=inside();m.setPosition(p[0],p[1],p[2]);im.setMatrixAt(i,m)}return add('ribo',im)};
-      const mito=(p,rot,s=1)=>{const o=add('mito',new T3.Mesh(new T3.CapsuleGeometry(.15*s,.42*s,8,16),L3.mat(T3,0xFF8A3D)));o.position.set(...p);o.rotation.set(...rot);
-        const cr=new T3.Mesh(new T3.CapsuleGeometry(.1*s,.36*s,6,12),L3.mat(T3,0xC65A1E));cr.scale.set(1,1,.3);o.add(cr);cr.userData.part='mito';return o};
-      if(v==='animal'){cols.membrane=0xFF9EBB;cols.nucleus=0x7C5CFF;cols.mito=0xFF8A3D;cols.ribo=0x2b2b33;cols.rer=0x4FB3BF;cols.ser=0x9AD1D4;cols.golgi=0xF2C14E;cols.lyso=0xE84A5F;cols.centri=0x8D6E63;cols.nucleolus=0x3D2A8C;cols.cyto=0xFFE3EC;
-        add('membrane',new T3.Mesh(new T3.SphereGeometry(2.2,64,48,0,Math.PI*1.5),clear(0xFF9EBB))).scale.set(1,.82,1);
-        add('cyto',new T3.Mesh(new T3.SphereGeometry(2.12,48,36,0,Math.PI*1.5),L3.mat(T3,0xFFE3EC,{transparent:true,opacity:.12,depthWrite:false,side:T3.DoubleSide}))).scale.set(1,.82,1);
-        const nu=add('nucleus',new T3.Mesh(new T3.SphereGeometry(.72,48,36,0,Math.PI*1.5),L3.mat(T3,0x7C5CFF,{side:T3.DoubleSide,transparent:true,opacity:.9})));nu.position.set(-.35,.1,0);
-        add('nucleolus',new T3.Mesh(new T3.SphereGeometry(.25,24,16),L3.mat(T3,0x3D2A8C))).position.set(-.3,.15,.05);
-        for(const [p,rt] of [[[1.1,.7,.6],[.5,0,1.2]],[[1.3,-.4,.8],[1,.4,0]],[[.2,-1.0,.9],[0,1,1.4]],[[-1.3,-.6,.9],[.3,0,.4]],[[.9,.4,-1.1],[1.2,.2,0]],[[-1.0,.9,-.8],[.2,1,.6]]])mito(p,rt);
-        for(let i=0;i<3;i++){const t=add('rer',new T3.Mesh(new T3.TorusGeometry(1.0+i*.17,.035,8,64,Math.PI*1.3),L3.mat(T3,0x4FB3BF)));t.position.set(-.35,.1,0);t.rotation.set(.3*i,-.4,0.5+i*.2)}
-        rib(240,()=>{const a=r()*Math.PI*1.3+.5,i=Math.floor(r()*3),R0=1.0+i*.17;return [-.35+R0*Math.cos(a)*.95,.1+R0*Math.sin(a)*.9,(r()-.5)*.5]});
-        rib(140,()=>{const a=r()*Math.PI*2,b=Math.acos(2*r()-1),d=.9+r()*1.0;return [d*Math.sin(b)*Math.cos(a),d*Math.cos(b)*.78,d*Math.sin(b)*Math.sin(a)]});
-        const curve=new T3.CatmullRomCurve3([[.6,-.5,-.3],[.9,-.9,-.1],[1.3,-.7,-.5],[1.5,-1.0,-.2],[1.2,-1.3,.1]].map(p=>new T3.Vector3(...p)));add('ser',new T3.Mesh(new T3.TubeGeometry(curve,60,.06,8),L3.mat(T3,0x9AD1D4)));
-        for(let i=0;i<5;i++){const t=add('golgi',new T3.Mesh(new T3.TorusGeometry(.5-i*.06,.05,8,40,Math.PI*.9),L3.mat(T3,0xF2C14E)));t.position.set(.9,-.25+i*.1,.95);t.rotation.set(Math.PI/2,0,-.6)}
-        for(const p of [[-.5,-1.0,.5],[1.5,.2,.1],[-1.4,.3,.5]])add('lyso',new T3.Mesh(new T3.SphereGeometry(.13,20,14),L3.mat(T3,0xE84A5F))).position.set(...p);
-        const c1=add('centri',new T3.Mesh(new T3.CylinderGeometry(.06,.06,.3,14),L3.mat(T3,0x8D6E63)));c1.position.set(.65,.95,.2);const c2=add('centri',new T3.Mesh(new T3.CylinderGeometry(.06,.06,.3,14),L3.mat(T3,0x8D6E63)));c2.position.set(.8,.95,.2);c2.rotation.z=Math.PI/2;
-        return {group:g,radius:2.3,cols,view:[.35,-.75],highlight:P.hl,tags:[['membrane',[0,1.82,0]],['cyto',[-1.2,-1.1,1.0],1],['nucleus',[-.35,.82,0],1],['nucleolus',[-.3,.15,.3],1],['mito',[1.1,.7,.6],1],['ribo',[-1.4,.1,.5],1],['rer',[-1.3,.6,0],1],['ser',[1.4,-.95,-.3],1],['golgi',[.9,.2,.95],1],['lyso',[-.5,-1.0,.5],1],['centri',[.7,1.1,.2],1]].map(([id,p,inner])=>({id,p,inner:!!inner,name:L3.META.animal.parts.find(z=>z[0]===id)[1]}))}}
-      if(v==='plant'){Object.assign(cols,{wall:0x3FA34D,membrane:0xFF9EBB,vac:0x6EC1FF,chloro:0x2E9E44,nucleus:0x7C5CFF,mito:0xFF8A3D,ribo:0x2b2b33,cyto:0xE8F5E0});
-        const box=(w,h,d,m)=>new T3.Mesh(new T3.BoxGeometry(w,h,d),m);add('wall',box(4.4,3.1,3.1,L3.mat(T3,0x3FA34D,{transparent:true,opacity:.16,depthWrite:false,side:T3.DoubleSide})));
-        const edges=new T3.LineSegments(new T3.EdgesGeometry(new T3.BoxGeometry(4.4,3.1,3.1)),new T3.LineBasicMaterial({color:0x2E7D32}));g.add(edges);
-        add('membrane',box(4.2,2.9,2.9,L3.mat(T3,0xFF9EBB,{transparent:true,opacity:.1,depthWrite:false,side:T3.DoubleSide})));
-        add('vac',new T3.Mesh(new T3.SphereGeometry(1,48,36),L3.mat(T3,0x6EC1FF,{transparent:true,opacity:.45}))).scale.set(1.45,1.0,1.0);
-        add('nucleus',new T3.Mesh(new T3.SphereGeometry(.45,32,24),L3.mat(T3,0x7C5CFF))).position.set(-1.55,.75,.65);
-        const cps=[[1.7,.9,.9],[1.75,-.8,-.6],[-1.7,-.7,.8],[.3,1.15,1.05],[-.6,-1.15,-1.0],[1.0,-1.15,1.05],[-1.2,1.15,-.9],[1.7,.2,-1.0],[-1.8,.1,-.6],[.4,-1.2,.2]];
-        for(const p of cps){const c=add('chloro',new T3.Mesh(new T3.SphereGeometry(.3,24,16),L3.mat(T3,0x2E9E44)));c.scale.set(1.2,.55,.75);c.position.set(...p);c.rotation.set(r()*3,r()*3,0);
-          for(let i=-1;i<=1;i++){const gr=new T3.Mesh(new T3.CylinderGeometry(.09,.09,.12,12),L3.mat(T3,0x1B5E20));gr.position.set(i*.17,0,0);gr.userData.part='chloro';c.add(gr)}}
-        for(const [p,rt] of [[[-1.4,-.3,-.9],[.4,.2,1]],[[1.5,.8,-.3],[1,0,.3]],[[-.2,1.1,-.7],[0,1,1]],[[1.3,-.5,.9],[.6,.6,0]]])mito(p,rt,.9);
-        rib(160,()=>{const s=r()>.5?1:-1;return [(r()*2-1)*2.0,s*(1.1+r()*.3),(r()*2-1)*1.3]});
-        add('cyto',new T3.Mesh(new T3.SphereGeometry(.01),L3.mat(T3,0xE8F5E0))).position.set(-1.8,-1.2,-1.2);
-        return {group:g,radius:2.6,cols,view:[.35,-.6],highlight:P.hl,tags:[['wall',[2.2,1.55,1.55]],['membrane',[-2.1,-1.45,1.45],1],['vac',[0,1.0,0],1],['chloro',[1.7,.9,.9],1],['nucleus',[-1.55,1.2,.65],1],['mito',[1.5,.8,-.3],1],['ribo',[0,-1.3,.5],1],['cyto',[-1.75,-1.1,-1.2],1]].map(([id,p,inner])=>({id,p,inner:!!inner,name:L3.META.plant.parts.find(z=>z[0]===id)[1]}))}}
+    cells(T3,v){const g=new T3.Group(),r=L3.rnd(v==='plant'?7:v==='bacteria'?3:11),B=L3.kit(g),cols={},S=L3.skin,G=L3.glass,rn=(a,b)=>a+(b-a)*r(),vec=(...a)=>new T3.Vector3(...a);
+      const sph=(rr,ws=24)=>new T3.SphereGeometry(rr,ws,Math.round(ws*.7));
+      const mito=(p,rot,s=1)=>{const o=new T3.Group();o.position.set(...p);o.rotation.set(...rot);
+        o.add(new T3.Mesh(new T3.CapsuleGeometry(.16*s,.46*s,10,28),G(T3,0xFF8A3D,.5,{side:T3.FrontSide})));
+        o.add(new T3.Mesh(new T3.CapsuleGeometry(.135*s,.42*s,8,24),S(T3,0xFFC793,{transparent:true,opacity:.6,depthWrite:false})));
+        const cm=S(T3,0xE0602A,{roughness:.5});for(let j=0;j<6;j++){const pl=new T3.Mesh(new T3.BoxGeometry(.2*s,.024*s,.21*s),cm);pl.position.set((j%2?1:-1)*.045*s,(-.25+j*.1)*s,0);o.add(pl)}
+        return B.add('mito',o)};
+      const ribo=(pts)=>B.add('ribo',L3.dots(T3,pts,new T3.IcosahedronGeometry(.024,1),S(T3,0x2E2648,{roughness:.6,clearcoat:0,sheen:0})));
+      const nucleus=(N,R0,clip)=>{for(const [rr,c,op] of [[R0,0x7C68EE,.48],[R0*.95,0x9C8CF5,.26]])B.add('nucleus',new T3.Mesh(L3.blob(T3,rr,5,.03,64),G(T3,c,op)),{shell:1,clip,rank:2}).position.copy(N);
+        for(let j=0;j<9;j++){const q=vec(rn(-.4,.4),rn(-.4,.4),rn(-.4,.4)).multiplyScalar(R0),pts=[];for(let s=0;s<9;s++){q.add(vec(rn(-.24,.24),rn(-.24,.24),rn(-.24,.24)).multiplyScalar(R0));if(q.length()>R0*.72)q.multiplyScalar(R0*.72/q.length());pts.push(q.clone().add(N))}
+          B.add('nucleus',L3.tube(T3,pts,.02*R0/.8,S(T3,0x6D5AE6,{roughness:.55}),false,40),{clip})}};
+      if(v==='animal'){Object.assign(cols,{membrane:0xF08DB5,cyto:0xFFC9DC,nucleus:0x7C68EE,nucleolus:0x3B2A8F,pores:0x4C3BC9,mito:0xFF8A3D,ribo:0x3A3550,rer:0x2FB3A3,ser:0x5CC8BC,golgi:0xF2B33D,vesicle:0xF7C873,lyso:0xE5484D,centri:0x9C7A6B});
+        const sc=[1,.84,1],N=vec(-.12,.12,-.14);
+        B.add('membrane',new T3.Mesh(L3.blob(T3,2.22,3,.022,112,sc),G(T3,0xEC7FAA,.46)),{shell:1,clip:1,rank:1});
+        B.add('membrane',new T3.Mesh(L3.blob(T3,2.16,3,.022,96,sc),G(T3,0xF7B6CF,.2)),{shell:1,clip:1,rank:1});
+        B.add('cyto',new T3.Mesh(L3.blob(T3,2.11,3,.02,64,sc),G(T3,0xFFDCE8,.16,{side:T3.BackSide})),{shell:1,clip:1,rank:0});
+        nucleus(N,.8,1);
+        B.add('nucleolus',new T3.Mesh(L3.blob(T3,.27,9,.12,40),S(T3,0x3B2A8F,{roughness:.75}))).position.copy(N).add(vec(.16,.06,.16));
+        const pp=[],pq=[],pm=new T3.Matrix4(),pqq=new T3.Quaternion(),one=vec(1,1,1),zz=vec(0,0,1);for(let j=0;j<46;j++){const d=vec(...L3.fib(46,j));pp.push(d.clone().multiplyScalar(.8).add(N).toArray());pq.push(d)}
+        const pim=new T3.InstancedMesh(new T3.TorusGeometry(.046,.017,8,18),S(T3,0x4C3BC9),pp.length);pq.forEach((d,j)=>{pqq.setFromUnitVectors(zz,d);pm.compose(vec(...pp[j]),pqq,one);pim.setMatrixAt(j,pm)});pim.userData.pts=pp;B.add('pores',pim,{clip:1});
+        // rough ER: curved sheets around the nucleus, studded with ribosomes
+        const rp=[];for(let j=0;j<4;j++){const R0=1.0+j*.14,geo=new T3.SphereGeometry(R0,72,12,3.05,2.1,.95,1.2),p=geo.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),kk=1+.03*Math.sin(x*9+j*2)*Math.cos(z*7+j);p.setXYZ(i,x*kk,y*kk*.9,z*kk)}geo.computeVertexNormals();
+          B.add('rer',new T3.Mesh(geo,S(T3,0x2FB3A3,{side:T3.DoubleSide,roughness:.48}))).position.copy(N);
+          for(let i=0;i<70;i++){const ph=3.05+r()*2.1,th=.95+r()*1.2,R1=R0+.035;rp.push([N.x-R1*Math.cos(ph)*Math.sin(th),N.y+R1*Math.cos(th)*.9,N.z+R1*Math.sin(ph)*Math.sin(th)])}}
+        const free=[];while(free.length<130){const p=vec(rn(-1.9,1.9),rn(-1.6,1.6),rn(-1.9,1.9));if(p.x*p.x/3.6+p.y*p.y/2.5+p.z*p.z/3.6<1&&p.distanceTo(N)>1.05)free.push(p.toArray())}ribo([...rp,...free]);
+        // smooth ER: a tangle of tubes
+        const SC=vec(-1.0,-.75,.55);for(let j=0;j<6;j++){const q=SC.clone().add(vec(rn(-.2,.2),rn(-.2,.2),rn(-.2,.2))),pts=[q.clone()];for(let s=0;s<6;s++){q.add(vec(rn(-.28,.28),rn(-.2,.2),rn(-.28,.28)));pts.push(q.clone())}B.add('ser',L3.tube(T3,pts,.045,S(T3,0x5CC8BC,{roughness:.45}),false,48))}
+        // Golgi apparatus: a stack of curved sacs, with vesicles budding off
+        const GP=vec(1.05,-.5,.6),gq=new T3.Quaternion().setFromUnitVectors(vec(0,1,0),N.clone().sub(GP).normalize()),gg=new T3.Group();gg.position.copy(GP);gg.quaternion.copy(gq);
+        for(let j=0;j<5;j++){const c=new T3.Mesh(new T3.SphereGeometry(.58-j*.05,48,10,0,Math.PI*2,0,.62),S(T3,0xF2B33D,{side:T3.DoubleSide,roughness:.45}));c.scale.set(1,.5,1);c.position.y=-j*.085;gg.add(c)}B.add('golgi',gg);
+        const ves=[];for(let j=0;j<10;j++){const a=j/10*Math.PI*2,p=vec(Math.cos(a)*.5,-.28-r()*.15,Math.sin(a)*.5).applyQuaternion(gq).add(GP);ves.push(p.toArray())}
+        for(const p of [[1.7,.2,.4],[1.55,-.95,.1],[.6,-1.2,1.1],[1.25,.8,-.4]])ves.push(p);
+        B.add('vesicle',L3.dots(T3,ves,new T3.SphereGeometry(.055,16,12),S(T3,0xF7C873)));
+        for(const p of [[-1.25,-.85,.75],[1.45,.45,-.85],[-1.45,.65,.6]])B.add('lyso',new T3.Mesh(L3.blob(T3,.14,p[0]*3,.08,24),S(T3,0xE5484D,{roughness:.5}))).position.set(...p);
+        // centrioles: two barrels of nine triplets of microtubules
+        const CP=vec(.65,1.0,.42),cm=new T3.InstancedMesh(new T3.CylinderGeometry(.012,.012,.3,6),S(T3,0x9C7A6B),54),mm=new T3.Matrix4(),cq=[new T3.Quaternion(),new T3.Quaternion().setFromAxisAngle(vec(1,0,0),Math.PI/2)];let ci=0;const cpts=[];
+        for(let b=0;b<2;b++)for(let k2=0;k2<9;k2++)for(let t=0;t<3;t++){const a=k2*2*Math.PI/9+(t-1)*.13,p=vec(Math.cos(a)*(.07+t*.012),0,Math.sin(a)*(.07+t*.012)).applyQuaternion(cq[b]).add(CP).add(vec(b*.24,0,0));mm.compose(p,cq[b],vec(1,1,1));cm.setMatrixAt(ci++,mm);cpts.push(p.toArray())}cm.userData.pts=cpts;B.add('centri',cm);
+        for(const [p,rt] of [[[1.25,.72,.55],[.5,0,1.2]],[[1.45,-.3,.7],[1,.4,0]],[[.25,-1.1,.95],[0,1,1.4]],[[-1.3,-.55,.95],[.3,0,.4]],[[.95,.35,-1.15],[1.2,.2,0]],[[-1.05,.85,-.85],[.2,1,.6]],[[-.3,-1.05,-1.1],[1.4,.3,.2]]])mito(p,rt);
+        // section faces for the cut: cytoplasm, the membrane's edge and the nucleus
+        const kx=new T3.Plane(new T3.Vector3(0,0,1),0),kz=new T3.Plane(new T3.Vector3(1,0,0),0),circ=new T3.CircleGeometry(1,96),ring=new T3.RingGeometry(.955,1,96,1),A=2.2;
+        const cx=[L3.cap(T3,g,circ,0xFFD0E0,.5,kx,1),L3.cap(T3,g,ring,0xE0559A,.9,kx,2),L3.cap(T3,g,circ,0x8C7CF0,.7,kx,3)],cz=[L3.cap(T3,g,circ,0xFFD0E0,.5,kz,1),L3.cap(T3,g,ring,0xE0559A,.9,kz,2),L3.cap(T3,g,circ,0x8C7CF0,.7,kz,3)];cx.forEach(m=>m.rotation.y=Math.PI/2);
+        const caps=(k,on)=>{kx.constant=-k;kz.constant=-k;const s=Math.sqrt(Math.max(0,1-(k/A)**2));
+          for(const [list,ax] of [[cx,'x'],[cz,'z']]){const pos=ax==='x'?[k,0,0]:[0,0,k];for(let i=0;i<2;i++){list[i].position.set(...pos);list[i].scale.set(A*s,A*.84*s,1);list[i].visible=on>.01&&s>.03}
+            const d=k-(ax==='x'?N.x:N.z),nr=Math.sqrt(Math.max(0,.64-d*d)),nm=list[2];nm.visible=on>.01&&nr>.03;nm.scale.set(nr,nr,1);nm.position.set(ax==='x'?k:N.x,N.y,ax==='x'?N.z:k)}};
+        const t=(id,p,inner=1)=>({id,p,inner:!!inner});
+        const pd=vec(.6,.1,-.5).normalize(),rd=vec(.55,0,-.8).normalize();
+        const journeys=[{name:'Follow oxygen',c:0x38BDF8,steps:[{p:[-3.1,.95,1.25],text:'Oxygen is outside the cell, where there is more of it.'},
+            {p:[-1.89,.56,.95],part:'membrane',text:'It diffuses through the partially permeable cell membrane, from high to low concentration.'},
+            {p:[-1.35,.28,.62],part:'cyto',text:'It keeps diffusing through the cytoplasm.'},
+            {p:[-1.3,-.5,.95],part:'mito',text:'In a mitochondrion it is used in aerobic respiration, which releases energy from glucose.'},
+            {p:[-1.33,-.75,1.55],via:[[-1.32,-.62,1.25]],part:'membrane',c:0x94A3B8,text:'Respiration makes carbon dioxide, which diffuses out through the membrane.'},
+            {p:[-1.9,-1.05,2.35],text:'Out it goes! Gas exchange keeps oxygen coming in and carbon dioxide going out.'}]},
+          {name:'Follow a protein',a:1,c:0xF472B6,steps:[{p:N.toArray(),part:'nucleus',text:'In the nucleus, the gene for a protein is copied into mRNA (transcription).'},
+            {p:N.clone().addScaledVector(pd,.8).toArray(),part:'pores',text:'The mRNA leaves the nucleus through a nuclear pore.'},
+            {p:N.clone().addScaledVector(rd,1.12).toArray(),part:'rer',text:'Ribosomes on the rough ER read the mRNA and join amino acids into the protein (translation).'},
+            {p:[.75,-.25,.05],part:'vesicle',text:'The protein is pinched off in a vesicle and carried to the Golgi apparatus.'},
+            {p:GP.toArray(),part:'golgi',text:'The Golgi apparatus modifies the protein and packages it.'},
+            {p:[1.45,-.62,.85],part:'vesicle',text:'A new vesicle carries it to the cell membrane.'},
+            {p:[1.76,-.59,1.01],part:'membrane',text:'The vesicle fuses with the membrane and releases the protein outside the cell: exocytosis.'},
+            {p:[2.35,-.8,1.4],text:'Proteins like enzymes and hormones leave cells this way.'}]}];
+        return {group:g,radius:2.3,cols,view:[.38,.78],cut:{u:[[1,0,0],[0,0,1]],r:2.5,def:.88},caps,journeys,quizSkip:['cyto','pores'],
+          tags:[t('membrane',[.3,1.86,-.4],0),t('cyto',[-1.35,-1.05,-.6]),t('nucleus',[N.x-.2,N.y+.82,N.z]),t('nucleolus',[N.x+.16,N.y+.2,N.z+.16]),t('pores',pp[5]),t('mito',[1.25,.72,.55]),t('ribo',free[3]),t('rer',[N.x+.9,N.y+.15,N.z-.75]),t('ser',[SC.x,SC.y,SC.z]),t('golgi',[GP.x,GP.y+.1,GP.z]),t('vesicle',[1.7,.2,.4]),t('lyso',[-1.25,-.85,.75]),t('centri',[CP.x+.12,CP.y+.1,CP.z])]}}
+      if(v==='plant'){Object.assign(cols,{wall:0x3E9B4F,membrane:0xF08DB5,cyto:0xD6EEC7,vac:0x5AB4F5,chloro:0x2E9E44,nucleus:0x7C68EE,mito:0xFF8A3D,ribo:0x3A3550,plasmo:0x1E6B30});
+        B.add('wall',new T3.Mesh(L3.sbox(T3,2.3,1.62,1.62,7,112,.006),G(T3,0x58B368,.5,{map:L3.tex(T3,'fibre'),roughness:.55,clearcoat:.4})),{shell:1,clip:1,rank:1});
+        B.add('wall',new T3.Mesh(L3.sbox(T3,2.17,1.49,1.49,7,96,.006),G(T3,0x7CC98A,.22)),{shell:1,clip:1,rank:1});
+        B.add('membrane',new T3.Mesh(L3.sbox(T3,2.1,1.42,1.42,6,96),G(T3,0xF08DB5,.24)),{shell:1,clip:1,rank:1});
+        B.add('cyto',new T3.Mesh(L3.sbox(T3,2.06,1.38,1.38,6,64),G(T3,0xD6EEC7,.14,{side:T3.BackSide})),{shell:1,clip:1,rank:0});
+        const vac=B.add('vac',new T3.Mesh(L3.sbox(T3,1.5,.98,.98,3.2,96,.035,4),G(T3,0x5AB4F5,.4,{roughness:.06})),{shell:1,clip:1,rank:2});vac.position.set(-.18,-.05,-.12);
+        nucleus(vec(1.42,.72,.62),.44,1);B.add('nucleus',new T3.Mesh(L3.blob(T3,.15,7,.1,24),S(T3,0x3B2A8F,{roughness:.75}))).position.set(1.48,.78,.7);
+        const chl=(p,rot)=>{const o=new T3.Group();o.position.set(...p);o.rotation.set(...rot);const e=new T3.Mesh(new T3.SphereGeometry(.34,40,24),G(T3,0x7ACB7D,.55,{side:T3.FrontSide}));e.scale.set(1.25,.5,.8);o.add(e);
+          const gm=S(T3,0x1E7B34,{roughness:.5});for(const gx of [-.22,0,.22])for(let k2=0;k2<4;k2++){const d=new T3.Mesh(new T3.CylinderGeometry(.075,.075,.022,20),gm);d.position.set(gx,-.05+k2*.032,gx?-.05:.07);o.add(d)}
+          const lm=new T3.Mesh(new T3.CylinderGeometry(.011,.011,.5,6),S(T3,0x2E8B40));lm.rotation.z=Math.PI/2;o.add(lm);return B.add('chloro',o)};
+        const cps=[[.2,1.17,.55,0],[-1.1,1.17,-.5,0],[.9,1.17,-.75,0],[-.4,-1.17,.6,0],[.85,-1.17,-.2,0],[-1.4,-1.17,-.35,0],[-.7,.3,1.17,1],[.3,-.45,1.17,1],[-1.5,-.5,1.15,1],[.4,.45,-1.17,1],[-.9,-.3,-1.17,1],[-1.88,.35,.3,2],[-1.88,-.6,-.6,2]];
+        for(const [x,y,z,f] of cps)chl([x,y,z],f===0?[0,r()*3,0]:f===1?[Math.PI/2,0,r()*3]:[0,r()*3,Math.PI/2]);
+        for(const [p,rt] of [[[-1.55,.95,.95],[.4,.2,1]],[[1.6,-.9,-.3],[1,0,.3]],[[-.2,1.2,-1.1],[0,1,1]],[[1.65,-.6,.95],[.6,.6,0]]])mito(p,rt,.85);
+        const rb=[];while(rb.length<170){const p=vec(rn(-2,2),rn(-1.35,1.35),rn(-1.35,1.35)),q=p.clone().sub(vac.position);if((q.x/1.6)**2+(q.y/1.08)**2+(q.z/1.08)**2>1&&Math.abs(p.x)<2.02&&Math.abs(p.y)<1.34&&Math.abs(p.z)<1.34)rb.push(p.toArray())}ribo(rb);
+        for(const [y,z] of [[.4,.3],[-.3,-.4],[.7,-.6],[-.7,.6],[0,.9]]){const pm=B.add('plasmo',new T3.Mesh(new T3.CylinderGeometry(.035,.035,.26,12),S(T3,0x1E6B30)));pm.rotation.z=Math.PI/2;pm.position.set(-2.22,y,z)}
+        const kx=new T3.Plane(new T3.Vector3(0,0,1),0),kz=new T3.Plane(new T3.Vector3(1,0,0),0),wallG=L3.superShape(T3,7,.93),cytG=L3.superShape(T3,6),vacG=L3.superShape(T3,3.2),disc=new T3.CircleGeometry(1,64),NP=vec(1.42,.72,.62),VP=vac.position;
+        const mk=(kp,rot)=>{const l=[L3.cap(T3,g,cytG,0xCDEBBF,.5,kp,1),L3.cap(T3,g,wallG,0x3E9B4F,.85,kp,2),L3.cap(T3,g,vacG,0x7CC4F7,.6,kp,3),L3.cap(T3,g,disc,0x8C7CF0,.7,kp,4)];if(rot)l.forEach(m=>m.rotation.y=Math.PI/2);return l},cx=mk(kx,1),cz=mk(kz,0);
+        const caps=(k,on)=>{kx.constant=-k;kz.constant=-k;
+          for(const [l,ax] of [[cx,'x'],[cz,'z']]){const a=ax==='x'?2.3:1.62,s=Math.pow(Math.max(0,1-Math.pow(Math.abs(k)/a,7)),1/7),w=ax==='x'?1.62*s:2.3*s,P=(x,y,z)=>ax==='x'?[k,y,z]:[x,y,k];
+            l[0].scale.set(w*.91,1.62*s*.88,1);l[1].scale.set(w,1.62*s,1);for(const m of [l[0],l[1]]){m.position.set(...P(0,0,0));m.visible=on>.01&&s>.03}
+            const dv=k-(ax==='x'?VP.x:VP.z),va=ax==='x'?1.5:.98,vs=Math.pow(Math.max(0,1-Math.pow(Math.abs(dv)/va,3.2)),1/3.2);l[2].visible=on>.01&&vs>.03;l[2].scale.set((ax==='x'?.98:1.5)*vs,.98*vs,1);l[2].position.set(...P(VP.x,VP.y,VP.z));
+            const dn=k-(ax==='x'?NP.x:NP.z),nr=Math.sqrt(Math.max(0,.44*.44-dn*dn));l[3].visible=on>.01&&nr>.03;l[3].scale.set(nr,nr,1);l[3].position.set(...P(NP.x,NP.y,NP.z))}};
+        const t=(id,p,inner=1)=>({id,p,inner:!!inner});
+        const journeys=[{name:'From light to energy',c:0xFACC15,steps:[{p:[.2,2.7,.55],text:'Light energy shines on a leaf cell.'},
+            {p:[.2,1.2,.55],part:'chloro',text:'Chlorophyll in a chloroplast absorbs the light.'},
+            {p:[.3,1.12,.48],part:'chloro',c:0xF59E0B,text:'The energy is used to make glucose from carbon dioxide and water: photosynthesis. Oxygen is given off.'},
+            {p:[-1.15,1.08,.92],via:[[-.45,1.16,.8]],part:'cyto',text:'The glucose moves through the cytoplasm.'},
+            {p:[-1.55,.95,.95],part:'mito',text:'In a mitochondrion, aerobic respiration releases the energy stored in glucose.'},
+            {p:[-2.22,.62,.55],via:[[-1.9,.8,.75]],part:'wall',text:'Glucose is also used to make cellulose for the cell wall, and stored as starch.'}]}];
+        return {group:g,radius:2.55,cols,view:[.4,.72],cut:{u:[[1,0,0],[0,0,1]],r:2.8,def:.86},caps,journeys,quizSkip:['cyto','membrane','plasmo'],
+          tags:[t('wall',[.2,1.6,-1.4],0),t('membrane',[2.08,-1.1,-1.2]),t('cyto',[-1.95,-1.3,1.3]),t('vac',[-.18,.9,-.12]),t('chloro',[.2,1.3,.55]),t('nucleus',[1.42,1.15,.62]),t('mito',[-1.55,.95,.95]),t('ribo',rb[5]),t('plasmo',[-2.25,.4,.3])]}}
       // bacterium
-      Object.assign(cols,{capsule:0xA5D6A7,wall:0x66BB6A,membrane:0xFF9EBB,dna:0x7C5CFF,plasmid:0xE040FB,ribo:0x2b2b33,flag:0x8D6E63,pili:0xA1887F,cyto:0xF1F8E9});
-      const cap=(rad,len,c,op)=>{const m=new T3.Mesh(new T3.CapsuleGeometry(rad,len,16,32),L3.mat(T3,c,{transparent:true,opacity:op,depthWrite:false,side:T3.DoubleSide}));m.rotation.z=Math.PI/2;return m};
-      add('capsule',cap(1.05,2.7,0xA5D6A7,.18));add('wall',cap(.94,2.6,0x66BB6A,.28));add('membrane',cap(.86,2.55,0xFF9EBB,.2));
-      const loop=[];for(let i=0;i<14;i++){const a=i/14*Math.PI*2;loop.push(new T3.Vector3(Math.cos(a)*1.0+(r()-.5)*.5,Math.sin(a)*.4+(r()-.5)*.35,(r()-.5)*.7))}
-      add('dna',new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(loop,true),200,.035,8,true),L3.mat(T3,0x7C5CFF)));
-      for(const p of [[1.5,.3,.3],[-1.6,-.2,.2],[1.2,-.45,-.3]]){const t=add('plasmid',new T3.Mesh(new T3.TorusGeometry(.17,.025,8,40),L3.mat(T3,0xE040FB)));t.position.set(...p);t.rotation.set(r()*3,r()*3,0)}
-      rib(130,()=>[(r()*2-1)*2.0,(r()*2-1)*.55,(r()*2-1)*.55]);
-      const hel=[];for(let i=0;i<=60;i++){const t=i/60;hel.push(new T3.Vector3(2.3+t*2.6,Math.sin(t*16)*.22,Math.cos(t*16)*.22))}add('flag',new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(hel),120,.04,8),L3.mat(T3,0x8D6E63)));
-      for(let i=0;i<12;i++){const a=r()*Math.PI*2,x0=(r()*2-1)*1.3,p=add('pili',new T3.Mesh(new T3.CylinderGeometry(.015,.015,.45,6),L3.mat(T3,0xA1887F)));p.position.set(x0,Math.cos(a)*1.15,Math.sin(a)*1.15);p.rotation.x=a}
-      add('cyto',new T3.Mesh(new T3.SphereGeometry(.01),L3.mat(T3,0xF1F8E9))).position.set(-.6,.3,.3);
-      return {group:g,radius:2.9,cols,view:[.35,-.35],highlight:P.hl,tags:[['capsule',[-1.6,1.05,0]],['wall',[.6,.95,0]],['membrane',[-.8,.86,.1],1],['dna',[-.2,.45,.2],1],['plasmid',[1.5,.5,.3],1],['ribo',[.4,-.5,.3],1],['flag',[3.6,.3,0],1],['pili',[-.3,-1.35,0],1],['cyto',[-.6,.1,.3],1]].map(([id,p,inner])=>({id,p,inner:!!inner,name:L3.META.bacteria.parts.find(z=>z[0]===id)[1]}))}},
+      Object.assign(cols,{capsule:0x9FD8A8,wall:0x4CAF50,membrane:0xF08DB5,cyto:0xE7F4DD,dna:0x7C5CFF,plasmid:0xD946EF,ribo:0x3A3550,flag:0x9C7A6B,pili:0xB59A8A});g.position.x=-1.15;
+      const cap=(rad,len,c,op,o)=>{const m=new T3.Mesh(new T3.CapsuleGeometry(rad,len,24,64),G(T3,c,op,o));m.rotation.z=Math.PI/2;return m};
+      B.add('capsule',cap(1.06,2.7,0x9FD8A8,.22),{shell:1,clip:1,rank:1});B.add('wall',cap(.95,2.62,0x4CAF50,.36),{shell:1,clip:1,rank:1});
+      B.add('membrane',cap(.88,2.56,0xF08DB5,.26),{shell:1,clip:1,rank:1});B.add('cyto',cap(.85,2.52,0xE7F4DD,.12,{side:T3.BackSide}),{shell:1,clip:1,rank:0});
+      const loop=[];let q=vec(0,0,0);for(let i=0;i<90;i++){const a=i/90*Math.PI*2;q=vec(Math.cos(a)*1.15+rn(-.35,.35),Math.sin(a*3)*.3+rn(-.18,.18),Math.sin(a)*.32+rn(-.18,.18));loop.push(q)}
+      B.add('dna',L3.tube(T3,loop,.022,S(T3,0x7C5CFF,{roughness:.5}),true,420));
+      for(const p of [[1.55,.3,.3],[-1.65,-.2,.25],[1.2,-.45,-.35]]){const t=B.add('plasmid',new T3.Mesh(new T3.TorusGeometry(.17,.024,10,48),S(T3,0xD946EF)));t.position.set(...p);t.rotation.set(r()*3,r()*3,0)}
+      const rb=[];while(rb.length<210){const p=vec(rn(-2.05,2.05),rn(-.78,.78),rn(-.78,.78)),ax=Math.max(-1.28,Math.min(1.28,p.x));if(Math.hypot(p.x-ax,p.y,p.z)<.78)rb.push(p.toArray())}ribo(rb);
+      const fl=new T3.Group();fl.position.set(2.2,0,0);const hel=[];for(let i=0;i<=90;i++){const t=i/90;hel.push(vec(.25+t*3,Math.sin(t*22)*.2*Math.min(1,t*6),Math.cos(t*22)*.2*Math.min(1,t*6)))}
+      fl.add(L3.tube(T3,hel,.035,S(T3,0x9C7A6B,{roughness:.5}),false,240));for(const x of [-.05,.08]){const ring=new T3.Mesh(new T3.TorusGeometry(.09,.025,8,24),S(T3,0x7A5C4F));ring.rotation.y=Math.PI/2;ring.position.x=x;fl.add(ring)}
+      fl.add(new T3.Mesh(new T3.CylinderGeometry(.035,.035,.3,10),S(T3,0x9C7A6B)).rotateZ(Math.PI/2).translateY(-.12));B.add('flag',fl);
+      const pts=[],pim=new T3.InstancedMesh(new T3.CylinderGeometry(.011,.011,.34,5),S(T3,0xB59A8A),40),mm=new T3.Matrix4(),pq=new T3.Quaternion();
+      for(let i=0;i<40;i++){const a=r()*Math.PI*2,x=rn(-1.25,1.2),n=vec(0,Math.cos(a),Math.sin(a)),p=vec(x,0,0).addScaledVector(n,1.2);pq.setFromUnitVectors(vec(0,1,0),n);mm.compose(p,pq,vec(1,1,1));pim.setMatrixAt(i,mm);pts.push(p.toArray())}pim.userData.pts=pts;B.add('pili',pim);
+      const ky=new T3.Plane(new T3.Vector3(0,0,1),0),kz=new T3.Plane(new T3.Vector3(0,1,0),0),stad=(L,R)=>{const sh=new T3.Shape();sh.absarc(L,0,R,-Math.PI/2,Math.PI/2,false);sh.absarc(-L,0,R,Math.PI/2,Math.PI*1.5,false);return new T3.ShapeGeometry(sh,24)};
+      const mk=(kp,rot)=>{const l=[[1.06,0x9FD8A8,.45],[.95,0x4CAF50,.8],[.88,0xE7F4DD,.6]].map(([R,c,op],i)=>{const m=L3.cap(T3,g,stad(1.31,R),c,op,kp,i+1);m.userData.R=R;return m});if(rot)l.forEach(m=>m.rotation.x=-Math.PI/2);return l},cy=mk(ky,1),cz=mk(kz,0);
+      const caps=(k,on)=>{ky.constant=-k;kz.constant=-k;for(const [l,ax] of [[cy,'y'],[cz,'z']])for(const m of l){const R=m.userData.R,w=Math.sqrt(Math.max(0,R*R-k*k));m.visible=on>.01&&w>.03;m.scale.set((1.31+w)/(1.31+R),w/R,1);m.position.set(0,ax==='y'?k:0,ax==='z'?k:0)}};
+      const t=(id,p,inner=1)=>({id,p,inner:!!inner});
+      return {group:g,radius:2.9,cols,view:[.42,.42],ground:1.35,cut:{u:[[0,1,0],[0,0,1]],r:1.3,def:.9},caps,quizSkip:['cyto','membrane','wall'],tick:dt=>{fl.rotation.x+=dt*7;return true},
+        tags:[t('capsule',[-.6,.4,1.02],0),t('wall',[.6,-.92,-.25],0),t('membrane',[-1.2,-.85,.1]),t('cyto',[-.9,-.4,-.3]),t('dna',[loop[20].x,loop[20].y,loop[20].z]),t('plasmid',[1.55,.5,.3]),t('ribo',rb[7]),t('flag',[4.2,.2,0]),t('pili',pts[3])]}},
 
-    dna(T3,v,st){const g=new T3.Group(),P=L3.parted(T3),add=(id,o)=>{g.add(P.add(id,o));return o},n=18,rise=.34,R0=1,tw=Math.PI/5,off=2.5,cols={back:0xFF9E6B,A:0xFF5D8F,T:0xFFD166,C:0x7BD389,G:0x6FA8FF,hb:0xffffff};
-      const r=L3.rnd(5),pairs={A:'T',T:'A',C:'G',G:'C'},seq=Array.from({length:n},()=>'ATCG'[Math.floor(r()*4)]),y0=-(n-1)*rise/2;
+    neurone(T3,v){const g=new T3.Group(),B=L3.kit(g),S=L3.skin,G=L3.glass,r=L3.rnd(v.length*7+3),rn=(a,b)=>a+(b-a)*r(),vec=(...a)=>new T3.Vector3(...a),
+        cols={dend:0x5F7FF0,body:0x6F8DF7,nucleus:0x6D28D9,axon:0x4F6FE6,dendron:0x4F6FE6,myelin:0xF2D6A2,nodes:0xF59E0B,term:0x5F7FF0,effector:0xE85A6A,receptor:0xF59E0B,knob:0x6F8DF7,vesicle:0xFACC15,nt:0xF97316,cleft:0x93C5FD,rec:0x16A34A,post:0x8B5CF6,mito:0xFF8A3D};
+      const mats={};const mt=id=>mats[id]||(mats[id]=S(T3,cols[id],{roughness:.38}));
+      const ball=(id,p,rad,m)=>{const o=B.add(id,new T3.Mesh(new T3.SphereGeometry(rad,16,12),m||mt(id)));o.position.copy(p);return o};
+      const tips=[];const branch=(id,from,dir,len,rad,depth)=>{let p=from.clone();const d=dir.clone(),pts=[p.clone()];for(let i=0;i<5;i++){d.add(vec(rn(-.32,.32),rn(-.32,.32),rn(-.32,.32))).normalize();p=p.clone().addScaledVector(d,len/5);pts.push(p)}
+        B.add(id,L3.tube(T3,pts,rad,mt(id),false,24));ball(id,p,rad*1.05);if(depth>0)for(let j=0;j<2;j++)branch(id,p,d.clone().add(vec(rn(-.85,.85),rn(-.85,.85),rn(-.85,.85))).normalize(),len*.62,rad*.64,depth-1);else tips.push(p)};
+      const soma=(c,rad,id='body')=>{B.add(id,new T3.Mesh(L3.blob(T3,rad,r()*9,.16,48),G(T3,cols.body,.62,{side:T3.FrontSide}))).position.copy(c);
+        B.add('nucleus',new T3.Mesh(L3.blob(T3,rad*.42,2,.05,32),S(T3,cols.nucleus,{roughness:.35}))).position.copy(c);ball('nucleus',c.clone().add(vec(.05,.05,.08)),rad*.13,S(T3,0x3B2A8F))};
+      // an axon (or dendron) wrapped in myelin, with nodes of Ranvier between the segments
+      const nerve=(id,a,b,wig,myel)=>{const pts=[];for(let i=0;i<=10;i++){const t=i/10;pts.push(new T3.Vector3(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t+Math.sin(t*5+wig)*.12*(t>0&&t<1?1:0),a.z+(b.z-a.z)*t+Math.sin(t*3.3+wig)*.1*(t>0&&t<1?1:0)))}
+        const cv=new T3.CatmullRomCurve3(pts);B.add(id,new T3.Mesh(new T3.TubeGeometry(cv,120,.07,10),mt(id)));const nodes=[];
+        if(myel){const L=cv.getLength(),seg=.62,gap=.15,n=Math.floor((L-.5)/(seg+gap)),off=(L-n*(seg+gap)+gap)/2,mm=G(T3,cols.myelin,.78,{side:T3.FrontSide,roughness:.35}),nm=S(T3,cols.nodes,{roughness:.3});
+          for(let i=0;i<n;i++){const u=(off+i*(seg+gap)+seg/2)/L,c=cv.getPointAt(u),tg=cv.getTangentAt(u),m=B.add('myelin',new T3.Mesh(new T3.CapsuleGeometry(.19,seg-.3,8,20),mm));m.position.copy(c);m.quaternion.setFromUnitVectors(vec(0,1,0),tg);
+            if(i<n-1){const u2=(off+i*(seg+gap)+seg+gap/2)/L,c2=cv.getPointAt(u2),t2=cv.getTangentAt(u2),k=B.add('nodes',new T3.Mesh(new T3.TorusGeometry(.085,.024,8,20),nm));k.position.copy(c2);k.quaternion.setFromUnitVectors(vec(0,0,1),t2);nodes.push(c2.toArray())}}}
+        return {cv,nodes}};
+      const ends=(at,dir)=>{const ks=[];for(let j=0;j<5;j++){const d=dir.clone().add(vec(rn(-.2,.6),rn(-.9,.9),rn(-.9,.9))).normalize();let p=at.clone();const pts=[p.clone()];for(let i=0;i<4;i++){d.add(vec(rn(-.2,.2),rn(-.2,.2),rn(-.2,.2))).normalize();p=p.clone().addScaledVector(d,.18);pts.push(p)}
+        B.add('term',L3.tube(T3,pts,.04,mt('term'),false,16));ks.push(ball('term',p,.1).position.toArray())}return ks};
+      const t=(id,p,inner=1)=>({id,p,inner:!!inner}),j=(p,text,part,o)=>Object.assign({p,text,part},o||{});
+      if(v==='synapse'){const K=vec(-.95,0,0),P=vec(2.05,0,0);
+        B.add('axon',L3.tube(T3,[[-4.4,.1,0],[-3.4,-.05,.05],[-2.4,.04,0],[-1.7,0,0]],.24,mt('knob'),false,40));
+        B.add('knob',new T3.Mesh(L3.blob(T3,1.05,4,.03,64),G(T3,cols.knob,.32)),{shell:1,rank:1}).position.copy(K);
+        B.add('post',new T3.Mesh(L3.blob(T3,1.75,6,.02,72),G(T3,cols.post,.3)),{shell:1,rank:1}).position.copy(P);
+        B.add('post',L3.tube(T3,[[3.5,0,0],[4.3,.15,.05],[5.2,.05,0]],.32,mt('post'),false,30));
+        B.add('cleft',new T3.Mesh(new T3.CylinderGeometry(.85,.85,.18,48),G(T3,cols.cleft,.14)),{shell:1,rank:1}).rotation.z=Math.PI/2;g.children[g.children.length-1].position.x=.2;
+        const ves=[],vm=G(T3,cols.vesicle,.65,{side:T3.FrontSide}),dm=S(T3,cols.nt);
+        while(ves.length<13){const q=vec(rn(-.75,-.2),rn(-.7,.7),rn(-.7,.7));if(q.clone().sub(K).length()>.82)continue;const o=new T3.Group();o.position.copy(q);o.add(new T3.Mesh(new T3.SphereGeometry(.14,20,14),vm));for(let i=0;i<5;i++){const d=new T3.Mesh(new T3.SphereGeometry(.03,8,6),dm);d.position.set(rn(-.07,.07),rn(-.07,.07),rn(-.07,.07));o.add(d)}
+          B.add('vesicle',o);const dir=q.clone().sub(K).normalize();o.userData.a=q.clone();o.userData.b=K.clone().addScaledVector(vec(Math.max(.75,dir.x),dir.y*.6,dir.z*.6).normalize(),.92);ves.push(o)}
+        for(const [p,rt] of [[[-1.55,.35,.25],[0,0,1.1]],[[-1.4,-.45,-.2],[.4,.6,1.6]]]){const o=new T3.Group();o.position.set(...p);o.rotation.set(...rt);o.add(new T3.Mesh(new T3.CapsuleGeometry(.12,.32,8,16),G(T3,0xFF8A3D,.6,{side:T3.FrontSide})));const cm=S(T3,0xE0602A);for(let k=0;k<4;k++){const pl=new T3.Mesh(new T3.BoxGeometry(.15,.02,.16),cm);pl.position.set((k%2?1:-1)*.03,-.15+k*.1,0);o.add(pl)}B.add('mito',o)}
+        const recs=[];for(let i=0;i<11;i++){const a=i/11*Math.PI*2,rr=i?.32+.22*(i%2):0,d=vec(-1,Math.cos(a)*rr,Math.sin(a)*rr).normalize(),c=P.clone().addScaledVector(d,1.74),m=B.add('rec',new T3.Mesh(new T3.CylinderGeometry(.075,.05,.12,14),mt('rec')));m.position.copy(c);m.quaternion.setFromUnitVectors(vec(0,1,0),d.clone().negate());recs.push(c)}
+        const nts=[],nim=new T3.InstancedMesh(new T3.SphereGeometry(.035,8,6),mt('nt'),64),mm=new T3.Matrix4();for(let i=0;i<64;i++){const a=vec(.11,rn(-.6,.6),rn(-.6,.6)),b=recs[i%recs.length].clone().add(vec(-.07,rn(-.06,.06),rn(-.06,.06)));nts.push({a,b,j:vec(rn(-1,1),rn(-1,1),rn(-1,1))})}
+        nim.userData.pts=nts.map(n=>n.a.clone().lerp(n.b,.5).toArray());B.add('nt',nim);
+        let vT=0,vG=null,nT=.5,nG=null;const place=now=>{const e=vT<.5?2*vT*vT:1-Math.pow(-2*vT+2,2)/2;ves.forEach(o=>{o.position.copy(o.userData.a).lerp(o.userData.b,e);o.scale.setScalar(1-.55*Math.max(0,(vT-.8)/.2))});
+          nts.forEach((n,i)=>{const p=n.a.clone().lerp(n.b,nT).addScaledVector(n.j,.05*Math.sin(now*.003+i)*(1-Math.abs(nT-.5)*1.6));mm.makeTranslation(p.x,p.y,p.z);nim.setMatrixAt(i,mm)});nim.instanceMatrix.needsUpdate=true};place(0);
+        const tick=(dt,now)=>{let a=false;if(vG!=null){const d=vG-vT;if(Math.abs(d)<.01){vT=vG;vG=null}else vT+=Math.sign(d)*Math.min(Math.abs(d),dt*.6);a=true}if(nG!=null){const d=nG-nT;if(Math.abs(d)<.01){nT=nG;nG=null}else nT+=Math.sign(d)*Math.min(Math.abs(d),dt*.4);a=true}place(now);return true};
+        return {group:g,radius:2.7,long:1.25,cols,view:[.22,.5],ground:2.1,tick,quizSkip:['mito'],jEnd:()=>{vG=0;nG=.5},
+          journeys:[{name:'Cross a synapse',c:0xFDE047,steps:[j([-3.9,.1,0],'A nerve impulse travels along the axon towards the synapse.','axon'),j([-.9,0,0],'It arrives at the synaptic knob at the end of the axon.','knob'),
+            j([-.3,0,0],'Vesicles full of neurotransmitter move to the membrane and fuse with it.','vesicle',{on:()=>{vG=1}}),j([.16,0,0],'Neurotransmitter is released into the synaptic cleft.','nt',{on:()=>{nT=0;nG=.3}}),
+            j([.3,0,0],'It diffuses across the gap and binds to receptors on the next neurone.','rec',{on:()=>{nG=1}}),j([3.6,0,0],'That starts a new impulse in the next neurone. The receptors are only on this side, so impulses travel in one direction.','post',{c:0xA78BFA})]}],
+          tags:[t('knob',[-.95,1.08,0],0),t('vesicle',ves[0].userData.a.toArray()),t('nt',[.2,.45,.2]),t('cleft',[.2,-.82,0]),t('rec',recs[3].toArray()),t('post',[2.05,1.76,0],0),t('mito',[-1.55,.35,.25]),t('axon',[-3.2,.3,0],0)]}}
+      if(v==='relay'){const C=vec(-.7,0,0);soma(C,.55);for(let i=0;i<9;i++){const a=i/9*Math.PI*2,d=vec(-.55+Math.cos(a)*.3,Math.cos(a),Math.sin(a)).normalize();branch('dend',C.clone().addScaledVector(d,.45),d,.9,.06,2)}
+        const ax=nerve('axon',vec(-.18,0,0),vec(2.3,0,0),1,false),ks=ends(vec(2.3,0,0),vec(1,0,0));
+        return {group:g,radius:2.2,long:1.3,cols,view:[.25,.35],ground:1.6,quizSkip:['nucleus'],
+          journeys:[{name:'Follow a nerve impulse',c:0xFDE047,steps:[j(tips[3].toArray(),'Impulses from a sensory neurone arrive at the dendrites.','dend'),j(C.toArray(),'They pass through the cell body…','body'),j([1.2,.05,0],'…along the short axon…','axon'),j(ks[1],'…and on to a motor neurone, across a synapse.','term')]}],
+          tags:[t('dend',tips[1].toArray()),t('body',[C.x,.6,0],0),t('nucleus',C.toArray()),t('axon',[1.2,.12,0],0),t('term',ks[0])]}}
+      if(v==='sensory'){const R0=vec(-4.5,0,0),J=vec(-.3,0,0),C=vec(-.3,1.2,0);B.add('receptor',new T3.Mesh(L3.blob(T3,.34,3,.2,32),S(T3,cols.receptor,{roughness:.4}))).position.copy(R0);
+        for(let i=0;i<6;i++){const d=vec(-1,rn(-1,1),rn(-1,1)).normalize();const o=B.add('receptor',L3.tube(T3,[R0.toArray(),R0.clone().addScaledVector(d,.45).toArray(),R0.clone().addScaledVector(d,.7).add(vec(0,rn(-.1,.1),rn(-.1,.1))).toArray()],.025,S(T3,cols.receptor),false,12))}
+        const dn=nerve('dendron',vec(-4.15,0,0),J,0,true);B.add('body',L3.tube(T3,[J.toArray(),[-.32,.5,.05],[-.3,.75,0]],.075,mt('body'),false,16));soma(C,.48);
+        const ax=nerve('axon',J,vec(3.9,0,0),2,true),ks=ends(vec(3.9,0,0),vec(1,0,0));
+        return {group:g,radius:3.5,long:1.7,cols,view:[.25,.2],ground:1.4,quizSkip:['nucleus'],
+          journeys:[{name:'Follow a nerve impulse',c:0xFDE047,steps:[j(R0.toArray(),'A receptor detects a stimulus, for example heat on your skin, and starts a nerve impulse.','receptor'),
+            j([-2.3,.05,0],'The impulse travels along the dendron, jumping between the gaps in the myelin.','dendron'),j(J.toArray(),'It passes the cell body, which sits to one side…','body'),
+            j([1.8,.05,0],'…and continues along the axon into the spinal cord.','axon'),j(ks[2],'Here it is passed on, across a synapse, to a relay neurone.','term')]}],
+          tags:[t('receptor',[-4.5,.38,0],0),t('dendron',dn.nodes[1]||[-3,0,0]),t('body',[C.x,C.y+.5,0],0),t('nucleus',C.toArray()),t('axon',ax.nodes[3]||[2,0,0]),t('myelin',[-1.6,.22,0],0),t('nodes',dn.nodes[3]||[-1.5,0,0]),t('term',ks[0])]}}
+      // motor neurone, ending on a muscle
+      const C=vec(-3.5,0,0);soma(C,.6);for(let i=0;i<9;i++){const a=i/9*Math.PI*2,d=vec(-.45+Math.cos(a)*.25,Math.cos(a),Math.sin(a)).normalize();branch('dend',C.clone().addScaledVector(d,.5),d,1.0,.065,2)}
+      B.add('axon',new T3.Mesh(new T3.CylinderGeometry(.07,.26,.45,16),mt('axon'))).rotation.z=Math.PI/2;g.children[g.children.length-1].position.set(-2.82,0,0);
+      const ax=nerve('axon',vec(-2.62,0,0),vec(3.7,0,0),.5,true),E=vec(3.7,0,0),ks=ends(E,vec(1,0,0));
+      const mus=new T3.Group(),mtx=L3.tex(T3,'muscle');for(const [y,z] of [[.22,.16],[-.24,.18],[0,-.26],[.04,.5],[-.08,-.68]]){const f=new T3.Mesh(new T3.CylinderGeometry(.24,.24,2.2,24),S(T3,0xffffff,{map:mtx,roughness:.5}));f.rotation.x=Math.PI/2;f.position.set(0,y,z);mus.add(f)}mus.position.set(E.x+.75,0,0);B.add('effector',mus);
+      let sq=0,sqG=null;const tick=dt=>{if(sqG==null)return false;const d=sqG-sq;if(Math.abs(d)<.01){sq=sqG;sqG=sqG>0?0:null}else sq+=Math.sign(d)*Math.min(Math.abs(d),dt*2.2);mus.scale.set(1+sq*.12,1+sq*.12,1-sq*.22);return true};
+      return {group:g,radius:3.6,long:1.7,cols,view:[.25,.25],ground:1.7,tick,quizSkip:['nucleus'],
+        journeys:[{name:'Follow a nerve impulse',c:0xFDE047,steps:[j(tips[5].toArray(),'Impulses from a relay neurone arrive at the dendrites.','dend'),j(C.toArray(),'They pass through the cell body…','body'),
+          j([-1.6,.05,0],'…and along the axon, away from the cell body.','axon'),j([2.4,0,0],'Myelin insulates the axon, so the impulse jumps from gap to gap (node to node). This makes it much faster.','myelin',{via:ax.nodes.slice(1,-1)}),
+          j(ks[1],'At the axon terminals the signal crosses to the muscle at a synapse.','term'),j([E.x+.75,.1,.35],'The muscle (the effector) contracts.','effector',{on:()=>{sqG=1}})]}],
+        tags:[t('dend',tips[2].toArray()),t('body',[C.x,.66,0],0),t('nucleus',C.toArray()),t('axon',ax.nodes[0]||[-2,0,0]),t('myelin',[-.6,.25,0],0),t('nodes',ax.nodes[4]||[0,0,0]),t('term',ks[0]),t('effector',[E.x+.75,.5,.5],0)]}},
+
+    dna(T3,v,st){const g=new T3.Group(),B=L3.kit(g),S=L3.skin,n=18,rise=.34,R0=1,tw=Math.PI/5,off=2.5,cols={back:0xFF9E6B,A:0xFF5D8F,T:0xFFC23D,C:0x5BC97A,G:0x5B8CFF,hb:0xffffff};
+      const r=L3.rnd(5),pairs={A:'T',T:'A',C:'G',G:'C'},seq=Array.from({length:n},()=>'ATCG'[Math.floor(r()*4)]),y0=-(n-1)*rise/2;g.rotation.z=-Math.PI/2;
       const pt=(i,s)=>{const a=i*tw+(s?off:0);return new T3.Vector3(R0*Math.cos(a),y0+i*rise,R0*Math.sin(a))};
-      for(const s of [0,1]){const ps=[];for(let i=-.5;i<=n-.5;i+=.25)ps.push(pt(i,s));add('back',new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(ps),300,.09,10),L3.mat(T3,s?0x4FC3F7:0xFF9E6B)));
-        for(let i=0;i<n;i++)add('back',new T3.Mesh(new T3.SphereGeometry(.12,16,12),L3.mat(T3,s?0x0288D1:0xE65100))).position.copy(pt(i,s))}
-      const halves=[],hbs=[];const cyl=(a,b,c,id)=>{const d=b.clone().sub(a),m=add(id,new T3.Mesh(new T3.CylinderGeometry(.075,.075,1,14),L3.mat(T3,c)));m.position.copy(a).addScaledVector(d,.5);m.scale.y=d.length();m.quaternion.setFromUnitVectors(new T3.Vector3(0,1,0),d.clone().normalize());return m};
+      for(const s of [0,1]){const ps=[];for(let i=-.5;i<=n-.5;i+=.25)ps.push(pt(i,s));B.add('back',L3.tube(T3,ps,.09,S(T3,s?0x4FC3F7:0xFF9E6B,{roughness:.35,clearcoat:.9}),false,300));
+        const bm=S(T3,s?0x0288D1:0xE65100,{roughness:.3,clearcoat:1});for(let i=0;i<n;i++)B.add('back',new T3.Mesh(new T3.SphereGeometry(.12,20,14),bm)).position.copy(pt(i,s))}
+      const halves=[],hbs=[];const cyl=(a,b,c,id)=>{const d=b.clone().sub(a),m=B.add(id,new T3.Mesh(new T3.CylinderGeometry(.075,.075,1,16),S(T3,c,{roughness:.35,clearcoat:.8})));m.position.copy(a).addScaledVector(d,.5);m.scale.y=d.length();m.quaternion.setFromUnitVectors(new T3.Vector3(0,1,0),d.clone().normalize());return m};
       seq.forEach((b,i)=>{const a=pt(i,0),c=pt(i,1),mid=a.clone().lerp(c,.5),dir=c.clone().sub(a).normalize(),gap=.07,p1=mid.clone().addScaledVector(dir,-gap),p2=mid.clone().addScaledVector(dir,gap);
         const h1=cyl(a,p1,cols[b],b),h2=cyl(c,p2,cols[pairs[b]],pairs[b]);halves.push({h1,h2,a,c,p1,p2,i});
-        const k=b==='A'||b==='T'?2:3,hs=[];for(let j=0;j<k;j++){const q=add('hb',new T3.Mesh(new T3.SphereGeometry(.03,8,6),new T3.MeshBasicMaterial({color:0xffffff})));q.position.copy(mid).add(new T3.Vector3(0,(j-(k-1)/2)*.06,0));hs.push(q)}hbs.push(hs)});
+        const k=b==='A'||b==='T'?2:3,hs=[];for(let j=0;j<k;j++){const q=B.add('hb',new T3.Mesh(new T3.SphereGeometry(.032,10,8),S(T3,0xffffff,{emissive:0xffffff,emissiveIntensity:.25})));q.position.copy(mid).add(new T3.Vector3(0,(j-(k-1)/2)*.065,0));hs.push(q)}hbs.push(hs)});
       let unzip=0;const apply=()=>{const cut=n-Math.round(unzip*n);halves.forEach(({h1,h2,a,c,p1,p2,i})=>{const open=i>=cut,f=open?.72:1;for(const [h,from,to] of [[h1,a,p1],[h2,c,p2]]){const d=to.clone().sub(from).multiplyScalar(f);h.position.copy(from).addScaledVector(d,.5);h.scale.y=d.length()}hbs[i].forEach(q=>q.visible=!open)})};
-      return {group:g,radius:3.4,cols,view:[.1,0],highlight:P.hl,tags:[['back',[...pt(n-2,0).toArray()]],['A',[...pt(seq.indexOf('A')<0?0:seq.indexOf('A'),0).clone().multiplyScalar(.6).toArray()]],['hb',[0,y0+Math.floor(n/2)*rise,0],1]].map(([id,p,inner])=>({id,p,inner:!!inner,name:L3.META.dna.parts.find(z=>z[0]===id)[1]})),
-        extra:(el,need)=>{el.innerHTML=`<label class="pl-sl"><span>${esc(T('Unzip the DNA'))} <b>0%</b></span><input type="range" min="0" max="1" step=".05" value="0" aria-label="${esc(T('Unzip the DNA'))}"></label><p class="muted l3-note">${esc(T('Breaking the hydrogen bonds separates the two strands, the first step of DNA replication and of transcription.'))}</p><p class="l3-seq">${seq.map(b=>`<b style="color:#${cols[b].toString(16)}">${b}</b>`).join('')}<br>${seq.map(b=>`<b style="color:#${cols[pairs[b]].toString(16)}">${pairs[b]}</b>`).join('')}</p>`;
-          const i=el.querySelector('input');i.oninput=()=>{unzip=+i.value;el.querySelector('b').textContent=Math.round(unzip*100)+'%';apply();need()}}}},
+      const base=id=>{const q=pt(Math.max(0,seq.indexOf(id)),0);return {id,p:[q.x*.55,q.y,q.z*.55],inner:true}};
+      let goal=null;const to=x=>{goal=x},tick=dt=>{if(goal==null)return false;const d=goal-unzip;if(Math.abs(d)<.004){unzip=goal;goal=null}else unzip+=Math.sign(d)*Math.min(Math.abs(d),dt*.35);apply();return true};
+      const journeys=[{name:'Watch replication',c:0xFDE047,steps:[{p:[3.6,0,0],part:'hb',text:'DNA replication starts when the enzyme helicase breaks the hydrogen bonds between the bases.',on:()=>to(.4)},
+          {p:[.9,0,0],part:'back',text:'The two strands separate, and each one becomes a template.',on:()=>to(.8)},
+          {p:[-1.6,0,0],part:'A',text:'Free nucleotides pair up with the exposed bases: A with T, and C with G.',on:()=>to(1)},
+          {p:[-3.4,0,0],part:'back',text:'DNA polymerase joins the new nucleotides into new strands.'},
+          {p:[-4,.8,0],text:'The result: two identical DNA molecules, each with one old strand and one new strand (semi-conservative replication).'}]}];
+      return {group:g,radius:3.3,long:1.5,cols,view:[.18,.0],ground:1.55,quizSkip:['hb'],journeys,tick,jEnd:()=>to(0),
+        sliders:[{icon:'🤐',label:'Unzip the DNA',v:0,set:x=>{goal=null;unzip=x;apply()},get:()=>unzip}],
+        tags:[{id:'back',p:pt(n-2,0).toArray(),inner:true},base('A'),base('T'),base('C'),base('G'),{id:'hb',p:[0,y0+Math.floor(n/2)*rise,0],inner:true}],
+        extra:el=>{el.innerHTML=`<p class="muted l3-note">${esc(T('Unzipping breaks the hydrogen bonds and separates the two strands: the first step of DNA replication and of transcription.'))}</p><p class="l3-seq">${seq.map(b=>`<b style="color:#${cols[b].toString(16)}">${b}</b>`).join('')}<br>${seq.map(b=>`<b style="color:#${cols[pairs[b]].toString(16)}">${pairs[b]}</b>`).join('')}</p>`}}},
 
-    molecules(T3,v){const M=L3.MOL[v],g=new T3.Group(),P=L3.parted(T3),add=(id,o)=>{g.add(P.add(id,o));return o},cols={};
+    molecules(T3,v){const M=L3.MOL[v],g=new T3.Group(),B=L3.kit(g),S=L3.skin,cols={};
       const pos=M.atoms.map(a=>new T3.Vector3(a[1],a[2],a[3]));
-      M.atoms.forEach((a,i)=>{const e=L3.EL[a[0]];cols[a[0]]=e[0];const s=add(a[0],new T3.Mesh(new T3.SphereGeometry(e[1]*(M.lattice?.85:1),32,24),L3.mat(T3,e[0],{roughness:.35})));s.position.copy(pos[i])});
+      M.atoms.forEach((a,i)=>{const e=L3.EL[a[0]];cols[a[0]]=e[0];B.add(a[0],new T3.Mesh(new T3.SphereGeometry(e[1]*(M.lattice?.85:1),40,28),L3.gloss(T3,e[0]))).position.copy(pos[i])});
       const bond=(a,b,o,c=0x9e9e9e,rad=.075)=>{const d=b.clone().sub(a),len=d.length(),up=new T3.Vector3(0,1,0),q=new T3.Quaternion().setFromUnitVectors(up,d.clone().normalize());
         let side=new T3.Vector3(0,0,1).cross(d).normalize();if(side.lengthSq()<.01)side=new T3.Vector3(1,0,0);const offs=o===1?[0]:o===2?[-.09,.09]:[-.13,0,.13];
-        for(const f of offs){const m=add('bond',new T3.Mesh(new T3.CylinderGeometry(o>1?rad*.7:rad,o>1?rad*.7:rad,len,12),L3.mat(T3,c,{roughness:.4})));m.position.copy(a).addScaledVector(d,.5).addScaledVector(side,f);m.quaternion.copy(q)}};
-      (M.bonds||[]).forEach(([i,j,o])=>bond(pos[i],pos[j],o||1,M.lattice?0xbdbdbd:0x9e9e9e,M.lattice?.035:.075));
-      for(const lp of M.lp||[]){const d=new T3.Vector3(...lp).normalize(),m=add('lp',new T3.Mesh(new T3.SphereGeometry(.22,24,16),L3.mat(T3,0xF48FB1,{transparent:true,opacity:.45,depthWrite:false})));m.scale.set(.75,1.35,.75);m.position.copy(pos[0]).addScaledVector(d,.55);m.quaternion.setFromUnitVectors(new T3.Vector3(0,1,0),d);cols.lp=0xF48FB1}
-      if(M.ring){const t=add('bond',new T3.Mesh(new T3.TorusGeometry(.85,.05,10,60),L3.mat(T3,0xBA68C8,{transparent:true,opacity:.8})));t.rotation.x=Math.PI/2}
-      let tick=null;if(M.metal){const es=[],rr=L3.rnd(9);for(let i=0;i<30;i++){const e=add('e',new T3.Mesh(new T3.SphereGeometry(.07,10,8),new T3.MeshBasicMaterial({color:0x29B6F6})));e.position.set((rr()-.5)*3.6,(rr()-.5)*2.4,(rr()-.5)*1.6);e.userData.v=new T3.Vector3(rr()-.5,rr()-.5,rr()-.5).multiplyScalar(1.6);es.push(e)}
+        for(const f of offs){const m=B.add('bond',new T3.Mesh(new T3.CylinderGeometry(o>1?rad*.7:rad,o>1?rad*.7:rad,len,14),S(T3,c,{roughness:.4,sheen:0})));m.position.copy(a).addScaledVector(d,.5).addScaledVector(side,f);m.quaternion.copy(q)}};
+      (M.bonds||[]).forEach(([i,j,o])=>bond(pos[i],pos[j],o||1,M.lattice?0xbdbdbd:0xa8a8b3,M.lattice?.035:.075));
+      for(const lp of M.lp||[]){const d=new T3.Vector3(...lp).normalize(),m=B.add('lp',new T3.Mesh(new T3.SphereGeometry(.22,28,20),L3.glass(T3,0xF48FB1,.5,{side:T3.FrontSide})));m.scale.set(.75,1.35,.75);m.position.copy(pos[0]).addScaledVector(d,.55);m.quaternion.setFromUnitVectors(new T3.Vector3(0,1,0),d);cols.lp=0xF48FB1}
+      if(M.ring){const t=B.add('bond',new T3.Mesh(new T3.TorusGeometry(.85,.05,12,72),L3.glass(T3,0xBA68C8,.8,{side:T3.FrontSide})));t.rotation.x=Math.PI/2}
+      let tick=null;if(M.metal){const es=[],rr=L3.rnd(9);for(let i=0;i<30;i++){const e=B.add('e',new T3.Mesh(new T3.SphereGeometry(.07,12,10),new T3.MeshBasicMaterial({color:0x29B6F6})));e.position.set((rr()-.5)*3.6,(rr()-.5)*2.4,(rr()-.5)*1.6);e.userData.v=new T3.Vector3(rr()-.5,rr()-.5,rr()-.5).multiplyScalar(1.6);es.push(e)}cols.e=0x29B6F6;
         tick=dt=>{for(const e of es){e.position.addScaledVector(e.userData.v,dt);for(const [k,lim] of [['x',1.9],['y',1.3],['z',.9]])if(Math.abs(e.position[k])>lim)e.userData.v[k]*=-1}return true}}
-      let rad=0;for(const p of pos)rad=Math.max(rad,p.length());
-      const first=[...new Set(M.atoms.map(a=>a[0]))].map(e=>{const i=M.atoms.findIndex(a=>a[0]===e);return {id:e,name:L3.EL[e][2],p:pos[i].toArray(),inner:true}});
-      return {group:g,radius:Math.max(1.4,rad+.6),cols,view:[.25,-.5],tick,highlight:P.hl,tags:M.lattice||M.metal?first.slice(0,2):first.concat(M.lp?[{id:'lp',name:'Lone pair',p:pos[0].clone().addScaledVector(new T3.Vector3(...M.lp[0]).normalize(),.85).toArray(),inner:true}]:[]),
+      cols.bond=0xa8a8b3;let rad=0;for(const p of pos)rad=Math.max(rad,p.length());
+      const first=[...new Set(M.atoms.map(a=>a[0]))].map(e=>{const i=M.atoms.findIndex(a=>a[0]===e);return {id:e,p:pos[i].toArray(),inner:true}});
+      return {group:g,radius:Math.max(1.4,rad+.6),cols,view:[.25,.5],tick,noGames:true,
+        tags:M.lattice||M.metal?first.slice(0,2):first.concat(M.lp?[{id:'lp',p:pos[0].clone().addScaledVector(new T3.Vector3(...M.lp[0]).normalize(),.85).toArray(),inner:true}]:[]),
         extra:el=>{el.innerHTML=`<div class="l3-mol"><b>${esc(M.name)}</b> <span class="l3-f">${M.f}</span><p>${esc(M.shape)}${M.angle?` · <b>${esc(M.angle)}</b>`:''}</p><p class="muted">${esc(M.note)}</p></div>`}}}},
-
   EL:{H:[0xF5F5F5,.24,'Hydrogen','Hydrogen has 1 electron, so it forms 1 covalent bond.'],C:[0x404040,.36,'Carbon','Carbon has 4 outer electrons, so it forms 4 covalent bonds.'],O:[0xE53935,.34,'Oxygen','Oxygen has 6 outer electrons, so it forms 2 covalent bonds (or gains 2 electrons to make O²⁻).'],
     N:[0x3F51B5,.34,'Nitrogen','Nitrogen has 5 outer electrons, so it forms 3 covalent bonds and keeps a lone pair.'],Cl:[0x43A047,.42,'Chlorine','Chlorine has 7 outer electrons: it forms 1 covalent bond, or gains 1 electron to make Cl⁻.'],
     Na:[0x8E44AD,.32,'Sodium','In sodium chloride each sodium has lost 1 electron to become Na⁺.'],F:[0x9CCC65,.3,'Fluorine','Fluorine forms 1 covalent bond.'],B:[0xFFB74D,.33,'Boron','Boron has only 3 outer electrons, so BF₃ has 3 bonding pairs and no lone pair.'],
