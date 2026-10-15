@@ -1701,7 +1701,8 @@ html.i18n .board-ui{display:none!important}
 .l3-tag.on{background:var(--tc);color:#fff;z-index:2}
 .l3-tag.ax{font-size:10.5px;padding:2px 8px;background:rgba(255,255,255,.8)}
 .l3-tag.dim{opacity:.16}.l3-tag.back{opacity:.18}
-.l3.quiz .l3-tags{display:none}
+.l3.l3-quizon:not(.quiz-tags) .l3-tags{display:none}
+.l3.l3-quizon .l3-hud .l3-quiz b{max-width:min(560px,80vw);font-size:16px}
 .l3-hov{position:absolute;left:0;top:0;z-index:3;pointer-events:none;padding:4px 10px;border-radius:8px;background:#1B2236;color:#fff;font:700 12px "Inter",sans-serif;white-space:nowrap;transform:translate(14px,16px)}
 .l3-hov[hidden]{display:none}
 .l3-stage .lab-tools{left:10px;right:auto;top:10px;flex-wrap:wrap;max-width:calc(100% - 20px)}
@@ -2559,7 +2560,7 @@ function renderStudy(){
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
   if(view.tab==='notes'){
-    const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k)),h3=m3&&Lab.title[m3.k];
+    const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k))||(L3.mapMeta(x).parts.length>=4?{k:'map'}:null),h3=m3&&Lab.title[m3.k];
     body.innerHTML=`${m3?`<section class="lab-sec l3-hero"><div class="lab-sech"><h3>${h3[0]} ${esc(T(h3[1]))}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3><p class="muted">${esc(T(h3[2]))}</p></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}<div class="actions" style="margin-top:0"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div>${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}<ol class="notes">${x.notes.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ol>${x.x&&x.x.length?`<div class="deeper"><h3>🔍 Go deeper</h3><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></div>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
     $('#goPractice').onclick=()=>startSession({title:`${x.n} ${x.title}`,qs:x.q,key:pkey(x.key||x.n)});$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3)Lab.mount($('#heroHost'),m3,x,{hero:1});
   }else if(view.tab==='explore'){Lab.render(body,x,t)
@@ -4645,7 +4646,7 @@ const Lab={
         if(m(/demand|supply|market|price|elasticit|tax|subsid|equilibrium|competition|labour/))add('market');}
       if(out.length)break}
     return out.slice(0,2)},
-  title:{neurone:['⚡','Neurones in 3D','Turn the neurone, tap any part and watch a nerve impulse travel along it. Switch to the synapse to see how impulses cross the gap.'],brain:['🧠','The brain in 3D','Turn it, split the two halves and tap any part to see what it does. Try the guided tour, then the Find it! game.'],cells:['🔬','Cells in 3D','Slice animal, plant and bacterial cells open and tap any part to see what it does. Try the guided tour, then the Find it! game.'],dna:['🧬','DNA in 3D','Spin the double helix, tap the bases and unzip it. Try the guided tour, then the Find it! game.'],
+  title:{map:['🧩','This topic in 3D','Every key term from the notes, floating in 3D. Tap one to see what it means and how it links to the others, take the guided tour, or play Find it! to test yourself.'],neurone:['⚡','Neurones in 3D','Turn the neurone, tap any part and watch a nerve impulse travel along it. Switch to the synapse to see how impulses cross the gap.'],brain:['🧠','The brain in 3D','Turn it, split the two halves and tap any part to see what it does. Try the guided tour, then the Find it! game.'],cells:['🔬','Cells in 3D','Slice animal, plant and bacterial cells open and tap any part to see what it does. Try the guided tour, then the Find it! game.'],dna:['🧬','DNA in 3D','Spin the double helix, tap the bases and unzip it. Try the guided tour, then the Find it! game.'],
     molecules:['⚛️','Molecules in 3D','Rotate each molecule, tap the atoms and see the shape and bond angles.'],atom:['⚛️','Build an atom','Pick an element and watch its electrons in their shells.'],particles:['🫧','Particle simulation','Change the conditions and watch the particles.'],
     graph:['📈','Graph explorer','Drag the points and move the sliders. The equation updates as you go.'],market:['📊','Supply and demand','Drag the curves or use the sliders and watch the market react.'],ppf:['📊','Production possibility frontier','Drag the point to see efficiency, opportunity cost and growth.'],
     motion:['🚗','Motion graphs','Set the speed and acceleration, then play the journey step by step.'],waves:['🌊','Waves','Change the amplitude, wavelength and frequency and watch the wave.']},
@@ -4657,7 +4658,7 @@ const Lab={
     ms.forEach((m,i)=>this.mount(body.querySelector(`[data-m="${i}"]`),m,x));
     if(x.d){this.viewer($('#labDiag'),x.d,x);this.labels($('#labLabel'),x.d,x)}
     $('#labWatch').onclick=()=>watchTopic(t,view.sub)},
-  mount(host,m,x,o){const f={neurone:L3.mount,brain:L3.mount,cells:L3.mount,dna:L3.mount,molecules:L3.mount,atom:Sim.atom,particles:Sim.particles,graph:Plot.graph,market:Plot.market,ppf:Plot.ppf,motion:Sim.motion,waves:Sim.waves}[m.k];
+  mount(host,m,x,o){const f={map:L3.mount,neurone:L3.mount,brain:L3.mount,cells:L3.mount,dna:L3.mount,molecules:L3.mount,atom:Sim.atom,particles:Sim.particles,graph:Plot.graph,market:Plot.market,ppf:Plot.ppf,motion:Sim.motion,waves:Sim.waves}[m.k];
     try{f.call(f===L3.mount?L3:f===Plot.graph||f===Plot.market||f===Plot.ppf?Plot:Sim,host,m.k,m.p,x,o)}catch(e){console.error(e);host.innerHTML=`<p class="muted">This model couldn’t start on this device.</p>`}},
   // A sentence from the notes about this part of the diagram, if there is one.
   about(label,x){const words=label.toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu,' ').split(/\s+/).filter(w=>w.length>2),all=[...(x.notes||[]),...(x.x||[])].flatMap(n=>String(n).split(/(?<=[.!?])\s+/));
@@ -5176,13 +5177,13 @@ const L3={
         <div class="l3-msg"><i class="l3-ld"></i>${esc(T('Loading 3D…'))}</div><div class="l3-coach" hidden><span>👆</span>${esc(T('Drag to turn · tap any part'))}</div></div>
         <div class="l3-card" hidden></div></div>
       <div class="l3-dock"></div><div class="l3-parts" role="list"></div><p class="muted l3-intro"></p><div class="l3-extra"></div></div>`;
-    const st={k,v:v0,x,p,hero:!!o.hero};host._l3=st;
+    const st={k,v:v0,x,p,hero:!!o.hero};if(k==='map')st.map=L3.mapMeta(x);host._l3=st;
     if(variants)host.querySelector('.l3-vars').onclick=e=>{const b=e.target.closest('[data-v]');if(!b||b.dataset.v===st.v)return;host.querySelectorAll('.l3-vars [data-v]').forEach(z=>{z.classList.toggle('on',z===b);z.setAttribute('aria-selected',z===b)});st.v=b.dataset.v;if(st.rebuild)st.rebuild();else L3.flatList(host,st)};
     this.load().then(T3=>this.start(host,st,T3)).catch(e=>{console.error(e);this.flat(host,st)})},
   // No WebGL: the same parts as a list with the same cards (also what screen readers use).
   flat(host,st){const m=host.querySelector('.l3-msg');m.textContent=T('3D isn’t available on this device, so here are the parts as a list. Tap one to learn about it.');m.classList.add('err');host.querySelector('.l3-stage').classList.add('flat');this.flatList(host,st)},
   flatList(host,st){const meta=this.metaOf(st);host.querySelector('.l3-intro').textContent=meta.intro;const go=id=>this.card(host,st,id,{go});this.chips(host,st,meta,go)},
-  metaOf(st){if(st.k==='molecules'){const M=this.MOL[st.v];return {intro:`${M.name} (${M.f}): ${M.shape}${M.angle?`, bond angle ${M.angle}`:''}. ${M.note}`,parts:[...new Set(M.atoms.map(a=>a[0]))].map(e=>[e,this.EL[e][2]+(M.lattice||M.metal?'':' atom'),this.EL[e][3]])
+  metaOf(st){if(st.k==='map')return st.map;if(st.k==='molecules'){const M=this.MOL[st.v];return {intro:`${M.name} (${M.f}): ${M.shape}${M.angle?`, bond angle ${M.angle}`:''}. ${M.note}`,parts:[...new Set(M.atoms.map(a=>a[0]))].map(e=>[e,this.EL[e][2]+(M.lattice||M.metal?'':' atom'),this.EL[e][3]])
       .concat(M.bonds&&M.bonds.length?[['bond',v2(M),v3(M)]]:[]).concat(M.lp?[['lp','Lone pair','A pair of electrons not used in bonding. Lone pairs repel more strongly than bonding pairs, which squeezes the bond angles.']]:[]).concat(M.metal?[['e','Delocalised electrons','Free to move through the whole structure, so metals conduct electricity and heat. They hold the positive ions together (metallic bonding).']]:[])};
       function v2(M){return M.f==='NaCl'?'Ionic bonds':M.ring?'Bonds and the delocalised ring':'Covalent bonds'}
       function v3(M){return M.f==='NaCl'?'The lines show the ionic bonding: strong electrostatic attraction between oppositely charged ions, acting in every direction.':M.ring?'Each carbon makes single bonds to two carbons and one hydrogen; the remaining electrons form a delocalised ring (purple) shared by all six carbons.':M.lattice?'Strong covalent bonds: shared pairs of electrons between carbon atoms, throughout the whole structure.':'A covalent bond is a shared pair of electrons between two atoms. A double bond shares two pairs.'}}
@@ -5198,10 +5199,10 @@ const L3={
   // The info card for one part: name, what it does (word by word), an exam tip, a picture and a fact.
   card(host,st,id,o={}){const el=host.querySelector('.l3-card'),meta=this.metaOf(st);host.querySelectorAll('.l3-parts [data-part]').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
     if(!id){el.hidden=true;el.classList.remove('in');return null}
-    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
+    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(st.map&&st.map.more[id])||(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
     el.style.setProperty('--c',this.hex(st,id));
     el.innerHTML=`<div class="l3-ch"><i aria-hidden="true"></i><div><small>${esc(T('Part {0} of {1}',i+1,ord.length))}${lv==='A'?' · '+esc(T('A-level')):''}</small><h4>${esc(name)}</h4></div><button type="button" class="l3-x" aria-label="${esc(T('Close'))}">×</button></div>
-      <p class="l3-cd">${txt.split(/\s+/).map((w,j)=>`<span style="--w:${j}">${esc(w)} </span>`).join('')}</p>${more?`<ul class="l3-facts">${[['💡','Exam tip',more[0]],['🧠','Picture it',more[1]],['✨','Did you know?',more[2]]].filter(z=>z[2]).map((z,j)=>`<li style="--d:${j}"><b>${z[0]} ${esc(T(z[1]))}</b>${esc(z[2])}</li>`).join('')}</ul>`:''}
+      <p class="l3-cd">${txt.split(/\s+/).map((w,j)=>`<span style="--w:${j}">${esc(w)} </span>`).join('')}</p>${more?`<ul class="l3-facts">${(st.k==='map'?[['📝','Also in the notes',more[0]],['🧠','Picture it',more[1]],['🔗','Linked terms',more[2]]]:[['💡','Exam tip',more[0]],['🧠','Picture it',more[1]],['✨','Did you know?',more[2]]]).filter(z=>z[2]).map((z,j)=>`<li style="--d:${j}"><b>${z[0]} ${esc(T(z[1]))}</b>${esc(z[2])}</li>`).join('')}</ul>`:''}
       <div class="l3-cf"><button type="button" class="l3-nav" data-nav="-1" aria-label="${esc(T('Previous part'))}">←</button>${Lab.aiBtn(subject,(st.x&&st.x.title)||name,name,st.x,txt)}<button type="button" class="l3-nav" data-nav="1" aria-label="${esc(T('Next part'))}">→</button></div>`;
     el.hidden=false;el.classList.remove('in');void el.offsetWidth;el.classList.add('in');
     el.querySelector('.l3-x').onclick=()=>o.close?o.close():this.card(host,st,null);
@@ -5278,8 +5279,8 @@ const L3={
 
     // Find it! A quick game: tap the part that's named.
     function startQuiz(){stopTour();stopJourney();if(sel)select(null);const pool=L3.order(meta).filter(id=>L3.forLevel(meta,id)&&!(M.quizSkip||[]).includes(id));if(pool.length<3)return;
-      quiz={ids:shuffle(pool).slice(0,Math.min(8,pool.length)),i:0,score:0,tries:0,busy:false};if(M.cut){cutGoal=Math.max(cutGoal,M.cut.def);syncSl()}if(M.onQuiz)M.onQuiz();root.classList.add('quiz');applyGhost();askQuiz();stopIdle()}
-    function askQuiz(msg,cls){if(!quiz)return;const id=quiz.ids[quiz.i];hud.innerHTML=`<div class="l3-quiz ${cls||''}"><small>🎯 ${esc(T('Find it'))} · ${quiz.i+1}/${quiz.ids.length} · ⭐ ${quiz.score}</small><b>${msg||esc(T('Tap the {0}',name(id).replace(/ \(.*\)/,'')))}</b><button type="button" class="l3-hb" data-x aria-label="${esc(T('Stop the game'))}">✕</button></div>`;hud.querySelector('[data-x]').onclick=()=>stopQuiz()}
+      quiz={ids:shuffle(pool).slice(0,Math.min(8,pool.length)),i:0,score:0,tries:0,busy:false};root.classList.toggle('quiz-tags',!!M.quizTags);if(M.cut){cutGoal=Math.max(cutGoal,M.cut.def);syncSl()}if(M.onQuiz)M.onQuiz();root.classList.add('l3-quizon');applyGhost();askQuiz();stopIdle()}
+    function askQuiz(msg,cls){if(!quiz)return;const id=quiz.ids[quiz.i];hud.innerHTML=`<div class="l3-quiz ${cls||''}"><small>🎯 ${esc(T('Find it'))} · ${quiz.i+1}/${quiz.ids.length} · ⭐ ${quiz.score}</small><b>${msg||(M.quizAsk?esc(M.quizAsk(id)):esc(T('Tap the {0}',name(id).replace(/ \(.*\)/,''))))}</b><button type="button" class="l3-hb" data-x aria-label="${esc(T('Stop the game'))}">✕</button></div>`;hud.querySelector('[data-x]').onclick=()=>stopQuiz()}
     function answer(id,cx,cy){if(!quiz||quiz.busy)return;const want=quiz.ids[quiz.i];
       if(id===want){if(!quiz.tries)quiz.score++;flash={id,c:new T3.Color(0x22C55E),t:0,d:.9};burst(cx,cy,22,.55);quiz.busy=true;askQuiz(`✓ ${esc(T('Yes! That’s the {0}',name(id)))}`,'ok');setTimeout(nextQ,950)}
       else{quiz.tries++;flash={id,c:new T3.Color(0xEF4444),t:0,d:.8};
@@ -5289,8 +5290,8 @@ const L3={
       const n=quiz.ids.length,s=quiz.score,key=`fm-l3-best-${st.k}-${st.v}`,best=Math.max(s,+store.get(key,'0')||0);store.set(key,String(best));
       hud.innerHTML=`<div class="l3-quiz ${s===n?'ok':''}"><small>${esc(T('Find it · result'))}</small><b>${s===n?'🏆 ':''}${esc(T('{0} of {1} first time',s,n))}</b> <span class="l3-best">${esc(T('Best: {0}',best))}</span> <button type="button" class="l3-hb" data-again>${esc(T('Play again'))}</button><button type="button" class="l3-hb" data-x aria-label="${esc(T('Close'))}">✕</button></div>`;
       hud.querySelector('[data-again]').onclick=startQuiz;hud.querySelector('[data-x]').onclick=()=>{hud.innerHTML=''};
-      if(s)XP.add(s*2+(s===n?6:0),hud.firstElementChild);if(s===n)rain();try{StuAct.push()}catch(e){}quiz=null;root.classList.remove('quiz');applyGhost()}
-    function stopQuiz(){if(!quiz)return;quiz=null;root.classList.remove('quiz');hud.innerHTML='';applyGhost()}
+      if(s)XP.add(s*2+(s===n?6:0),hud.firstElementChild);if(s===n)rain();try{StuAct.push()}catch(e){}quiz=null;root.classList.remove('l3-quizon');applyGhost()}
+    function stopQuiz(){if(!quiz)return;quiz=null;root.classList.remove('l3-quizon');hud.innerHTML='';applyGhost()}
 
     // Journeys: watch something travel through the model, step by step, with a caption for each step.
     const jfx=new T3.Group(),glowM=()=>new T3.SpriteMaterial({map:this.tex(T3,'glow'),transparent:true,depthWrite:false,depthTest:false,toneMapped:false});
@@ -5345,7 +5346,7 @@ const L3={
     stage.addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey||document.activeElement===stage||root.classList.contains('fs')))return;e.preventDefault();G.dist=Math.max(M.radius*.6,Math.min(home*2.2,G.dist*(e.deltaY<0?.9:1.1)));need=true},{passive:false});
     stage.addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowLeft')G.yaw+=.2;else if(k==='ArrowRight')G.yaw-=.2;else if(k==='ArrowUp')G.pitch=Math.min(1.35,G.pitch+.15);else if(k==='ArrowDown')G.pitch=Math.max(-1.35,G.pitch-.15);
       else if(k==='+'||k==='=')G.dist*=.85;else if(k==='-')G.dist*=1.15;else if(k==='0')reset();else if(k==='Escape'){if(root.classList.contains('fs'))fs();else if(sel)select(null);else return}else return;e.preventDefault();spin=false;setSpin();need=true});
-    tagsEl.addEventListener('click',e=>{const t=e.target.closest('.l3-tag');if(!t||quiz)return;stopTour();select(t.dataset.part)});
+    tagsEl.addEventListener('click',e=>{const t=e.target.closest('.l3-tag');if(!t)return;if(quiz)return answer(t.dataset.part,e.clientX,e.clientY);stopTour();stopJourney();select(t.dataset.part)});
     const reset=()=>{stopTour();select(null);const [pi,ya]=M.view||[.3,.6];G.pitch=pi;G.yaw=V.yaw+wrap(ya-V.yaw);G.dist=home;G.t.copy(M.c);need=true};
     const setSpin=()=>{const b=stage.querySelector('[data-a=spin]');if(b)b.setAttribute('aria-pressed',spin)};
     const fs=()=>{const on=!root.classList.contains('fs');root.classList.toggle('fs',on);document.body.style.overflow=on?'hidden':'';stage.style.touchAction=on?'none':'';requestAnimationFrame(fit)};
@@ -5413,6 +5414,15 @@ const L3={
     else{x.fillStyle='#fff';x.fillRect(0,0,s,s);const r=L3.rnd(4);x.lineCap='round';for(let i=0;i<260;i++){x.strokeStyle=`rgba(30,90,40,${.08+r()*.16})`;x.lineWidth=1+r()*2.2;const a=(r()<.5?.6:-.6)+r()*.3,cx=r()*s,cy=r()*s,l=40+r()*120;x.beginPath();x.moveTo(cx-Math.cos(a)*l,cy-Math.sin(a)*l);x.lineTo(cx+Math.cos(a)*l,cy+Math.sin(a)*l);x.stroke()}}
     const t=new T3.CanvasTexture(c);t.encoding=T3.sRGBEncoding;if(kind==='fibre'){t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(3,2)}if(kind==='muscle'){t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(1,6)}return this._tx[kind]=t},
 
+  // A subtopic's key terms (the bold words in its notes) and the sentence that explains each one.
+  mapMeta(x){if(x._map)return x._map;const plain=t=>String(t).replace(/\*\*/g,''),notes=[...(x.notes||[]),...(x.x||[])].map(String),seen=new Map(),parts=[],more={};
+    const sents=notes.flatMap(n=>plain(n).split(/(?<=[.!?])\s+(?=[A-Z0-9])/));
+    for(const n of notes)for(const m of n.matchAll(/\*\*([^*]{2,40}?)\*\*/g)){const term=m[1].trim(),key=term.toLowerCase();if(seen.has(key)||/^[\d\s.,%°+\-−×=/()^]+$/.test(term)||parts.length>=14)continue;
+      const s0=sents.find(z=>z.toLowerCase().includes(key));if(!s0)continue;seen.set(key,1);parts.push(['t'+parts.length,term.charAt(0).toUpperCase()+term.slice(1),s0])}
+    // which terms are mentioned together, and a second sentence where there is one
+    parts.forEach(([id,term,s0])=>{const k=term.toLowerCase(),links=parts.filter(q=>q[0]!==id&&sents.some(z=>z.toLowerCase().includes(k)&&z.toLowerCase().includes(q[1].toLowerCase()))).map(q=>q[1]),s2=sents.find(z=>z!==s0&&z.toLowerCase().includes(k));
+      more[id]=[s2||null,null,links.length?links.slice(0,5).join(', '):null]});
+    return x._map={intro:x.title,parts,more}},
   // Materials and shapes shared by the models.
   mat(T3,c,o={}){return new T3.MeshStandardMaterial(Object.assign({color:c,roughness:.5,metalness:0},o))},
   skin(T3,c,o={}){const q=Object.assign({color:c,roughness:.45,metalness:0,envMapIntensity:.6},o);for(const k of ['clearcoat','clearcoatRoughness','sheen','sheenRoughness','sheenColor'])delete q[k];return new T3.MeshStandardMaterial(q)},
@@ -5575,6 +5585,20 @@ const L3={
       const t=(id,p,inner=1)=>({id,p,inner:!!inner});
       return {group:g,radius:2.9,cols,view:[.42,.42],ground:1.35,cut:{u:[[0,1,0],[0,0,1]],r:1.3,def:.9},caps,quizSkip:['cyto','membrane','wall'],tick:dt=>{fl.rotation.x+=dt*7;return true},
         tags:[t('capsule',[-.6,.4,1.02],0),t('wall',[.6,-.92,-.25],0),t('membrane',[-1.2,-.85,.1]),t('cyto',[-.9,-.4,-.3]),t('dna',[loop[20].x,loop[20].y,loop[20].z]),t('plasmid',[1.55,.5,.3]),t('ribo',rb[7]),t('flag',[4.2,.2,0]),t('pili',pts[3])]}},
+
+    map(T3,v,st){const g=new T3.Group(),B=L3.kit(g),meta=st.map,n=meta.parts.length,cols={},pal=[0x4361EE,0x7C3AED,0xEC4899,0xF59E0B,0x0D9488,0x0EA5E9,0xF97316,0x16A34A,0xE5484D,0x6366F1],vec=(...a)=>new T3.Vector3(...a);
+      const core=new T3.Mesh(new T3.IcosahedronGeometry(.6,3),L3.glass(T3,0x4361EE,.55,{side:T3.FrontSide}));g.add(core);core.add(new T3.Mesh(new T3.IcosahedronGeometry(.36,2),L3.skin(T3,0xA5B4FC,{emissive:0x4361EE,emissiveIntensity:.35})));
+      const nodes=[],lineM=new T3.LineBasicMaterial({color:0x9AA3C7,transparent:true,opacity:.55});
+      meta.parts.forEach(([id],i)=>{const c=pal[i%pal.length];cols[id]=c;const d=vec(...L3.fib(n,i)),R=2.3+(i%3)*.32,o=new T3.Group();o.position.copy(d.multiplyScalar(R));
+        o.add(new T3.Mesh(new T3.SphereGeometry(.26,32,22),L3.gloss(T3,c)));o.add(new T3.Mesh(new T3.SphereGeometry(.38,24,16),L3.glass(T3,c,.18,{side:T3.FrontSide})));B.add(id,o);o.userData.base=o.position.clone();o.userData.ph=i*1.7;nodes.push(o);
+        const ln=new T3.Line(new T3.BufferGeometry().setFromPoints([vec(0,0,0),o.position.clone()]),lineM);g.add(ln);o.userData.line=ln});
+      // links between terms that appear in the same sentence
+      const links=[];meta.parts.forEach(([id,term],i)=>{const lk=(meta.more[id]&&meta.more[id][2]||'').toLowerCase();meta.parts.forEach(([id2,t2],j)=>{if(j>i&&lk.includes(t2.toLowerCase())){const l=new T3.Line(new T3.BufferGeometry().setFromPoints([nodes[i].position,nodes[j].position]),new T3.LineDashedMaterial({color:pal[i%pal.length],dashSize:.12,gapSize:.08,transparent:true,opacity:.7}));l.computeLineDistances();g.add(l);links.push([l,i,j])}})});
+      const tick=(dt,now)=>{nodes.forEach(o=>{o.position.copy(o.userData.base);o.position.y+=Math.sin(now*.0011+o.userData.ph)*.08;const a=o.userData.line.geometry.attributes.position;a.setXYZ(1,o.position.x,o.position.y,o.position.z);a.needsUpdate=true});
+        links.forEach(([l,i,j])=>{const a=l.geometry.attributes.position;a.setXYZ(0,nodes[i].position.x,nodes[i].position.y,nodes[i].position.z);a.setXYZ(1,nodes[j].position.x,nodes[j].position.y,nodes[j].position.z);a.needsUpdate=true;l.computeLineDistances()});core.rotation.y+=dt*.3;return true};
+      const blank=id=>{const p=meta.parts.find(z=>z[0]===id),re=new RegExp(p[1].replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig');return `“${p[2].replace(re,'_____')}”`};
+      return {group:g,radius:3.1,cols,view:[.3,.5],ground:0,tick,quizTags:true,quizAsk:id=>T('Which term fills the gap? {0}',blank(id)),
+        tags:meta.parts.map(([id],i)=>({id,p:()=>nodes[i].position.toArray(),inner:true}))}},
 
     neurone(T3,v){const g=new T3.Group(),B=L3.kit(g),S=L3.skin,G=L3.glass,r=L3.rnd(v.length*7+3),rn=(a,b)=>a+(b-a)*r(),vec=(...a)=>new T3.Vector3(...a),
         cols={dend:0x5F7FF0,body:0x6F8DF7,nucleus:0x6D28D9,axon:0x4F6FE6,dendron:0x4F6FE6,myelin:0xF2D6A2,nodes:0xF59E0B,term:0x5F7FF0,effector:0xE85A6A,receptor:0xF59E0B,knob:0x6F8DF7,vesicle:0xFACC15,nt:0xF97316,cleft:0x93C5FD,rec:0x16A34A,post:0x8B5CF6,mito:0xFF8A3D};
