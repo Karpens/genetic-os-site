@@ -1392,6 +1392,33 @@ html.i18n .board-ui{display:none!important}
 .hw-prog{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:700;font-size:13px;color:var(--muted)}.hw-bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}.hw-bar i{display:block;height:100%;background:var(--ok,#2F9E44);border-radius:99px}
 .hw-item details{margin-top:8px;font-size:14px}.hw-item details p{margin:6px 0}.hw-late{color:var(--bad,#E03131)!important}.hw-box{margin:0 0 18px}.hw-box h4{display:flex;align-items:center;gap:8px}
 .hw-pick[hidden]{display:none!important}
+.hw-who{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:12px}
+.hw-chip{display:flex;gap:8px;align-items:flex-start;padding:9px 11px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-size:14px;line-height:1.3}
+.hw-chip small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}.hw-chip:hover{border-color:var(--stain)}
+.hw-chip.done{background:color-mix(in srgb,var(--ok) 9%,var(--paper));border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}
+.hw-chip.work{background:color-mix(in srgb,var(--gold) 10%,var(--paper));border-color:color-mix(in srgb,var(--gold) 40%,var(--line))}
+.act-live{display:inline-block;width:9px;height:9px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:actPulse 1.8s infinite;margin-right:6px;vertical-align:1px}
+@keyframes actPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.act-on{display:inline-flex;align-items:center;color:#16A34A;font-weight:800;font-size:13.5px}.act-doing{display:block;color:var(--muted);font-size:12.5px;line-height:1.35;margin-top:2px;max-width:260px}
+.act-now{list-style:none;margin:0;padding:0;display:grid;gap:8px}.act-now a{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,#22C55E 7%,var(--paper));border:1px solid color-mix(in srgb,#22C55E 28%,var(--line));color:var(--ink);text-decoration:none}
+.act-now a>div{min-width:0}.act-now b{display:block}.act-now span{font-size:13.5px;color:var(--muted)}.act-now span b{display:inline;color:var(--ink)}
+.act-banner{display:flex;gap:10px;align-items:center;padding:12px 16px;margin:0 0 14px;border-radius:14px;background:color-mix(in srgb,#22C55E 8%,var(--paper));border:1px solid color-mix(in srgb,#22C55E 30%,var(--line))}.act-banner b{display:block}.act-banner span{color:var(--muted);font-size:14px}.act-banner span b{display:inline;color:var(--ink)}
+.act-idle{display:flex;flex-wrap:wrap;gap:6px;margin:0}.act-idle a{padding:4px 10px;border-radius:99px;background:var(--bg);color:var(--ink);text-decoration:none;font-size:13.5px;border:1px solid var(--line)}
+.hw-work{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}.hw-work span{font-size:13px;padding:3px 9px;border-radius:99px;background:var(--paper);border:1px solid var(--line)}.hw-work span.muted{border:0;background:none;padding:0}
+.act-day{margin:16px 0 6px;font:800 12px "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.act-feed{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:44px}
+.act-feed li{position:relative;display:flex;gap:10px;align-items:flex-start;padding:7px 0 7px 14px}
+.act-feed time{position:absolute;left:-58px;top:9px;width:40px;white-space:nowrap;text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.act-feed .act-ic{position:absolute;left:-12px;top:6px;width:22px;height:22px;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;font-size:12px}
+.act-feed li>div{padding-left:10px;font-size:14.5px;line-height:1.4;min-width:0}
+.act-who{font-weight:800;color:var(--stain);text-decoration:none}.act-what b{font-weight:700}.act-meta{display:block;color:var(--muted);font-size:13px;margin-top:1px}
+.act-pct{color:var(--c);font-weight:800}.act-tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--muted);vertical-align:1px}
+.act-mins{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;align-items:end;height:92px;padding-top:14px}
+.act-mins>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.act-mins i{display:block;width:100%;max-width:26px;height:max(3px,calc(var(--v)*.62));border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--stain),color-mix(in srgb,var(--stain) 60%,#fff));transform-origin:bottom;animation:barUp .6s ease-out both}
+.act-mins small{font-size:11px;color:var(--muted);margin-top:4px}.act-mins b{position:absolute;top:-2px;font-size:10.5px;color:var(--ink)}
+@keyframes barUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media (max-width:600px){.act-feed{margin-left:48px}.act-feed time{left:-50px;width:33px;font-size:11px}.hw-who{grid-template-columns:1fr 1fr}}
 .hw-item.new{border-color:var(--stain);box-shadow:0 0 0 3px color-mix(in srgb,var(--stain) 18%,transparent)}
 .hw-new{display:inline-block;background:var(--stain);color:#fff;font:800 10.5px "Inter",sans-serif;letter-spacing:.08em;padding:3px 7px;border-radius:7px;margin-right:8px;vertical-align:2px}
 .hw-notice{position:fixed;z-index:140;right:18px;top:78px;width:390px;max-width:calc(100vw - 24px);display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:var(--paper);color:var(--ink);border-radius:16px;box-shadow:var(--shadow-lg),0 0 0 2px var(--stain);animation:dropIn .35s cubic-bezier(.2,1.2,.4,1)}
@@ -2540,7 +2567,8 @@ function renderStudy(){Extra.ensure(subject,level);
   $('#studyTitle').textContent=s.name;$('#p-study').style.setProperty('--sc',s.color);
   $('#studyLevelName').textContent=level==='UFP'?'University Foundation Programme · Foundation year':`${boardLabel()} · `+[LV(level),LEVELS.find(l=>l[0]===level)[1]].join(' · ');$('#brdSel').hidden=level==='UFP';
   crumbs();
-  if(session){renderSession();return}
+  if(session){Track.set({kind:session.lvl?'level':session.exam?'exam':'quiz',subject,level,topic:session.lvl?`${session.lvl.x.n} ${session.lvl.x.title} · ${T('Level {0}',session.lvl.i+1)}`:session.title,sub:session.lvl?pkey(session.lvl.x.key||session.lvl.x.n):session.key});renderSession();return}
+  if(view.topic==null||view.sub==null)Track.set({kind:'browse',subject,level,topic:SUBJECTS[subject].name});
   const P=getProg();
 
   const spec=specFor();
@@ -2598,11 +2626,12 @@ function renderStudy(){Extra.ensure(subject,level);
   main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{view.sub=+b.dataset.go;view.tab='notes';renderStudy();scrollTo(0,0)});
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
+  Track.set({kind:view.tab==='explore'?'explore':view.tab==='practice'?'levels':'notes',subject,level,topic:`${x.n} ${x.title}`,sub:pkey(x.key||x.n)});
   if(view.tab==='notes'){
     const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k)||L3.LIB[m.k])||(L3.mapMeta(x).parts.length>=4?{k:'map'}:null),h3=m3&&(Lab.title[m3.k]||L3.LIB[m3.k].title);
     body.innerHTML=`${m3?`<section class="lab-sec l3-hero" translate="no"><div class="lab-sech"><h3>${h3[0]} ${esc(h3[1])}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3><p class="muted">${esc(h3[2])}</p></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}<div class="actions" style="margin-top:0"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div>${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}<ol class="notes">${x.notes.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ol>${x.x&&x.x.length?`<div class="deeper"><h3>🔍 Go deeper</h3><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></div>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
-    $('#goPractice').onclick=()=>{view.tab='practice';renderStudy();scrollTo(0,0)};$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3)Lab.mount($('#heroHost'),m3,x,{hero:1});
-  }else if(view.tab==='explore'){Lab.render(body,x,t)
+    $('#goPractice').onclick=()=>{view.tab='practice';renderStudy();scrollTo(0,0)};$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3){Lab.mount($('#heroHost'),m3,x,{hero:1});$('#heroHost').addEventListener('pointerdown',()=>Track.used3d(),{once:true})}
+  }else if(view.tab==='explore'){Lab.render(body,x,t);body.addEventListener('pointerdown',()=>Track.used3d(),{once:true})
   }else{
     const L=PL.levels(x),nx=PL.next(x),done=L.filter((_,k)=>(P[PL.key(x,k)]??-1)>=70).length;
     body.innerHTML=`<div class="lvl-head"><div><h3>${esc(T('Practice in {0} levels',L.length))}</h3><p class="muted">${esc(T('Up to {0} questions per level, from easier to harder. Each answer comes with an explanation. Score 70% or more to clear a level.',PL.max))}</p></div><div class="lvl-sum"><b>${done}/${L.length}</b><small>${esc(T('cleared'))}</small></div></div>
@@ -2769,7 +2798,7 @@ return {isWritable,asWritten,checkWritten};})();
 function startSession(o){
   endSession();
   const qs=o.limit?o.qs.slice(0,o.limit):o.qs;
-  session={...o,qs,qi:0,score:0,answers:[],end:o.timed?Date.now()+o.timed*1000:null,done:false,lockAfter:o.lockAfter||(o.limit&&o.qs.length>o.limit?'Unlock every question for this subject and level.':null)};
+  session={...o,qs,qi:0,score:0,answers:[],t0:Date.now(),end:o.timed?Date.now()+o.timed*1000:null,done:false,lockAfter:o.lockAfter||(o.limit&&o.qs.length>o.limit?'Unlock every question for this subject and level.':null)};
   if(o.timed)timerInt=setInterval(()=>{const el=$('#timer');if(!session){endSession();return}
     const left=Math.max(0,session.end-Date.now());if(el){el.textContent=fmt(left);el.classList.toggle('low',left<60000)}if(left<=0){finish()}},500);
   renderStudy();scrollTo(0,0);
@@ -2778,7 +2807,7 @@ const fmt=ms=>{const s=Math.ceil(ms/1000);return `${Math.floor(s/60)}:${String(s
 function finish(){if(!session||session.done)return;session.done=true;clearInterval(timerInt);timerInt=null;
   const pct=Math.round(session.score/session.qs.length*100);if(session.key)saveProg(session.key,pct);if(session.lvl)PL.overall(session.lvl.x);
   if(session.mockKey){const pb=+store.get(session.mockKey,'0');if(pct>pb)store.set(session.mockKey,String(pct))}
-  if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);StuAct.log({subject,level,topic:session.title,pct,n:session.qs.length,kind:session.exam?'exam':'quiz'});StuAct.push(true);renderStudy();LB.pushXp()}
+  if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);const lv=session.lvl;StuAct.log({subject,level,topic:lv?`${lv.x.n} ${lv.x.title}`:session.title,pct,n:session.qs.length,kind:lv?'level':session.exam?'exam':'quiz',sub:lv?pkey(lv.x.key||lv.x.n):session.key,lvl:lv?lv.i+1:null,mins:session.t0?Track.mins(Date.now()-session.t0):null});StuAct.push(true);renderStudy();LB.pushXp()}
 
 function renderSession(){
   const S=session,main=$('#studyMain');
@@ -2900,7 +2929,7 @@ function renderGames(){Extra.ensure(subject,level);
 }
 
 function finishGame(id,score,detail,lowerBetter){
-  stopGame();
+  stopGame();{const g=(GAMES.find(x=>x.id===id)||{}).name||id;StuAct.log({kind:'game',subject,level,topic:lowerBetter?`${g} · ${score} s`:g,pts:lowerBetter?null:score})}
   const prev=store.get(bestKey(id),''),better=prev===''||(lowerBetter?score<+prev:score>+prev);
   if(better)store.set(bestKey(id),String(score));
   $('#gamesMain').innerHTML=`<div class="quiz result"><div class="bigscore">${score}${lowerBetter?' s':''}</div><h3>${better?'New best score!':`Best: ${prev}${lowerBetter?' s':''}`}</h3><p class="muted">${detail}</p><div id="lbRes"></div>
@@ -3878,7 +3907,7 @@ const Explainer=(()=>{
   const fsOk=!!(box.requestFullscreen||box.webkitRequestFullscreen);
   function full(){const fe=document.fullscreenElement||document.webkitFullscreenElement;
     if(fe)(document.exitFullscreen||document.webkitExitFullscreen).call(document);else (box.requestFullscreen||box.webkitRequestFullscreen).call(box)}
-  function close(){if(!el.classList.contains('on'))return;pause();if(document.fullscreenElement||document.webkitFullscreenElement)full();
+  function close(){if(!el.classList.contains('on'))return;pause();Track.videoEnd();if(document.fullscreenElement||document.webkitFullscreenElement)full();
     el.classList.remove('on');document.body.style.overflow='';deck=null;cur=null;$('#xpS').innerHTML='';$('#xpC').innerHTML='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
   function open(d){deck=d;d.hq=null;si=d.start||0;li=0;playing=true;broken=false;fast=0;lastFocus=document.activeElement;
     $('#xpK').textContent=d.kicker;$('#xpT').textContent=d.title;el.style.setProperty('--xc',d.color||'#0E9F5D');$('#xpHQ').hidden=true;$('#xpFull').hidden=!fsOk;
@@ -3951,7 +3980,7 @@ function topicDeck(t,startSub){const s=SUBJECTS[subject],ld=levelData(),scenes=[
   const start=startSub==null?0:Math.max(0,scenes.findIndex(sc=>sc.sub===startSub));
   return {kicker:`${s.name} ${level} · Topic ${t.n}`,title:t.title,color:s.color,scenes,start,
     act:a=>{if(a==='cheat')printCheat(t);else if(a==='test'){location.hash='study';startSession({title:`Topic ${t.n} test`,qs:shuffle(t.subs.flatMap(x=>x.q)),key:pkey('T'+(t.key||t.n))});scrollTo(0,0)}}}}
-const watchTopic=(t,sub)=>Explainer.open(topicDeck(t,sub));
+const watchTopic=(t,sub)=>{Track.video(t,sub);Explainer.open(topicDeck(t,sub))};
 
 // The home page's one-minute tour of Full Marks.
 function tourDeck(){const s=SUBJECTS[subject],d=s[level],x=d&&d.full?d.topics[0].subs[0]:null;
@@ -4317,15 +4346,48 @@ const WHO={
   boot(){SCH.nav();const f=$('#whoFoot');if(f)f.onclick=e=>{e.preventDefault();WHO.open(true)};
     const h=location.hash.slice(1);if(!SCH.who()&&(!h||h==='home'))setTimeout(()=>{if(!SCH.who()&&!$('#modal').classList.contains('on'))WHO.open(false)},900)}};
 
+/* What a student is doing on the site (notes, 3D models, levels, videos, games) and for how long.
+   It is kept on the device and shared only with the teachers of the classes they are in. */
+const Track={cur:null,vid:null,
+  set(o){const id=o?JSON.stringify([o.kind,o.sub||o.topic||'']):null;if(this.cur&&this.cur.id===id)return;
+    this.flush();this.cur=o?{...o,id,since:new Date().toISOString(),ms:0,t:document.hidden?0:Date.now(),used3d:false}:null;if(o)StuAct.push()},
+  tick(){const c=this.cur;if(c&&c.t){const n=Date.now();c.ms+=n-c.t;c.t=n}},
+  pause(){this.tick();if(this.cur)this.cur.t=0},resume(){if(this.cur&&!this.cur.t&&!this.vid)this.cur.t=Date.now()},
+  used3d(){if(this.cur)this.cur.used3d=true},
+  mins:ms=>Math.round(ms/6000)/10,
+  // notes and models count once they have been open for 20 seconds (or the model was used)
+  flush(){const c=this.cur;if(!c)return;this.tick();this.cur=null;const base={subject:c.subject,level:c.level,topic:c.topic,sub:c.sub};
+    if(c.kind==='notes'&&c.ms>=20e3)StuAct.log({...base,kind:'notes',mins:this.mins(c.ms)});
+    if(c.kind==='explore'&&(c.ms>=20e3||c.used3d))StuAct.log({...base,kind:'explore',mins:this.mins(c.ms)});
+    if(c.kind==='notes'&&c.used3d)StuAct.log({...base,kind:'3d'})},
+  video(t,sub){const x=sub!=null?t.subs[sub]:null;this.pause();
+    this.vid={subject,level,topic:x?`${x.n} ${x.title}`:`Topic ${t.n}: ${t.title}`,sub:x?pkey(x.key||x.n):pkey('T'+(t.key||t.n)),t0:Date.now(),since:new Date().toISOString()};StuAct.push()},
+  videoEnd(){const v=this.vid;if(!v)return;this.vid=null;const ms=Date.now()-v.t0;if(ms>=20e3)StuAct.log({subject:v.subject,level:v.level,topic:v.topic,sub:v.sub,kind:'video',mins:this.mins(ms)});this.resume();StuAct.push(true)},
+  now(){const v=this.vid;if(v)return {kind:'video',subject:v.subject,level:v.level,topic:v.topic,sub:v.sub,since:v.since,mins:this.mins(Date.now()-v.t0)};
+    const c=this.cur;if(!c||document.hidden)return null;this.tick();return {kind:c.kind,subject:c.subject,level:c.level,topic:c.topic,sub:c.sub,since:c.since,mins:this.mins(c.ms)}}};
+/* minutes of real use per day: the tab is open and they touched it in the last two minutes */
+const Mins={last:Date.now(),
+  boot(){const poke=()=>{this.last=Date.now()};for(const ev of ['pointerdown','keydown','wheel','touchstart','scroll'])addEventListener(ev,poke,{passive:true,capture:true});
+    setInterval(()=>{if(document.hidden||Date.now()-this.last>120e3)return;const m=jget('fm-mins',{}),k=today();m[k]=Math.round(((m[k]||0)+.5)*10)/10;
+      const keys=Object.keys(m).sort();for(const old of keys.slice(0,Math.max(0,keys.length-90)))delete m[old];store.set('fm-mins',JSON.stringify(m))},30e3);
+    // while they study, the teacher's "on now" stays fresh
+    setInterval(()=>{if(!document.hidden&&Date.now()-this.last<120e3&&StuAct.joined())StuAct.push(true)},120e3);
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){Track.pause();StuAct.push(true)}else Track.resume()});
+    addEventListener('pagehide',()=>{Track.flush();StuAct.send(true)})}};
+
 /* a student's practice, shared with the teachers of the classes they are in */
 const StuAct={t:null,
   joined(){return store.get('fm-in-class','')==='1'},
   setJoined(v){store.set('fm-in-class',v?'1':'')},
-  log(e){const a=jget('fm-recent',[]),list=Array.isArray(a)?a:[];list.unshift({at:new Date().toISOString(),...e});store.set('fm-recent',JSON.stringify(list.slice(0,60)))},
+  log(e){const a=jget('fm-recent',[]),list=Array.isArray(a)?a:[];list.unshift({at:new Date().toISOString(),...e});store.set('fm-recent',JSON.stringify(list.slice(0,150)));this.push()},
   snap(){const s=XP.stats(),mist={};for(const m of Mist.all())mist[m.k]=(mist[m.k]||0)+1;
-    return {xp:XP.xp,streak:XP.streak(),answered:s.answered||0,correct:s.correct||0,exams:s.exams||0,perfect:s.perfect||0,days:XP.days(),topics:getProg(),mistakes:mist,recent:jget('fm-recent',[])}},
-  push(now){if(!API_BASE||!authToken()||!this.joined())return;clearTimeout(this.t);this.t=setTimeout(()=>this.send(),now?800:15000)},
-  async send(){try{await fetch(`${API_BASE}/me/activity`,{method:'PUT',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify({data:this.snap()})})}catch(e){/* offline: sent with the next answer */}},
+    return {xp:XP.xp,streak:XP.streak(),answered:s.answered||0,correct:s.correct||0,exams:s.exams||0,perfect:s.perfect||0,days:XP.days(),topics:getProg(),mistakes:mist,recent:jget('fm-recent',[]),mins:jget('fm-mins',{}),now:Track.now()}},
+  // at most one save every 11 seconds (the server takes one per 10 s); the latest state always goes last
+  push(now){if(!API_BASE||!authToken()||!this.joined())return;clearTimeout(this.t);this.t=setTimeout(()=>this.send(),Math.max(now?800:15000,(this.sent||0)+11e3-Date.now()))},
+  async send(leaving){if(!API_BASE||!authToken()||!this.joined())return;const body=JSON.stringify({data:this.snap()});
+    this.sent=Date.now();
+    try{const r=await fetch(`${API_BASE}/me/activity`,{method:'PUT',keepalive:!!leaving&&body.length<60000,headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body});
+      if(!leaving&&(await r.json().catch(()=>({}))).retry)this.push(true)}catch(e){/* offline: sent with the next answer */}},
   // On page load: are they in a class, and has a teacher added a grade since their last visit?
   async boot(){if(!API_BASE||!authToken())return;this.at=Date.now();
     try{const d=await SCH.api('GET','/me/classes');this.setJoined(d.classes.length>0);if(!d.classes.length)return;this.push(true);
@@ -4386,7 +4448,7 @@ function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=
       <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p>`
     :'<p class="muted"><b>No schools use Full Marks yet.</b> Your school appears here as soon as your teacher creates a class.</p>'}
     <p class="sc-note">🎁 Students in a teacher’s class get full access to Full Marks for free.</p>
-    <p class="sc-note">🔒 When your teacher approves you, they can see your grades and your practice on Full Marks (questions answered and scores by topic). You can leave a class at any time.</p></div>`}
+    <p class="sc-note">🔒 When your teacher approves you, they can see your grades and what you do on Full Marks: the notes, 3D models and explainers you open, your practice and scores, and how long you study. You can leave a class at any time.</p></div>`}
 function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)return;const sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg');
   const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value),list=s?s.subjects:[],want=sub.dataset.want||sub.value;
     sub.innerHTML=list.length?(list.length>1?'<option value="">Choose the subject…</option>':'')+SCH.opts(list.map(k=>[k,SCH.sName(k)]),want):'<option value="">Choose your school first</option>';sub.disabled=!list.length};
@@ -4414,7 +4476,7 @@ function schoolClassCard(c,i,seen,init){const sc=c.scale,m=c.summary,col=SCH.sCo
     ${subs.length>1?`<h4 style="margin-top:16px">By subject</h4>${SCH.bars(subs.map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}`:''}
     <h4 style="margin-top:16px">Your grades</h4>
     <div class="sc-gl">${c.grades.map((g,j)=>`<div class="sc-gitem${isNew(g)?' new':''}" style="--i:${j}">${SCH.badge(g,sc)}<div><b>${esc(g.title||SCH.tName(g.type))}${isNew(g)?'<span class="sc-new">NEW</span>':''}</b><small>${esc(SCH.date(g.date))} · ${esc(SCH.tName(g.type))}${g.subject!==c.subject?' · '+esc(SCH.sName(g.subject)):''}${g.weight&&g.weight!==1?` · ×${g.weight}`:''}</small></div>${g.letter?SCH.pct(g.pct):'<span></span>'}${g.note?`<div class="note">💬 ${esc(g.note)}</div>`:''}</div>`).join('')||'<p class="muted">No grades yet. They appear here as soon as your teacher adds them.</p>'}</div>
-    <p class="sc-note"><a href="#" data-leave="${esc(c.id)}" data-msg="Leave this class? Your teacher will no longer see your grades or practice.">Leave this class</a></p></div>`}
+    <p class="sc-note">👀 ${esc(T('{0} can see what you study on Full Marks and your scores.',c.teacher.name||T('Your teacher')))} <a href="#" data-leave="${esc(c.id)}" data-msg="Leave this class? Your teacher will no longer see your grades or practice.">Leave this class</a></p></div>`}
 
 /* ---------- homework: set by teachers, done by students ---------- */
 const HW={
@@ -4425,6 +4487,9 @@ const HW={
   kinds:[['notes','📖','Read the notes'],['questions','✍️','Answer the questions'],['3d','🧪','Explore the 3D model'],['paper','📝','Do a past paper'],['other','📌','Other task']],
   kind(k){return this.kinds.find(x=>x[0]===k)||this.kinds[0]},
   today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
+  // the progress key of a linked subtopic (boards number subtopics their own way, progress uses the course's own number)
+  key(l){if(!l)return null;let k=l.k;if(!k)try{const L=ldFor(SUBJECTS[l.subject][l.level],l.board||'aqa'),t=(L.topics||[]).find(t=>t.title===l.topic)||(L.topics||[]).find(t=>t.subs.some(x=>x.title===l.sub)),x=t&&t.subs.find(x=>x.title===l.sub);k=x?x.key||x.n:l.n}catch(e){k=l.n}
+    return k?`${l.subject}:${l.level}:${k}`:null},
   label(l){return l?`${SCH.sName(l.subject)} · ${LV(l.level)} · ${l.n?l.n+' ':''}${l.sub}`:''},
   // Opens the linked subtopic on the right tab: notes, practice questions or the 3D model.
   open(l,kind){if(!l||!SUBJECTS[l.subject]||!SUBJECTS[l.subject][l.level]){toast('⚠️',T('This subtopic isn’t available.'));return}
@@ -4462,18 +4527,21 @@ function tHwModal(d,h,pre){const c=d.class,st=d.students,isNew=!h;h=h||{title:''
   $('#hwGo').onclick=async()=>{const msg=$('#hwMsg'),title=$('#hwT').value.trim(),to=$('#hwTo').value==='some'?[...document.querySelectorAll('#hwPick input:checked')].map(x=>x.value):null;
     if(title.length<2){msg.textContent=T('Give the homework a title.');return}if(to&&!to.length){msg.textContent=T('Choose at least one student.');return}
     const t=(data().topics||[])[+Tp.value],x=Tp.value!==''&&t?t.subs[+Sb.value]:null;
-    const body={title,note:$('#hwN').value,kind:$('#hwK').value,due:$('#hwD').value||null,to,link:x?{subject:S_.value,level:Lv.value,board:Lv.value==='UFP'?'':Bd.value,topic:t.title,sub:x.title,n:x.n}:null};
+    const body={title,note:$('#hwN').value,kind:$('#hwK').value,due:$('#hwD').value||null,to,link:x?{subject:S_.value,level:Lv.value,board:Lv.value==='UFP'?'':Bd.value,topic:t.title,sub:x.title,n:x.n,k:String(x.key||x.n)}:null};
     const go=$('#hwGo');go.disabled=true;
     try{await SCH.api(isNew?'POST':'PATCH',`/teacher/classes/${c.id}/homework${isNew?'':'/'+h.id}`,body);$('#modal').classList.remove('on');toast('✓',isNew?T('Homework set'):T('Homework saved'));tRefresh()}catch(e){msg.textContent=e.message;go.disabled=false}}}
 // The class's homework tab: every piece, how many have done it, and who.
 function tHw(el,d){const id=d.class.id,st=d.students,hw=d.homework||[],nm=e=>(st.find(s=>s.email===e)||{}).name||e,today=HW.today();
   el.innerHTML=`<div class="sc-card"><div class="sc-head" style="margin-bottom:6px"><div><h3>📚 Homework</h3><p class="muted">Set notes to read, questions to answer or a 3D model to explore — for the whole class or chosen students — and see who has done it.</p></div><button class="btn" data-hw-new${st.length?'':' disabled'}>＋ Set homework</button></div>
-    ${hw.length?hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=h.due&&h.due<today&&h.doneCount<h.total,pct=h.total?Math.round(h.doneCount/h.total*100):0,targets=h.to?h.to.filter(e=>st.some(s=>s.email===e)):st.map(s=>s.email),todo=targets.filter(e=>!h.done[e]);
+    ${hw.length?hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=h.due&&h.due<today&&h.doneCount<h.total,pct=h.total?Math.round(h.doneCount/h.total*100):0,targets=h.to?h.to.filter(e=>st.some(s=>s.email===e)):st.map(s=>s.email),todo=targets.filter(e=>!h.done[e]),hk=HW.key(h.link);
       return `<div class="hw-item"><div class="hw-top"><span class="hw-ic">${ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(T('due {0}',SCH.date(h.due))):''} · ${h.to?esc(T('{0} chosen',h.to.length)):esc(T('whole class'))}</small></div>
         <div class="sc-actions"><button class="btn ghost sm" data-hw-edit="${esc(h.id)}">Edit</button><button class="btn ghost sm" data-hw-del="${esc(h.id)}">Delete</button></div></div>
         ${h.link?`<a href="#" class="hw-link" data-hw-open="${esc(h.id)}">🔗 ${esc(HW.label(h.link))}</a>`:''}${h.note?`<p class="hw-note">${esc(h.note)}</p>`:''}
         <div class="hw-prog"><div class="hw-bar"><i style="width:${pct}%"></i></div><span>${esc(T('{0} of {1} done',h.doneCount,h.total))}</span></div>
-        <details><summary>${esc(T('Who has done it'))}</summary><p>✅ ${Object.keys(h.done).map(e=>esc(nm(e))).join(', ')||esc(T('Nobody yet'))}</p><p>⏳ ${todo.map(e=>esc(nm(e))).join(', ')||esc(T('Everyone has done it 🎉'))}</p></details></div>`}).join(''):`<p class="muted" style="margin-top:14px">${esc(T('No homework yet.'))}</p>`}</div>`;
+        <div class="hw-who">${targets.map(e=>{const s=st.find(x=>x.email===e),t=hk?(((s||{}).activity||{}).touched||{})[hk]:null,dn=h.done[e];
+          const info=[dn?T('done {0}',SCH.ago(dn)):t?T('working on it'):T('not started'),...(t?[t.pct!=null?T('best {0}%',t.pct):'',t.mins?ACT.dur(t.mins):'',t.kinds.map(k=>ACT.ic({kind:k})).join(' ')]:[])].filter(Boolean).join(' · ');
+          return `<a class="hw-chip ${dn?'done':t?'work':'none'}" href="#teacher/c/${esc(id)}/s/${encodeURIComponent(e)}" title="${esc(info)}"><span aria-hidden="true">${dn?'✅':t?'🟡':'⏳'}</span><span><b>${esc(nm(e))}</b><small>${esc(info)}</small></span></a>`}).join('')}</div>
+        ${h.link?`<p class="sc-note" style="margin:6px 0 0">${esc(T('🟡 means they have opened it on Full Marks (read the notes, used the 3D model or practised) but not marked it done yet.'))}</p>`:''}</div>`}).join(''):`<p class="muted" style="margin-top:14px">${esc(T('No homework yet.'))}</p>`}</div>`;
   const nw=el.querySelector('[data-hw-new]');if(nw)nw.onclick=()=>tHwModal(d);
   el.querySelectorAll('[data-hw-edit]').forEach(b=>b.onclick=()=>tHwModal(d,hw.find(h=>h.id===b.dataset.hwEdit)));
   el.querySelectorAll('[data-hw-del]').forEach(b=>b.onclick=async()=>{const h=hw.find(x=>x.id===b.dataset.hwDel);if(!confirm(T('Delete “{0}”?',h.title)))return;try{await SCH.api('DELETE',`/teacher/classes/${id}/homework/${h.id}`);toast('✓',T('Homework deleted'));tRefresh()}catch(e){toast('⚠️',e.message)}});
@@ -4554,7 +4622,7 @@ function tNewClass(){SCH.modal('New class',`<div class="sc-form"><label class="f
 async function tClass(main,seq,id,tab,quiet){const d=await SCH.api('GET',`/teacher/classes/${id}`);if(seq!==SCH.seq||tSame(main,d,quiet))return;
   const c=d.class,st=d.students,reqs=(d.pending||[]).map(p=>({...p,cls:c}));tNotify(reqs.length,quiet);
   const school=((SCH.role||{}).teacher||{}).school||'',link=`${location.origin}${location.pathname}#school/join/${c.code}/${c.subject}/${encodeURIComponent(school)}`;
-  const tabs=[['students',`Students (${st.length})`],['homework',`Homework (${(d.homework||[]).length})`],['grades','Gradebook'],['stats','Statistics']];
+  const onNow=st.filter(s=>ACT.on(s.activity)).length,tabs=[['students',`Students (${st.length})`],['activity',`${onNow?'<span class="act-live" aria-hidden="true"></span>':''}${esc(T('Activity'))}${onNow?` (${onNow} ${esc(T('on now'))})`:''}`],['homework',`Homework (${(d.homework||[]).length})`],['grades','Gradebook'],['stats','Statistics']];
   main.innerHTML=`<a class="sc-back" href="#teacher">← All classes</a>
     <div class="sc-head"><div class="sc-ctop" style="--c:${SCH.sCol(c.subject)}">${SCH.sGlyph(c.subject)}<div><h2 style="margin:0">${esc(c.name)}</h2><p class="muted">${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}${c.archived?' · <span class="sc-pill">Archived</span>':''}</p></div></div>
       <div class="sc-actions"><button class="btn" data-bulk${st.length?'':' disabled'}>＋ Grades for the class</button><button class="btn ghost" data-add>Add students</button><button class="btn ghost" data-set aria-label="Class settings">⚙︎</button></div></div>
@@ -4566,7 +4634,7 @@ async function tClass(main,seq,id,tab,quiet){const d=await SCH.api('GET',`/teach
   tReqBind(main,reqs);
   main.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>SCH.copy(b.dataset.copy));
   main.querySelector('[data-bulk]').onclick=()=>tBulk(d);main.querySelector('[data-add]').onclick=()=>tAddStudents(d);main.querySelector('[data-set]').onclick=()=>tSettings(d);
-  const body=$('#tcBody');if(tab==='grades')tBook(body,d);else if(tab==='stats')tStats(body,d);else if(tab==='homework')tHw(body,d);else tStudents(body,d)}
+  const body=$('#tcBody');if(tab==='grades')tBook(body,d);else if(tab==='stats')tStats(body,d);else if(tab==='homework')tHw(body,d);else if(tab==='activity')tActivity(body,d);else tStudents(body,d)}
 
 function tStudents(el,d){const sc=d.scale,F=TCH.f,id=d.class.id,week=Date.now()-7*864e5;
   if(!d.students.length){el.innerHTML=`<div class="sc-card sc-empty"><div class="big">👋</div><h3>No students yet</h3><p class="muted">Share the class code <b>${esc(d.class.code)}</b>. When students ask to join, you approve them here. You can also add students by email.</p></div>`;return}
@@ -4581,7 +4649,7 @@ function tStudents(el,d){const sc=d.scale,F=TCH.f,id=d.class.id,week=Date.now()-
       return `<tr class="go" data-s="${esc(s.email)}"><td class="nm"><div class="sc-who">${SCH.av(s.name,s.email)}<div><b>${esc(s.name)}</b><small>${esc(s.email)}</small></div></div></td>
         <td data-l="Average">${SCH.let(m.avgLetter,sc)} ${SCH.pct(m.avgPct)}</td><td data-l="Trend">${SCH.trend(m.trend)}</td><td data-l="Grades">${m.count}</td>
         <td data-l="Last grade">${last?`${SCH.badge(last,sc)} <small class="muted">${esc(last.title||SCH.tName(last.type))}</small>`:'—'}</td>
-        <td data-l="This week">${a?esc(T('{0} questions',a.week)):'—'}</td><td data-l="Last active">${a?esc(SCH.ago(a.lastActive)):'<span class="muted">not yet</span>'}</td>
+        <td data-l="This week">${a?`${esc(T('{0} questions',a.week))}${a.minsWeek?`<small class="muted" style="display:block">${esc(ACT.dur(a.minsWeek))}</small>`:''}`:'—'}</td><td data-l="Last active">${ACT.on(a)?`<span class="act-on"><span class="act-live" aria-hidden="true"></span>${esc(T('On now'))}</span><small class="act-doing">${ACT.nowTxt(a,d.class)}</small>`:a?esc(SCH.ago(a.lastActive)):'<span class="muted">not yet</span>'}</td>
         <td class="act"><button class="sc-plus" data-g="${esc(s.email)}" title="Add a grade" aria-label="Add a grade for ${esc(s.name)}">＋</button></td></tr>`}).join('')}</tbody></table>`:'<p class="muted">No students match.</p>';
     $$('#tsList tr.go').forEach(tr=>tr.onclick=e=>{if(e.target.closest('[data-g]'))return;location.hash=`teacher/c/${id}/s/${encodeURIComponent(tr.dataset.s)}`});
     $$('#tsList [data-g]').forEach(b=>b.onclick=()=>tGrade(d,b.dataset.g))};
@@ -4614,6 +4682,53 @@ function tStats(el,d){const S=d.stats,sc=d.scale,st=d.students,nm=e=>(st.find(s=
       <div class="sc-card"><h4>Assessments</h4>${SCH.bars(S.assessments.slice(0,12).map(a=>({l:`${a.title||SCH.tName(a.type)} · ${SCH.short(a.date)}`,v:a.avg,t:a.avg==null?'—':a.avg+'%',c:SCH.sCol(a.subject)})))}</div>
       ${Object.keys(bySub).length>1?`<div class="sc-card"><h4>By subject</h4>${SCH.bars(Object.entries(bySub).map(([k,v])=>({l:SCH.sName(k),v:v.reduce((a,b)=>a+b,0)/v.length,t:Math.round(v.reduce((a,b)=>a+b,0)/v.length)+'%',c:SCH.sCol(k)})))}</div>`:''}
       <div class="sc-card"><h4>Practice on Full Marks this week</h4>${prac.length?SCH.bars(prac.slice(0,15).map(s=>({l:s.name,v:s.activity.week/maxW*100,t:T('{0} questions',s.activity.week)}))):'<p class="muted">No practice yet. It shows up once students sign in to Full Marks and revise.</p>'}</div></div>`}
+
+/* ---------- teachers: what the students are doing ---------- */
+const ACT={
+  K:{notes:['📖','Read the notes'],'3d':['🧊','Explored the 3D model'],explore:['🧪','Explored'],video:['▶️','Watched the explainer'],level:['🎯','Practice'],quiz:['✍️','Practice'],exam:['⏱️','Timed exam'],game:['🎮','Played'],homework:['✅','Marked homework as done']},
+  NOW:{notes:'Reading the notes',explore:'Exploring',video:'Watching the explainer',level:'Doing practice',quiz:'Answering questions',exam:'In a timed exam',browse:'Looking around',levels:'Picking a practice level',games:'In the games'},
+  KINDS:[['','Everything'],['notes','Notes'],['3d','3D models'],['video','Explainers'],['practice','Practice and exams'],['game','Games'],['homework','Homework']],
+  fits(r,k){return !k||(k==='practice'?['level','quiz','exam'].includes(r.kind):k==='3d'?['3d','explore'].includes(r.kind):r.kind===k)},
+  dur(m){m=Math.round(m||0);if(m<1)return T('under a minute');if(m<60)return T('{0} min',m);return m%60?T('{0} h {1} min',Math.floor(m/60),m%60):T('{0} h',m/60)},
+  on(a){return !!(a&&a.now&&a.at&&Date.now()-Date.parse(a.at)<5*60e3)},
+  col(p){return p>=70?'var(--ok)':p<50?'var(--bad)':'var(--gold)'},
+  tag(r,cls){return r.subject&&cls&&(r.subject!==cls.subject||(r.level&&r.level!==cls.level))&&SUBJECTS[r.subject]?` <span class="act-tag">${esc(SCH.sName(r.subject))}${r.level?' '+esc(LV(r.level)):''}</span>`:''},
+  what(r,cls){const [,lab]=this.K[r.kind]||['',r.kind],main=r.kind==='level'?`${r.topic||''} · ${T('Level {0}',r.lvl||1)}`:r.topic||'',bits=[];
+    if(r.pct!=null)bits.push(`<b class="act-pct" style="--c:${this.col(r.pct)}">${r.pct}%</b>${r.n?` <small>${esc(T('{0} questions',r.n))}</small>`:''}`);
+    if(r.mins)bits.push(esc(this.dur(r.mins)));if(r.pts!=null)bits.push(esc(T('{0} points',r.pts)));
+    return `<span class="act-what"><b>${esc(T(lab))}</b>${main?' · '+esc(main):''}${this.tag(r,cls)}</span>${bits.length?`<span class="act-meta">${bits.join(' · ')}</span>`:''}`},
+  ic(r){return (this.K[r.kind]||['•'])[0]},
+  nowTxt(a,cls){const n=a.now;return `${esc(T(this.NOW[n.kind]||'On Full Marks'))}${n.topic&&n.kind!=='games'?': <b>'+esc(n.topic)+'</b>':''}${this.tag(n,cls)}${n.mins>=1?` <small class="muted">· ${esc(this.dur(n.mins))}</small>`:''}`},
+  day(k){const t=today(),y=new Date(Date.now()-864e5),yk=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`;return k===t?T('Today'):k===yk?T('Yesterday'):SCH.date(k)},
+  local(at){const d=new Date(at);return isNaN(d)?{k:'',t:''}:{k:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,t:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}},
+  todayMins(a){return a&&a.mins14?a.mins14[today()]||0:0},
+  // a timeline grouped by day; who(r) adds the student's name for class feeds
+  feed(list,cls,who){if(!list.length)return `<p class="muted">${esc(T('Nothing here yet.'))}</p>`;let out='',k=null;
+    for(const r of list){const l=this.local(r.at);if(l.k!==k){if(k!==null)out+='</ul>';k=l.k;out+=`<h5 class="act-day">${esc(this.day(k))}</h5><ul class="act-feed">`}
+      out+=`<li><time>${esc(l.t)}</time><span class="act-ic" aria-hidden="true">${this.ic(r)}</span><div>${who?who(r):''}${this.what(r,cls)}</div></li>`}
+    return out+'</ul>'}};
+
+async function tActivity(el,d){const id=d.class.id,cls=d.class,st=d.students,F=TCH.af||(TCH.af={who:'',kind:''}),A=s=>s.activity||{},week=Date.now()-7*864e5;
+  const ons=st.filter(s=>ACT.on(s.activity)),tk=today(),todays=st.filter(s=>ACT.todayMins(s.activity)>0||(A(s).days14||{})[tk]>0||A(s).lastActive===tk),
+    idle=st.filter(s=>!A(s).lastActive||SCH.d(A(s).lastActive)<week),minsW=st.reduce((a,s)=>a+(A(s).minsWeek||0),0),qW=st.reduce((a,s)=>a+(A(s).week||0),0),
+    hw=d.homework||[],hd=hw.reduce((a,h)=>a+h.doneCount,0),ht=hw.reduce((a,h)=>a+h.total,0),link=s=>`#teacher/c/${esc(id)}/s/${encodeURIComponent(s.email)}`;
+  if(!st.length){el.innerHTML=`<div class="sc-card sc-empty"><div class="big">👋</div><h3>${esc(T('No students yet'))}</h3><p class="muted">${esc(T('When students join, you see here what they study on Full Marks.'))}</p></div>`;return}
+  el.innerHTML=SCH.tiles([[`${ons.length?'<span class="act-live" aria-hidden="true"></span>':''}${ons.length}`,'On Full Marks now'],[todays.length,'Studied today'],[esc(ACT.dur(minsW)),'Time this week, whole class'],[qW,'Questions this week'],[ht?`${hd}/${ht}`:'—','Homework done'],[idle.length,'Not on for 7+ days',idle.length?'down':'']])
+    +`<div class="sc-cols"><div class="sc-card"><h4><span class="act-live" aria-hidden="true"></span> ${esc(T('Right now'))}</h4>${ons.length?`<ul class="act-now">${ons.map(s=>`<li><a href="${link(s)}">${SCH.av(s.name,s.email)}<div><b>${esc(s.name)}</b><span>${ACT.nowTxt(s.activity,cls)}</span></div></a></li>`).join('')}</ul>`:`<p class="muted" style="margin:0">${esc(T('Nobody is on Full Marks right now. This page updates by itself.'))}</p>`}</div>
+      <div class="sc-card"><h4>📅 ${esc(T('Today'))}</h4>${todays.length?`<ul class="sc-list">${todays.sort((a,b)=>ACT.todayMins(b.activity)-ACT.todayMins(a.activity)).map(s=>{const a=A(s);return `<li><a href="${link(s)}">${esc(s.name)}</a><span><b>${esc(ACT.dur(ACT.todayMins(a)))}</b>${(a.days14||{})[tk]?` · ${esc(T('{0} questions',a.days14[tk]))}`:''}</span></li>`}).join('')}</ul>`:`<p class="muted" style="margin:0">${esc(T('Nobody has studied yet today.'))}</p>`}
+        ${idle.length?`<h4 style="margin-top:16px">💤 ${esc(T('Not on for a week or more'))}</h4><p class="act-idle">${idle.map(s=>`<a href="${link(s)}">${esc(s.name)}</a>`).join('')}</p>`:''}</div></div>
+    <div class="sc-card" style="margin-top:16px"><div class="sc-head" style="margin-bottom:6px"><h4 style="margin:0">${esc(T('Everything the class has done'))}</h4><div class="sc-tools" style="margin:0">
+      <select class="lbinput" id="afWho" aria-label="${esc(T('Student'))}">${SCH.opts([['',T('All students')],...st.map(s=>[s.email,s.name])],F.who)}</select>
+      <select class="lbinput" id="afKind" aria-label="${esc(T('What'))}">${SCH.opts(ACT.KINDS.map(([k,l])=>[k,T(l)]),F.kind)}</select></div></div>
+      <p class="sc-note" style="margin:0 0 6px">${esc(T('Notes, 3D models, explainers, practice levels, exams, games and homework — newest first. Times are when they finished.'))}</p><div id="afFeed">${(TCH.feedHtml||{})[id]||SCH.loading()}</div></div>`;
+  const draw=()=>{const f=(TCH.feeds||{})[id];if(!f)return;const nm=e=>(st.find(s=>s.email===e)||{}).name||e,list=f.filter(r=>(!F.who||r.email===F.who)&&ACT.fits(r,F.kind)).slice(0,TCH.afN||120);
+    const html=ACT.feed(list,cls,F.who?null:r=>`<a class="act-who" href="#teacher/c/${esc(id)}/s/${encodeURIComponent(r.email)}">${esc(nm(r.email))}</a> `)
+      +(f.filter(r=>(!F.who||r.email===F.who)&&ACT.fits(r,F.kind)).length>list.length?`<button class="btn ghost sm" id="afMore">${esc(T('Show more'))}</button>`:'');
+    const box=$('#afFeed');if(!box)return;box.innerHTML=html;if(!F.who&&!F.kind&&!TCH.afN)(TCH.feedHtml||(TCH.feedHtml={}))[id]=html;
+    const m=$('#afMore');if(m)m.onclick=()=>{TCH.afN=(TCH.afN||120)+200;draw()}};
+  $('#afWho').onchange=e=>{F.who=e.target.value;draw()};$('#afKind').onchange=e=>{F.kind=e.target.value;draw()};
+  try{const r=await SCH.api('GET',`/teacher/classes/${id}/activity`);(TCH.feeds||(TCH.feeds={}))[id]=r.feed;draw()}
+  catch(e){const box=$('#afFeed');if(box&&!(TCH.feedHtml||{})[id])box.innerHTML=`<p class="muted">${esc(e.message)}</p>`}}
 
 function tGrade(d,email,g,preset){const c=d.class,sc=d.scale,s=d.students.find(x=>x.email===email)||{name:email},v=g||Object.assign({subject:c.subject,type:'test',date:today(),weight:1},preset||{});let letter=v.letter||'';
   SCH.modal(g?'Edit grade':'Add a grade',`<p class="muted" style="margin-top:0">${esc(s.name)} · ${esc(c.name)}</p><div class="sc-form">
@@ -4667,6 +4782,10 @@ function tSettings(d){const c=d.class;
     for(const s of d.students)for(const g of s.grades)rows.push([s.name,s.email,g.date,g.title,SCH.tName(g.type),SCH.sName(g.subject),g.letter||'',g.pct??'',g.weight||1,g.note||'']);
     const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv'}));a.download=`${c.name.replace(/[^\w-]+/g,'_')}_grades.csv`;document.body.appendChild(a);a.click();a.remove()}}
 
+// minutes on Full Marks per day for the last 14 days, as small bars
+function tMinsChart(a){const m=(a&&a.mins14)||{},q=(a&&a.days14)||{},days=[];for(let i=13;i>=0;i--){const x=new Date(Date.now()-i*864e5);days.push(`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`)}
+  const mx=Math.max(10,...days.map(k=>m[k]||0));
+  return `<div class="act-mins">${days.map(k=>{const v=m[k]||0;return `<div title="${esc(SCH.short(k))}: ${esc(ACT.dur(v))}${q[k]?' · '+esc(T('{0} questions',q[k])):''}"><i style="--v:${v/mx*100}%"></i><small>${esc(new Date(k+'T12:00:00').toLocaleDateString([],{weekday:'narrow'}))}</small>${v?`<b>${Math.round(v)}</b>`:''}</div>`}).join('')}</div><p class="sc-note" style="margin:2px 0 8px">${esc(T('Minutes a day. A minute counts when the page is open and they are using it.'))}</p>`}
 async function tStudent(main,seq,id,email,quiet){const p=await SCH.api('GET',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`);if(seq!==SCH.seq||tSame(main,p,quiet))return;
   const c=p.class,sc=p.scale,m=p.summary,a=p.activitySummary,act=p.activity,stu=p.student,col=SCH.sCol(c.subject),d={class:c,scale:sc,students:[{...stu,grades:p.grades}]};
   const subs=[...new Set(p.grades.map(g=>g.subject))],gsub=subs.includes(TCH.gsub)?TCH.gsub:'',shown=p.grades.filter(g=>!gsub||g.subject===gsub).slice().reverse();
@@ -4675,17 +4794,24 @@ async function tStudent(main,seq,id,email,quiet){const p=await SCH.api('GET',`/t
   main.innerHTML=`<a class="sc-back" href="#teacher/c/${esc(id)}">← ${esc(c.name)}</a>
     <div class="sc-head"><div class="sc-who">${SCH.av(stu.name,stu.email,true)}<div><h2 style="margin:0">${esc(stu.name)}</h2><p class="muted">${esc(stu.email)} · ${stu.joinedAt?esc(T('joined {0}',SCH.date(stu.joinedAt))):esc(T('added {0}',SCH.date(stu.addedAt)))}</p></div></div>
       <div class="sc-actions"><button class="btn" data-g>＋ Add grade</button><button class="btn ghost" data-hw>📚 Set homework</button><button class="btn ghost" data-ren>Rename</button><button class="btn ghost" data-rm>Remove</button></div></div>
-    ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades'],[a?a.answered:'—','Questions answered'],[a&&a.accuracy!=null?a.accuracy+'%':'—','Accuracy'],[a?a.active30:'—','Active days (30)'],[a?(a.streak?'🔥 '+a.streak:0):'—','Streak']])}
+    ${ACT.on(a)?`<div class="act-banner"><span class="act-live" aria-hidden="true"></span><div><b>${esc(T('On Full Marks now'))}</b><span>${ACT.nowTxt(a,c)}</span></div></div>`:''}
+    ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades'],[a?a.answered:'—','Questions answered'],[a&&a.accuracy!=null?a.accuracy+'%':'—','Accuracy'],[a?a.active30:'—','Active days (30)'],[a?esc(ACT.dur(a.minsWeek)):'—','Time this week'],[a?(a.streak?'🔥 '+a.streak:0):'—','Streak']])}
     <div class="sc-cols"><div class="sc-card"><h4>Results over time</h4>${SCH.chart(p.grades.map(g=>({l:SCH.short(g.date),v:SCH.score(g,sc),t:`${g.title||SCH.tName(g.type)}: ${SCH.gtxt(g)}`})),col)}</div>
       <div class="sc-card"><h4>By subject</h4>${SCH.bars(Object.entries(m.bySubject||{}).map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}</div></div>
     <div class="sc-card" style="margin-top:16px"><div class="sc-head" style="margin-bottom:10px"><h4 style="margin:0">Grades</h4>${subs.length>1?`<select class="lbinput" id="gsSub" style="width:auto;margin:0" aria-label="Subject">${SCH.opts([['','All subjects'],...subs.map(k=>[k,SCH.sName(k)])],gsub)}</select>`:''}</div>
       ${shown.length?`<table class="sc-table cards"><thead><tr><th>Date</th><th>Assessment</th><th>Grade</th><th>Weight</th><th>Note</th><th></th></tr></thead><tbody>${shown.map(g=>`<tr class="go" data-id="${esc(g.id)}"><td data-l="Date">${esc(SCH.date(g.date))}</td><td class="nm"><b>${esc(g.title||SCH.tName(g.type))}</b> <small class="muted">${esc(SCH.tName(g.type))}${subs.length>1?' · '+esc(SCH.sName(g.subject)):''}</small></td><td data-l="Grade">${SCH.badge(g,sc)} ${g.letter?SCH.pct(g.pct):''}</td><td data-l="Weight">×${g.weight||1}</td><td data-l="Note">${esc(g.note||'')}</td><td class="act"><button class="btn ghost sm" data-e="${esc(g.id)}">Edit</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">No grades yet. Use ＋ Add grade.</p>'}</div>
-    <div class="sc-card" style="margin-top:16px"><h4>📚 Homework</h4>${(p.homework||[]).length?(p.homework||[]).map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<HW.today();return `<div class="hw-item${h.done?' done':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(T('due {0}',SCH.date(h.due))):''} · ${h.done?esc(T('done {0}',SCH.ago(h.doneAt))):esc(T('not done yet'))}${h.to?' · '+esc(T('set for them')):''}</small></div></div></div>`}).join(''):`<p class="muted">${esc(T('No homework set yet.'))}</p>`}</div>
+    <div class="sc-card" style="margin-top:16px"><h4>📚 Homework</h4>${(p.homework||[]).length?(p.homework||[]).map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<HW.today();return `<div class="hw-item${h.done?' done':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(T('due {0}',SCH.date(h.due))):''} · ${h.done?esc(T('done {0}',SCH.ago(h.doneAt))):esc(T('not done yet'))}${h.to?' · '+esc(T('set for them')):''}</small></div></div>${(()=>{const k=HW.key(h.link),w=k&&a&&a.touched?a.touched[k]:null;
+      return h.link?`<div class="hw-link">🔗 ${esc(HW.label(h.link))}</div><p class="hw-work">${w?`${w.kinds.map(x=>`<span>${ACT.ic({kind:x})} ${esc(T((ACT.K[x]||['',x])[1]))}</span>`).join('')}${w.pct!=null?`<span>🎯 ${esc(T('best {0}%',w.pct))}</span>`:''}${w.mins?`<span>⏱️ ${esc(ACT.dur(w.mins))}</span>`:''}`:`<span class="muted">${esc(T('Not opened on Full Marks yet'))}</span>`}</p>`:''})()}</div>`}).join(''):`<p class="muted">${esc(T('No homework set yet.'))}</p>`}</div>
     <div class="sc-card" style="margin-top:16px"><h4>Practice on Full Marks</h4>${act?`<p class="muted" style="margin:0">Last active <b>${esc(SCH.ago(a.lastActive))}</b> · ${esc(T('{0} questions this week',a.week))} · ${a.xp} XP · ${a.exams} timed exams · updated ${esc(SCH.ago(act.at))}</p>
       <div class="sc-heat" aria-label="Questions answered per day, last 8 weeks">${days.join('')}</div><p class="sc-note" style="margin:0">Last 8 weeks, one square a day</p>
       <div class="sc-cols"><div><h4>💪 Strong topics</h4>${topicList(p.strong)}</div><div><h4>🎯 Needs work</h4>${topicList(p.weak)}</div></div>
-      ${(act.recent||[]).length?`<h4 style="margin-top:16px">Recent practice</h4><ul class="sc-list">${act.recent.slice(0,8).map(r=>`<li><span>${esc(SCH.sName(r.subject))} · ${esc(r.topic||'')}</span><span>${r.pct!=null?`<b>${r.pct}%</b> · `:''}<small class="muted">${esc(SCH.ago(r.at))}</small></span></li>`).join('')}</ul>`:''}`
-      :`<p class="muted" style="margin:0">No practice yet. It shows up here once ${esc(stu.name)} signs in to Full Marks with ${esc(stu.email)} and revises.</p>`}</div>`;
+`
+      :`<p class="muted" style="margin:0">No practice yet. It shows up here once ${esc(stu.name)} signs in to Full Marks with ${esc(stu.email)} and revises.</p>`}</div>
+    ${act?`<div class="sc-card" style="margin-top:16px"><div class="sc-head" style="margin-bottom:6px"><h4 style="margin:0">${esc(T('What {0} has been doing',stu.name.split(' ')[0]))}</h4><select class="lbinput" id="spKind" style="width:auto;margin:0" aria-label="${esc(T('What'))}">${SCH.opts(ACT.KINDS.map(([k,l])=>[k,T(l)]),TCH.spk||'')}</select></div>
+      <h5 class="act-day" style="margin-top:4px">${esc(T('Time on Full Marks, last 14 days'))}</h5>${tMinsChart(a)}<div id="spFeed"></div></div>`:''}`;
+  const tl=act?[...(act.recent||[]),...(p.homework||[]).filter(h=>h.done&&h.doneAt).map(h=>({at:h.doneAt,kind:'homework',topic:h.title}))].sort((x,y)=>(y.at||'').localeCompare(x.at||'')):[];
+  const spDraw=()=>{const b=$('#spFeed');if(b)b.innerHTML=ACT.feed(tl.filter(r=>ACT.fits(r,TCH.spk||'')),c)};spDraw();
+  const spk=$('#spKind');if(spk)spk.onchange=e=>{TCH.spk=e.target.value;spDraw()};
   const gs=$('#gsSub');if(gs)gs.onchange=e=>{TCH.gsub=e.target.value;main.dataset.sig='';tStudent(main,SCH.seq,id,email)};
   main.querySelector('[data-g]').onclick=()=>tGrade(d,email);
   main.querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>tGrade(d,email,p.grades.find(g=>g.id===tr.dataset.id)));
@@ -18918,6 +19044,7 @@ function route(){Explainer.close();const h=location.hash.slice(1),hb=h.split('/'
   $$('.nav a.l').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+p));
   $('#navlinks').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
   document.body.classList.toggle('on-home',p==='home');topbar.classList.toggle('scrolled',p!=='home'&&scrollY>20);
+  if(p!=='study')Track.set(p==='games'?{kind:'games',subject,level,topic:T('Games')}:null);
   if(p!=='games')stopGame();if(p==='study')renderStudy();else endSession();if(p==='games')renderGames();if(p==='me')renderMe();if(p==='plan')renderPlan();if(p==='voices')renderVoices();else stopVoicePreview();if(p==='school')renderSchool(h);if(p==='teacher')renderTeacher(h);if(p==='admin')renderAdmin();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 $$('.nav a.l, .brand').forEach(x=>x.addEventListener('click',e=>{if(x.getAttribute('href')===location.hash){e.preventDefault();route()}}));
@@ -18926,7 +19053,7 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();
+renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
