@@ -273,7 +273,8 @@ section.page.on{display:block;animation:pageIn .55s cubic-bezier(.2,.8,.2,1)}
 .step p{color:var(--muted);margin:0}
 
 /* boards + compare */
-.boards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.boards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+body.has-full .free-only{display:none!important}
 @media (max-width:760px){.boards{grid-template-columns:1fr}}
 .board-card{position:relative;background:var(--paper);border-radius:18px;padding:26px;box-shadow:var(--shadow),0 0 0 1px var(--line);overflow:hidden}
 .board-card h3{font-size:26px}
@@ -1379,13 +1380,24 @@ html.i18n .board-ui{display:none!important}
 .sc-actions{display:flex;gap:10px;flex-wrap:wrap}
 .sc-back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:10px}
 .sc-back:hover{color:var(--stain)}
+.lvl-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.lvl-head h3{margin:0 0 4px}.lvl-sum{text-align:center;padding:10px 16px;border-radius:14px;background:var(--paper);box-shadow:0 0 0 1px var(--line);flex:none}.lvl-sum b{display:block;font:800 24px/1 "Plus Jakarta Sans",sans-serif}.lvl-sum small{color:var(--muted);font-weight:700}
+.lvl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:16px 0 4px}
+.lvl-card{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border-radius:16px;border:0;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);cursor:pointer;font:inherit;color:inherit;transition:transform .2s,box-shadow .2s;animation:popIn .4s calc(var(--i)*40ms) both}
+.lvl-card:hover{transform:translateY(-2px)}.lvl-card.next{box-shadow:var(--shadow),0 0 0 2px var(--brand,#4361EE)}.lvl-card.cleared .lvl-n{background:var(--ok,#2F9E44);color:#fff}
+.lvl-n{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font:800 17px "Plus Jakarta Sans",sans-serif;background:var(--stain-soft,#EDF2FF);color:var(--stain,#4361EE);flex:none}.lvl-t{flex:1;min-width:0}.lvl-t b{display:block;font-size:15px}.lvl-t small{color:var(--muted);font-weight:600}.lvl-s{font-size:14px;white-space:nowrap}
 .hw-item{border-radius:14px;padding:14px 16px;margin:10px 0;background:var(--bg,#F8F9FC);box-shadow:0 0 0 1px var(--line)}
 .hw-item.done{opacity:.72}.hw-top{display:flex;gap:12px;align-items:flex-start}.hw-top>div:nth-child(2){flex:1;min-width:0}.hw-top b{display:block}.hw-top small{color:var(--muted);font-weight:600}
 .hw-ic{font-size:22px;line-height:1;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--paper);box-shadow:0 0 0 1px var(--line);flex:none}
 .hw-link{display:inline-block;margin:10px 0 0;font-weight:700;font-size:14px}.hw-note{white-space:pre-wrap;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--paper);box-shadow:0 0 0 1px var(--line);font-size:14px}
 .hw-prog{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:700;font-size:13px;color:var(--muted)}.hw-bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}.hw-bar i{display:block;height:100%;background:var(--ok,#2F9E44);border-radius:99px}
 .hw-item details{margin-top:8px;font-size:14px}.hw-item details p{margin:6px 0}.hw-late{color:var(--bad,#E03131)!important}.hw-box{margin:0 0 18px}.hw-box h4{display:flex;align-items:center;gap:8px}
-.hw-pick[hidden]{display:none!important}@media (max-width:560px){.hw-top{flex-wrap:wrap}.hw-top .sc-actions{width:100%;padding-left:48px}}.hw-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hw-pick{display:flex;flex-wrap:wrap;gap:6px 14px;max-height:180px;overflow:auto;padding:8px 2px}.hw-pick label{flex-direction:row!important;align-items:center;gap:6px!important;font-weight:600!important;color:var(--ink)!important}
+.hw-pick[hidden]{display:none!important}
+.hw-item.new{border-color:var(--stain);box-shadow:0 0 0 3px color-mix(in srgb,var(--stain) 18%,transparent)}
+.hw-new{display:inline-block;background:var(--stain);color:#fff;font:800 10.5px "Inter",sans-serif;letter-spacing:.08em;padding:3px 7px;border-radius:7px;margin-right:8px;vertical-align:2px}
+.hw-notice{position:fixed;z-index:140;right:18px;top:78px;width:390px;max-width:calc(100vw - 24px);display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:var(--paper);color:var(--ink);border-radius:16px;box-shadow:var(--shadow-lg),0 0 0 2px var(--stain);animation:dropIn .35s cubic-bezier(.2,1.2,.4,1)}
+.hw-notice>div{flex:1;min-width:0}.hw-notice b{display:block;font-size:15px}.hw-notice small{display:block;color:var(--muted);font-size:13px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.hw-n-ic{font-size:26px}.hw-n-x{border:0;background:none;color:var(--muted);font-size:15px;cursor:pointer;padding:4px;align-self:flex-start}
+@media (max-width:600px){.hw-notice{right:12px;left:12px;top:70px;width:auto}}@media (max-width:560px){.hw-top{flex-wrap:wrap}.hw-top .sc-actions{width:100%;padding-left:48px}}.hw-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hw-pick{display:flex;flex-wrap:wrap;gap:6px 14px;max-height:180px;overflow:auto;padding:8px 2px}.hw-pick label{flex-direction:row!important;align-items:center;gap:6px!important;font-weight:600!important;color:var(--ink)!important}
 .sc-card{background:var(--paper);border-radius:18px;padding:24px;box-shadow:var(--shadow),0 0 0 1px var(--line);animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both}
 .sc-card+.sc-card{margin-top:16px}
 .sc-card h3{margin:0 0 4px;font:800 21px/1.2 "Plus Jakarta Sans",sans-serif}
@@ -1847,6 +1859,7 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 .langbtn:hover{box-shadow:inset 0 0 0 1.5px var(--stain)}
 #navCta{margin-left:8px}
 #navCta[hidden]{display:none}
+.navlinks a.l[hidden]{display:none!important}
 @media (max-width:860px){.navlinks .langbtn{align-self:flex-start;margin:6px 0 4px 6px}.navlinks #navCta{margin:4px 0 0}}
 @media (min-width:861px) and (max-width:1100px){.nav{gap:8px}.nav a.l{padding:8px 7px;font-size:14.5px}#navCta{margin-left:4px}}
 @media (min-width:861px) and (max-width:960px){#navCta{display:none}}
@@ -1950,9 +1963,9 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <button id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
     <nav class="navlinks" id="navlinks">
       <a class="l" href="#study">Study</a>
-      <a class="l" href="#plan">My Plan</a>
-      <a class="l" href="#games">Games</a>
-      <a class="l" href="#me">Progress</a>
+      <a class="l" href="#plan" data-stu>My Plan</a>
+      <a class="l" href="#games" data-stu>Games</a>
+      <a class="l" href="#me" data-stu>Progress</a>
       <a class="l" href="#school" id="navSchool">School</a>
       <button class="langbtn" id="langBtn" aria-label="Language" translate="no"></button>
       <a class="btn sm" href="#pricing" id="navCta">Get full access</a>
@@ -1970,12 +1983,12 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <div class="hero-text">
         <div class="pill"><b>NEW</b><span><span data-total-q>5,000+</span> exam-style questions, every one explained</span></div>
         <h1><span class="ln"><span>Revise smarter.</span></span><span class="ln"><span>Get <span class="grad">full marks</span></span></span><span class="ln"><span>in <span class="rot" id="rotWord"></span></span></span></h1>
-        <p class="lead">Your subject, your exam board (AQA, OCR or Edexcel) and your level — with notes for every subtopic, thousands of exam-style questions, timed exams, games, flashcards and a daily challenge that keeps your streak alive.</p>
+        <p class="lead">Your subject, your exam board (AQA, OCR, Edexcel or Cambridge) and your level — with notes for every subtopic, thousands of exam-style questions, timed exams, games, flashcards and a daily challenge that keeps your streak alive.</p>
         <div class="hero-cta">
           <a class="btn lg" href="#home" data-scroll="build" id="heroStart">Start revising free →</a>
           <button class="btn ghost lg" type="button" id="tourBtn">▶ How it works</button>
         </div>
-        <div class="trustbar">
+        <div class="trustbar free-only">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure payment</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>Cancel any time</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>First topic in every subject is free</span>
@@ -1992,8 +2005,8 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     </div>
     <div class="statsband">
       <div class="wrap stats">
-        <div class="stat rv" style="--d:0"><b data-count="9">0</b><span>subjects, GCSE to A-level</span></div>
-        <div class="stat rv" style="--d:1"><b data-count="3">0</b><span>exam boards: AQA, OCR, Edexcel</span></div>
+        <div class="stat rv" style="--d:0"><b data-count="10" data-count-subj>0</b><span>subjects, GCSE to A-level and Foundation year</span></div>
+        <div class="stat rv" style="--d:1"><b data-count="5" data-count-boards>0</b><span>exam boards: AQA, OCR A, OCR B, Edexcel, Cambridge</span></div>
         <div class="stat rv" style="--d:2"><b data-count-subs>0</b><span>subtopics with full notes</span></div>
         <div class="stat rv" style="--d:3"><b data-count-q>0</b><span>exam-style questions, each explained</span></div>
       </div>
@@ -2066,15 +2079,11 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
   </section>
   <div class="wrap">
     <div class="sec">
-      <div class="sec-head rv"><span class="eyebrow">Every exam board</span><h2>AQA, OCR, Edexcel — <span class="grad">properly covered</span></h2><p>Pick your board and the topic list follows its own specification.</p></div>
-      <div class="boards">
-        <div class="board-card rv" style="--d:0"><h3>AQA</h3><b>27<span>/27</span></b><div class="meter"><i data-w="100"></i></div><span class="muted">subject-and-level combinations, complete</span></div>
-        <div class="board-card rv" style="--d:1"><h3>OCR</h3><b>27<span>/27</span></b><div class="meter"><i data-w="100"></i></div><span class="muted">subject-and-level combinations, complete</span></div>
-        <div class="board-card rv" style="--d:2"><h3>Edexcel</h3><b>24<span>/27</span></b><div class="meter"><i data-w="89"></i></div><span class="muted">complete — Computer Science (AS/A2) and Economics (GCSE) aren't offered by Edexcel, so we point you to AQA or OCR for those</span></div>
-      </div>
+      <div class="sec-head rv"><span class="eyebrow">Every exam board</span><h2>Every exam board — <span class="grad">properly covered</span></h2><p>Pick your board and the topic list follows its own specification.</p></div>
+      <div class="boards" id="boardCards"></div>
     </div>
 
-    <div class="sec">
+    <div class="sec free-only">
       <div class="sec-head rv"><span class="eyebrow">Free or full access</span><h2>Start free. <span class="grad">Go all in</span> when you're ready.</h2><p>Try the first topic of any subject with no card needed — here's what changes when you subscribe.</p></div>
       <table class="compare rv">
         <tr><th></th><th>Free</th><th>Full access</th></tr>
@@ -2095,7 +2104,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <div class="mesh" aria-hidden="true"><i></i><i></i><i></i></div>
       <span class="eyebrow">Your exams are coming</span>
       <h2>Make every mark <span class="grad">count.</span></h2>
-      <p>Start with the first topic of any subject — free, no card needed.</p>
+      <p class="free-only">Start with the first topic of any subject — free, no card needed.</p>
       <a class="btn gold lg" href="#home" data-scroll="build">Start revising now →</a>
     </div>
   </div>
@@ -2461,6 +2470,19 @@ function topicLinks(t){const out={from:[],to:[]},s=SUBJECTS[subject],b=boardOf(s
 function tlinksHtml(t){const k=topicLinks(t);if(!k.from.length&&!k.to.length)return '';return `<div class="tlinks">${k.from.map(x=>`<button class="tlink" data-l="${x.l}" data-n="${esc(x.n)}"><i>⤴</i><span><small>Builds on ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}${k.to.map(x=>`<button class="tlink next" data-l="${x.l}" data-n="${esc(x.n)}"><i>→</i><span><small>Next at ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}</div>`}
 function wireTlinks(root){root.querySelectorAll('.tlink').forEach(a=>a.onclick=()=>{level=a.dataset.l;save();const T=levelData().topics,i=T.findIndex(x=>x.n===a.dataset.n);view={topic:i<0?null:i,sub:null,tab:'notes',check:false};renderStudy();scrollTo(0,0)})}
 const nq=x=>x.nq??(x.q.length+(x.q._gx?0:(x.ng||0))),nn=x=>x.nn??x.notes.length;
+// Practice in levels: a subtopic's questions, easiest first, split into levels of at most 20.
+const PL={max:20,names:['Warm-up','Getting there','Solid','Stretch','Challenge','Expert','Master','Legend','Champion','Full Marks'],
+  count:x=>Math.max(1,Math.ceil(nq(x)/20)),
+  diff(q){const t=String(q[0]||''),o=(q[1]||[]).join(' ');let d=t.length*.5+o.length*.2;if(/\d/.test(t+o)&&/calculat|work out|how many|how much|what is the (value|mass|volume|speed|energy|number)|find/i.test(t))d+=55;if(/\bNOT\b|EXCEPT|incorrect|false\b/.test(t))d+=40;if(/explain|evaluate|suggest|why|compare/i.test(t))d+=30;let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))%997;return d+h%9},
+  levels(x){const qs=x.q||[],n=qs.length;if(x._lv&&x._lv.n===n)return x._lv.l;const k=Math.max(1,Math.ceil(n/this.max)),sz=Math.ceil(n/k),ord=qs.map((q,i)=>[this.diff(q),i]).sort((a,b)=>a[0]-b[0]).map(p=>qs[p[1]]);
+    const l=[];for(let i=0;i<k;i++){const part=ord.slice(i*sz,(i+1)*sz);if(part.length)l.push(part)}x._lv={n,l};return l},
+  key:(x,i)=>`${pkey(x.key||x.n)}:L${i+1}`,
+  name(i){return this.names[i]||`Level ${i+1}`},
+  stars:p=>p==null?'':p>=90?'⭐⭐⭐':p>=70?'⭐⭐':p>=50?'⭐':'',
+  next(x){const P=getProg(),L=this.levels(x);const i=L.findIndex((_,k)=>(P[this.key(x,k)]??-1)<70);return i<0?L.length-1:i},
+  // starts level i; when it ends, the subtopic's overall score becomes the average of its levels
+  start(x,i){const L=this.levels(x);if(!L[i])return;startSession({title:`${x.n} ${x.title} · ${T('Level {0}',i+1)}`,qs:L[i],key:this.key(x,i),lvl:{x,i,of:L.length}})},
+  overall(x){const P=getProg(),L=this.levels(x);const avg=Math.round(L.reduce((s,_,k)=>s+(P[this.key(x,k)]||0),0)/L.length);saveProg(pkey(x.key||x.n),avg)}};
 const qCount=d=>d.full?d.topics.reduce((a,t)=>a+t.subs.reduce((b,x)=>b+nq(x),0),0):nq(d);
 function allQs(d){return d.full?d.topics.flatMap(t=>t.subs.flatMap(s=>s.q)):d.q}
 function freeQs(d){return d.full?d.topics.flatMap(t=>t.subs[0].q):d.q.slice(0,FREE_Q)}
@@ -2567,7 +2589,7 @@ function renderStudy(){Extra.ensure(subject,level);
 
   const x=t.subs[view.sub],open=premium||x.notes.length>0,prev=t.subs[view.sub-1],next=t.subs[view.sub+1];
   main.innerHTML=`<div class="topichead"><span class="tnum">${x.n}</span><h2>${esc(x.title)}</h2></div>
-    <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">Key notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">Practice · ${nq(x)}</button>${x.d||x.hasD||Lab.match(x,t).length?`<button class="tab ${view.tab==='explore'?'on':''}" data-tab="explore">🧪 Explore</button>`:''}</div>
+    <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">Key notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">Practice · ${PL.count(x)} ${PL.count(x)>1?'levels':'level'}</button>${x.d||x.hasD||Lab.match(x,t).length?`<button class="tab ${view.tab==='explore'?'on':''}" data-tab="explore">🧪 Explore</button>`:''}</div>
     <div id="subBody"></div>
     <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet PDF for topic ${esc(t.n)}</button><button class="btn ghost sm" id="noteSub">📝 Add a note</button></div>
     <div class="pager">${prev?`<button class="btn ghost" data-go="${view.sub-1}">← ${prev.n} ${esc(prev.title)}</button>`:'<span></span>'}${next?`<button class="btn ghost" data-go="${view.sub+1}">${next.n} ${esc(next.title)} →</button>`:''}</div>`;
@@ -2579,12 +2601,15 @@ function renderStudy(){Extra.ensure(subject,level);
   if(view.tab==='notes'){
     const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k)||L3.LIB[m.k])||(L3.mapMeta(x).parts.length>=4?{k:'map'}:null),h3=m3&&(Lab.title[m3.k]||L3.LIB[m3.k].title);
     body.innerHTML=`${m3?`<section class="lab-sec l3-hero" translate="no"><div class="lab-sech"><h3>${h3[0]} ${esc(h3[1])}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3><p class="muted">${esc(h3[2])}</p></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}<div class="actions" style="margin-top:0"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div>${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}<ol class="notes">${x.notes.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ol>${x.x&&x.x.length?`<div class="deeper"><h3>🔍 Go deeper</h3><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></div>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
-    $('#goPractice').onclick=()=>startSession({title:`${x.n} ${x.title}`,qs:x.q,key:pkey(x.key||x.n)});$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3)Lab.mount($('#heroHost'),m3,x,{hero:1});
+    $('#goPractice').onclick=()=>{view.tab='practice';renderStudy();scrollTo(0,0)};$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3)Lab.mount($('#heroHost'),m3,x,{hero:1});
   }else if(view.tab==='explore'){Lab.render(body,x,t)
   }else{
-    const sc=P[pkey(x.key||x.n)];
-    body.innerHTML=`<div class="quiz"><h3>${x.q.length} questions on ${esc(x.title)}</h3><p class="muted">${sc!=null?`Your best score is ${sc}%.`:'You haven\u2019t tried these yet.'} Each answer comes with an explanation.</p><button class="btn" id="goPractice">Start</button></div>`;
-    $('#goPractice').onclick=()=>startSession({title:`${x.n} ${x.title}`,qs:x.q,key:pkey(x.key||x.n)});
+    const L=PL.levels(x),nx=PL.next(x),done=L.filter((_,k)=>(P[PL.key(x,k)]??-1)>=70).length;
+    body.innerHTML=`<div class="lvl-head"><div><h3>${esc(T('Practice in {0} levels',L.length))}</h3><p class="muted">${esc(T('Up to {0} questions per level, from easier to harder. Each answer comes with an explanation. Score 70% or more to clear a level.',PL.max))}</p></div><div class="lvl-sum"><b>${done}/${L.length}</b><small>${esc(T('cleared'))}</small></div></div>
+      <div class="lvl-grid">${L.map((qs,k)=>{const b=P[PL.key(x,k)],cl=b!=null&&b>=70;return `<button class="lvl-card${cl?' cleared':''}${k===nx?' next':''}" data-lvl="${k}" style="--i:${k}"><span class="lvl-n">${k+1}</span><span class="lvl-t"><b>${esc(T('Level {0}',k+1))} · ${esc(T(PL.name(k)))}</b><small>${esc(T('{0} questions',qs.length))}${b!=null?' · '+esc(T('best {0}%',b)):''}</small></span><span class="lvl-s">${cl?PL.stars(b):k===nx?'▶':''}</span></button>`}).join('')}</div>
+      <div class="actions"><button class="btn" id="goPractice">${esc(T('Start Level {0}',nx+1))} →</button></div>`;
+    body.querySelectorAll('[data-lvl]').forEach(b=>b.onclick=()=>PL.start(x,+b.dataset.lvl));
+    $('#goPractice').onclick=()=>PL.start(x,nx);
   }
 }
 
@@ -2751,7 +2776,7 @@ function startSession(o){
 }
 const fmt=ms=>{const s=Math.ceil(ms/1000);return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
 function finish(){if(!session||session.done)return;session.done=true;clearInterval(timerInt);timerInt=null;
-  const pct=Math.round(session.score/session.qs.length*100);if(session.key)saveProg(session.key,pct);
+  const pct=Math.round(session.score/session.qs.length*100);if(session.key)saveProg(session.key,pct);if(session.lvl)PL.overall(session.lvl.x);
   if(session.mockKey){const pb=+store.get(session.mockKey,'0');if(pct>pb)store.set(session.mockKey,String(pct))}
   if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);StuAct.log({subject,level,topic:session.title,pct,n:session.qs.length,kind:session.exam?'exam':'quiz'});StuAct.push(true);renderStudy();LB.pushXp()}
 
@@ -2761,14 +2786,15 @@ function renderSession(){
     const total=S.qs.length,pct=Math.round(S.score/total*100),wrong=S.answers.filter(a=>!a.ok);
     const msg=pct>=80?'Excellent. You\u2019re exam-ready on this material.':pct>=60?'Good. Review the questions below to close the gaps.':'Keep going. Read the explanations, revisit the notes, then try again.';
     main.innerHTML=`<div class="quiz result">${resultRing(pct)}<div class="xpgain">⚡ +${Math.round(pct/5)+10} XP bonus</div><h3>${S.score} out of ${total} correct${S.exam&&S.answers.length<total?` · ${total-S.answers.length} unanswered`:''}</h3><p class="muted">${msg}</p>
-      <div class="actions"><button class="btn" id="again">Try again</button><button class="btn ghost" id="exit">Back</button></div></div>
+      <div class="actions">${S.lvl&&S.lvl.i+1<S.lvl.of?`<button class="btn" id="nextLvl">${esc(T('Next: Level {0}',S.lvl.i+2))} →</button><button class="btn ghost" id="again">Try again</button>`:'<button class="btn" id="again">Try again</button>'}<button class="btn ghost" id="exit">${S.lvl?esc(T('All levels')):'Back'}</button></div></div>
       ${S.lockAfter&&!premium?lockCard(S.lockAfter):''}
       ${wrong.length?`<h3 style="margin-top:28px">Review your mistakes</h3>${wrong.map(a=>`<div class="review"><strong>${esc(a.q[0])}</strong><div>Your answer: <span class="badans">${esc(a.written?a.typed:a.q[1][a.pick])}</span>${a.written?' <small class="muted">(written)</small>':''}</div><div>Correct answer: <span class="goodans">${esc(a.q[1][a.q[2]])}</span></div><p class="muted">${esc(a.q[3])}</p>${a.written?`<button class="btn ghost sm" data-wok="${S.answers.indexOf(a)}">I was right, count it</button>`:''}</div>`).join('')}`:''}`;
-    $('#again').onclick=()=>startSession({title:S.title,qs:S.exam||S.title.startsWith('Mixed')?shuffle(S.qs):S.qs,key:S.key,timed:S.timed,exam:S.exam,lockAfter:S.lockAfter,mockKey:S.mockKey});
+    $('#again').onclick=()=>startSession({title:S.title,qs:S.exam||S.title.startsWith('Mixed')?shuffle(S.qs):S.qs,key:S.key,timed:S.timed,exam:S.exam,lockAfter:S.lockAfter,mockKey:S.mockKey,lvl:S.lvl});
+    if($('#nextLvl'))$('#nextLvl').onclick=()=>PL.start(S.lvl.x,S.lvl.i+1);
     $('#exit').onclick=()=>{endSession();renderStudy()};
     main.querySelectorAll('.review').forEach((r,i)=>r.style.setProperty('--i',i));animateRing(pct);
     main.querySelectorAll('[data-wok]').forEach(b=>b.onclick=()=>{const a=S.answers[+b.dataset.wok];if(!a||a.ok)return;a.ok=true;S.score++;Mist.track(a.q,true);
-      const p2=Math.round(S.score/S.qs.length*100);if(S.key)saveProg(S.key,p2);if(S.mockKey&&p2>+store.get(S.mockKey,'0'))store.set(S.mockKey,String(p2));renderSession()});
+      const p2=Math.round(S.score/S.qs.length*100);if(S.key)saveProg(S.key,p2);if(S.lvl)PL.overall(S.lvl.x);if(S.mockKey&&p2>+store.get(S.mockKey,'0'))store.set(S.mockKey,String(p2));renderSession()});
     return;
   }
   const q=S.qs[S.qi],total=S.qs.length,W=WR.asWritten(q);
@@ -3050,6 +3076,12 @@ const roundDown=n=>n>=1000?Math.floor(n/100)*100:n;
 $$('[data-total-q]').forEach(e=>e.textContent=fmtN(roundDown(TOTAL.q))+'+');
 $$('[data-count-q]').forEach(e=>{e.dataset.count=TOTAL.q;e.dataset.suffix=''});
 $$('[data-count-subs]').forEach(e=>e.dataset.count=TOTAL.subs);
+$$('[data-count-subj]').forEach(e=>e.dataset.count=Object.keys(SUBJECTS).length);$$('[data-count-boards]').forEach(e=>e.dataset.count=BOARDS.length);
+// exam boards on the home page: the courses each board runs at GCSE, AS and A-level, all covered
+(function boardCards(){const box=$('#boardCards');if(!box)return;const lv=['GCSE','AS','A2'],ks=Object.keys(SUBJECTS);
+  box.innerHTML=BOARDS.map(([b,l],i)=>{let n=0;const subj=new Set();for(const k of ks)for(const v of lv)if(SUBJECTS[k][v]&&SPECS[k]&&SPECS[k][b]&&SPECS[k][b][v]){n++;subj.add(k)}
+    const note=b==='ocrb'?`OCR’s B specifications, in the ${subj.size} subjects where OCR runs one`:`courses across ${subj.size} subjects — every one this board runs, complete`;
+    return `<div class="board-card rv" style="--d:${i}"><h3>${esc(l)}</h3><b>${n}<span> ${esc(T('courses'))}</span></b><div class="meter"><i data-w="100"></i></div><span class="muted">${esc(note)}</span></div>`}).join('')})();
 document.querySelector('meta[name=description]')?.setAttribute('content',`GCSE and A-level revision for ${Object.keys(SUBJECTS).length} subjects and every exam board: notes, ${fmtN(roundDown(TOTAL.q))}+ exam-style questions, timed exams, games and a daily challenge.`);
 
 /* ---------- confetti ---------- */
@@ -3491,7 +3523,10 @@ function subLine(){const a=ACCOUNT||{},pn=PLAN_NAME[a.plan]||'Full access',from=
   return `${pn} · ${from?from+' – ':'until '}${end} · ${a.cancelAtPeriodEnd?'cancelled, won’t renew':'renews automatically'}`}
 async function ensureAccount(){if(ACCOUNT||_acctLoading||!API_BASE||!authToken())return;_acctLoading=true;
   try{const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});ACCOUNT=await r.json();renderOwned();if(location.hash==='#me')renderMe()}catch(e){}_acctLoading=false}
-function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navCta');if(!sec||!box)return;
+function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navCta');
+  // with full access the "start free" and payment lines on the home page are just noise
+  document.body.classList.toggle('has-full',!!premium);const hs=$('#heroStart');if(hs)hs.textContent=premium?T('Start revising →'):T('Start revising free →');
+  if(!sec||!box)return;
   sec.classList.toggle('owned-on',!!premium);box.hidden=!premium;
   if(cta)cta.hidden=!!premium;
   if(!premium)return;if(!ACCOUNT)ensureAccount();
@@ -3924,7 +3959,7 @@ function tourDeck(){const s=SUBJECTS[subject],d=s[level],x=d&&d.full?d.topics[0]
   const sc=(art,h,lines,extra='')=>({lines,html:`<div class="xp-scene">${art}<h2>${h}</h2>${extra}</div>`});
   return {kicker:'Full Marks · 1-minute tour',title:'How Full Marks works',color:'#0E9F5D',scenes:[
     sc('<div class="xp-art"><span>🎓</span></div>','Welcome to Full Marks',['Welcome to Full Marks, revision for GCSE and A-level that actually sticks.','Here is how it works, in about a minute.']),
-    sc(`<div class="xp-art">${subs}</div>`,'Your subject, level and board',['Start by choosing your subject, your level and your exam board: AQA, OCR or Edexcel.','Everything you see is then matched to your exact course, so you only revise what is on your exam.']),
+    sc(`<div class="xp-art">${subs}</div>`,'Your subject, level and board',['Start by choosing your subject, your level and your exam board: AQA, OCR, Edexcel or Cambridge.','Everything you see is then matched to your exact course, so you only revise what is on your exam.']),
     {lines:['Every topic is split into short subtopics, each with clear key notes and a diagram that draws itself as you read.','Go deeper notes add worked examples, exam tips and common mistakes, and every topic has a cheat sheet you can save as a PDF.'],
       html:`<div class="xp-sub"><div class="xp-h"><i>NOTES</i>Short notes and animated diagrams</div>${x&&x.d?`<figure class="diag">${x.d}</figure>`:'<div class="xp-noart">📝</div>'}</div>`},
     sc('<div class="xp-art"><span>▶️</span><span>🗣️</span></div>','Watch the explainer',['Stuck on something? Press Watch the explainer on any topic.','A narrated animation, just like this one, talks you through every subtopic step by step, and highlights each part of the diagram as it is mentioned.']),
@@ -4253,7 +4288,9 @@ const SCH={seq:0,role:null,roleAt:0,
   foot(){const em=store.get('go-auth-email','');return em?`<p class="sc-note">Signed in as ${esc(em)} · <a href="#" data-out>Sign out</a></p>`:''},
   bindOut(main){main.querySelectorAll('[data-out]').forEach(a=>a.onclick=e=>{e.preventDefault();SCH.signOut()})},
   who(){return store.get('fm-who','')},
-  nav(){const a=$('#navSchool');if(!a)return;const t=this.who()==='teacher';a.setAttribute('href',t?'#teacher':'#school');a.textContent=t?T('Teacher'):T('School')},
+  // teachers get a short top bar (Study + Teacher portal); the student pages come back if they switch role
+  nav(){const a=$('#navSchool');if(!a)return;const t=this.who()==='teacher';a.setAttribute('href',t?'#teacher':'#school');a.textContent=t?T('Teacher portal'):T('School');
+    document.querySelectorAll('#navlinks [data-stu]').forEach(l=>l.hidden=t)},
   navDot(on){const a=$('#navSchool');if(!a)return;const d=a.querySelector('.sc-dot');if(on&&!d)a.insertAdjacentHTML('beforeend','<i class="sc-dot" aria-hidden="true"></i>');if(!on&&d)d.remove()}};
 
 /* who are you: teacher, student at a school, or studying alone */
@@ -4290,12 +4327,17 @@ const StuAct={t:null,
   push(now){if(!API_BASE||!authToken()||!this.joined())return;clearTimeout(this.t);this.t=setTimeout(()=>this.send(),now?800:15000)},
   async send(){try{await fetch(`${API_BASE}/me/activity`,{method:'PUT',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify({data:this.snap()})})}catch(e){/* offline: sent with the next answer */}},
   // On page load: are they in a class, and has a teacher added a grade since their last visit?
-  async boot(){if(!API_BASE||!authToken())return;
+  async boot(){if(!API_BASE||!authToken())return;this.at=Date.now();
     try{const d=await SCH.api('GET','/me/classes');this.setJoined(d.classes.length>0);if(!d.classes.length)return;this.push(true);
+      // new homework since they last opened the School page: a dot on School and a clear message
+      const seenHw=new Set(jget('fm-seen-hw',[])),newHw=d.classes.flatMap(c=>(c.homework||[]).filter(h=>!h.done&&!seenHw.has(h.id)).map(h=>[c,h]));
+      const told=this.told=this.told||new Set(),tell=newHw.filter(([,h])=>!told.has(h.id));
+      if(newHw.length&&!location.hash.startsWith('#school')){SCH.navDot(true);if(!tell.length)return;tell.forEach(([,h])=>told.add(h.id));const [c,h]=newHw[0];
+        setTimeout(()=>HW.notice(newHw.length>1?T('{0} new pieces of homework',newHw.length):T('New homework from {0}',c.teacher.name||c.name),newHw.length>1?newHw.slice(0,3).map(([,x])=>x.title).join(' · '):h.title+(h.due?' · '+T('due {0}',SCH.date(h.due)):'')),1200);return}
       const ids=d.classes.flatMap(c=>c.grades.map(g=>g.id));
       if(!store.get('fm-seen-init','')){store.set('fm-seen-grades',JSON.stringify(ids.slice(-3000)));store.set('fm-seen-init','1');return}
       const seen=new Set(jget('fm-seen-grades',[])),fresh=d.classes.flatMap(c=>c.grades.filter(g=>!seen.has(g.id)).map(g=>[c,g]));
-      if(fresh.length&&!location.hash.startsWith('#school')){SCH.navDot(true);const [c,g]=fresh[0];
+      if(fresh.length&&!location.hash.startsWith('#school')){SCH.navDot(true);if(fresh.every(([,g])=>told.has(g.id)))return;fresh.forEach(([,g])=>told.add(g.id));const [c,g]=fresh[0];
         setTimeout(()=>toast('📬',fresh.length>1?T('{0} new grades. Open School to see them.',fresh.length):T('New grade in {0}: {1}',c.name,SCH.gtxt(g))),1500)}}
     catch(e){/* signed out or offline */}}};
 
@@ -4318,6 +4360,7 @@ async function schoolRefresh(main){try{const d=await SCH.api('GET','/me/classes'
   if(JSON.stringify(d)!==main.dataset.sig){const was=(JSON.parse(main.dataset.sig||'{}').requests||[]).filter(r=>r.status==='pending').length,now=(d.requests||[]).filter(r=>r.status==='pending').length;
     schoolDraw(main,d);if(now<was&&d.classes.length){toast('🎉','Your teacher approved you! Full access is now free for you.');if(!premium)refreshPremiumFromServer()}}}catch(e){}}
 function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classes,rq=d.requests||[];StuAct.setJoined(cl.length>0);if(cl.length)StuAct.push(true);if(cl.length&&!premium&&!SCH.accessChecked){SCH.accessChecked=1;refreshPremiumFromServer()}
+  SchoolPage.seenHw=new Set(jget('fm-seen-hw',[]));$('.hw-notice')?.remove();
   const init=!!store.get('fm-seen-init',''),seen=new Set(jget('fm-seen-grades',[])),pend=rq.filter(r=>r.status==='pending'),dec=rq.filter(r=>r.status==='declined');
   const reqs=pend.map(r=>`<div class="sc-card" style="--c:${SCH.sCol(r.subject)}"><div class="sc-ctop" style="flex-wrap:wrap">${SCH.sGlyph(r.subject)}<div><b>${esc(r.name)}</b><small>${esc(SCH.sName(r.subject))} · ${esc(LV(r.level))}${r.teacher.name?' · '+esc(r.teacher.name):''}</small></div><span class="sc-pill gold" style="margin-left:auto">⏳ Waiting for your teacher</span></div>
       <p class="muted" style="margin:12px 0 0">You asked to join as <b>${esc(r.you||'')}</b> ${esc(SCH.ago(r.at))}. Your teacher sees your request now and will approve you. This page updates by itself.</p><p class="sc-note"><a href="#" data-leave="${esc(r.id)}" data-msg="Cancel this request?">Cancel request</a></p></div>`).join('')
@@ -4325,6 +4368,7 @@ function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classe
   const joinWait=jget('fm-join',null),cards=cl.map((c,i)=>schoolClassCard(c,i,seen,init)).join(''),jc=schoolJoinCard(cl.length>0||pend.length>0,joinWait);
   main.innerHTML=(joinWait&&joinWait.code?jc+reqs+cards:cl.length||pend.length?reqs+cards+jc:jc+reqs)+schoolTeacherCta()+SCH.foot();
   store.set('fm-seen-grades',JSON.stringify(cl.flatMap(c=>c.grades.map(g=>g.id)).slice(-3000)));store.set('fm-seen-init','1');SCH.navDot(false);
+  store.set('fm-seen-hw',JSON.stringify(cl.flatMap(c=>(c.homework||[]).map(h=>h.id)).slice(-3000)));
   SCH.bindOut(main);schoolJoinBind(main);
   main.querySelectorAll('[data-hwo]').forEach(b=>b.onclick=()=>{const h=(SchoolPage.hw||{})[b.dataset.hwo];if(h)HW.open(h.link,h.kind)});
   main.querySelectorAll('[data-hwd]').forEach(b=>b.onclick=async()=>{const h=(SchoolPage.hw||{})[b.dataset.hwd];if(!h)return;b.disabled=true;const done=b.dataset.v==='1';
@@ -4357,8 +4401,8 @@ function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)r
       if(location.hash!=='#school')location.hash='school';else renderSchool('school')}
     catch(e){msg.textContent=e.message;go.disabled=false;go.textContent=T('Send request to my teacher')}}}
 function schoolHw(c){const hw=c.homework||[];if(!hw.length)return '';const todo=hw.filter(h=>!h.done).length,today=HW.today();(SchoolPage.hw=SchoolPage.hw||{});hw.forEach(h=>SchoolPage.hw[h.id]={...h,cls:c.id});
-  return `<div class="hw-box"><h4>📚 ${esc(T('Homework'))} ${todo?`<span class="sc-pill gold">${esc(T('{0} to do',todo))}</span>`:`<span class="sc-pill">${esc(T('all done ✓'))}</span>`}</h4>${hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<today;
-    return `<div class="hw-item${h.done?' done':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(late?T('was due {0}',SCH.date(h.due)):T('due {0}',SCH.date(h.due))):''}</small></div></div>
+  return `<div class="hw-box"><h4>📚 ${esc(T('Homework'))} ${todo?`<span class="sc-pill gold">${esc(T('{0} to do',todo))}</span>`:`<span class="sc-pill">${esc(T('all done ✓'))}</span>`}</h4>${hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<today,fresh=!h.done&&SchoolPage.seenHw&&!SchoolPage.seenHw.has(h.id);
+    return `<div class="hw-item${h.done?' done':''}${fresh?' new':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${fresh?`<span class="hw-new">${esc(T('NEW'))}</span>`:''}${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(late?T('was due {0}',SCH.date(h.due)):T('due {0}',SCH.date(h.due))):''}</small></div></div>
       ${h.link?`<div class="hw-link">🔗 ${esc(HW.label(h.link))}</div>`:''}${h.note?`<p class="hw-note">${esc(h.note)}</p>`:''}
       <div class="hw-acts">${h.link?`<button class="btn sm" data-hwo="${esc(h.id)}">${esc(h.kind==='questions'?T('Start the questions →'):h.kind==='3d'?T('Open the 3D model →'):T('Open on Full Marks →'))}</button>`:''}<button class="btn ${h.done?'ghost ':''}sm" data-hwd="${esc(h.id)}" data-v="${h.done?0:1}">${esc(h.done?T('Mark as not done'):T('✓ Mark as done'))}</button></div></div>`}).join('')}</div>`}
 function schoolClassCard(c,i,seen,init){const sc=c.scale,m=c.summary,col=SCH.sCol(c.subject),asc=[...c.grades].reverse(),isNew=g=>init&&!seen.has(g.id),subs=Object.entries(m.bySubject||{});
@@ -4373,7 +4417,12 @@ function schoolClassCard(c,i,seen,init){const sc=c.scale,m=c.summary,col=SCH.sCo
     <p class="sc-note"><a href="#" data-leave="${esc(c.id)}" data-msg="Leave this class? Your teacher will no longer see your grades or practice.">Leave this class</a></p></div>`}
 
 /* ---------- homework: set by teachers, done by students ---------- */
-const HW={kinds:[['notes','📖','Read the notes'],['questions','✍️','Answer the questions'],['3d','🧪','Explore the 3D model'],['paper','📝','Do a past paper'],['other','📌','Other task']],
+const HW={
+  // a clear card in the corner when new homework has arrived; it opens the School page
+  notice(title,line){$('.hw-notice')?.remove();const n=document.createElement('div');n.className='hw-notice';n.setAttribute('role','status');
+    n.innerHTML=`<span class="hw-n-ic" aria-hidden="true">📚</span><div><b>${esc(title)}</b><small>${esc(line)}</small></div><a class="btn sm" href="#school">${esc(T('Open'))}</a><button type="button" class="hw-n-x" aria-label="${esc(T('Close'))}">✕</button>`;
+    document.body.appendChild(n);n.querySelector('a').onclick=()=>n.remove();n.querySelector('.hw-n-x').onclick=()=>n.remove()},
+  kinds:[['notes','📖','Read the notes'],['questions','✍️','Answer the questions'],['3d','🧪','Explore the 3D model'],['paper','📝','Do a past paper'],['other','📌','Other task']],
   kind(k){return this.kinds.find(x=>x[0]===k)||this.kinds[0]},
   today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
   label(l){return l?`${SCH.sName(l.subject)} · ${LV(l.level)} · ${l.n?l.n+' ':''}${l.sub}`:''},
@@ -18846,8 +18895,7 @@ const Acct={
     const item=(href,ic,label)=>`<a role="menuitem" href="${href}"><i aria-hidden="true">${ic}</i>${esc(label)}</a>`;
     const draw=role=>{const t=role&&role.teacher&&role.teacher.status==='teacher',admin=role&&role.admin,joined=role?role.joined:0;
       m.innerHTML=`<div class="acct-head"><span class="acct-av lg" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><div><b>${esc(em)}</b><small class="${premium?'ok':''}">${premium?'✓ '+esc(T('Full access')):esc(T('Free account'))}${t?' · '+esc(T('Teacher')):joined?' · '+esc(T('In a class')):''}</small></div></div>
-        ${item('#plan','📅',T('My plan'))}${item('#me','📈',T('My progress'))}${t?item('#teacher','🧑‍🏫',T('Teacher portal')):item('#school','🏫',T('My classes and grades'))}
-        ${admin?item('#admin','🛡️',T('Teacher approvals')):''}${premium?'':item('#pricing','⭐',T('Get full access'))}
+        ${admin?item('#admin','🛡️',T('Teacher approvals')):''}${premium?viaSchool()?'':item('#pricing','💳',T('My subscription')):item('#pricing','⭐',T('Get full access'))}
         <button type="button" role="menuitem" class="acct-who"><i aria-hidden="true">${WHO.label()[0]}</i>${esc(T('I use Full Marks as: {0}',WHO.label()[1]))}</button>
         <button type="button" role="menuitem" class="acct-out"><i aria-hidden="true">↪</i>${esc(T('Sign out'))}</button>`;
       m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut();m.querySelector('.acct-who').onclick=()=>{Acct.close();WHO.open(true)}};
@@ -18878,7 +18926,8 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();Acct.render();$('#acctBtn').onclick=Acct.open;
+renderPicker();route();PlanSync.pull();WHO.boot();StuAct.boot();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
   if(API_BASE)fetch(`${API_BASE}/i18n/status`).then(r=>r.ok?r.json():null).then(j=>{if(j)langShare=Object.fromEntries(Object.entries(j.languages||{}).map(([k,v])=>[k,v.share]));showLang()}).catch(()=>{});
