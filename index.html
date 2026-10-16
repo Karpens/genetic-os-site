@@ -26640,6 +26640,149 @@ D.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
       {p:[.3,.85,.12],part:'stomach',text:'In the stomach, pepsin starts to digest proteins. Hydrochloric acid kills bacteria.',on:stop(uSt)},{p:[-.3,1.15,.3],part:'liver',text:'Bile from the liver, stored in the gall bladder, neutralises the acid and emulsifies fats.'},{p:[.08,.54,-.19],part:'pancreas',text:'The pancreas adds amylase, protease and lipase.'},
       {p:smMid,part:'small',text:'In the small intestine digestion finishes, and glucose, amino acids, fatty acids and glycerol are absorbed through the villi.',on:stop(uSm)},{p:[-.5,-.3,.04],part:'large',text:'The large intestine absorbs water. What is left leaves the body as faeces.',on:stop(1)}]}]}};
 })();
+// ---------- Biceps and triceps, atlas quality: real bone shapes, striated muscle bellies, glossy tendons, joint capsule and see-through skin (replaces the 'arm' view of LIB.muscle) ----------
+(()=>{const LIB=L3.LIB,Mu=LIB.muscle;if(!Mu)return;const {V,readout}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat;
+const old=Mu.build;
+Mu.build=function(T3,K,v){if(v!=='arm')return old.call(this,T3,K,v);
+  const S={bend:.4,k:-1},el=V(0,-.3,0),ang=b=>-Math.PI/2+b*2.45,Z=V(0,0,1);
+  const bone=wet(T3,0xB59F78,{var:.14,veins:3,veinC:0x8F7350,rough:.55,wet:.2,sheen:.08,seed:3,lob:120,bump:.006}),cart=wet(T3,0xD5E4EE,{var:.05,rough:.18,wet:.9,seed:4}),
+    musB=wet(T3,0xA8312D,{folds:46,veins:6,veinC:0x5E1218,var:.1,rough:.42,wet:.5,bump:.008,seed:5}),musT=wet(T3,0x982A27,{folds:52,veins:6,veinC:0x5E1218,var:.1,rough:.42,wet:.5,bump:.008,seed:6}),
+    musD=wet(T3,0x9C2E2B,{folds:40,veins:4,veinC:0x5E1218,var:.1,rough:.45,wet:.45,bump:.008,seed:7}),ten=wet(T3,0xEFEAE0,{folds:24,var:.04,rough:.22,wet:.85,seed:8}),
+    skin=new T3.MeshPhysicalMaterial({color:0xF1CDB8,roughness:.45,transparent:true,opacity:.15,depthWrite:false,clearcoat:.3,side:T3.FrontSide}),
+    capsule=new T3.MeshPhysicalMaterial({color:0xCFE3F5,roughness:.15,transparent:true,opacity:.26,depthWrite:false,clearcoat:1});
+  // shoulder blade and collar bone hint, deltoid over the shoulder
+  mesh(K,null,tube(T3,[[-.05,1.86,.05],[.05,1.9,-.35],[.02,1.88,-.8]],.045,{rad:20}),bone);
+  mesh(K,null,sculpt(T3,(x,y,z)=>{const t=(y+1)/2;return [x*.25*(1-.55*(1-t)),y*.42,z*.24*(1-.5*(1-t))]},{seg:64,uv:1}),musD,[-.01,1.38,0]);
+  // humerus: rounded head, shaft, wide condyles at the elbow
+  mesh(K,'humerus',tube(T3,[[0,1.62,0],[.01,1.2,0],[0,.6,0],[0,.05,0],[0,-.18,0]],u=>.075*(1+.55*Math.max(0,1-u*7)+.9*Math.pow(Math.max(0,(u-.8)*5),1.6)),{rad:28,uv:2}),bone);
+  mesh(K,'humerus',new T3.SphereGeometry(.17,40,30),bone,[-.03,1.68,-.04]);
+  mesh(K,'humerus',sculpt(T3,(x,y,z)=>[x*.2,y*.085,z*.11]),bone,[0,-.24,0]);
+  // elbow: cartilage on the joint surfaces and the see-through joint capsule (synovial fluid inside)
+  mesh(K,'joint',new T3.SphereGeometry(1,40,30),cart,[0,-.3,0],{s:[.16,.09,.12]});
+  mesh(K,'joint',new T3.SphereGeometry(.25,40,30),capsule,[0,-.3,0],{order:3});
+  // forearm: ulna with its olecranon hook behind the elbow, radius widening towards the wrist; see-through skin and hand
+  const fa=K.grp('forearm',{p:el.toArray()});
+  mesh(K,'forearm',tube(T3,[[-.12,-.11,-.06],[-.02,-.05,-.06],[.5,-.03,-.07],[1.2,-.01,-.07],[1.72,0,-.07]],u=>(u<.08?.075:.075-.04*(u-.08)/.92)*(u>.94?1.3:1),{rad:24,uv:2}),bone,null,{to:fa});
+  mesh(K,'forearm',tube(T3,[[.06,.03,.07],[.5,0,.075],[1.2,0,.08],[1.76,0,.085]],u=>u<.06?.06:.032+.035*u,{rad:24,uv:2}),bone,null,{to:fa});
+  mesh(K,'forearm',new T3.CylinderGeometry(.062,.062,.05,32),cart,[.06,.03,.07],{to:fa,r:[0,0,Math.PI/2]});
+  mesh(K,null,tube(T3,[[0,1.75,0],[0,1.0,0],[0,.2,0],[0,-.32,0]],u=>.34-.09*u,{rad:40,seg:40}),skin,null,{order:4});
+  mesh(K,null,tube(T3,[[-.12,0,0],[.6,0,0],[1.4,0,0],[1.85,0,0]],u=>.27-.12*u,{rad:40,seg:40}),skin,null,{to:fa,order:4});
+  mesh(K,null,sculpt(T3,(x,y,z)=>[x*.28,y*.06,z*.16]),skin,[2.1,0,0],{to:fa,order:4});
+  // muscles: one spindle shape per muscle, stretched and bulged every frame; tendons follow
+  const spindle=()=>tube(T3,[[0,0,0],[0,.5,0],[0,1,0]],u=>.5*Math.pow(Math.sin(Math.PI*u),.7)+.03,{rad:40,seg:60,uv:1.5});
+  const bic=mesh(K,'biceps',spindle(),musB),tri=mesh(K,'triceps',spindle(),musT);
+  const bt=V(.12,1.3,.05),ttp=V(-.14,1.34,-.02);
+  for(const p of [[.02,1.74,.06],[.13,1.78,.13]])mesh(K,'tendon',tube(T3,[bt.toArray(),[(bt.x+p[0])/2+.03,(bt.y+p[1])/2,(bt.z+p[2])/2],p],.022,{rad:12}),ten);
+  mesh(K,'tendon',tube(T3,[ttp.toArray(),[-.13,1.5,-.08],[-.07,1.6,-.12]],.03,{rad:12}),ten);
+  const tb=mesh(K,'tendon',new T3.BufferGeometry(),ten),tt=mesh(K,'tendon',new T3.BufferGeometry(),ten);
+  const toW=p=>V(...p).applyAxisAngle(Z,ang(S.bend)).add(el),mus=(m,a,b,t,d)=>{m.position.copy(a);m.scale.set(t,a.distanceTo(b),t*d);m.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize())};
+  const setT=(m,pts,r)=>{m.geometry.dispose();m.geometry=new T3.TubeGeometry(new T3.CatmullRomCurve3(pts),10,r,12)};
+  const P={bEnd:V(),tEnd:V()};let ex=null;
+  const tick=dt=>{fa.rotation.z=ang(S.bend);const c=S.bend,ins=toW([.3,.07,.07]),tins=toW([-.12,-.11,-.06]);
+    P.bEnd.copy(bt).lerp(ins,.76);mus(bic,bt,P.bEnd,.25+.14*c,1.05);setT(tb,[P.bEnd,P.bEnd.clone().lerp(ins,.5).add(V(.01,0,.01)),ins],.03);
+    P.tEnd.copy(ttp).lerp(tins,.82);mus(tri,ttp,P.tEnd,.33-.09*c,1.1);setT(tt,[P.tEnd,P.tEnd.clone().lerp(tins,.5),tins],.04);
+    if(ex&&S.k!==S.bend){S.k=S.bend;readout(ex,S.bend>.5?'<b>Biceps contracts</b>, triceps relaxes → the arm bends':'<b>Triceps contracts</b>, biceps relaxes → the arm straightens')}return true};
+  tick(0);
+  return {radius:2.1,view:[.08,.12],ground:2.0,tick,extra:el2=>{ex=el2;S.k=-1},sliders:[{icon:'💪',label:'Bend the arm',v:.4,set:x=>{S.bend=x}}],
+    tags:[['humerus',[-.05,1.0,.12]],['forearm',()=>toW([1.2,0,0]).toArray()],['biceps',()=>bt.clone().lerp(P.bEnd,.5).add(V(.2,0,.18)).toArray()],['triceps',()=>ttp.clone().lerp(P.tEnd,.5).add(V(-.3,0,.18)).toArray()],
+      ['tendon',()=>P.bEnd.clone().lerp(toW([.3,.07,.07]),.5).toArray()],['joint',[0,-.3,.24]]],
+    journeys:[{name:'Lift a weight',c:0xE03131,steps:[{p:[0,.6,0],part:'humerus',text:'The upper arm bone, the humerus, meets the forearm at the elbow joint.',on:()=>{S.bend=0}},{p:[.25,.6,0],part:'biceps',text:'To lift, the biceps contracts and gets shorter and fatter…',on:()=>{S.bend=1}},{p:[-.25,.6,0],part:'triceps',text:'…while the triceps relaxes and is stretched.'},{p:[.35,-.2,0],part:'tendon',text:'Tendons pass the pull from the muscle to the bone.'},{p:[-.25,.6,0],part:'triceps',text:'To straighten the arm the triceps contracts and the biceps relaxes: an antagonistic pair.',on:()=>{S.bend=0}}]}]}};
+})();
+// ---------- Breathing system, atlas quality: ribcage, spine and sternum, larynx and trachea with cartilage rings, lobed lungs with fissures, a real bronchial tree, pulmonary vessels, the heart and a muscular diaphragm (replaces the 'lungs' view of LIB.lungs) ----------
+(()=>{const LIB=L3.LIB,Lu=LIB.lungs;if(!Lu)return;const {V,readout,stream,syncSliders}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const old=Lu.build;
+Lu.build=function(T3,K,v){if(v!=='lungs')return old.call(this,T3,K,v);
+  const r=L3.rnd(5),rn=(a,b)=>a+(b-a)*r(),S={ph:0,rate:14,k:0};
+  const bone=wet(T3,0xC2AD86,{var:.12,lob:120,rough:.5,wet:.25,sheen:.08,bump:.006,seed:31}),cart=wet(T3,0xD6E3EA,{var:.05,rough:.2,wet:.85,seed:32}),
+    lungM=wet(T3,0xDE8F96,{lob:260,veins:10,veinC:0x7E3B55,var:.16,rough:.55,wet:.35,sheen:.35,sheenC:0xFFD6DE,bump:.01,op:.84,seed:33}),
+    airway=wet(T3,0xE5C3BA,{folds:30,veins:6,veinC:0xA04050,var:.08,rough:.35,wet:.7,seed:34}),bron=wet(T3,0xD98C98,{veins:4,var:.1,rough:.4,wet:.6,seed:35}),
+    alvM=wet(T3,0xF0A0B0,{lob:80,var:.08,rough:.35,wet:.6,seed:36}),ic=wet(T3,0xA8312D,{folds:50,veins:5,veinC:0x5E1218,var:.1,rough:.45,wet:.45,op:.5,seed:37}),
+    dMus=wet(T3,0xB0392F,{folds:60,veins:6,veinC:0x5E1218,var:.1,rough:.45,wet:.45,seed:38}),dTen=wet(T3,0xD9C9BF,{folds:20,var:.08,rough:.35,wet:.6,seed:41}),
+    artM=wet(T3,0x4B62C4,{veins:3,var:.08,rough:.35,wet:.7,seed:39}),veinM=wet(T3,0xC2393A,{veins:3,var:.08,rough:.35,wet:.7,seed:40}),heartM=wet(T3,0x9E2B2B,{veins:14,veinC:0x4A0E14,fat:10,var:.12,rough:.4,wet:.6,seed:42}),
+    fis=new T3.MeshStandardMaterial({color:0x8A4658,roughness:.6});
+  const chest=K.grp(null,{});
+  // ---- larynx and trachea with C-shaped cartilage rings ----
+  mesh(K,'trachea',sculpt(T3,(x,y,z)=>[x*.17*(1-.2*y),y*.16,z*.13+(z>0?.05*(1-x*x):0)],{seg:48}),cart,[0,2.9,.04],{to:chest});
+  mesh(K,'trachea',tube(T3,[[0,2.78,0],[0,2.1,-.02],[0,1.38,0]],.13,{rad:32,uv:3}),airway,null,{to:chest});
+  for(let i=0;i<11;i++)K.tor('trachea',[0,2.66-i*.115,0],.142,.022,0xDDE6EC,{r:[Math.PI/2,0,Math.PI*.6],arc:Math.PI*1.65,to:chest,gloss:1});
+  // ---- bronchial tree: main, lobar and segmental bronchi, then bronchioles ending in clusters of alveoli ----
+  const tips=[],inLung=(p,s)=>((p.x-s*1.0)/.82)**2+((p.y-.25)/1.55)**2+(p.z/.95)**2<.8;
+  const grow=(from,dir,len,rad,depth,s)=>{let p=from.clone();const d=dir.clone().normalize(),pts=[p.clone()];
+    for(let i=0;i<3;i++){d.add(V(rn(-.18,.18),rn(-.18,.18),rn(-.18,.18))).normalize();const q=p.clone().addScaledVector(d,len/3);if(!inLung(q,s))d.lerp(V(s*1.08,.25,0).sub(p).normalize(),.6).normalize();p=p.clone().addScaledVector(d,len/3);pts.push(p)}
+    mesh(K,depth>=2?'bronchi':'bronchioles',tube(T3,pts,u=>rad*(1-.25*u),{rad:12,seg:12,uv:4}),depth>=2?airway:bron,null,{to:chest});
+    if(depth>0)for(let j=0;j<2;j++)grow(p,d.clone().add(V(rn(-.7,.7),rn(-.7,.5),rn(-.7,.7))),len*.7,rad*.7,depth-1,s);
+    else{tips.push(p);const cl=K.grp('alveoli',{p:p.toArray(),to:chest});for(let k=0;k<7;k++)mesh(K,'alveoli',new T3.SphereGeometry(.042,16,12),alvM,V(...L3.fib(7,k)).multiplyScalar(.055).toArray(),{to:cl})}};
+  const main=[[-1,[[0,1.38,0],[-.28,1.2,0],[-.5,1.02,0]]],[1,[[0,1.38,0],[.32,1.18,0],[.62,.95,0]]]];
+  for(const [s,pts] of main)mesh(K,'bronchi',tube(T3,pts,.09,{rad:24,uv:4}),airway,null,{to:chest});
+  const lobar=[[-1,[-.5,1.02,0],[[-.85,1.65,.05],[-1.0,.45,.45],[-.95,-.45,-.25]]],[1,[.62,.95,0],[[.95,1.4,.1],[.95,-.45,-.25]]]];
+  for(const [s,o,ends] of lobar)for(const e of ends){const a=V(...o),b=V(...e);mesh(K,'bronchi',tube(T3,[a.toArray(),a.clone().lerp(b,.5).toArray(),b.toArray()],.062,{rad:20,uv:4}),airway,null,{to:chest});
+    grow(b,b.clone().sub(a),.55,.045,3,s)}
+  // ---- the lungs: apex, broad concave base, flatter inner side, three right lobes and two left lobes; the left has a notch for the heart ----
+  const lungs=[];
+  for(const s of [-1,1]){const g=sculpt(T3,(x,y,z)=>{const h=Math.sqrt(Math.max(1e-6,1-y*y)),p=y<0?4:2,H=Math.pow(Math.max(0,1-Math.pow(Math.abs(y),p)),1/p),k=H/h;
+      let X=x*k*(x>0?1:.55),Z=z*k*.86,Y=y;if(y<-.55)Y+=.38*Math.max(0,1-(X*X+Z*Z))*Math.min(1,(-y-.55)/.45);
+      if(s>0&&x<0&&z>0&&y<.25){const q=Math.min(1,(.25-y)/.6)*Math.min(1,z/.6);X*=1-.6*q}return [s*X*.86,Y*1.6,Z*1.0]},{seg:96,uv:2});
+    const l=mesh(K,'lung',g,lungM,[s*1.0,.25,0],{to:chest,order:2});l.userData.shell=1;l.userData.rank=1;lungs.push(l)}
+  // fissures between the lobes: grooves traced on the outer surface
+  const rc=new T3.Raycaster();chest.updateMatrixWorld(true);
+  const trace=(l,s,pts2)=>{const hit=[];for(const [y,z] of pts2){rc.set(V(s*4,y,z),V(-s,0,0));const h=rc.intersectObject(l,false)[0];if(h)hit.push(h.point.clone().addScaledVector(V(s,0,0),.006))}
+    if(hit.length>2)mesh(K,'lung',tube(T3,hit,.011,{rad:8,seg:80}),fis,null,{to:l})};
+  const obl=[...Array(14)].map((_,i)=>{const t=i/13;return [1.25-2.55*t,-.85+1.55*t]});
+  lungs.forEach((l,i)=>{const s=i?1:-1;l.updateMatrixWorld(true);const loc=pts=>pts.map(([y,z])=>[y,z]);trace(l,s,obl.map(([y,z])=>[y,z]));if(s<0)trace(l,s,[...Array(8)].map((_,k)=>[.28+.03*k/7,-.05+.9*k/7]))});
+  for(const l of lungs){const ch=l.children.slice();for(const c of ch){c.position.sub(l.position);}}
+  // ---- pulmonary arteries (blue) and veins (red) entering each lung at the hilum, and the heart between the lungs ----
+  for(const s of [-1,1]){mesh(K,null,tube(T3,[[.05,1.1,.25],[s*.3,1.08,.15],[s*.62,.98,.1]],.06,{rad:16}),artM,null,{to:chest});mesh(K,null,tube(T3,[[s*.6,.75,.05],[s*.3,.68,-.05],[.12,.62,-.12]],.05,{rad:16}),veinM,null,{to:chest})}
+  mesh(K,null,sculpt(T3,(x,y,z)=>{const t=(y+1)/2,w=.55+.45*Math.sin(Math.PI*Math.min(1,t*1.15));return [x*.52*w,y*.62,z*.45*w]},{seg:72,uv:2}),heartM,[.22,.35,.32],{r:[0,0,.55],to:chest});
+  // ---- ribcage: spine, ten pairs of ribs with costal cartilage, sternum, collar bones; intercostal muscles between the ribs ----
+  const ribs=K.grp('ribs',{to:chest}),ribPts=[];
+  for(let i=0;i<14;i++)mesh(K,'ribs',sculpt(T3,(x,y,z)=>[x*.13,y*.09,z*.12],{seg:24}),bone,[0,2.05-i*.25,-1.3],{to:ribs});
+  for(let i=0;i<14;i++)mesh(K,'ribs',tube(T3,[[0,2.05-i*.25,-1.36],[0,2.0-i*.25,-1.55]],u=>.04*(1-u*.5),{rad:10,seg:6}),bone,null,{to:ribs});
+  for(let i=0;i<10;i++){const y0=1.95-i*.33,W=i===0?1.12:1.5+.42*Math.sin(Math.min(1,(i+1)/6)*Math.PI/2)-.08*Math.max(0,i-6),D=1.25,drop=.3+.02*i,end=i<7?2.75:2.45-.1*(i-7);
+    for(const s of [-1,1]){const pts=[];for(let k=0;k<=24;k++){const a=.12+k/24*(end-.12);pts.push(V(s*W*Math.sin(a),y0-drop*(a/end)+.05*Math.sin(a*1.3),-D*Math.cos(a)))}
+      ribPts.push({i,s,pts});mesh(K,'ribs',tube(T3,pts,(u,a)=>.038*(1+.35*Math.abs(Math.cos(a))),{rad:12,seg:60,uv:2}),bone,null,{to:ribs});
+      const e=pts[pts.length-1],at=i<7?V(s*.13,e.y+.12+.06*i,1.16):V(s*(.3+.12*(i-6)),e.y+.3,1.06),mid=e.clone().lerp(at,.5).add(V(0,0,.06));
+      mesh(K,'ribs',tube(T3,[e,mid,at],.03,{rad:10,seg:20}),cart,null,{to:ribs})}}
+  mesh(K,'ribs',sculpt(T3,(x,y,z)=>{const t=(y+1)/2;return [x*(.16-.06*Math.abs(y-.4)),y*.85,z*.05]},{seg:48}),bone,[0,.98,1.18],{to:ribs,r:[-.08,0,0]});
+  for(const s of [-1,1])mesh(K,'ribs',tube(T3,[[s*.12,2.06,1.08],[s*.62,2.12,.98],[s*1.12,2.2,.45]],.045,{rad:14}),bone,null,{to:ribs});
+  for(const s of [-1,1])for(let i=0;i<9;i++){const a=ribPts.find(c=>c.i===i&&c.s===s).pts,b=ribPts.find(c=>c.i===i+1&&c.s===s).pts,pos=[],uv=[],idx=[];
+    for(let k=5;k<=21;k++){pos.push(...a[k].toArray(),...b[k].toArray());uv.push(k/6,0,k/6,1)}for(let k=0;k<16;k++){const q=k*2;idx.push(q,q+1,q+2,q+1,q+3,q+2)}
+    const geo=new T3.BufferGeometry();geo.setAttribute('position',new T3.Float32BufferAttribute(pos,3));geo.setAttribute('uv',new T3.Float32BufferAttribute(uv,2));geo.setIndex(idx);geo.computeVertexNormals();
+    const m=new T3.Mesh(geo,ic);m.material.side=T3.DoubleSide;m.userData.part='intercostal';m.renderOrder=3;ribs.add(m)}
+  // ---- diaphragm: a dome of muscle with a central tendon ----
+  const dia=K.grp('diaphragm',{p:[0,-1.75,-.05]});mesh(K,'diaphragm',new T3.SphereGeometry(1.9,72,24,0,TAU,0,Math.PI*.42),dMus,null,{to:dia});
+  mesh(K,'diaphragm',new T3.SphereGeometry(1.905,48,10,0,TAU,0,Math.PI*.17),dTen,null,{to:dia});dia.scale.set(1,.55,.75);dMus.side=T3.DoubleSide;
+  // ---- air flowing in and out ----
+  const air=stream(T3,K,'air',[[0,3.0,0],[0,2.1,0],[0,1.38,0],[-.5,1.02,0],[-.95,.45,.4],[-1.1,-.1,.2]],18,.045,0x93C5FD,{speed:.25,jitter:.04,glow:.6});
+  let ex=null;const tick=dt=>{S.ph=(S.ph+dt*S.rate/60)%1;const b=.5-.5*Math.cos(S.ph*TAU),inhale=Math.sin(S.ph*TAU);
+    lungs.forEach(l=>l.scale.set(1+.08*b,1+.07*b,1+.1*b));ribs.rotation.x=-.06*b;ribs.scale.set(1+.04*b,1,1+.05*b);ribs.position.y=.06*b;dia.position.y=-1.75-.32*b;dia.scale.y=.55-.2*b;
+    air.tick(dt,inhale*2.2);air.mesh.visible=Math.abs(inhale)>.05;
+    if(ex&&S.k!==S.rate){S.k=S.rate;readout(ex,`<b>Breathing rate</b> ${Math.round(S.rate)} breaths/min · <b>tidal volume</b> 0.5 litres · <b>ventilation</b> = ${Math.round(S.rate)} × 0.5 = ${(S.rate*.5).toFixed(1)} litres/min`)}return true};
+  return {radius:3.1,view:[.1,.35],ground:2.4,tick,extra:el=>{ex=el;S.k=0},sliders:[{icon:'🌬️',label:'Breathing rate',v:(14-6)/34,set:x=>{S.rate=6+x*34}}],quizSkip:['air'],
+    tags:[['trachea',[0,2.4,.2],0],['bronchi',[.42,1.08,.1]],['bronchioles',tips[3].toArray()],['alveoli',tips[9].toArray()],['lung',[-1.75,.9,.5],0],['ribs',[1.7,.95,.75],0],['intercostal',[1.8,.15,.55],0],['diaphragm',[0,-1.25,.85],0]],
+    journeys:[{name:'Take a breath',c:0x93C5FD,steps:[{p:[0,2.6,0],part:'trachea',text:'Air comes in through the nose or mouth and down the trachea.',on:()=>{S.rate=8}},{p:[.4,1.1,0],part:'bronchi',text:'The trachea divides into two bronchi, one for each lung.'},{p:tips[2].toArray(),part:'bronchioles',text:'The bronchi branch into smaller and smaller bronchioles.'},
+      {p:tips[5].toArray(),part:'alveoli',text:'They end in alveoli, where oxygen diffuses into the blood.'},{p:[1.8,.4,.4],part:'intercostal',text:'To breathe in, the intercostal muscles contract and pull the ribs up and out.'},{p:[0,-1.5,.5],part:'diaphragm',text:'At the same time the diaphragm contracts and flattens. The chest gets bigger, the pressure inside falls, and air rushes in.'}]}],jEnd:()=>{S.rate=14;syncSliders(ex,[(14-6)/34])}}};
+})();
+// ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
+(()=>{const LIB=L3.LIB;let DT=null;
+// one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
+const detail=T3=>{if(DT)return DT;const N=512,rnd=L3.rnd(29),mk=()=>{const c=document.createElement('canvas');c.width=c.height=N;return c},C=mk(),x=C.getContext('2d'),B=mk(),b=B.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,N,N);b.fillStyle='#808080';b.fillRect(0,0,N,N);
+  const spot=(ctx,px,py,r,c0,c1)=>{for(const dx of [-N,0,N])for(const dy of [-N,0,N]){const X=px+dx,Y=py+dy;if(X+r<0||X-r>N||Y+r<0||Y-r>N)continue;const g=ctx.createRadialGradient(X,Y,0,X,Y,r);g.addColorStop(0,c0);g.addColorStop(1,c1);ctx.fillStyle=g;ctx.fillRect(X-r,Y-r,2*r,2*r)}};
+  for(let i=0;i<260;i++){const v=Math.round(205+rnd()*50),r=N*(.02+rnd()*.07);spot(x,rnd()*N,rnd()*N,r,`rgba(${v},${v},${v},.55)`,`rgba(${v},${v},${v},0)`)}
+  for(let i=0;i<900;i++){const v=Math.round(100+rnd()*80),r=N*(.003+rnd()*.009);spot(b,rnd()*N,rnd()*N,r,`rgba(${v},${v},${v},.85)`,`rgba(${v},${v},${v},0)`)}
+  const tex=c=>{const t=new T3.CanvasTexture(c);t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(2,2);t.anisotropy=8;return t};return DT={map:tex(C),bump:tex(B)}};
+const swap=(T3,m,cache)=>{if(cache.has(m))return cache.get(m);let n=m;
+  if((m.isMeshStandardMaterial||m.isMeshPhysicalMaterial)&&!m.map&&!m.vertexColors&&!(m.transparent&&m.opacity<.97)&&!m.userData.keepLook){const d=detail(T3);
+    n=new T3.MeshPhysicalMaterial({color:m.color.clone(),map:d.map,bumpMap:d.bump,bumpScale:.0035,roughness:Math.min(.5,m.roughness*.85),metalness:0,clearcoat:.42,clearcoatRoughness:.32,sheen:.22,sheenRoughness:.6,sheenColor:new T3.Color(0xFFF0EA),
+      emissive:m.emissive?m.emissive.clone():new T3.Color(0),emissiveIntensity:m.emissiveIntensity??1,side:m.side,transparent:m.transparent,opacity:m.opacity,depthWrite:m.depthWrite,envMapIntensity:.8,flatShading:!!m.flatShading})}
+  cache.set(m,n);return n};
+// wrap a model's build so every solid part gets the tissue look
+const tissuefy=key=>{const L=LIB[key];if(!L||L.build.tissue)return;const ob=L.build;
+  L.build=function(T3,K,...a){const probe=K.grp(null),root=probe.parent;root.remove(probe);const before=new Set(root.children);const M=ob.call(this,T3,K,...a);const cache=new Map();
+    root.traverse(o=>{if(!(o.isMesh||o.isInstancedMesh)||!o.material||Array.isArray(o.material))return;let p=o;while(p&&p.parent!==root)p=p.parent;if(p&&before.has(p))return;o.material=swap(T3,o.material,cache)});return M};L.build.tissue=1};
+L3.lx.tissuefy=tissuefy;
+for(const k of ['heart','lungs','digest','enzyme','plant','mito','membrane','pathogen','immune','division','kidney','endocrine','eye','muscle','molbio','flower','health','nervous','cellx','stem','gameto','sensory','homeo','cvd','immx','gasx','membx','tfluid','diabetes','ans','plantx','geneexp','dnacode'])tissuefy(k);
+})();
 // ---------- Biology mapping: which model claims which subtopic first, so every subtopic in a topic gets its own model ----------
 (()=>{const LIB=L3.LIB;
 const F=(k,re,s='biology')=>{const L=LIB[k];if(!L)return;L.first=L.first||{};L.first[s]=L.first[s]?new RegExp(L.first[s].source+'|'+re.source,'i'):new RegExp(re.source,'i')};
