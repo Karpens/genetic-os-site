@@ -1577,6 +1577,7 @@ html.i18n .board-ui{display:none!important}
 .sc-list li{flex-wrap:wrap}
 .nav a.l,.brand,#navCta{white-space:nowrap}
 /* ---------- who are you (first visit) ---------- */
+.who-badge{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;margin:0 0 16px;border:1px solid var(--line);border-radius:16px;background:var(--paper);font-size:14.5px}.who-badge>span:first-child{font-size:20px}.who-badge .btn{margin-left:auto}
 .who{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:20px;background:rgba(15,13,10,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:fadeIn .35s;overflow-y:auto}
 .who-box{position:relative;width:100%;max-width:1000px;background:var(--paper);border-radius:24px;padding:40px;box-shadow:var(--shadow-lg);animation:popIn .55s cubic-bezier(.2,1.3,.3,1);text-align:center;margin:auto}
 .who-box h2{margin:8px 0 6px;font-size:clamp(32px,5vw,50px)}
@@ -4059,9 +4060,11 @@ function planWatch(k,ti,si){planUse(k);const t=levelData().topics[+ti];if(t)watc
 function renderPlan(){const main=$('#planMain');if(!main)return;
   const h=$('#planH');
   if(planDraft||!planReady()){if(!planDraft)planDraft={level:(PLAN&&PLAN.level)||level,subjects:[],exam:'',goal:20};
-    if(h)h.innerHTML=planReady()?'Edit your <span class="grad">study plan</span>':'Build your <span class="grad">study plan</span>';renderPlanSetup(main);return}
+    if(h)h.innerHTML=planReady()?'Edit your <span class="grad">study plan</span>':'Build your <span class="grad">study plan</span>';renderPlanSetup(main);planWho(main);return}
   if(h)h.innerHTML='Your plan, <span class="grad">day by day</span>';
-  renderPlanBoard(main)}
+  renderPlanBoard(main);planWho(main)}
+// how you use the site, at the top of My plan, so it can be changed after signing in
+function planWho(main){if(!main||main.querySelector('.who-badge'))return;main.insertAdjacentHTML('afterbegin',WHO.badge());WHO.bindBadge(main)}
 
 function renderPlanSetup(main){const D=planDraft,steps=['Level','Subjects','Exam boards','Exam date'];let body='';
   if(planStep===0)body=`<h3 class="pl-q">What are you studying?</h3><p class="muted">This picks the right notes, questions and videos for you.</p>
@@ -4247,10 +4250,16 @@ const WHO={
       </div>${again?'<button class="btn ghost sm who-x" data-w="">Close</button>':''}</div>`;
     document.body.appendChild(o);document.body.style.overflow='hidden';setTimeout(()=>{const b=o.querySelector('.who-o');if(b)b.focus()},400);
     const close=()=>{o.remove();document.body.style.overflow=''};
-    o.onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const w=b.dataset.w;close();if(!w)return;store.set('fm-who',w);SCH.nav();
+    o.onclick=e=>{const b=e.target.closest('[data-w]');if(!b)return;const w=b.dataset.w;close();if(!w)return;store.set('fm-who',w);SCH.nav();if(location.hash==='#plan'&&typeof renderPlan==='function')renderPlan();
       if(w==='teacher')location.hash='teacher';else if(w==='school')location.hash='school';
       else{if(location.hash&&location.hash!=='#home')location.hash='home';setTimeout(()=>{const p=$('#build');if(p)p.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})},250)}};
     o.onkeydown=e=>{if(e.key==='Escape'&&again)close()}},
+  // how you use the site, with a button to change it (My plan, account menu)
+  label(w=SCH.who()){return {teacher:['🧑‍🏫',T('Teacher')],school:['🏫',T('Student at a school')],solo:['🚀',T('Studying on my own')]}[w]||['❔',T('Not chosen yet')]},
+  badge(){const [ic,l]=WHO.label();return `<div class="who-badge"><span aria-hidden="true">${ic}</span><span>${esc(T('You use Full Marks as:'))} <b>${esc(l)}</b></span><button type="button" class="btn ghost sm" data-who-change>${esc(SCH.who()?T('Change'):T('Choose'))}</button></div>`},
+  bindBadge(root){root.querySelectorAll('[data-who-change]').forEach(b=>b.onclick=()=>WHO.open(true))},
+  // after signing in, ask once the sign-in window has closed
+  afterSignIn(){if(SCH.who())return;let n=0;const t=setInterval(()=>{n++;if(SCH.who()||n>90){clearInterval(t);return}if(!$('#modal').classList.contains('on')&&!$('.who')){clearInterval(t);WHO.open(true)}},400)},
   boot(){SCH.nav();const f=$('#whoFoot');if(f)f.onclick=e=>{e.preventDefault();WHO.open(true)};
     const h=location.hash.slice(1);if(!SCH.who()&&(!h||h==='home'))setTimeout(()=>{if(!SCH.who()&&!$('#modal').classList.contains('on'))WHO.open(false)},900)}};
 
@@ -15331,8 +15340,9 @@ const Acct={
       m.innerHTML=`<div class="acct-head"><span class="acct-av lg" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><div><b>${esc(em)}</b><small class="${premium?'ok':''}">${premium?'✓ '+esc(T('Full access')):esc(T('Free account'))}${t?' · '+esc(T('Teacher')):joined?' · '+esc(T('In a class')):''}</small></div></div>
         ${item('#plan','📅',T('My plan'))}${item('#me','📈',T('My progress'))}${t?item('#teacher','🧑‍🏫',T('Teacher portal')):item('#school','🏫',T('My classes and grades'))}
         ${admin?item('#admin','🛡️',T('Teacher approvals')):''}${premium?'':item('#pricing','⭐',T('Get full access'))}
+        <button type="button" role="menuitem" class="acct-who"><i aria-hidden="true">${WHO.label()[0]}</i>${esc(T('I use Full Marks as: {0}',WHO.label()[1]))}</button>
         <button type="button" role="menuitem" class="acct-out"><i aria-hidden="true">↪</i>${esc(T('Sign out'))}</button>`;
-      m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut()};
+      m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut();m.querySelector('.acct-who').onclick=()=>{Acct.close();WHO.open(true)}};
     draw(SCH.role);document.body.appendChild(m);
     const r=b.getBoundingClientRect();m.style.top=Math.round(r.bottom+8)+'px';m.style.left=Math.round(Math.max(10,Math.min(innerWidth-m.offsetWidth-10,r.right-m.offsetWidth)))+'px';
     b.setAttribute('aria-expanded','true');(m.querySelector('a')||m).focus();
@@ -15343,7 +15353,7 @@ const Acct={
   signOut(){if(!confirm(T('Sign out on this device? Everything stays saved in your account, and you can sign in again any time.')))return;Acct.close();
     try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k)}catch(e){}
     location.hash='home';location.reload()}};
-document.addEventListener('fm-auth',()=>{SCH.role=null;Acct.render()});
+document.addEventListener('fm-auth',()=>{SCH.role=null;Acct.render();if(authToken())WHO.afterSignIn()});
 
 /* routing */
 const PAGES=['home','plan','study','games','me','pricing','voices','school','teacher','admin'];
