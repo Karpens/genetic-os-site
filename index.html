@@ -1732,7 +1732,7 @@ html.i18n .board-ui{display:none!important}
 .l3-wrap{position:relative}
 .l3-stage{position:relative;aspect-ratio:16/9;max-height:74vh;border-radius:18px;overflow:hidden;background:radial-gradient(120% 95% at 50% 26%,#FFFFFF 0%,#EEF1FB 50%,#DCE2F3 100%);box-shadow:inset 0 0 0 1px var(--line);touch-action:pan-y;outline-offset:3px;user-select:none;-webkit-user-select:none;cursor:grab}
 :root[data-theme=dark] .l3-stage{background:radial-gradient(120% 95% at 50% 26%,#2B3454 0%,#1B2238 58%,#131A2C 100%)}
-@media (max-width:700px){.l3-stage{aspect-ratio:1/1}}
+@media (max-width:700px){.l3-stage{aspect-ratio:4/5}}
 .l3-stage.drag{cursor:grabbing}.l3-stage.hot{cursor:pointer}
 .l3-stage.flat{aspect-ratio:auto;min-height:0;cursor:default;background:none;box-shadow:none}
 .l3-stage.flat canvas,.l3-stage.flat .lab-tools{display:none}
@@ -2998,9 +2998,14 @@ function showModal(title, html){$('#modal .box').classList.remove('wide');$('#mT
 $('#mClose').onclick=()=>$('#modal').classList.remove('on');
 $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('on')};
 
-function authToken(){return store.get('go-auth-token','')}
-function setAuthToken(t,email){if(t){store.set('go-auth-token',t)}if(email)store.set('go-auth-email',email);document.dispatchEvent(new Event('fm-auth'))}
+function authToken(){let t=store.get('go-auth-token','');if(!t)try{t=sessionStorage.getItem('go-auth-token')||''}catch(e){}return t}
+// "Keep me signed in" (the default) keeps the token after the browser closes; unticked, it lasts until the tab closes.
+function setAuthToken(t,email){if(t){if(store.get('fm-keep','1')!=='0'){store.set('go-auth-token',t);store.set('go-auth-fresh',String(Date.now()));try{sessionStorage.removeItem('go-auth-token')}catch(e){}}else{try{sessionStorage.setItem('go-auth-token',t);localStorage.removeItem('go-auth-token')}catch(e){}}}if(email)store.set('go-auth-email',email);document.dispatchEvent(new Event('fm-auth'))}
+// A kept sign-in is swapped for a fresh one-year token about once a day, so people who keep coming back never have to sign in again.
+function keepFresh(){const t=store.get('go-auth-token','');if(!API_BASE||!t)return;if(Date.now()-(+store.get('go-auth-fresh','0')||0)<20*3600e3)return;store.set('go-auth-fresh',String(Date.now()));
+  fetch(`${API_BASE}/auth/refresh`,{method:'POST',headers:{Authorization:'Bearer '+t}}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.token&&store.get('go-auth-token','')===t)store.set('go-auth-token',j.token)}).catch(()=>{})}
 async function refreshPremiumFromServer(){
+  keepFresh();
   if(!API_BASE || !authToken())return;
   try{
     const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});
@@ -4096,10 +4101,11 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
   if(!API_BASE){toast('⚠️','Accounts aren’t connected on this copy of the site.');return}
   showModal(title||'Keep your plan everywhere',`<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
     <input type="email" id="siEmail" class="lbinput" placeholder="you@example.com" autocomplete="email" value="${esc(store.get('go-auth-email',''))}">
+    <label style="display:flex;gap:8px;align-items:center;margin:2px 0 12px;font-size:15px;cursor:pointer"><input type="checkbox" id="siKeep" style="width:18px;height:18px"${store.get('fm-keep','1')!=='0'?' checked':''}> ${esc(T('Keep me signed in on this device'))}</label>
     <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
   const send=$('#siSend');$('#siEmail').focus();
   $('#siEmail').onkeydown=e=>{if(e.key==='Enter')send.click()};
-  send.onclick=async()=>{const email=$('#siEmail').value.trim().toLowerCase();
+  send.onclick=async()=>{const email=$('#siEmail').value.trim().toLowerCase();store.set('fm-keep',$('#siKeep').checked?'1':'0');
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$('#siMsg').textContent='Enter a valid email address.';return}
     send.disabled=true;send.textContent='Sending…';
     try{const r=await fetch(`${API_BASE}/auth/code`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
@@ -4119,7 +4125,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
     }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
 }
 function planSignOut(){if(!confirm(T('Sign out on this device? Your plan and notes stay saved in your account.')))return;
-  try{localStorage.removeItem('go-auth-token');localStorage.removeItem('go-auth-email')}catch(e){}
+  try{localStorage.removeItem('go-auth-token');localStorage.removeItem('go-auth-email');sessionStorage.removeItem('go-auth-token')}catch(e){}
   location.hash='plan';location.reload()}
 
 // Per-subject numbers for the dashboard, on the student's own board and level.
@@ -5523,7 +5529,7 @@ const L3={
       hud=stage.querySelector('.l3-hud'),hov=stage.querySelector('.l3-hov'),lead=stage.querySelector('.l3-lead'),coach=stage.querySelector('.l3-coach'),cardEl=host.querySelector('.l3-card'),dock=host.querySelector('.l3-dock');
     let R;try{R=new T3.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return this.flat(host,st)}
     const touch=matchMedia('(pointer:coarse)').matches;
-    R.setPixelRatio(Math.min(touch?1.75:2,devicePixelRatio||1));R.outputEncoding=T3.sRGBEncoding;R.toneMapping=T3.NoToneMapping;R.localClippingEnabled=true;msg.hidden=true;
+    R.setPixelRatio(Math.min(touch?3:2.5,Math.max(devicePixelRatio||1,touch?1:1.5)));let fN=0,fS=0;R.outputEncoding=T3.sRGBEncoding;R.toneMapping=T3.NoToneMapping;R.localClippingEnabled=true;msg.hidden=true;
     const scene=new T3.Scene(),cam=new T3.PerspectiveCamera(34,1,.05,200);scene.environment=this.env(T3,R);
     scene.add(new T3.HemisphereLight(0xffffff,0xb8b2d8,.42));const key=new T3.DirectionalLight(0xffffff,1.0);key.position.set(4,7,5);scene.add(key);const rim=new T3.DirectionalLight(0xd6e4ff,.4);rim.position.set(-6,2,-5);scene.add(rim);
     const shadow=new T3.Mesh(new T3.PlaneGeometry(1,1),new T3.MeshBasicMaterial({map:this.tex(T3,'shadow'),transparent:true,depthWrite:false,opacity:.5,toneMapped:false}));shadow.rotation.x=-Math.PI/2;scene.add(shadow);
@@ -5574,19 +5580,16 @@ const L3={
       if(c)say(`${c.name}. ${c.txt}`);applyGhost();need=true};
     const applyGhost=()=>{for(const q of mats){const g=q.m.userData.o,gh=!!gsel&&!quiz&&!own(q.o,gsel);q.gh=gh;const tr=gh?true:g.tr;if(q.m.transparent!==tr){q.m.transparent=tr;q.m.needsUpdate=true}q.m.depthWrite=gh?false:g.dw}};
 
-    // Reading aloud: Emma's recorded clip for the sentence when there is one (English), otherwise the browser's own voice.
+    // Reading aloud: Emma's recorded clip for the sentence (English). No robot voice: a sentence without a clip stays silent.
     L3.voice=L3.voice||(()=>{let ready=null,aud=null,tok=0;
-      const tts=t=>{if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t),vs=speechSynthesis.getVoices();u.lang='en-GB';u.rate=1;
-        const v=vs.find(v=>/en-GB/i.test(v.lang)&&/natural|google|daniel|serena|kate/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)};
       // whether any clips exist yet (asked once); clips are named by the sentence's SHA-256
       const has=()=>ready||(ready=API_BASE&&window.crypto&&crypto.subtle&&window.Audio?fetch(`${API_BASE}/voice/info`).then(r=>r.ok?r.json():{}).then(j=>j.l3>0).catch(()=>false):Promise.resolve(false));
       const hash=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join('');
       return {stop(){tok++;if(aud){aud.pause();aud=null}if('speechSynthesis' in window)speechSynthesis.cancel()},
         speaking(){return !!(aud&&!aud.ended&&!aud.error)||('speechSynthesis' in window&&speechSynthesis.speaking)},
         async play(t){const my=++tok;t=String(t).replace(/\s+/g,' ').trim();if(!t)return;
-          if(await has()){const id=await hash(t);if(my!==tok)return;const a=new Audio(`${API_BASE}/voice/l3/${id}.mp3`);aud=a;let fell=false;
-            const fb=()=>{if(fell||my!==tok)return;fell=true;aud=null;tts(t)};a.onerror=fb;a.play().catch(e=>{if(e&&e.name==='NotAllowedError')fb()});return}
-          if(my===tok)tts(t)}}})();
+          if(await has()){const id=await hash(t);if(my!==tok)return;const a=new Audio(`${API_BASE}/voice/l3/${id}.mp3`);aud=a;
+            a.onerror=()=>{if(my===tok)aud=null};a.play().catch(()=>{});return}}}})();
     const say=t=>{L3.voice.stop();if(!speak||!t)return;L3.voice.play(t)};
 
     // Guided tour: every part in turn, with its card.
@@ -5709,6 +5712,7 @@ const L3={
       // camera
       const w=stage.clientWidth,h=stage.clientHeight,cp=Math.cos(V.pitch);cam.position.set(V.t.x+V.dist*cp*Math.sin(V.yaw),V.t.y+V.dist*Math.sin(V.pitch),V.t.z+V.dist*cp*Math.cos(V.yaw));cam.lookAt(V.t);
       if(V.off>.5)cam.setViewOffset(w,h,V.off,0,w,h);else if(cam.view&&cam.view.enabled)cam.clearViewOffset();
+      fN++;if(rdt>.05)fS++;if(fN>=60){if(fS>30&&R.getPixelRatio()>1.01){R.setPixelRatio(Math.max(1,R.getPixelRatio()-.5));R.setSize(w,h,false)}fN=fS=0}
       R.render(scene,cam);
       // labels that follow the model
       if(tagsOn&&M.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const els=tagsEl.children,pos=[];
@@ -5755,14 +5759,14 @@ const L3={
       return mats[key]||(mats[key]=o.glass!=null?L3.glass(T3,cc,o.glass,o.mo||{}):o.gloss?L3.gloss(T3,cc,o.mo||{}):L3.skin(T3,cc,Object.assign({roughness:.42},o.mo||{})))};
     const put=(id,m,o={})=>{if(o.p)m.position.set(...o.p);if(o.r)m.rotation.set(...o.r);if(o.s!=null)Array.isArray(o.s)?m.scale.set(...o.s):m.scale.setScalar(o.s);if(id)m.userData.part=id;if(o.shell){m.userData.shell=1;m.userData.rank=o.rank||1}if(o.clip)m.userData.clip=1;(o.to||g).add(m);return m};
     const K={V,mat:M,put,
-      sph:(id,p,r,c,o={})=>put(id,new T3.Mesh(new T3.SphereGeometry(r,o.seg||32,Math.round((o.seg||32)*.7)),M(id,c,o)),{...o,p}),
-      blob:(id,p,r,c,o={})=>put(id,new T3.Mesh(L3.blob(T3,r,o.seed||1,o.n??.06,o.seg||48,o.sc||[1,1,1]),M(id,c,o)),{...o,p}),
+      sph:(id,p,r,c,o={})=>put(id,new T3.Mesh(new T3.SphereGeometry(r,o.seg||48,Math.round((o.seg||48)*.7)),M(id,c,o)),{...o,p}),
+      blob:(id,p,r,c,o={})=>put(id,new T3.Mesh(L3.blob(T3,r,o.seed||1,o.n??.06,o.seg||72,o.sc||[1,1,1]),M(id,c,o)),{...o,p}),
       box:(id,p,sz,c,o={})=>put(id,new T3.Mesh(new T3.BoxGeometry(...sz),M(id,c,o)),{...o,p}),
-      cyl:(id,p,r,h,c,o={})=>put(id,new T3.Mesh(new T3.CylinderGeometry(o.r2??r,r,h,o.seg||32,1,!!o.open),M(id,c,o)),{...o,p}),
-      cone:(id,p,r,h,c,o={})=>put(id,new T3.Mesh(new T3.ConeGeometry(r,h,o.seg||32),M(id,c,o)),{...o,p}),
-      tor:(id,p,R,r,c,o={})=>put(id,new T3.Mesh(new T3.TorusGeometry(R,r,12,o.seg||64,o.arc||Math.PI*2),M(id,c,o)),{...o,p}),
-      tube:(id,pts,r,c,o={})=>put(id,L3.tube(T3,pts,r,M(id,c,o),!!o.closed,o.seg||64),o),
-      cap:(id,p,r,len,c,o={})=>put(id,new T3.Mesh(new T3.CapsuleGeometry(r,len,8,24),M(id,c,o)),{...o,p}),
+      cyl:(id,p,r,h,c,o={})=>put(id,new T3.Mesh(new T3.CylinderGeometry(o.r2??r,r,h,o.seg||48,1,!!o.open),M(id,c,o)),{...o,p}),
+      cone:(id,p,r,h,c,o={})=>put(id,new T3.Mesh(new T3.ConeGeometry(r,h,o.seg||48),M(id,c,o)),{...o,p}),
+      tor:(id,p,R,r,c,o={})=>put(id,new T3.Mesh(new T3.TorusGeometry(R,r,20,o.seg||96,o.arc||Math.PI*2),M(id,c,o)),{...o,p}),
+      tube:(id,pts,r,c,o={})=>put(id,L3.tube(T3,pts,r,M(id,c,o),!!o.closed,o.seg||128),o),
+      cap:(id,p,r,len,c,o={})=>put(id,new T3.Mesh(new T3.CapsuleGeometry(r,len,12,32),M(id,c,o)),{...o,p}),
       plane:(id,p,w,h,c,o={})=>put(id,new T3.Mesh(new T3.PlaneGeometry(w,h,o.sx||1,o.sy||1),M(id,c,{...o,mo:{side:T3.DoubleSide,...(o.mo||{})}})),{...o,p}),
       grp:(id,o={})=>put(id,new T3.Group(),o),
       // an arrow from a to b that can be moved later with arrow.userData.set(a,b)
@@ -5791,7 +5795,7 @@ const L3={
   blob(T3,r,s=1,a=.04,seg=64,sc=[1,1,1]){const g=new T3.SphereGeometry(1,seg,Math.round(seg*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=r*(1+a*L3.nz(x,y,z,s));p.setXYZ(i,x*k*sc[0],y*k*sc[1],z*k*sc[2])}g.computeVertexNormals();return g},
   sbox(T3,a,b,c,n=8,seg=64,amp=0,s=1){const g=new T3.SphereGeometry(1,seg,Math.round(seg*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),k=Math.pow(Math.pow(Math.abs(x),n)+Math.pow(Math.abs(y),n)+Math.pow(Math.abs(z),n),-1/n)*(1+amp*L3.nz(x,y,z,s));p.setXYZ(i,x*k*a,y*k*b,z*k*c)}g.computeVertexNormals();return g},
   fib(n,i){const y=1-(i+.5)/n*2,r=Math.sqrt(1-y*y),a=i*2.399963;return [Math.cos(a)*r,y,Math.sin(a)*r]},
-  tube(T3,pts,r,mat,closed=false,seg=64){return new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(pts.map(p=>p.isVector3?p:new T3.Vector3(...p)),closed),seg,r,8,closed),mat)},
+  tube(T3,pts,r,mat,closed=false,seg=64){return new T3.Mesh(new T3.TubeGeometry(new T3.CatmullRomCurve3(pts.map(p=>p.isVector3?p:new T3.Vector3(...p)),closed),seg,r,16,closed),mat)},
   dots(T3,pts,geo,mat){const im=new T3.InstancedMesh(geo,mat,pts.length),m=new T3.Matrix4();pts.forEach((p,i)=>{m.makeTranslation(p[0],p[1],p[2]);im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true;im.userData.pts=pts;return im},
   kit(g){return {add(id,o,f){o.userData.part=id;if(f)Object.assign(o.userData,f);g.add(o);return o}}},
 
@@ -6102,10 +6106,10 @@ L3.lx=(()=>{const V=(...a)=>new THREE.Vector3(...a);
   const lathe=(T3,pts,seg=48)=>new T3.LatheGeometry(pts.map(([x,y])=>new T3.Vector2(x,y)),seg);
   // A label that always faces the camera (a sprite with a rounded white pill behind the text).
   const txt=(T3,K,text,p,o={})=>{const s=new T3.Sprite(new T3.SpriteMaterial({transparent:true,depthWrite:false,depthTest:o.depth!==false,toneMapped:false}));s.renderOrder=o.order||6;
-    s.userData.set=t=>{t=String(t);if(t===s.userData.t)return;s.userData.t=t;const px=o.px||64,font=`${o.w||800} ${px}px "Plus Jakarta Sans",Inter,system-ui,sans-serif`,c=document.createElement('canvas'),x=c.getContext('2d');x.font=font;
+    s.userData.set=t=>{t=String(t);if(t===s.userData.t)return;s.userData.t=t;const px=(o.px||64)*1.5,font=`${o.w||800} ${px}px "Plus Jakarta Sans",Inter,system-ui,sans-serif`,c=document.createElement('canvas'),x=c.getContext('2d');x.font=font;
       const w=Math.ceil(x.measureText(t).width+px*(o.bg===false?.3:.9)),h=Math.ceil(px*1.45);c.width=w;c.height=h;x.font=font;x.textAlign='center';x.textBaseline='middle';
       if(o.bg!==false){x.fillStyle=o.bg||'rgba(255,255,255,.94)';const r=h/2;x.beginPath();x.moveTo(r,0);x.lineTo(w-r,0);x.arc(w-r,r,r,-Math.PI/2,Math.PI/2);x.lineTo(r,h);x.arc(r,r,r,Math.PI/2,Math.PI*1.5);x.fill()}
-      x.fillStyle=o.c||'#1B2236';x.fillText(t,w/2,h/2+px*.04);const tx=new T3.CanvasTexture(c);tx.encoding=T3.sRGBEncoding;tx.anisotropy=4;if(s.material.map)s.material.map.dispose();s.material.map=tx;s.material.needsUpdate=true;const sz=o.h||.3;s.scale.set(sz*w/h,sz,1)};
+      x.fillStyle=o.c||'#1B2236';x.fillText(t,w/2,h/2+px*.04);const tx=new T3.CanvasTexture(c);tx.encoding=T3.sRGBEncoding;tx.anisotropy=8;if(s.material.map)s.material.map.dispose();s.material.map=tx;s.material.needsUpdate=true;const sz=o.h||.3;s.scale.set(sz*w/h,sz,1)};
     s.userData.set(text);return K.put(o.part||null,s,{p,to:o.to})};
   // A tube whose radius changes along its length: r(u) for u from 0 to 1 (organs, vessels, roots).
   const vtube=(T3,pts,rf,seg=96,rad=20,closed=false)=>{const cv=pts.isCurve?pts:new T3.CatmullRomCurve3(pts.map(p=>p.isVector3?p:new T3.Vector3(...p)),closed),g=new T3.TubeGeometry(cv,seg,1,rad,closed),P=g.attributes.position,c=new T3.Vector3(),v=new T3.Vector3();
@@ -26496,6 +26500,146 @@ for(const [k,L] of Object.entries(LIB)){const prev=L.first&&L.first.computing;if
 for(const r of R){const L=LIB[r[1]];if(!L)console.warn('compmap: no model',r[1]);else if(r[2]&&L.variants&&L.variants.length&&!L.variants.some(x=>x[0]===r[2]))console.warn('compmap: no view',r[1],r[2])}
 L3.COMPROUTE=route;
 })();
+// ---------- Anatomy kit: wet-tissue materials, a smooth see-through body and organ shapes, for realistic (atlas-style) organ models ----------
+(()=>{const V=(...a)=>new THREE.Vector3(...a),TAU=Math.PI*2,TX={};
+// Average the normals of vertices that sit on the same spot (sphere and tube seams), so organs have no visible seam lines.
+const smoothN=g=>{const P=g.attributes.position,N=g.attributes.normal,m=new Map();
+  for(let i=0;i<P.count;i++){const k=`${Math.round(P.getX(i)*1e4)},${Math.round(P.getY(i)*1e4)},${Math.round(P.getZ(i)*1e4)}`;let a=m.get(k);if(!a){a=[0,0,0,[]];m.set(k,a)}a[0]+=N.getX(i);a[1]+=N.getY(i);a[2]+=N.getZ(i);a[3].push(i)}
+  for(const a of m.values()){if(a[3].length<2)continue;const l=Math.hypot(a[0],a[1],a[2])||1;for(const i of a[3])N.setXYZ(i,a[0]/l,a[1]/l,a[2]/l)}N.needsUpdate=true;return g};
+// A seamless tissue texture drawn on a canvas: mottled colour, fine branching blood vessels, fat lobules, folds or lobules in the bump map.
+const tissueTex=(T3,base,o={})=>{const key=[base,o.veins||0,o.veinC||0,o.fat||0,o.folds||0,o.lob||0,o.var||0,o.seed||1].join('|');if(TX[key])return TX[key];
+  const N=512,rnd=L3.rnd(o.seed||11),mk=()=>{const c=document.createElement('canvas');c.width=c.height=N;return c};
+  const C=mk(),x=C.getContext('2d'),B=mk(),b=B.getContext('2d'),col=new T3.Color(base);
+  const css=(cc,a)=>`rgba(${Math.round(cc.r*255)},${Math.round(cc.g*255)},${Math.round(cc.b*255)},${a})`;
+  const wrap=(px,py,r,f)=>{for(const dx of [-N,0,N])for(const dy of [-N,0,N]){if(px+dx+r<0||px+dx-r>N||py+dy+r<0||py+dy-r>N)continue;f(px+dx,py+dy)}};
+  const spot=(ctx,px,py,r,c0,c1)=>wrap(px,py,r,(X,Y)=>{const g=ctx.createRadialGradient(X,Y,0,X,Y,r);g.addColorStop(0,c0);g.addColorStop(1,c1);ctx.fillStyle=g;ctx.fillRect(X-r,Y-r,2*r,2*r)});
+  x.fillStyle=css(col,1);x.fillRect(0,0,N,N);b.fillStyle='#808080';b.fillRect(0,0,N,N);
+  // soft mottling of the colour
+  for(let i=0;i<240;i++){const r=N*(.02+rnd()*.07),cc=col.clone().offsetHSL((rnd()-.5)*.025,0,(rnd()-.5)*(o.var??.14));spot(x,rnd()*N,rnd()*N,r,css(cc,.5),css(cc,0))}
+  // surface grain, or bigger lobules (glands, liver lobules)
+  const lob=o.lob||0;for(let i=0;i<(lob||500);i++){const r=lob?N*(.025+rnd()*.03):N*(.004+rnd()*.01),v=Math.round(lob?150+rnd()*70:105+rnd()*70);spot(b,rnd()*N,rnd()*N,r,`rgba(${v},${v},${v},.9)`,`rgba(${v},${v},${v},0)`);
+    if(lob){const cc=col.clone().offsetHSL(0,0,(rnd()-.4)*.12);spot(x,rnd()*N,rnd()*N,r,css(cc,.35),css(cc,0))}}
+  // folds running along the organ (oesophagus, rectum) — wavy dark grooves in the bump map
+  if(o.folds)for(let i=0;i<o.folds;i++){const y0=(i+.5)/o.folds*N;b.strokeStyle='rgba(40,40,40,.55)';b.lineWidth=4+rnd()*3;b.beginPath();for(let k=0;k<=N;k+=8){const y=y0+Math.sin(k*.025+i*1.7)*7;k?b.lineTo(k,y):b.moveTo(k,y)}b.stroke()}
+  // blood vessels: branching random walks (colour + raised in the bump map)
+  if(o.veins){const vc=new T3.Color(o.veinC||0x7A1426);x.lineCap=b.lineCap='round';
+    const walk=(px,py,a,w,d)=>{for(let s=0;s<46&&w>.5;s++){const nx=px+Math.cos(a)*6,ny=py+Math.sin(a)*6;
+        wrap(Math.min(px,nx),Math.min(py,ny),10,(X,Y)=>{const ox=X-Math.min(px,nx),oy=Y-Math.min(py,ny);x.strokeStyle=css(vc,.5);x.lineWidth=w;x.beginPath();x.moveTo(px+ox,py+oy);x.lineTo(nx+ox,ny+oy);x.stroke();
+          b.strokeStyle='rgba(185,185,185,.8)';b.lineWidth=w*1.3;b.beginPath();b.moveTo(px+ox,py+oy);b.lineTo(nx+ox,ny+oy);b.stroke()});
+        px=nx;py=ny;a+=(rnd()-.5)*.55;w*=.972;if(d<3&&rnd()<.07)walk(px,py,a+(rnd()<.5?-1:1)*(.5+rnd()*.6),w*.72,d+1)}};
+    for(let i=0;i<o.veins;i++)walk(rnd()*N,rnd()*N,rnd()*TAU,2.4+rnd()*1.8,0)}
+  // fat lobules (yellow, raised)
+  if(o.fat){const fc=new T3.Color(0xF0C95A);for(let i=0;i<o.fat;i++){const r=N*(.012+rnd()*.028),px=rnd()*N,py=rnd()*N;spot(x,px,py,r,css(fc,.95),css(fc,0));spot(b,px,py,r,'rgba(210,210,210,.95)','rgba(210,210,210,0)')}}
+  const tex=c=>{const t=new T3.CanvasTexture(c);t.wrapS=t.wrapT=T3.RepeatWrapping;t.anisotropy=8;return t};
+  const map=tex(C);map.encoding=T3.sRGBEncoding;return TX[key]={map,bump:tex(B)}};
+// A wet, glossy tissue material: o.veins / o.fat / o.folds / o.lob shape the texture; o.op makes it see-through.
+const wet=(T3,base,o={})=>{const t=tissueTex(T3,base,o);
+  return new T3.MeshPhysicalMaterial({color:0xffffff,map:t.map,bumpMap:t.bump,bumpScale:o.bump??.012,roughness:o.rough??.4,metalness:0,clearcoat:o.wet??.55,clearcoatRoughness:o.ccr??.3,
+    sheen:o.sheen??.35,sheenRoughness:.6,sheenColor:new T3.Color(o.sheenC??0xFFE6DE),envMapIntensity:.8,transparent:o.op!=null,opacity:o.op??1,depthWrite:o.op==null})};
+// A tube along a smooth path whose radius is rf(u, angle) (u from 0 to 1 along it). o.uv = texture repeats per unit length.
+const tube=(T3,pts,rf,o={})=>{const cv=pts.isCurve?pts:new T3.CatmullRomCurve3(pts.map(p=>p.isVector3?p:V(...p)),!!o.closed,'centripetal');if(!pts.isCurve)cv.arcLengthDivisions=Math.max(200,pts.length*12);const L=cv.getLength(),seg=o.seg||Math.max(48,Math.round(L*(o.dens||70))),rad=o.rad||24,
+    g=new T3.TubeGeometry(cv,seg,1,rad,!!o.closed),P=g.attributes.position,c=V(0,0,0),v=V(0,0,0);
+  for(let i=0;i<=seg;i++){const u=i/seg;cv.getPointAt(u,c);for(let j=0;j<=rad;j++){const k=i*(rad+1)+j,r=typeof rf==='function'?rf(u,j/rad*TAU):rf;v.fromBufferAttribute(P,k).sub(c).multiplyScalar(r).add(c);P.setXYZ(k,v.x,v.y,v.z)}}
+  g.computeVertexNormals();smoothN(g);const U=g.attributes.uv,ul=L*(o.uv??3);for(let k=0;k<U.count;k++)U.setX(k,U.getX(k)*ul);U.needsUpdate=true;g.userData.curve=cv;return g};
+// rounded ends for tubes: multiply a radius by cap(u) to close the start (a) and/or end (b) like a dome
+const cap=(u,a=0,b=0)=>Math.sqrt(Math.max(0,Math.min(1,a?u/a:1,b?(1-u)/b:1)));
+// A sphere reshaped point by point: f(x,y,z) on the unit sphere → [X,Y,Z].
+const sculpt=(T3,f,o={})=>{const s=o.seg||96,g=new T3.SphereGeometry(1,s,Math.round(s*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const r=f(p.getX(i),p.getY(i),p.getZ(i));p.setXYZ(i,r[0],r[1],r[2])}
+  g.computeVertexNormals();smoothN(g);if(o.uv){const U=g.attributes.uv;for(let k=0;k<U.count;k++)U.setXY(k,U.getX(k)*o.uv*2,U.getY(k)*o.uv)}return g};
+// A lobulated gland (salivary glands, pancreas head): an ellipsoid with bumpy lobules.
+const gland=(T3,sz,seed=1,amp=.13)=>sculpt(T3,(x,y,z)=>{const k=1+amp*(Math.sin(x*9+seed)*Math.sin(y*8+seed*1.3)*Math.sin(z*7+seed*.7))+amp*.5*L3.nz(x*2,y*2,z*2,seed);return [x*sz[0]*k,y*sz[1]*k,z*sz[2]*k]},{seg:64,uv:1});
+// add a mesh for a part
+const mesh=(K,id,geo,mat,p,o={})=>{const m=new THREE.Mesh(geo,mat);if(o.r)m.rotation.set(...o.r);if(o.s)m.scale.set(...o.s);if(o.order!=null)m.renderOrder=o.order;return K.put(id,m,{p,to:o.to})};
+
+// A smooth see-through human body, like an anatomy atlas: head, neck, torso, arms with hands, thighs. Crown at y ≈ 3.6, crotch at y ≈ −1.95.
+const body=(T3,K,o={})=>{const g=K.grp(null,{p:o.p,s:o.s}),op=o.op??.2,c=o.c??0xF1F4F9;
+  const skin=new T3.MeshPhysicalMaterial({color:c,roughness:.35,metalness:0,clearcoat:.6,clearcoatRoughness:.25,transparent:true,opacity:op,depthWrite:false,side:T3.FrontSide,envMapIntensity:.9});
+  const rim=new T3.MeshBasicMaterial({color:o.rim??0xAEB9CC,transparent:true,opacity:o.rimOp??.42,side:T3.BackSide,depthWrite:false});
+  const add=(geo,p=[0,0,0],sc=[1,1,1],r)=>{for(const [m,k] of [[rim,1.018],[skin,1]]){const me=new T3.Mesh(geo,m);me.position.set(...p);if(r)me.rotation.set(...r);me.scale.set(sc[0]*k,sc[1]*k,sc[2]*k);me.renderOrder=m===rim?20:21;g.add(me)}};
+  // torso: elliptical rings through key heights [y, half-width, half-depth, forward shift]
+  const KF=[[-2.0,.12,.12,0],[-1.92,.5,.34,-.02],[-1.7,.72,.42,-.04],[-1.25,.77,.44,-.03],[-.7,.68,.41,0],[-.1,.6,.38,.02],[.5,.63,.4,.03],[1.1,.72,.45,.05],[1.6,.79,.44,.04],[1.95,.93,.38,.01],[2.12,.86,.31,0],[2.27,.55,.24,0],[2.38,.24,.21,0]];
+  const at=(y,k)=>{for(let i=0;i<KF.length-1;i++){const a=KF[i],b=KF[i+1];if(y<=b[0]){const t=(y-a[0])/(b[0]-a[0]),s=t*t*(3-2*t);return a[k]+(b[k]-a[k])*s}}return KF[KF.length-1][k]};
+  const rows=90,cols=64,pos=[],idx=[],y0=KF[0][0],y1=KF[KF.length-1][0];
+  for(let i=0;i<=rows;i++){const y=y0+(y1-y0)*i/rows;for(let j=0;j<=cols;j++){const a=j/cols*TAU,cx=Math.cos(a),sz=Math.sin(a),flat=1-.12*Math.pow(Math.abs(cx),6);pos.push(at(y,1)*cx,y,at(y,2)*sz*flat+at(y,3))}}
+  for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){const a=i*(cols+1)+j,b=a+cols+1;idx.push(a,b,a+1,b,b+1,a+1)}
+  const tg=new T3.BufferGeometry();tg.setAttribute('position',new T3.Float32BufferAttribute(pos,3));tg.setIndex(idx);tg.computeVertexNormals();smoothN(tg);add(tg);
+  // neck and head (narrower jaw, chin forward), ears and nose
+  add(tube(T3,[[0,2.3,-.02],[0,2.55,0],[0,2.78,.02]],u=>.2+.02*u,{seg:24,rad:40}));
+  add(sculpt(T3,(x,y,z)=>{const j=y<0?1+.34*y:1,ch=y<-.3&&z>0?.08*(-y-.3):0;return [x*.37*j,y*.47,z*.43*(y<0?1+.1*y:1)+ch]},{seg:72}),[0,3.1,.02]);
+  for(const s of [1,-1]){add(new T3.SphereGeometry(1,24,18),[s*.37,3.08,-.02],[.04,.09,.06]);
+    // arm: shoulder, upper arm, forearm, hand with thumb
+    add(new T3.SphereGeometry(.2,32,24),[s*.88,2.0,0]);add(tube(T3,[[s*.9,2.05,0],[s*1.0,1.5,-.02],[s*1.08,.95,-.02]],u=>.18-.05*u,{seg:40,rad:32}));
+    add(tube(T3,[[s*1.08,.95,-.02],[s*1.15,.4,.04],[s*1.2,-.12,.1]],u=>.135-.055*u,{seg:40,rad:32}));add(new T3.SphereGeometry(.13,24,18),[s*1.08,.95,-.02]);
+    add(sculpt(T3,(x,y,z)=>[x*.11*(1-.2*y),y*.22,z*.05],{seg:40}),[s*1.23,-.38,.12]);add(tube(T3,[[s*1.17,-.2,.17],[s*1.14,-.36,.2]],u=>.03*cap(u,0,.3),{seg:12,rad:16}));
+    // thigh, fading out above the knee
+    add(tube(T3,[[s*.36,-1.55,0],[s*.38,-2.0,.02],[s*.39,-2.35,.03]],u=>(.33-.06*u)*cap(u,0,.18),{seg:40,rad:40}))}
+  return g};
+
+L3.lx.anat={smoothN,tissueTex,wet,tube,cap,sculpt,gland,mesh,body};
+})();
+// ---------- Digestive system, atlas quality: real organ shapes and wet tissue inside a see-through body (replaces the 'system' view of LIB.digest) ----------
+(()=>{const LIB=L3.LIB,D=LIB.digest;if(!D)return;const {V,tween}=L3.lx,{wet,tube,cap,sculpt,gland,mesh,body}=L3.lx.anat,TAU=Math.PI*2;
+const old=D.build;
+D.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
+  const r=L3.rnd(17);
+  body(T3,K,{op:.14,rimOp:.3});
+  // ---- mouth: teeth, tongue, pharynx and the three pairs of salivary glands ----
+  const tooth=wet(T3,0xF7F3E8,{rough:.25,wet:.8,var:.04}),gum=wet(T3,0xD9707A,{veins:6}),glandM=wet(T3,0xE3A646,{lob:70,veins:4,veinC:0x9A4A20,bump:.02});
+  for(const [y,dir] of [[2.935,1],[2.865,-1]])for(let i=0;i<14;i++){const a=-1.15+i/13*2.3,big=Math.abs(a)>.75;
+    mesh(K,'mouth',new T3.CapsuleGeometry(big?.022:.016,big?.018:.026,6,12),tooth,[Math.sin(a)*.17,y,.2+Math.cos(a)*.17],{r:[0,a,0],s:[1,1,big?1.25:.8]})}
+  mesh(K,'mouth',tube(T3,[[-.17,2.9,.24],[-.1,2.9,.34],[0,2.9,.37],[.1,2.9,.34],[.17,2.9,.24]],.03,{rad:16,uv:6}),gum);
+  mesh(K,'mouth',sculpt(T3,(x,y,z)=>[x*.11*(1-.25*Math.max(0,z)),y*.04*(1+.3*x*x)+.012*(1-x*x),z*.16],{seg:64,uv:2}),wet(T3,0xC9566A,{lob:160,bump:.006,veins:3}),[0,2.875,.19]);
+  mesh(K,'mouth',tube(T3,[[0,2.9,.22],[0,2.85,.08],[0,2.76,-.04],[0,2.72,-.07]],u=>.075-.02*u,{rad:28,uv:5}),wet(T3,0xC7646E,{folds:10,veins:5,op:.85}));
+  for(const s of [1,-1]){mesh(K,'mouth',gland(T3,[.055,.125,.085],3+s),glandM,[s*.31,3.0,.06]);mesh(K,'mouth',gland(T3,[.065,.045,.075],5+s),glandM,[s*.19,2.76,.12]);mesh(K,'mouth',gland(T3,[.045,.022,.07],7+s),glandM,[s*.085,2.84,.25]);
+    mesh(K,'mouth',tube(T3,[[s*.29,3.02,.14],[s*.24,2.97,.27],[s*.16,2.93,.33]],.008,{rad:10,uv:8}),glandM);mesh(K,'mouth',tube(T3,[[s*.18,2.77,.17],[s*.12,2.8,.24],[s*.04,2.84,.29]],.006,{rad:10,uv:8}),glandM)}
+  // ---- oesophagus: muscular tube behind the windpipe, through the diaphragm into the stomach ----
+  const oe=[[0,2.72,-.07],[0,2.4,-.09],[.01,1.95,-.11],[.04,1.6,-.12],[.1,1.34,-.09],[.18,1.2,-.04]];
+  mesh(K,'oesoph',tube(T3,oe,(u,a)=>(.056+.012*u)*(1+.035*Math.sin(a*8)),{rad:32,uv:4}),wet(T3,0xC86870,{folds:14,veins:8,veinC:0x8A2030}));
+  // ---- stomach: fundus, body, antrum and pylorus (J-shaped, greater curvature on the left) ----
+  const stP=[[.3,1.36,-.06],[.41,1.21,-.02],[.44,1.0,.04],[.41,.81,.1],[.29,.67,.15],[.12,.62,.16],[-.04,.65,.13],[-.16,.71,.09]];
+  mesh(K,'stomach',tube(T3,stP,(u,a)=>{const R=u<.4?.25:u<.8?.25-.1*(u-.4)/.4:.15-.08*(u-.8)/.2;return R*cap(u,.09,0)*(1+.02*Math.sin(a*5+u*9))},{rad:48,dens:90,uv:2.2}),wet(T3,0xE2A090,{veins:26,veinC:0xA3303F,var:.12,sheen:.3}));
+  // ---- liver: big right lobe, thin left lobe over the stomach; sharp lower front edge ----
+  mesh(K,'liver',sculpt(T3,(x,y,z)=>{const t=(x+1)/2,top=.1+.34*Math.pow(1-t,.6),bot=(.08+.3*Math.pow(1-t,.9)),d=.36*(1-.5*t)+.09,k=1+.01*L3.nz(x*3,y*3,z*3,4);
+      let Y=y>0?y*top+.05*(1-x*x):y*bot-.06*(1-t)*(-y);if(y<0&&z>0)Y*=1-.3*z;return [x*.62*k,Y*k,z*d*k]},{seg:128,uv:2}),
+    wet(T3,0x7E1E1A,{veins:9,veinC:0x45100F,var:.1,rough:.28,wet:.85,ccr:.2,sheen:.1,sheenC:0xFF8E7A,lob:220,bump:.004}),[-.12,1.2,.06],{r:[0,0,-.15]});
+  // ---- gall bladder (pear shape under the liver) and the bile duct to the duodenum ----
+  const gb=wet(T3,0x56823A,{veins:5,veinC:0x2F4A1E,rough:.3,wet:.8});
+  mesh(K,'gall',tube(T3,[[-.33,.98,.24],[-.36,.9,.31],[-.4,.8,.37],[-.42,.74,.39]],u=>(.025+.06*Math.sin(Math.min(1,u*1.2)*Math.PI*.55))*cap(u,0,.22),{rad:32,uv:3}),gb);
+  mesh(K,'gall',tube(T3,[[-.33,.98,.24],[-.3,.86,.12],[-.3,.68,.03],[-.31,.56,-.01]],.011,{rad:12,uv:6}),gb);
+  // ---- duodenum (C-loop) and pancreas lying in it ----
+  const duo=[[-.16,.7,.09],[-.28,.66,.04],[-.34,.52,-.01],[-.33,.34,-.04],[-.22,.25,-.06],[-.04,.24,-.08],[.12,.3,-.06],[.2,.38,-.02]];
+  const gutM=wet(T3,0xE69083,{veins:20,veinC:0xA02838,var:.12});
+  mesh(K,'small',tube(T3,duo,.055,{rad:28,uv:3}),gutM);
+  mesh(K,'pancreas',tube(T3,[[-.25,.39,-.11],[-.1,.48,-.17],[.08,.54,-.19],[.26,.62,-.19],[.42,.72,-.16]],(u,a)=>(.105-.05*u)*cap(u,.06,.12)*(1+.09*Math.sin(u*44+a*3)*Math.sin(a*5+u*13)),{rad:36,dens:110,uv:3}),
+    wet(T3,0xE2B07A,{lob:90,veins:4,veinC:0xA0562E,bump:.02,rough:.5,wet:.35}));
+  // ---- small intestine: about 6 m of jejunum and ileum folded in tight loops, with fat and blood vessels in the mesentery ----
+  const sm=[[.2,.38,-.02],[.3,.26,.04],[.36,.14,.12]];
+  for(let i=0;i<10;i++){const y0=.08-i*.1,xa=i%2?-.36:.36,xb=-xa;for(let k=1;k<=44;k++){const s=k/44;sm.push([xa+(xb-xa)*s,y0+.042*Math.sin(s*TAU*5.5+i*1.3)+(r()-.5)*.01,.16+.12*Math.sin(s*TAU*3.1+i*2.1)+(r()-.5)*.02])}}
+  sm.push([-.44,-.9,.08],[-.48,-.96,.07]);
+  const smG=tube(T3,sm,(u,a)=>.046*(1+.03*Math.sin(a*6+u*400)),{rad:20,dens:75,uv:4}),smCv=smG.userData.curve;mesh(K,'small',smG,gutM);
+  const fatM=wet(T3,0xE6C97C,{lob:40,rough:.4,wet:.6,var:.08}),fatG=sculpt(T3,(x,y,z)=>[x,y*.7,z],{seg:16}),nF=130,fat=new T3.InstancedMesh(fatG,fatM,nF),mm=new T3.Matrix4(),q=new T3.Quaternion(),c3=V(0,0,0),tg=V(0,0,0),nrm=V(0,0,0);
+  for(let i=0;i<nF;i++){const u=.03+r()*.94;smCv.getPointAt(u,c3);smCv.getTangentAt(u,tg);nrm.set(r()-.5,r()-.5,-Math.abs(r())*.6).cross(tg).normalize();const s=.014+r()*.016;
+    mm.compose(c3.clone().addScaledVector(nrm,.042),q.setFromEuler(new T3.Euler(r()*3,r()*3,r()*3)),V(s,s,s*1.3));fat.setMatrixAt(i,mm)}fat.instanceMatrix.needsUpdate=true;K.put('small',fat);
+  const vesM=wet(T3,0xA8222E,{veins:0,rough:.3,wet:.8,var:.05});
+  for(let i=0;i<10;i++){const p=V(...sm[3+i*44+22]);mesh(K,'small',tube(T3,[[-.04,-.25,-.1],[(-.04+p.x)/2,(-.25+p.y)/2,-.06],[p.x*.97,p.y,p.z-.03]],u=>.012-.006*u,{rad:10,uv:8}),vesM)}
+  // ---- large intestine: caecum and appendix, ascending, transverse, descending and sigmoid colon, rectum and anus ----
+  const lg=[[-.48,-.98,.06],[-.5,-.8,.06],[-.5,-.3,.04],[-.5,.28,.06],[-.43,.48,.14],[-.24,.36,.3],[0,.26,.33],[.24,.33,.3],[.44,.62,.1],[.5,.4,.02],[.51,-.3,0],[.49,-.82,.04],[.38,-1.02,.12],[.2,-.97,.2],[.08,-1.08,.12],[.02,-1.24,-.04],[0,-1.48,-.1],[0,-1.68,-.07],[0,-1.86,-.03]];
+  mesh(K,'large',tube(T3,lg,(u,a)=>{const R=u<.05?.12:u<.7?.11-.025*(u-.05)/.65:u<.84?.085:u<.95?.085+.035*Math.sin((u-.84)/.11*Math.PI):.045;
+      const haus=u<.84?1+.14*Math.pow(Math.abs(Math.sin(u*Math.PI*58)),.7):1,tae=u<.84?1-.08*Math.pow(Math.max(0,Math.cos(3*a+.6)),12):1;return R*haus*tae*cap(u,.025,0)},{rad:48,dens:100,uv:2.6}),
+    wet(T3,0xD29A7C,{veins:16,veinC:0x952A35,fat:14,var:.12}));
+  mesh(K,'large',tube(T3,[[-.46,-1.02,.1],[-.43,-1.14,.14],[-.36,-1.2,.12],[-.3,-1.18,.08]],u=>.024*cap(u,0,.2),{rad:16,uv:6}),wet(T3,0xCC8B74,{veins:4}));
+  // ---- a mouthful of food travelling through ----
+  const path=[[0,2.92,.32],[0,2.85,.12],[0,2.76,-.04],...oe,[.3,1.05,.06],[.32,.84,.11],[.2,.68,.15],[0,.64,.14],...duo,...sm.slice(1),...lg.slice(1)].map(a=>V(...a)),cv=new T3.CatmullRomCurve3(path,false,'centripetal');cv.arcLengthDivisions=path.length*12
+    ;const bolus=mesh(K,'food',sculpt(T3,(x,y,z)=>[x,y*.85,z],{seg:32}),wet(T3,0x8A5A1E,{lob:30,rough:.5}),[0,2.92,.32],{s:[.05,.05,.05]});
+  const S={u:0,goal:0};const tick=dt=>{tween(S,'u',S.goal,dt,.05);bolus.position.copy(cv.getPointAt(S.u));bolus.visible=S.u>0&&S.u<.999;return true};
+  const stop=u=>()=>{S.goal=u},uOf=p=>{let best=0,bd=1e9;for(let i=0;i<=600;i++){const d=cv.getPointAt(i/600).distanceTo(V(...p));if(d<bd){bd=d;best=i/600}}return best};
+  const smMid=sm[3+5*44+22],uSt=uOf([.3,.82,.11]),uSm=uOf(smMid),uOe=uOf(oe[3]);
+  return {radius:2.85,view:[.04,.1],ground:0,long:1.05,tick,jEnd:()=>{S.goal=0;S.u=0},quizSkip:['food'],
+    tags:[['mouth',[.31,3.0,.16],0],['oesoph',[.02,1.9,-.06]],['stomach',[.52,1.0,.12],0],['liver',[-.55,1.32,.3],0],['gall',[-.43,.74,.45],0],['pancreas',[.36,.68,-.1]],['small',smMid,0],['large',[-.58,-.4,.08],0]],
+    journeys:[{name:'Follow your lunch',c:0xFBBF24,steps:[{p:[0,2.9,.3],part:'mouth',text:'Teeth chew the food into smaller pieces, and amylase in saliva starts to digest starch.',on:()=>{S.u=0;S.goal=.002}},{p:[.01,1.9,-.1],part:'oesoph',text:'Swallowed, it is pushed down the oesophagus by peristalsis.',on:stop(uOe)},
+      {p:[.3,.85,.12],part:'stomach',text:'In the stomach, pepsin starts to digest proteins. Hydrochloric acid kills bacteria.',on:stop(uSt)},{p:[-.3,1.15,.3],part:'liver',text:'Bile from the liver, stored in the gall bladder, neutralises the acid and emulsifies fats.'},{p:[.08,.54,-.19],part:'pancreas',text:'The pancreas adds amylase, protease and lipase.'},
+      {p:smMid,part:'small',text:'In the small intestine digestion finishes, and glucose, amino acids, fatty acids and glycerol are absorbed through the villi.',on:stop(uSm)},{p:[-.5,-.3,.04],part:'large',text:'The large intestine absorbs water. What is left leaves the body as faeces.',on:stop(1)}]}]}};
+})();
 // ---------- Biology mapping: which model claims which subtopic first, so every subtopic in a topic gets its own model ----------
 (()=>{const LIB=L3.LIB;
 const F=(k,re,s='biology')=>{const L=LIB[k];if(!L)return;L.first=L.first||{};L.first[s]=L.first[s]?new RegExp(L.first[s].source+'|'+re.source,'i'):new RegExp(re.source,'i')};
@@ -26591,7 +26735,7 @@ const Acct={
     document.addEventListener('pointerdown',Acct._out,true);document.addEventListener('keydown',Acct._key);
     try{const role=await SCH.getRole();if(m.isConnected)draw(role)}catch(e){/* offline: the menu still works */}},
   signOut(){if(!confirm(T('Sign out on this device? Everything stays saved in your account, and you can sign in again any time.')))return;Acct.close();
-    try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k)}catch(e){}
+    try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k);sessionStorage.removeItem('go-auth-token')}catch(e){}
     location.hash='home';location.reload()}};
 document.addEventListener('fm-auth',()=>{SCH.role=null;Acct.render();if(authToken())WHO.afterSignIn()});
 
