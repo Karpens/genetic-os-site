@@ -1379,6 +1379,13 @@ html.i18n .board-ui{display:none!important}
 .sc-actions{display:flex;gap:10px;flex-wrap:wrap}
 .sc-back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:10px}
 .sc-back:hover{color:var(--stain)}
+.hw-item{border-radius:14px;padding:14px 16px;margin:10px 0;background:var(--bg,#F8F9FC);box-shadow:0 0 0 1px var(--line)}
+.hw-item.done{opacity:.72}.hw-top{display:flex;gap:12px;align-items:flex-start}.hw-top>div:nth-child(2){flex:1;min-width:0}.hw-top b{display:block}.hw-top small{color:var(--muted);font-weight:600}
+.hw-ic{font-size:22px;line-height:1;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--paper);box-shadow:0 0 0 1px var(--line);flex:none}
+.hw-link{display:inline-block;margin:10px 0 0;font-weight:700;font-size:14px}.hw-note{white-space:pre-wrap;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--paper);box-shadow:0 0 0 1px var(--line);font-size:14px}
+.hw-prog{display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:700;font-size:13px;color:var(--muted)}.hw-bar{flex:1;height:8px;border-radius:99px;background:var(--line);overflow:hidden}.hw-bar i{display:block;height:100%;background:var(--ok,#2F9E44);border-radius:99px}
+.hw-item details{margin-top:8px;font-size:14px}.hw-item details p{margin:6px 0}.hw-late{color:var(--bad,#E03131)!important}.hw-box{margin:0 0 18px}.hw-box h4{display:flex;align-items:center;gap:8px}
+.hw-pick[hidden]{display:none!important}@media (max-width:560px){.hw-top{flex-wrap:wrap}.hw-top .sc-actions{width:100%;padding-left:48px}}.hw-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.hw-pick{display:flex;flex-wrap:wrap;gap:6px 14px;max-height:180px;overflow:auto;padding:8px 2px}.hw-pick label{flex-direction:row!important;align-items:center;gap:6px!important;font-weight:600!important;color:var(--ink)!important}
 .sc-card{background:var(--paper);border-radius:18px;padding:24px;box-shadow:var(--shadow),0 0 0 1px var(--line);animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both}
 .sc-card+.sc-card{margin-top:16px}
 .sc-card h3{margin:0 0 4px;font:800 21px/1.2 "Plus Jakarta Sans",sans-serif}
@@ -4319,6 +4326,9 @@ function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classe
   main.innerHTML=(joinWait&&joinWait.code?jc+reqs+cards:cl.length||pend.length?reqs+cards+jc:jc+reqs)+schoolTeacherCta()+SCH.foot();
   store.set('fm-seen-grades',JSON.stringify(cl.flatMap(c=>c.grades.map(g=>g.id)).slice(-3000)));store.set('fm-seen-init','1');SCH.navDot(false);
   SCH.bindOut(main);schoolJoinBind(main);
+  main.querySelectorAll('[data-hwo]').forEach(b=>b.onclick=()=>{const h=(SchoolPage.hw||{})[b.dataset.hwo];if(h)HW.open(h.link,h.kind)});
+  main.querySelectorAll('[data-hwd]').forEach(b=>b.onclick=async()=>{const h=(SchoolPage.hw||{})[b.dataset.hwd];if(!h)return;b.disabled=true;const done=b.dataset.v==='1';
+    try{await SCH.api('POST',`/class/${h.cls}/homework/${h.id}/done`,{done});if(done)toast('🎉',T('Nice work — your teacher can see it’s done.'));renderSchool('school')}catch(e){toast('⚠️',e.message);b.disabled=false}});
   main.querySelectorAll('[data-leave]').forEach(a=>a.onclick=async e=>{e.preventDefault();if(a.dataset.msg&&!confirm(T(a.dataset.msg)))return;
     try{await SCH.api('POST',`/class/${a.dataset.leave}/leave`);renderSchool('school')}catch(err){toast('⚠️',err.message)}})}
 function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=p.school||store.get('fm-school','');
@@ -4346,15 +4356,79 @@ function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)r
       toast(r.status==='member'?'✓':'📨',r.status==='member'?T('You’re already in {0}.',r.class.name):T('Request sent to {0}. You’ll see your grades as soon as they approve you.',r.class.teacher||T('your teacher')));
       if(location.hash!=='#school')location.hash='school';else renderSchool('school')}
     catch(e){msg.textContent=e.message;go.disabled=false;go.textContent=T('Send request to my teacher')}}}
+function schoolHw(c){const hw=c.homework||[];if(!hw.length)return '';const todo=hw.filter(h=>!h.done).length,today=HW.today();(SchoolPage.hw=SchoolPage.hw||{});hw.forEach(h=>SchoolPage.hw[h.id]={...h,cls:c.id});
+  return `<div class="hw-box"><h4>📚 ${esc(T('Homework'))} ${todo?`<span class="sc-pill gold">${esc(T('{0} to do',todo))}</span>`:`<span class="sc-pill">${esc(T('all done ✓'))}</span>`}</h4>${hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<today;
+    return `<div class="hw-item${h.done?' done':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(late?T('was due {0}',SCH.date(h.due)):T('due {0}',SCH.date(h.due))):''}</small></div></div>
+      ${h.link?`<div class="hw-link">🔗 ${esc(HW.label(h.link))}</div>`:''}${h.note?`<p class="hw-note">${esc(h.note)}</p>`:''}
+      <div class="hw-acts">${h.link?`<button class="btn sm" data-hwo="${esc(h.id)}">${esc(h.kind==='questions'?T('Start the questions →'):h.kind==='3d'?T('Open the 3D model →'):T('Open on Full Marks →'))}</button>`:''}<button class="btn ${h.done?'ghost ':''}sm" data-hwd="${esc(h.id)}" data-v="${h.done?0:1}">${esc(h.done?T('Mark as not done'):T('✓ Mark as done'))}</button></div></div>`}).join('')}</div>`}
 function schoolClassCard(c,i,seen,init){const sc=c.scale,m=c.summary,col=SCH.sCol(c.subject),asc=[...c.grades].reverse(),isNew=g=>init&&!seen.has(g.id),subs=Object.entries(m.bySubject||{});
   return `<div class="sc-card" style="--c:${col};--i:${i}">
     <div class="sc-ctop" style="margin-bottom:16px">${SCH.sGlyph(c.subject)}<div><b>${esc(c.name)}</b><small>${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}${c.teacher.name?' · '+esc(c.teacher.name):''}${c.teacher.school?', '+esc(c.teacher.school):''}</small></div></div>
+    ${schoolHw(c)}
     ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Your average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades']])}
     ${asc.length>1?`<h4>Your results over time</h4>${SCH.chart(asc.map(g=>({l:SCH.short(g.date),v:SCH.score(g,sc),t:`${g.title||SCH.tName(g.type)}: ${SCH.gtxt(g)}`})),col)}`:''}
     ${subs.length>1?`<h4 style="margin-top:16px">By subject</h4>${SCH.bars(subs.map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}`:''}
     <h4 style="margin-top:16px">Your grades</h4>
     <div class="sc-gl">${c.grades.map((g,j)=>`<div class="sc-gitem${isNew(g)?' new':''}" style="--i:${j}">${SCH.badge(g,sc)}<div><b>${esc(g.title||SCH.tName(g.type))}${isNew(g)?'<span class="sc-new">NEW</span>':''}</b><small>${esc(SCH.date(g.date))} · ${esc(SCH.tName(g.type))}${g.subject!==c.subject?' · '+esc(SCH.sName(g.subject)):''}${g.weight&&g.weight!==1?` · ×${g.weight}`:''}</small></div>${g.letter?SCH.pct(g.pct):'<span></span>'}${g.note?`<div class="note">💬 ${esc(g.note)}</div>`:''}</div>`).join('')||'<p class="muted">No grades yet. They appear here as soon as your teacher adds them.</p>'}</div>
     <p class="sc-note"><a href="#" data-leave="${esc(c.id)}" data-msg="Leave this class? Your teacher will no longer see your grades or practice.">Leave this class</a></p></div>`}
+
+/* ---------- homework: set by teachers, done by students ---------- */
+const HW={kinds:[['notes','📖','Read the notes'],['questions','✍️','Answer the questions'],['3d','🧪','Explore the 3D model'],['paper','📝','Do a past paper'],['other','📌','Other task']],
+  kind(k){return this.kinds.find(x=>x[0]===k)||this.kinds[0]},
+  today(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
+  label(l){return l?`${SCH.sName(l.subject)} · ${LV(l.level)} · ${l.n?l.n+' ':''}${l.sub}`:''},
+  // Opens the linked subtopic on the right tab: notes, practice questions or the 3D model.
+  open(l,kind){if(!l||!SUBJECTS[l.subject]||!SUBJECTS[l.subject][l.level]){toast('⚠️',T('This subtopic isn’t available.'));return}
+    subject=l.subject;level=l.level;if(l.board&&l.level!=='UFP')boards[l.subject]=l.board;save();const d=levelData();let ti=d.topics.findIndex(t=>t.title===l.topic),si=ti>=0?d.topics[ti].subs.findIndex(x=>x.title===l.sub):-1;
+    for(let i=0;si<0&&i<d.topics.length;i++){const j=d.topics[i].subs.findIndex(x=>x.title===l.sub||(l.n&&x.n===l.n));if(j>=0){ti=i;si=j}}
+    if(si<0){toast('⚠️',T('This subtopic isn’t available.'));return}
+    view={topic:ti,sub:si,tab:kind==='questions'?'practice':kind==='3d'?'explore':'notes',check:false,papers:false};endSession();renderPicker();if(location.hash==='#study')renderStudy();else location.hash='study';window.scrollTo(0,0)}};
+// The teacher's form for setting or editing homework. pre = a student's email when set from their profile.
+function tHwModal(d,h,pre){const c=d.class,st=d.students,isNew=!h;h=h||{title:'',note:'',kind:'notes',due:'',link:null,to:pre?[pre]:null};
+  const L=h.link||{},subj0=L.subject||(c.subject&&SUBJECTS[c.subject]?c.subject:Object.keys(SUBJECTS)[0]);
+  showModal(isNew?T('Set homework'):T('Edit homework'),`<div class="sc-form">
+    <label class="full">Title<input class="lbinput" id="hwT" maxlength="120" value="${esc(h.title)}" placeholder="${esc(T('e.g. Read: the autonomic nervous system'))}"></label>
+    <label>What to do<select class="lbinput" id="hwK">${SCH.opts(HW.kinds.map(k=>[k[0],k[1]+' '+T(k[2])]),h.kind)}</select></label>
+    <label>Due date<input class="lbinput" id="hwD" type="date" value="${esc(h.due||'')}"></label>
+    <label>Subject<select class="lbinput" id="hwS">${SCH.opts(Object.keys(SUBJECTS).map(k=>[k,SCH.sName(k)]),subj0)}</select></label>
+    <label>Level<select class="lbinput" id="hwL"></select></label>
+    <label>Exam board<select class="lbinput" id="hwB"></select></label>
+    <label>Topic<select class="lbinput" id="hwTp"></select></label>
+    <label class="full">Subtopic on Full Marks<select class="lbinput" id="hwSb"></select></label>
+    <label class="full">Note for your students<textarea class="lbinput" id="hwN" rows="4" maxlength="2000" placeholder="${esc(T('Instructions, questions to answer, what to bring next lesson…'))}">${esc(h.note||'')}</textarea></label>
+    <label class="full">Who is it for?<select class="lbinput" id="hwTo">${SCH.opts([['all',T('The whole class')],['some',T('Chosen students')]],h.to?'some':'all')}</select></label>
+    <div class="full hw-pick" id="hwPick"${h.to?'':' hidden'}>${st.map(x=>`<label><input type="checkbox" value="${esc(x.email)}"${h.to&&h.to.includes(x.email)?' checked':''}> ${esc(x.name||x.email)}</label>`).join('')}</div></div>
+    <div class="actions"><button class="btn" id="hwGo">${isNew?T('Set homework'):T('Save')}</button></div><p class="sc-msg" id="hwMsg"></p>`);
+  $('#modal .box').classList.add('wide');
+  const S_=$('#hwS'),Lv=$('#hwL'),Bd=$('#hwB'),Tp=$('#hwTp'),Sb=$('#hwSb');let first=true;
+  const lvls=()=>['GCSE','AS','A2','UFP'].filter(x=>SUBJECTS[S_.value]&&SUBJECTS[S_.value][x]);
+  const data=()=>{const raw=SUBJECTS[S_.value][Lv.value];return Lv.value==='UFP'?raw:ldFor(raw,Bd.value)};
+  const fillSubs=()=>{const t=Tp.value===''?null:(data().topics||[])[+Tp.value];Sb.innerHTML=t?SCH.opts(t.subs.map((x,i)=>[i,`${x.n} ${x.title}`]),first&&L.sub?Math.max(0,t.subs.findIndex(x=>x.title===L.sub)):0):'';Sb.disabled=!t;first=false};
+  const fillTopics=()=>{const T_=data().topics||[];let want=0;if(first&&h.link){const i=T_.findIndex(t=>t.title===L.topic||t.subs.some(x=>x.title===L.sub));want=i>=0?i:0}else if(first&&!isNew)want='';
+    Tp.innerHTML=`<option value="">${esc(T('No link — just the note'))}</option>`+SCH.opts(T_.map((t,i)=>[i,`${t.n} ${t.title}`]),want);Tp.value=String(want);fillSubs()};
+  const fillBoards=()=>{const ufp=Lv.value==='UFP';Bd.innerHTML=SCH.opts(BOARDS.filter(([b])=>b!=='ocrb'||hasOcrB(S_.value)).map(([b,l])=>[b,l]),first&&L.board?L.board:boardOf(S_.value));Bd.disabled=ufp;fillTopics()};
+  const fillLevels=()=>{const ls=lvls();Lv.innerHTML=SCH.opts(ls.map(x=>[x,LV(x)]),first&&L.level?L.level:(ls.includes(c.level)?c.level:ls[0]));fillBoards()};
+  fillLevels();S_.onchange=()=>{first=false;fillLevels()};Lv.onchange=()=>{first=false;fillBoards()};Bd.onchange=()=>{first=false;fillTopics()};Tp.onchange=()=>{first=false;fillSubs()};
+  $('#hwTo').onchange=e=>{$('#hwPick').hidden=e.target.value!=='some'};
+  $('#hwGo').onclick=async()=>{const msg=$('#hwMsg'),title=$('#hwT').value.trim(),to=$('#hwTo').value==='some'?[...document.querySelectorAll('#hwPick input:checked')].map(x=>x.value):null;
+    if(title.length<2){msg.textContent=T('Give the homework a title.');return}if(to&&!to.length){msg.textContent=T('Choose at least one student.');return}
+    const t=(data().topics||[])[+Tp.value],x=Tp.value!==''&&t?t.subs[+Sb.value]:null;
+    const body={title,note:$('#hwN').value,kind:$('#hwK').value,due:$('#hwD').value||null,to,link:x?{subject:S_.value,level:Lv.value,board:Lv.value==='UFP'?'':Bd.value,topic:t.title,sub:x.title,n:x.n}:null};
+    const go=$('#hwGo');go.disabled=true;
+    try{await SCH.api(isNew?'POST':'PATCH',`/teacher/classes/${c.id}/homework${isNew?'':'/'+h.id}`,body);$('#modal').classList.remove('on');toast('✓',isNew?T('Homework set'):T('Homework saved'));tRefresh()}catch(e){msg.textContent=e.message;go.disabled=false}}}
+// The class's homework tab: every piece, how many have done it, and who.
+function tHw(el,d){const id=d.class.id,st=d.students,hw=d.homework||[],nm=e=>(st.find(s=>s.email===e)||{}).name||e,today=HW.today();
+  el.innerHTML=`<div class="sc-card"><div class="sc-head" style="margin-bottom:6px"><div><h3>📚 Homework</h3><p class="muted">Set notes to read, questions to answer or a 3D model to explore — for the whole class or chosen students — and see who has done it.</p></div><button class="btn" data-hw-new${st.length?'':' disabled'}>＋ Set homework</button></div>
+    ${hw.length?hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=h.due&&h.due<today&&h.doneCount<h.total,pct=h.total?Math.round(h.doneCount/h.total*100):0,targets=h.to?h.to.filter(e=>st.some(s=>s.email===e)):st.map(s=>s.email),todo=targets.filter(e=>!h.done[e]);
+      return `<div class="hw-item"><div class="hw-top"><span class="hw-ic">${ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(T('due {0}',SCH.date(h.due))):''} · ${h.to?esc(T('{0} chosen',h.to.length)):esc(T('whole class'))}</small></div>
+        <div class="sc-actions"><button class="btn ghost sm" data-hw-edit="${esc(h.id)}">Edit</button><button class="btn ghost sm" data-hw-del="${esc(h.id)}">Delete</button></div></div>
+        ${h.link?`<a href="#" class="hw-link" data-hw-open="${esc(h.id)}">🔗 ${esc(HW.label(h.link))}</a>`:''}${h.note?`<p class="hw-note">${esc(h.note)}</p>`:''}
+        <div class="hw-prog"><div class="hw-bar"><i style="width:${pct}%"></i></div><span>${esc(T('{0} of {1} done',h.doneCount,h.total))}</span></div>
+        <details><summary>${esc(T('Who has done it'))}</summary><p>✅ ${Object.keys(h.done).map(e=>esc(nm(e))).join(', ')||esc(T('Nobody yet'))}</p><p>⏳ ${todo.map(e=>esc(nm(e))).join(', ')||esc(T('Everyone has done it 🎉'))}</p></details></div>`}).join(''):`<p class="muted" style="margin-top:14px">${esc(T('No homework yet.'))}</p>`}</div>`;
+  const nw=el.querySelector('[data-hw-new]');if(nw)nw.onclick=()=>tHwModal(d);
+  el.querySelectorAll('[data-hw-edit]').forEach(b=>b.onclick=()=>tHwModal(d,hw.find(h=>h.id===b.dataset.hwEdit)));
+  el.querySelectorAll('[data-hw-del]').forEach(b=>b.onclick=async()=>{const h=hw.find(x=>x.id===b.dataset.hwDel);if(!confirm(T('Delete “{0}”?',h.title)))return;try{await SCH.api('DELETE',`/teacher/classes/${id}/homework/${h.id}`);toast('✓',T('Homework deleted'));tRefresh()}catch(e){toast('⚠️',e.message)}});
+  el.querySelectorAll('[data-hw-open]').forEach(a=>a.onclick=e=>{e.preventDefault();const h=hw.find(x=>x.id===a.dataset.hwOpen);HW.open(h.link,h.kind)})}
 
 /* ---------- teachers: portal ---------- */
 const TCH={timer:null,pend:-1,f:{q:'',f:'all',s:'name'},gsub:'',bsub:''};
@@ -4431,7 +4505,7 @@ function tNewClass(){SCH.modal('New class',`<div class="sc-form"><label class="f
 async function tClass(main,seq,id,tab,quiet){const d=await SCH.api('GET',`/teacher/classes/${id}`);if(seq!==SCH.seq||tSame(main,d,quiet))return;
   const c=d.class,st=d.students,reqs=(d.pending||[]).map(p=>({...p,cls:c}));tNotify(reqs.length,quiet);
   const school=((SCH.role||{}).teacher||{}).school||'',link=`${location.origin}${location.pathname}#school/join/${c.code}/${c.subject}/${encodeURIComponent(school)}`;
-  const tabs=[['students',`Students (${st.length})`],['grades','Gradebook'],['stats','Statistics']];
+  const tabs=[['students',`Students (${st.length})`],['homework',`Homework (${(d.homework||[]).length})`],['grades','Gradebook'],['stats','Statistics']];
   main.innerHTML=`<a class="sc-back" href="#teacher">← All classes</a>
     <div class="sc-head"><div class="sc-ctop" style="--c:${SCH.sCol(c.subject)}">${SCH.sGlyph(c.subject)}<div><h2 style="margin:0">${esc(c.name)}</h2><p class="muted">${esc(SCH.sName(c.subject))} · ${esc(LV(c.level))}${c.archived?' · <span class="sc-pill">Archived</span>':''}</p></div></div>
       <div class="sc-actions"><button class="btn" data-bulk${st.length?'':' disabled'}>＋ Grades for the class</button><button class="btn ghost" data-add>Add students</button><button class="btn ghost" data-set aria-label="Class settings">⚙︎</button></div></div>
@@ -4443,7 +4517,7 @@ async function tClass(main,seq,id,tab,quiet){const d=await SCH.api('GET',`/teach
   tReqBind(main,reqs);
   main.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>SCH.copy(b.dataset.copy));
   main.querySelector('[data-bulk]').onclick=()=>tBulk(d);main.querySelector('[data-add]').onclick=()=>tAddStudents(d);main.querySelector('[data-set]').onclick=()=>tSettings(d);
-  const body=$('#tcBody');if(tab==='grades')tBook(body,d);else if(tab==='stats')tStats(body,d);else tStudents(body,d)}
+  const body=$('#tcBody');if(tab==='grades')tBook(body,d);else if(tab==='stats')tStats(body,d);else if(tab==='homework')tHw(body,d);else tStudents(body,d)}
 
 function tStudents(el,d){const sc=d.scale,F=TCH.f,id=d.class.id,week=Date.now()-7*864e5;
   if(!d.students.length){el.innerHTML=`<div class="sc-card sc-empty"><div class="big">👋</div><h3>No students yet</h3><p class="muted">Share the class code <b>${esc(d.class.code)}</b>. When students ask to join, you approve them here. You can also add students by email.</p></div>`;return}
@@ -4551,12 +4625,13 @@ async function tStudent(main,seq,id,email,quiet){const p=await SCH.api('GET',`/t
   const topicList=list=>list.length?SCH.bars(list.map(t=>({l:SCH.topic(t.key),v:t.pct,t:t.pct+'%',c:t.pct>=70?'var(--ok)':t.pct<50?'var(--bad)':'var(--gold)'}))):'<p class="muted">Not enough practice yet.</p>';
   main.innerHTML=`<a class="sc-back" href="#teacher/c/${esc(id)}">← ${esc(c.name)}</a>
     <div class="sc-head"><div class="sc-who">${SCH.av(stu.name,stu.email,true)}<div><h2 style="margin:0">${esc(stu.name)}</h2><p class="muted">${esc(stu.email)} · ${stu.joinedAt?esc(T('joined {0}',SCH.date(stu.joinedAt))):esc(T('added {0}',SCH.date(stu.addedAt)))}</p></div></div>
-      <div class="sc-actions"><button class="btn" data-g>＋ Add grade</button><button class="btn ghost" data-ren>Rename</button><button class="btn ghost" data-rm>Remove</button></div></div>
+      <div class="sc-actions"><button class="btn" data-g>＋ Add grade</button><button class="btn ghost" data-hw>📚 Set homework</button><button class="btn ghost" data-ren>Rename</button><button class="btn ghost" data-rm>Remove</button></div></div>
     ${SCH.tiles([[SCH.let(m.avgLetter,sc,true),'Average grade'],[m.avgPct!=null?m.avgPct+'%':'—','Average percentage'],[SCH.trend(m.trend),'Trend'],[m.count,'Grades'],[a?a.answered:'—','Questions answered'],[a&&a.accuracy!=null?a.accuracy+'%':'—','Accuracy'],[a?a.active30:'—','Active days (30)'],[a?(a.streak?'🔥 '+a.streak:0):'—','Streak']])}
     <div class="sc-cols"><div class="sc-card"><h4>Results over time</h4>${SCH.chart(p.grades.map(g=>({l:SCH.short(g.date),v:SCH.score(g,sc),t:`${g.title||SCH.tName(g.type)}: ${SCH.gtxt(g)}`})),col)}</div>
       <div class="sc-card"><h4>By subject</h4>${SCH.bars(Object.entries(m.bySubject||{}).map(([k,x])=>({l:SCH.sName(k),v:x.avgScore,t:[x.avgLetter,x.avgPct!=null?x.avgPct+'%':''].filter(Boolean).join(' · ')||'—',c:SCH.sCol(k)})))}</div></div>
     <div class="sc-card" style="margin-top:16px"><div class="sc-head" style="margin-bottom:10px"><h4 style="margin:0">Grades</h4>${subs.length>1?`<select class="lbinput" id="gsSub" style="width:auto;margin:0" aria-label="Subject">${SCH.opts([['','All subjects'],...subs.map(k=>[k,SCH.sName(k)])],gsub)}</select>`:''}</div>
       ${shown.length?`<table class="sc-table cards"><thead><tr><th>Date</th><th>Assessment</th><th>Grade</th><th>Weight</th><th>Note</th><th></th></tr></thead><tbody>${shown.map(g=>`<tr class="go" data-id="${esc(g.id)}"><td data-l="Date">${esc(SCH.date(g.date))}</td><td class="nm"><b>${esc(g.title||SCH.tName(g.type))}</b> <small class="muted">${esc(SCH.tName(g.type))}${subs.length>1?' · '+esc(SCH.sName(g.subject)):''}</small></td><td data-l="Grade">${SCH.badge(g,sc)} ${g.letter?SCH.pct(g.pct):''}</td><td data-l="Weight">×${g.weight||1}</td><td data-l="Note">${esc(g.note||'')}</td><td class="act"><button class="btn ghost sm" data-e="${esc(g.id)}">Edit</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">No grades yet. Use ＋ Add grade.</p>'}</div>
+    <div class="sc-card" style="margin-top:16px"><h4>📚 Homework</h4>${(p.homework||[]).length?(p.homework||[]).map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<HW.today();return `<div class="hw-item${h.done?' done':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(T('due {0}',SCH.date(h.due))):''} · ${h.done?esc(T('done {0}',SCH.ago(h.doneAt))):esc(T('not done yet'))}${h.to?' · '+esc(T('set for them')):''}</small></div></div></div>`}).join(''):`<p class="muted">${esc(T('No homework set yet.'))}</p>`}</div>
     <div class="sc-card" style="margin-top:16px"><h4>Practice on Full Marks</h4>${act?`<p class="muted" style="margin:0">Last active <b>${esc(SCH.ago(a.lastActive))}</b> · ${esc(T('{0} questions this week',a.week))} · ${a.xp} XP · ${a.exams} timed exams · updated ${esc(SCH.ago(act.at))}</p>
       <div class="sc-heat" aria-label="Questions answered per day, last 8 weeks">${days.join('')}</div><p class="sc-note" style="margin:0">Last 8 weeks, one square a day</p>
       <div class="sc-cols"><div><h4>💪 Strong topics</h4>${topicList(p.strong)}</div><div><h4>🎯 Needs work</h4>${topicList(p.weak)}</div></div>
@@ -4565,6 +4640,7 @@ async function tStudent(main,seq,id,email,quiet){const p=await SCH.api('GET',`/t
   const gs=$('#gsSub');if(gs)gs.onchange=e=>{TCH.gsub=e.target.value;main.dataset.sig='';tStudent(main,SCH.seq,id,email)};
   main.querySelector('[data-g]').onclick=()=>tGrade(d,email);
   main.querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>tGrade(d,email,p.grades.find(g=>g.id===tr.dataset.id)));
+  main.querySelector('[data-hw]').onclick=()=>tHwModal({class:c,students:[stu]},null,stu.email);
   main.querySelector('[data-ren]').onclick=()=>{const n=prompt(T('Student’s name'),stu.name);if(n&&n.trim())SCH.api('PATCH',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`,{name:n.trim()}).then(tRefresh,e=>toast('⚠️',e.message))};
   main.querySelector('[data-rm]').onclick=()=>{if(confirm(T('Remove {0} from {1}? Their grades in this class are deleted too.',stu.name,c.name)))SCH.api('DELETE',`/teacher/classes/${id}/students/${encodeURIComponent(email)}`).then(()=>{toast('✓',T('Student removed'));location.hash=`teacher/c/${id}`},e=>toast('⚠️',e.message))}}
 
