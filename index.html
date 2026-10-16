@@ -26545,11 +26545,13 @@ const tube=(T3,pts,rf,o={})=>{const cv=pts.isCurve?pts:new T3.CatmullRomCurve3(p
 const cap=(u,a=0,b=0)=>Math.sqrt(Math.max(0,Math.min(1,a?u/a:1,b?(1-u)/b:1)));
 // A sphere reshaped point by point: f(x,y,z) on the unit sphere → [X,Y,Z].
 const sculpt=(T3,f,o={})=>{const s=o.seg||96,g=new T3.SphereGeometry(1,s,Math.round(s*.75)),p=g.attributes.position;for(let i=0;i<p.count;i++){const r=f(p.getX(i),p.getY(i),p.getZ(i));p.setXYZ(i,r[0],r[1],r[2])}
+  // a mirrored shape (o.flip) turns its triangles inside out: swap their order so the outside still faces out
+  if(o.flip){const I=g.index;for(let i=0;i<I.count;i+=3){const b=I.getX(i+1);I.setX(i+1,I.getX(i+2));I.setX(i+2,b)}}
   g.computeVertexNormals();smoothN(g);if(o.uv){const U=g.attributes.uv;for(let k=0;k<U.count;k++)U.setXY(k,U.getX(k)*o.uv*2,U.getY(k)*o.uv)}return g};
 // A lobulated gland (salivary glands, pancreas head): an ellipsoid with bumpy lobules.
 const gland=(T3,sz,seed=1,amp=.13)=>sculpt(T3,(x,y,z)=>{const k=1+amp*(Math.sin(x*9+seed)*Math.sin(y*8+seed*1.3)*Math.sin(z*7+seed*.7))+amp*.5*L3.nz(x*2,y*2,z*2,seed);return [x*sz[0]*k,y*sz[1]*k,z*sz[2]*k]},{seg:64,uv:1});
 // add a mesh for a part
-const mesh=(K,id,geo,mat,p,o={})=>{const m=new THREE.Mesh(geo,mat);if(o.r)m.rotation.set(...o.r);if(o.s)m.scale.set(...o.s);if(o.order!=null)m.renderOrder=o.order;return K.put(id,m,{p,to:o.to})};
+const mesh=(K,id,geo,mat,p,o={})=>{const m=new THREE.Mesh(geo,mat);if(o.r)m.rotation.set(...o.r);if(o.s)m.scale.set(...o.s);if(o.order!=null)m.renderOrder=o.order;return K.put(id,m,{p,to:o.to,clip:o.clip,shell:o.shell,rank:o.rank})};
 
 // A smooth see-through human body, like an anatomy atlas: head, neck, torso, arms with hands, thighs. Crown at y ≈ 3.6, crotch at y ≈ −1.95.
 const body=(T3,K,o={})=>{const g=K.grp(null,{p:o.p,s:o.s}),op=o.op??.2,c=o.c??0xF1F4F9;
@@ -26562,7 +26564,7 @@ const body=(T3,K,o={})=>{const g=K.grp(null,{p:o.p,s:o.s}),op=o.op??.2,c=o.c??0x
   const rows=90,cols=64,pos=[],idx=[],y0=KF[0][0],y1=KF[KF.length-1][0];
   for(let i=0;i<=rows;i++){const y=y0+(y1-y0)*i/rows;for(let j=0;j<=cols;j++){const a=j/cols*TAU,cx=Math.cos(a),sz=Math.sin(a),flat=1-.12*Math.pow(Math.abs(cx),6);pos.push(at(y,1)*cx,y,at(y,2)*sz*flat+at(y,3))}}
   for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){const a=i*(cols+1)+j,b=a+cols+1;idx.push(a,b,a+1,b,b+1,a+1)}
-  const tg=new T3.BufferGeometry();tg.setAttribute('position',new T3.Float32BufferAttribute(pos,3));tg.setIndex(idx);tg.computeVertexNormals();smoothN(tg);add(tg);
+  const tg=new T3.BufferGeometry();tg.setAttribute('position',new T3.Float32BufferAttribute(pos,3));tg.setIndex(idx);tg.computeVertexNormals();smoothN(tg);add(tg);if(o.torso)return g;
   // neck and head (narrower jaw, chin forward), ears and nose
   add(tube(T3,[[0,2.3,-.02],[0,2.55,0],[0,2.78,.02]],u=>.2+.02*u,{seg:24,rad:40}));
   add(sculpt(T3,(x,y,z)=>{const j=y<0?1+.34*y:1,ch=y<-.3&&z>0?.08*(-y-.3):0;return [x*.37*j,y*.47,z*.43*(y<0?1+.1*y:1)+ch]},{seg:72}),[0,3.1,.02]);
@@ -26721,7 +26723,7 @@ Lu.build=function(T3,K,v){if(v!=='lungs')return old.call(this,T3,K,v);
   const lungs=[];
   for(const s of [-1,1]){const g=sculpt(T3,(x,y,z)=>{const h=Math.sqrt(Math.max(1e-6,1-y*y)),p=y<0?4:2,H=Math.pow(Math.max(0,1-Math.pow(Math.abs(y),p)),1/p),k=H/h;
       let X=x*k*(x>0?1:.55),Z=z*k*.86,Y=y;if(y<-.55)Y+=.38*Math.max(0,1-(X*X+Z*Z))*Math.min(1,(-y-.55)/.45);
-      if(s>0&&x<0&&z>0&&y<.25){const q=Math.min(1,(.25-y)/.6)*Math.min(1,z/.6);X*=1-.6*q}return [s*X*.86,Y*1.6,Z*1.0]},{seg:96,uv:2});
+      if(s>0&&x<0&&z>0&&y<.25){const q=Math.min(1,(.25-y)/.6)*Math.min(1,z/.6);X*=1-.6*q}return [s*X*.86,Y*1.6,Z*1.0]},{seg:96,uv:2,flip:s<0});
     const l=mesh(K,'lung',g,lungM,[s*1.0,.25,0],{to:chest,order:2});l.userData.shell=1;l.userData.rank=1;lungs.push(l)}
   // fissures between the lobes: grooves traced on the outer surface
   const rc=new T3.Raycaster();chest.updateMatrixWorld(true);
@@ -26761,6 +26763,69 @@ Lu.build=function(T3,K,v){if(v!=='lungs')return old.call(this,T3,K,v);
     tags:[['trachea',[0,2.4,.2],0],['bronchi',[.42,1.08,.1]],['bronchioles',tips[3].toArray()],['alveoli',tips[9].toArray()],['lung',[-1.75,.9,.5],0],['ribs',[1.7,.95,.75],0],['intercostal',[1.8,.15,.55],0],['diaphragm',[0,-1.25,.85],0]],
     journeys:[{name:'Take a breath',c:0x93C5FD,steps:[{p:[0,2.6,0],part:'trachea',text:'Air comes in through the nose or mouth and down the trachea.',on:()=>{S.rate=8}},{p:[.4,1.1,0],part:'bronchi',text:'The trachea divides into two bronchi, one for each lung.'},{p:tips[2].toArray(),part:'bronchioles',text:'The bronchi branch into smaller and smaller bronchioles.'},
       {p:tips[5].toArray(),part:'alveoli',text:'They end in alveoli, where oxygen diffuses into the blood.'},{p:[1.8,.4,.4],part:'intercostal',text:'To breathe in, the intercostal muscles contract and pull the ribs up and out.'},{p:[0,-1.5,.5],part:'diaphragm',text:'At the same time the diaphragm contracts and flattens. The chest gets bigger, the pressure inside falls, and air rushes in.'}]}],jEnd:()=>{S.rate=14;syncSliders(ex,[(14-6)/34])}}};
+})();
+// ---------- Urinary system, atlas quality: kidneys you can cut open (cortex, medullary pyramids, calyces, pelvis), adrenal glands, aorta and vena cava with the renal vessels, ureters, bladder with urine, urethra, lumbar spine, pelvis and psoas muscles in a see-through torso (replaces the 'system' view of LIB.kidney) ----------
+(()=>{const LIB=L3.LIB,Kd=LIB.kidney;if(!Kd)return;const {V,stream}=L3.lx,{wet,tube,cap,sculpt,gland,mesh,body}=L3.lx.anat,TAU=Math.PI*2;
+// the cut face of a kidney, drawn once: capsule, cortex, renal columns, eight striped pyramids, calyces, pelvis, sinus fat and vessels
+let FACE=null;
+const faceTex=T3=>{if(FACE)return FACE;const N=512,c=document.createElement('canvas');c.width=c.height=N;const x=c.getContext('2d'),rnd=L3.rnd(71);
+  const bean=t=>{let X=Math.cos(t),Y=Math.sin(t);if(X<0)X*=1-.5*Math.exp(-Y*Y/.12)*Math.sqrt(-X);return [X,Y]},P=(X,Y,s=1)=>[(X*s*.5+.5)*N,(1-(Y*s*.5+.5))*N];
+  const outline=(s,fill)=>{x.beginPath();for(let i=0;i<=120;i++){const [X,Y]=bean(i/120*TAU),[px,py]=P(X,Y,s);i?x.lineTo(px,py):x.moveTo(px,py)}x.closePath();x.fillStyle=fill;x.fill()};
+  x.clearRect(0,0,N,N);outline(1,'#6E2620');outline(.95,'#B4574B');
+  for(let i=0;i<900;i++){const [X,Y]=bean(rnd()*TAU),k=.6+rnd()*.33,[px,py]=P(X*k,Y*k);x.fillStyle=`rgba(${120+rnd()*60|0},${40+rnd()*30|0},${35+rnd()*25|0},.35)`;x.beginPath();x.arc(px,py,1.5+rnd()*2.5,0,TAU);x.fill()}
+  // sinus (fat) and pelvis on the hilum side
+  x.fillStyle='#E9CF8A';x.beginPath();x.ellipse(...P(-.45,0),N*.13,N*.2,0,0,TAU);x.fill();
+  // pyramids: base near the cortex, tip pointing to the hilum, with radial stripes
+  const hil=[-.42,0];for(let i=0;i<8;i++){const t=-1.9+i*(3.8/7),[bx,by]=bean(t),bL=[bx*.82,by*.82],w=.16,nx=-Math.sin(t)*w,ny=Math.cos(t)*w*.6,tip=[hil[0]+(bL[0]-hil[0])*.38,hil[1]+(bL[1]-hil[1])*.38];
+    const a=P(bL[0]+nx,bL[1]+ny),b=P(bL[0]-nx,bL[1]-ny),q=P(...tip);x.fillStyle='#7A2833';x.beginPath();x.moveTo(...a);x.lineTo(...b);x.lineTo(...q);x.closePath();x.fill();
+    x.strokeStyle='rgba(40,8,14,.55)';x.lineWidth=1.4;for(let k=0;k<=8;k++){const f=k/8,s0=[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];x.beginPath();x.moveTo(...s0);x.lineTo(...q);x.stroke()}
+    // minor calyx cupping the tip, joining the pelvis
+    x.fillStyle='#EADCC4';x.beginPath();x.arc(...q,N*.03,0,TAU);x.fill();x.strokeStyle='#EADCC4';x.lineWidth=N*.03;x.beginPath();x.moveTo(...q);x.lineTo(...P(-.62,tip[1]*.35));x.stroke()}
+  x.fillStyle='#EADCC4';x.beginPath();x.moveTo(...P(-.55,.32));x.quadraticCurveTo(...P(-.5,0),...P(-.55,-.32));x.lineTo(...P(-1.02,-.08));x.lineTo(...P(-1.02,.08));x.closePath();x.fill();
+  // renal artery and vein branches in the sinus
+  for(const [col,dy] of [['#C0302E',.06],['#3F55B5',-.06]]){x.strokeStyle=col;x.lineWidth=5;x.beginPath();x.moveTo(...P(-1.05,dy*2.2));x.lineTo(...P(-.7,dy*1.6));x.stroke();for(let i=0;i<5;i++){const t=-1.4+i*.7,[bx,by]=bean(t);x.lineWidth=2.4;x.beginPath();x.moveTo(...P(-.7,dy*1.6));x.quadraticCurveTo(...P(-.4,by*.4+dy),...P(bx*.86,by*.86));x.stroke()}}
+  const t=new T3.CanvasTexture(c);t.encoding=T3.sRGBEncoding;t.anisotropy=8;return FACE={t,bean}};
+const old=Kd.build;
+Kd.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
+  body(T3,K,{op:.12,torso:1});
+  const bone=wet(T3,0xC2AD86,{var:.12,lob:120,rough:.5,wet:.25,sheen:.08,bump:.006,seed:51}),disc=wet(T3,0xD8E2E6,{var:.05,rough:.25,wet:.7,seed:52}),
+    kidM=wet(T3,0x8A3429,{veins:7,veinC:0x4A1410,var:.12,rough:.32,wet:.75,seed:53}),adr=wet(T3,0xE0A43C,{lob:70,veins:3,veinC:0x9A5A20,rough:.45,wet:.4,bump:.02,seed:54}),
+    art=wet(T3,0xC0302E,{veins:3,var:.08,rough:.32,wet:.75,seed:55}),vein=wet(T3,0x3F55B5,{veins:3,var:.08,rough:.32,wet:.75,seed:56}),ure=wet(T3,0xE6D3A8,{folds:12,veins:4,veinC:0xA06040,var:.08,rough:.35,wet:.7,seed:57}),
+    psoas=wet(T3,0xA8312D,{folds:50,veins:5,veinC:0x5E1218,var:.1,rough:.45,wet:.45,seed:58}),blad=wet(T3,0xD9A08E,{folds:26,veins:10,veinC:0x9C3040,var:.1,rough:.35,wet:.6,op:.55,seed:59}),
+    urine=new T3.MeshPhysicalMaterial({color:0xF2D04A,roughness:.1,transparent:true,opacity:.6,depthWrite:false,clearcoat:1});
+  // ---- lumbar spine with discs, psoas muscles, pelvis ----
+  for(let i=0;i<7;i++){const y=1.05-i*.3;mesh(K,null,sculpt(T3,(x,y2,z)=>[x*.13,y2*.1,z*.11],{seg:32}),bone,[0,y,-.38]);mesh(K,null,new T3.CylinderGeometry(.12,.12,.06,32),disc,[0,y-.15,-.38]);
+    mesh(K,null,tube(T3,[[0,y,-.48],[0,y-.04,-.62]],u=>.035*(1-.4*u),{rad:10,seg:6}),bone);for(const s of [-1,1])mesh(K,null,tube(T3,[[s*.08,y,-.45],[s*.26,y-.02,-.46]],.025,{rad:8,seg:6}),bone)}
+  for(const s of [-1,1]){mesh(K,null,tube(T3,[[s*.12,.75,-.36],[s*.2,-.2,-.33],[s*.3,-.95,-.27],[s*.4,-1.4,-.15]],u=>(.04+.05*Math.sin(Math.PI*Math.min(1,u*1.3)))*cap(u,.06,.1),{rad:24,uv:2}),psoas);
+    mesh(K,null,sculpt(T3,(x,y,z)=>[x*.3,y*.24,z*.035+.16*x*x],{seg:48,uv:1,flip:s<0}),bone,[s*.5,-1.0,-.28],{r:[.15,s*.85,s*.12]})}
+  mesh(K,null,sculpt(T3,(x,y,z)=>{const t=(y+1)/2;return [x*(.12+.1*t),y*.28,z*.07]},{seg:40}),bone,[0,-1.25,-.4],{r:[-.4,0,0]});
+  for(const s of [-1,1])mesh(K,null,tube(T3,[[s*.12,-1.18,-.4],[s*.42,-1.16,-.22],[s*.44,-1.42,.04],[s*.08,-1.6,.17]],.034,{rad:16}),bone);
+  // ---- aorta and inferior vena cava with the iliac vessels ----
+  mesh(K,'rart',tube(T3,[[.05,1.5,-.2],[.05,.6,-.2],[.04,-.5,-.18]],.058,{rad:28,uv:3}),art);mesh(K,'rvein',tube(T3,[[-.12,1.5,-.18],[-.12,.6,-.17],[-.1,-.55,-.15]],.065,{rad:28,uv:3}),vein);
+  for(const s of [-1,1]){mesh(K,'rart',tube(T3,[[.04,-.5,-.18],[s*.2,-.85,-.12],[s*.36,-1.25,-.02]],.045,{rad:20,uv:3}),art);mesh(K,'rvein',tube(T3,[[-.1,-.55,-.16],[s*.18,-.9,-.16],[s*.34,-1.28,-.07]],.05,{rad:20,uv:3}),vein)}
+  // ---- kidneys: tilted bean shapes, hilum facing the spine; the front half is cut away by the slider to show the inside ----
+  const F=faceTex(T3),fgeo=s=>{const sh=new T3.Shape();for(let i=0;i<=96;i++){const [X,Y]=F.bean(i/96*TAU);const px=s*X*.155*.985,py=Y*.3*.985;i?sh.lineTo(px,py):sh.moveTo(px,py)}const g=new T3.ShapeGeometry(sh,40),U=g.attributes.uv,P=g.attributes.position;
+    for(let k=0;k<U.count;k++){const X=P.getX(k)/(.155*.985)*s,Y=P.getY(k)/(.3*.985);U.setXY(k,X*.5+.5,Y*.5+.5)}return g};
+  const kid={};for(const s of [-1,1]){const g=K.grp('kid',{p:[s*.38,.15+(s>0?.06:0),-.1],r:[0,0,s*.22]});kid[s]=g;
+    mesh(K,'kid',sculpt(T3,(x,y,z)=>{let X=x;if(x<0)X=x*(1-.5*Math.exp(-y*y/.12)*Math.sqrt(-x));return [s*X*.155,y*.3,z*.1]},{seg:96,uv:1.5,flip:s<0}),kidM,null,{to:g,clip:1});
+    const fm=new T3.MeshStandardMaterial({map:F.t,roughness:.55,side:T3.DoubleSide});mesh(K,'cortex',fgeo(s),fm,[0,0,.002],{to:g});
+    mesh(K,'cortex',sculpt(T3,(x,y,z)=>{let X=x;if(x<0)X=x*(1-.5*Math.exp(-y*y/.12)*Math.sqrt(-x));return [s*X*.15,y*.29,-Math.abs(z)*.095]},{seg:72,uv:1.5,flip:s<0}),wet(T3,0xA94E44,{lob:200,var:.1,rough:.5,wet:.4,seed:60}),null,{to:g});
+    // adrenal gland capping the top
+    mesh(K,null,gland(T3,[.085,.055,.04],s+9,.18),adr,[s*.36,.15+(s>0?.06:0)+.32,-.12],{r:[0,0,s*.4]})}
+  // renal arteries from the aorta, renal veins to the vena cava (the left vein crosses in front of the aorta)
+  const hil=s=>kid[s].localToWorld(V(-s*.075,-.01,0));K.grp(null).parent.updateMatrixWorld(true);
+  for(const s of [-1,1]){const h=hil(s);mesh(K,'rart',tube(T3,[[.05,.24,-.2],[(.05+h.x)/2,.24,-.17],[h.x,h.y+.02,h.z]],.028,{rad:14,uv:5}),art);
+    mesh(K,'rvein',tube(T3,[[-.12,.17,-.17],[s>0?.05:(-.12+h.x)/2,.19,s>0?-.11:-.16],[h.x,h.y-.03,h.z+.01]],.032,{rad:14,uv:5}),vein)}
+  // ---- ureters, bladder with urine inside, urethra ----
+  const urP=s=>{const h=hil(s);return [[h.x,h.y-.05,h.z],[s*.27,-.25,-.12],[s*.24,-.85,-.1],[s*.17,-1.28,.0],[s*.07,-1.38,.08]]};
+  for(const s of [-1,1])mesh(K,'ureter',tube(T3,urP(s),.018,{rad:12,uv:6}),ure);
+  mesh(K,'bladder',sculpt(T3,(x,y,z)=>{const t=(y+1)/2;return [x*.2*(.75+.25*t),y*.16,z*.17*(.8+.2*t)]},{seg:72,uv:2}),blad,[0,-1.42,.12],{order:3});
+  mesh(K,'bladder',sculpt(T3,(x,y,z)=>[x*.16,y*.11,z*.13],{seg:40}),urine,[0,-1.46,.12],{order:2});
+  mesh(K,'urethra',tube(T3,[[0,-1.57,.12],[0,-1.75,.13],[0,-1.98,.15]],.018,{rad:12,uv:6}),ure);
+  const u=[-1,1].map(s=>stream(T3,K,'ureter',urP(s),8,.016,0xFFE066,{speed:.15,glow:.5}));const tick=dt=>{u.forEach(x=>x.tick(dt));return true};
+  return {radius:1.95,view:[.08,.3],ground:0,tick,cut:{u:[[0,0,1],[0,0,1]],r:.6,def:0},
+    tags:[['kid',[-.5,.4,.0],0],['rart',[.05,.95,-.13],0],['rvein',[-.12,.75,-.1],0],['ureter',[.24,-.6,-.06]],['bladder',[0,-1.3,.3],0],['urethra',[0,-1.88,.18]],['cortex',[.38,.15,-.06]]],
+    journeys:[{name:'Clean the blood',c:0xFAB005,steps:[{p:[.05,.24,-.2],part:'rart',text:'The renal arteries bring blood containing urea and excess water and ions.'},{p:[.38,.2,-.1],part:'kid',text:'In the kidneys, millions of nephrons filter the blood.'},{p:[-.15,.17,-.17],part:'rvein',text:'Cleaned blood leaves in the renal veins.'},{p:[.25,-.6,-.1],part:'ureter',text:'Urine flows down the ureters…'},{p:[0,-1.42,.12],part:'bladder',text:'…to the bladder, where it is stored until it leaves through the urethra.'}]}]}};
 })();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
