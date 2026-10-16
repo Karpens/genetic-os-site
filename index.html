@@ -5202,7 +5202,7 @@ const L3={
     host.innerHTML=`<div class="l3${o.hero?' l3-at-top':''}">${variants?`<div class="pl-chips l3-vars" role="tablist">${variants.map(([v,l])=>`<button type="button" role="tab" data-v="${v}" aria-selected="${v===v0}" class="${v===v0?'on':''}">${esc(T(l))}</button>`).join('')}</div>`:''}
       <div class="l3-wrap"><div class="l3-stage" tabindex="0" aria-label="${esc(T('3D model. Drag to turn it, use + and − to zoom, and tap a part to learn about it.'))}"><canvas></canvas>
         <svg class="l3-lead" aria-hidden="true"><path/><circle r="4.5"/></svg><div class="l3-tags" aria-hidden="true"></div><div class="l3-hov" hidden></div><div class="l3-hud"></div>
-        <div class="lab-tools">${tb('in','Zoom in','＋')}${tb('out','Zoom out','−')}${tb('reset','Reset the view','⟲')}${tb('spin','Turn by itself','⟳',false)}${tb('tags','Labels','🏷',true)}${'speechSynthesis' in window?tb('say','Read aloud','🔈',false):''}${tb('fs','Full screen','⛶')}</div>
+        <div class="lab-tools">${tb('in','Zoom in','＋')}${tb('out','Zoom out','−')}${tb('reset','Reset the view','⟲')}${tb('spin','Turn by itself','⟳',false)}${tb('tags','Labels','🏷',true)}${'speechSynthesis' in window||'Audio' in window?tb('say','Read aloud','🔈',false):''}${tb('fs','Full screen','⛶')}</div>
         <div class="l3-msg"><i class="l3-ld"></i>${esc(T('Loading 3D…'))}</div><div class="l3-coach" hidden><span>👆</span>${esc(T('Drag to turn · tap any part'))}</div></div>
         <div class="l3-card" hidden></div></div>
       <div class="l3-dock"></div><div class="l3-parts" role="list"></div><p class="muted l3-intro"></p><div class="l3-extra"></div></div>`;
@@ -5293,9 +5293,20 @@ const L3={
       if(c)say(`${c.name}. ${c.txt}`);applyGhost();need=true};
     const applyGhost=()=>{for(const q of mats){const g=q.m.userData.o,gh=!!gsel&&!quiz&&!own(q.o,gsel);q.gh=gh;const tr=gh?true:g.tr;if(q.m.transparent!==tr){q.m.transparent=tr;q.m.needsUpdate=true}q.m.depthWrite=gh?false:g.dw}};
 
-    // Reading aloud (the browser's own voice; nothing is sent anywhere).
-    const say=t=>{if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(!speak||!t)return;const u=new SpeechSynthesisUtterance(t),vs=speechSynthesis.getVoices();u.lang='en-GB';u.rate=1;
-      const v=vs.find(v=>/en-GB/i.test(v.lang)&&/natural|google|daniel|serena|kate/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)};
+    // Reading aloud: Emma's recorded clip for the sentence when there is one (English), otherwise the browser's own voice.
+    L3.voice=L3.voice||(()=>{let ready=null,aud=null,tok=0;
+      const tts=t=>{if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t),vs=speechSynthesis.getVoices();u.lang='en-GB';u.rate=1;
+        const v=vs.find(v=>/en-GB/i.test(v.lang)&&/natural|google|daniel|serena|kate/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)};
+      // whether any clips exist yet (asked once); clips are named by the sentence's SHA-256
+      const has=()=>ready||(ready=API_BASE&&window.crypto&&crypto.subtle&&window.Audio?fetch(`${API_BASE}/voice/info`).then(r=>r.ok?r.json():{}).then(j=>j.l3>0).catch(()=>false):Promise.resolve(false));
+      const hash=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].slice(0,12).map(x=>x.toString(16).padStart(2,'0')).join('');
+      return {stop(){tok++;if(aud){aud.pause();aud=null}if('speechSynthesis' in window)speechSynthesis.cancel()},
+        speaking(){return !!(aud&&!aud.ended&&!aud.error)||('speechSynthesis' in window&&speechSynthesis.speaking)},
+        async play(t){const my=++tok;t=String(t).replace(/\s+/g,' ').trim();if(!t)return;
+          if((!I18N.on||I18N.lang==='en')&&await has()){const id=await hash(t);if(my!==tok)return;const a=new Audio(`${API_BASE}/voice/l3/${id}.mp3`);aud=a;let fell=false;
+            const fb=()=>{if(fell||my!==tok)return;fell=true;aud=null;tts(t)};a.onerror=fb;a.play().catch(e=>{if(e&&e.name==='NotAllowedError')fb()});return}
+          if(my===tok)tts(t)}}})();
+    const say=t=>{L3.voice.stop();if(!speak||!t)return;L3.voice.play(t)};
 
     // Guided tour: every part in turn, with its card.
     function startTour(){stopQuiz();stopJourney();const ids=L3.order(meta).filter(id=>L3.forLevel(meta,id));if(!ids.length)return;tour={ids,i:-1,t:0,dur:6,paused:false};spin=false;setSpin();nextTour()}
@@ -5400,12 +5411,12 @@ const L3={
       if(flash){flash.t+=rdt;if(flash.t>flash.d)flash=null;active=true}
       if(M.tick&&M.tick(dt,now))active=true;
       if(sel||hover||tour||jy)active=true;
-      if(tour&&!tour.paused){tour.t+=rdt;const bar=hud.querySelector('.l3-tour i');if(bar)bar.style.width=Math.min(100,tour.t/tour.dur*100)+'%';if(tour.t>=tour.dur&&!(speak&&speechSynthesis.speaking))nextTour()}
+      if(tour&&!tour.paused){tour.t+=rdt;const bar=hud.querySelector('.l3-tour i');if(bar)bar.style.width=Math.min(100,tour.t/tour.dur*100)+'%';if(tour.t>=tour.dur&&!(speak&&L3.voice.speaking()))nextTour()}
       if(jy){if(!jy.paused)jy.t+=rdt;const k2=Math.min(1,jy.t/jy.move),e2=k2<.5?2*k2*k2:1-Math.pow(-2*k2+2,2)/2,P=jy.curve.getPoint(Math.min(1,jy.u0+(jy.u1-jy.u0)*e2)),sz=M.radius*.03;
         jcore.position.copy(P);jdot.position.copy(P);jcore.scale.setScalar(sz);jdot.scale.setScalar(sz*8*(1+.18*Math.sin(now*.012)));hist.unshift(P.clone());if(hist.length>trail.length*2)hist.length=trail.length*2;
         trail.forEach((s2,i)=>{const h=hist[i*2]||P;s2.position.copy(h);s2.scale.setScalar(sz*6*(1-i/trail.length));s2.material.opacity=.55*(1-i/trail.length)});G.t.lerp(P,.06);
         const bar=hud.querySelector('.l3-jy>i');if(bar)bar.style.width=Math.min(100,jy.t/jy.dur*100)+'%';(M.sl||[]).forEach((s3,i)=>{if(s3.get){const inp=dock.querySelector(`[data-s="${i}"]`);if(inp)inp.value=s3.get()}});
-        if(jy.t>=jy.dur&&!jy.paused&&!(speak&&speechSynthesis.speaking))nextStep();active=true}
+        if(jy.t>=jy.dur&&!jy.paused&&!(speak&&L3.voice.speaking()))nextStep();active=true}
       if(!active)return;
       if(M.cut){const kk=M.cut.r-(M.cut.r+.08)*cut;for(const pl of planes)pl.constant=kk;if(M.caps)M.caps(kk,cut)}
       // materials: ghosting, the selected part's glow, hover, and the game's green/red flash
