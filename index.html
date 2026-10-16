@@ -2155,11 +2155,13 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       </div>
     </div>
     <p class="fine" id="taxNote" style="text-align:center;margin-top:12px"></p>
+    <div class="askp"><div><b>🏫 Teacher or school?</b><span>Full Marks is free for teachers, and for every student in their classes. Ask for a teacher account, create a class and share the code.</span></div><a class="btn ghost" href="#teacher">Teacher portal</a></div>
     <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link, price and how to cancel.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
     <p class="fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
     <h2 style="margin-top:48px;font-size:28px">Questions</h2>
     <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR and Edexcel. New subjects are added at no extra cost.</p></details>
     <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR and Edexcel. Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
+    <details><summary>Is it free for schools?</summary><p style="margin-top:8px">Yes. Teachers get a free account in the <a href="#teacher">teacher portal</a>. Students who join a teacher’s class with its code get full access for free too, for as long as they are in the class.</p></details>
     <details><summary>Can I cancel?</summary><p style="margin-top:8px">Yes, any time, from your account. Cancelling stops future payments, and you keep access until the end of the period you've already paid for.</p></details>
     <details><summary>What is your refund policy?</summary><p style="margin-top:8px">Because you get full access to every subject the moment you pay, we don't offer refunds for time already paid for, including if you cancel partway through a period. By subscribing, you agree to this and to waiving the standard 14-day cooling-off period once you've started using the content. If something went wrong with your payment or you were charged in error, contact us and we'll look into it.</p></details>
     <details><summary>Can I use it for more than one exam board?</summary><p style="margin-top:8px">Yes — full access includes every board for every subject, so if a school moves you from one board to another, or you want to compare specifications, it's already there. Nothing extra to buy.</p></details>
@@ -3429,6 +3431,7 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
 /* ---------- account: manage subscription (Stripe customer portal) ---------- */
 var TRIAL=0;
 function accountCard(){const em=store.get('go-auth-email','');
+  if(premium&&viaSchool())return `<div class="acct on"><div><b>✓ Full access is active</b><span>${esc(subLine())}</span><span>${em?`Signed in as ${esc(em)}. `:''}Free through your school, nothing to pay.</span></div><a class="btn" href="#${ACCOUNT.schoolRole==='teacher'?'teacher':'school'}">${ACCOUNT.schoolRole==='teacher'?'Teacher portal':'My classes'}</a></div>`;
   if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${subLine()}</span><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
   if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="manageSub">Billing history</button></div>`;
   return `<div class="acct"><div><b>Using Full Marks for free</b><span>Already subscribed on another device? Restore access with the email you paid with.</span></div><button class="btn ghost" id="meRestore">Restore access</button><a class="btn" href="#pricing">See plans</a></div>`}
@@ -3473,7 +3476,9 @@ document.addEventListener('click',e=>{if(e.target.closest('.ask-parent'))askPare
 var ACCOUNT=null,_acctLoading=false;
 const fmtD=t=>t?new Date(t*1000).toLocaleDateString(I18N.L.html,{day:'numeric',month:'short',year:'numeric'}):'';
 const PLAN_NAME={monthly:'Monthly plan',quarterly:'3-month plan',annual:'Annual plan'};
+const viaSchool=()=>!!(ACCOUNT&&ACCOUNT.plan==='school');
 function subLine(){const a=ACCOUNT||{},pn=PLAN_NAME[a.plan]||'Full access',from=fmtD(a.since||a.periodStart);
+  if(a.plan==='school')return `Free school access${a.school?' · '+a.school:''} · ${a.schoolRole==='teacher'?'with your teacher account':'while you’re in your teacher’s class'}`;
   if(a.status==='trialing'&&a.trialEnd)return `Free trial · ${from?from+' – ':''}${fmtD(a.trialEnd)} · ${a.cancelAtPeriodEnd?'won’t continue after the trial':`then your ${pn.toLowerCase()} starts`}`;
   const end=fmtD(a.periodEnd);if(!end)return pn;
   return `${pn} · ${from?from+' – ':'until '}${end} · ${a.cancelAtPeriodEnd?'cancelled, won’t renew':'renews automatically'}`}
@@ -3485,8 +3490,8 @@ function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navC
   if(!premium)return;if(!ACCOUNT)ensureAccount();
   box.innerHTML=`<div class="owned-badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><path d="M15 27l7 7 15-16"/></svg></div>
     <div class="owned-txt"><span class="eyebrow">Your plan</span><h3>You already have full access 🎉</h3><p>Every subject, level and exam board is unlocked. There’s nothing else to buy.</p><small>${esc(subLine())}</small></div>
-    <div class="owned-btns"><a class="btn" href="#study">Start revising →</a><button class="btn ghost" id="ownedManage">Manage subscription</button></div>`;
-  $('#ownedManage').onclick=()=>openPortal($('#ownedManage'))}
+    <div class="owned-btns"><a class="btn" href="#study">Start revising →</a>${viaSchool()?`<a class="btn ghost" href="#${ACCOUNT.schoolRole==='teacher'?'teacher':'school'}">${ACCOUNT.schoolRole==='teacher'?'Teacher portal':'My classes'}</a>`:'<button class="btn ghost" id="ownedManage">Manage subscription</button>'}</div>`;
+  const om=$('#ownedManage');if(om)om.onclick=()=>openPortal(om)}
 renderOwned();
 
 /* ---------- mistakes: every wrong answer is saved until it's mastered ---------- */
@@ -4294,7 +4299,7 @@ async function renderSchool(h){const main=$('#schoolMain');if(!main)return;const
   const parts=(h||'school').split('/'),join=parts[1]==='join'?{code:(parts[2]||'').replace(/\D/g,'').slice(0,6),subject:parts[3]||'',school:decodeURIComponent(parts[4]||'')}:null;
   if(join&&join.code)store.set('fm-join',JSON.stringify(join));
   if(!API_BASE){main.innerHTML='<div class="sc-card">Accounts aren’t connected on this copy of the site.</div>';return}
-  if(!authToken()){main.dataset.ok='';main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🏫</div><h3>Join your class</h3><p class="muted" style="max-width:560px;margin:8px auto 18px">Your teacher gives you a 6-digit class code. Sign in with your email, choose your school and subject, and type the code. As soon as your teacher approves you, your grades appear here, and the AI tutor is free for you.</p><button class="btn" data-sign>Sign in with email</button></div>${schoolTeacherCta()}`;
+  if(!authToken()){main.dataset.ok='';main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🏫</div><h3>Join your class</h3><p class="muted" style="max-width:560px;margin:8px auto 18px">Your teacher gives you a 6-digit class code. Sign in with your email, choose your school and subject, and type the code. As soon as your teacher approves you, your grades appear here and you get <b>full access to Full Marks for free</b>: every subject, question, game and the AI tutor.</p><button class="btn" data-sign>Sign in with email</button></div>${schoolTeacherCta()}`;
     main.querySelector('[data-sign]').onclick=()=>planSignIn('Join your class',route);return}
   if(main.dataset.ok!=='1')main.innerHTML=SCH.loading();
   try{const [d,sc]=await Promise.all([SCH.api('GET','/me/classes'),SCH.api('GET','/schools').then(x=>x.schools).catch(()=>SchoolPage.schools||[])]);
@@ -4304,8 +4309,8 @@ async function renderSchool(h){const main=$('#schoolMain');if(!main)return;const
   catch(e){if(seq!==SCH.seq)return;main.dataset.ok='';if(e.status===401)return SCH.signin(main,'Join your class','You’ve been signed out. Sign in again to see your classes.');SCH.fail(main,e,()=>renderSchool(h))}}
 async function schoolRefresh(main){try{const d=await SCH.api('GET','/me/classes');if(!location.hash.startsWith('#school'))return;
   if(JSON.stringify(d)!==main.dataset.sig){const was=(JSON.parse(main.dataset.sig||'{}').requests||[]).filter(r=>r.status==='pending').length,now=(d.requests||[]).filter(r=>r.status==='pending').length;
-    schoolDraw(main,d);if(now<was&&d.classes.length)toast('🎉','Your teacher approved you!')}}catch(e){}}
-function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classes,rq=d.requests||[];StuAct.setJoined(cl.length>0);if(cl.length)StuAct.push(true);
+    schoolDraw(main,d);if(now<was&&d.classes.length){toast('🎉','Your teacher approved you! Full access is now free for you.');if(!premium)refreshPremiumFromServer()}}}catch(e){}}
+function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classes,rq=d.requests||[];StuAct.setJoined(cl.length>0);if(cl.length)StuAct.push(true);if(cl.length&&!premium&&!SCH.accessChecked){SCH.accessChecked=1;refreshPremiumFromServer()}
   const init=!!store.get('fm-seen-init',''),seen=new Set(jget('fm-seen-grades',[])),pend=rq.filter(r=>r.status==='pending'),dec=rq.filter(r=>r.status==='declined');
   const reqs=pend.map(r=>`<div class="sc-card" style="--c:${SCH.sCol(r.subject)}"><div class="sc-ctop" style="flex-wrap:wrap">${SCH.sGlyph(r.subject)}<div><b>${esc(r.name)}</b><small>${esc(SCH.sName(r.subject))} · ${esc(LV(r.level))}${r.teacher.name?' · '+esc(r.teacher.name):''}</small></div><span class="sc-pill gold" style="margin-left:auto">⏳ Waiting for your teacher</span></div>
       <p class="muted" style="margin:12px 0 0">You asked to join as <b>${esc(r.you||'')}</b> ${esc(SCH.ago(r.at))}. Your teacher sees your request now and will approve you. This page updates by itself.</p><p class="sc-note"><a href="#" data-leave="${esc(r.id)}" data-msg="Cancel this request?">Cancel request</a></p></div>`).join('')
@@ -4326,6 +4331,7 @@ function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=
       <label>Your full name<input class="lbinput" id="jName" maxlength="60" autocomplete="name" placeholder="First and last name" value="${esc(store.get('fm-school-name',''))}"></label></div>
       <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p>`
     :'<p class="muted"><b>No schools use Full Marks yet.</b> Your school appears here as soon as your teacher creates a class.</p>'}
+    <p class="sc-note">🎁 Students in a teacher’s class get full access to Full Marks for free.</p>
     <p class="sc-note">🔒 When your teacher approves you, they can see your grades and your practice on Full Marks (questions answered and scores by topic). You can leave a class at any time.</p></div>`}
 function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)return;const sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg');
   const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value),list=s?s.subjects:[],want=sub.dataset.want||sub.value;
@@ -4360,6 +4366,7 @@ async function renderTeacher(h,quiet){const main=$('#teacherMain');if(!main)retu
   if(!authToken()){clearInterval(TCH.timer);main.dataset.view='';return SCH.signin(main,'Teacher portal','Sign in with your school email. If you’re new, you can ask for a teacher account straight after.')}
   if(!quiet&&main.dataset.view!==h){main.innerHTML=SCH.loading();main.dataset.sig=''}main.dataset.view=h;
   try{const role=await SCH.getRole(quiet||!parts.length);if(seq!==SCH.seq)return;
+    if((role.teacher||{}).status==='teacher'&&!premium&&!SCH.accessChecked){SCH.accessChecked=1;refreshPremiumFromServer()}
     if((role.teacher||{}).status!=='teacher'){const sig=JSON.stringify(role);if(!quiet||main.dataset.sig!==sig){main.dataset.sig=sig;tRequest(main,role)}return}
     if(parts[0]==='c'&&parts[1]){if(parts[2]==='s'&&parts[3])await tStudent(main,seq,parts[1],decodeURIComponent(parts[3]),quiet);else await tClass(main,seq,parts[1],parts[2]||'students',quiet)}
     else await tDash(main,seq,quiet)}
@@ -4370,11 +4377,11 @@ function tNotify(n,quiet){if(quiet&&TCH.pend>=0&&n>TCH.pend)toast('🙋',n-TCH.p
 
 function tRequest(main,role){const t=role.teacher,em=role.email;
   const hero=`<div class="sc-hero"><span class="eyebrow">For teachers</span><h2>Your classes, grades and progress in <span class="grad">one place</span></h2><p>See every class you teach, approve your students, add grades in seconds and follow each student’s progress and practice on Full Marks.</p>
-    <ul><li><b>Classes</b>All your classes on one dashboard, each with its own code</li><li><b>Grades</b>A*–U and percentages, one by one or the whole class at once</li><li><b>Progress</b>Averages, trends, and who is improving or slipping</li><li><b>Practice</b>What each student revised, their strong and weak topics</li></ul></div>`;
+    <ul><li><b>Classes</b>All your classes on one dashboard, each with its own code</li><li><b>Grades</b>A*–U and percentages, one by one or the whole class at once</li><li><b>Progress</b>Averages, trends, and who is improving or slipping</li><li><b>Practice</b>What each student revised, their strong and weak topics</li><li><b>Free</b>Full access for you and every student in your classes, nothing to pay</li></ul></div>`;
   let body;
   if(t&&t.status==='pending')body=`<div class="sc-card"><h3>⏳ Your request is waiting for approval</h3><p class="muted">We check every teacher account by hand. You’ll get an email at <b>${esc(em)}</b> when it’s ready, and this page opens your dashboard by itself.</p><p class="sc-note">Sent ${esc(SCH.date(t.requestedAt))} · ${esc(t.name)}, ${esc(t.school)}</p></div>`;
   else if(t&&(t.status==='rejected'||t.status==='revoked'))body=`<div class="sc-card"><h3>Your teacher account isn’t active</h3><p class="muted">If you think this is a mistake, email us at <a href="mailto:${esc(SUPPORT_EMAIL)}">${esc(SUPPORT_EMAIL)}</a>.</p></div>`;
-  else body=`<div class="sc-card"><h3>Ask for a teacher account</h3><p class="muted">Tell us who you are. We check every request and email you at <b>${esc(em)}</b> when your account is ready.</p>
+  else body=`<div class="sc-card"><h3>Ask for a teacher account</h3><p class="muted">Tell us who you are. We check every request and email you at <b>${esc(em)}</b> when your account is ready. Teacher accounts are free, and so is full access for the students in your classes.</p>
     <div class="sc-form" style="margin-top:14px"><label>Your name, as students know you<input class="lbinput" id="trName" maxlength="80" autocomplete="name" placeholder="Mrs Novak"></label>
       <label>School<input class="lbinput" id="trSchool" maxlength="120" list="trSchools" placeholder="CATS Cambridge UK"><datalist id="trSchools"></datalist></label>
       <label class="full">Subjects and classes you teach (optional)<textarea class="lbinput" id="trNote" rows="3" maxlength="500" placeholder="Biology and chemistry, Years 10–13"></textarea></label></div>
@@ -4570,7 +4577,15 @@ async function renderAdmin(){const main=$('#adminMain');if(!main)return;const se
     const row=t=>`<li style="flex-wrap:wrap"><div class="sc-who">${SCH.av(t.name,t.email)}<div><b>${esc(t.name)}</b><small>${esc(t.email)} · ${esc(t.school)}</small>${t.note?`<small>“${esc(t.note)}”</small>`:''}<small>Asked ${esc(SCH.date(t.requestedAt))}${t.classes?` · ${t.classes} classes`:''}</small></div></div>
       <div class="sc-actions">${t.status==='pending'?`<button class="btn sm" data-a="approve" data-e="${esc(t.email)}">Approve</button><button class="btn ghost sm" data-a="reject" data-e="${esc(t.email)}">Reject</button>`:t.status==='teacher'?`<button class="btn ghost sm" data-a="revoke" data-e="${esc(t.email)}">Revoke</button>`:`<span class="sc-pill bad">${esc(t.status)}</span><button class="btn ghost sm" data-a="approve" data-e="${esc(t.email)}">Approve</button>`}</div></li>`;
     const sec=(h,l)=>`<div class="sc-card"><h3>${h} <span class="sc-pill">${l.length}</span></h3>${l.length?`<ul class="sc-list" style="margin-top:12px">${l.map(row).join('')}</ul>`:'<p class="muted">None.</p>'}</div>`;
-    main.innerHTML=sec('Waiting for approval',g.pending)+sec('Teachers',g.teacher)+(g.other.length?sec('Rejected or revoked',g.other):'')+SCH.foot();SCH.bindOut(main);
+    const add=`<div class="sc-card"><h3>➕ Add a teacher</h3><p class="muted">Give a teacher a free account straight away. They get an email, sign in with this address at the teacher portal, and they and every student in their classes have full access for free.</p>
+      <div class="sc-form" style="margin-top:12px"><label>Teacher’s email<input class="lbinput" id="adEmail" type="email" maxlength="254" autocomplete="off" placeholder="teacher@school.com"></label>
+      <label>Name, as students know them<input class="lbinput" id="adName" maxlength="80" autocomplete="off" placeholder="Mrs Novak"></label>
+      <label class="full">School<input class="lbinput" id="adSchool" maxlength="120" list="adSchools" autocomplete="off" placeholder="CATS Cambridge UK"><datalist id="adSchools">${[...new Set(d.teachers.map(t=>t.school).filter(Boolean))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label></div>
+      <button class="btn" id="adGo">Add teacher</button><p class="sc-msg" id="adMsg"></p></div>`;
+    main.innerHTML=add+sec('Waiting for approval',g.pending)+sec('Teachers',g.teacher)+(g.other.length?sec('Rejected or revoked',g.other):'')+SCH.foot();SCH.bindOut(main);
+    const ad=main.querySelector('#adGo');ad.onclick=async()=>{const email=$('#adEmail').value.trim(),name=$('#adName').value.trim(),school=$('#adSchool').value.trim(),msg=$('#adMsg');
+      msg.textContent=!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)?T('Enter the teacher’s email address.'):name.length<2||school.length<2?T('Enter the teacher’s name and school.'):'';if(msg.textContent)return;
+      ad.disabled=true;try{await SCH.api('POST','/admin/teachers',{email,name,school});toast('✓',T('{0} can now sign in as a teacher.',email));renderAdmin()}catch(e){msg.textContent=e.message;ad.disabled=false}};
     main.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{if(b.dataset.a!=='approve'&&!confirm(T('{0} {1}?',b.dataset.a==='revoke'?T('Revoke'):T('Reject'),b.dataset.e)))return;b.disabled=true;
       try{await SCH.api('POST',`/admin/teachers/${encodeURIComponent(b.dataset.e)}/${b.dataset.a}`);toast('✓',T('Done'));renderAdmin()}catch(e){toast('⚠️',e.message);b.disabled=false}})}
   catch(e){if(seq!==SCH.seq)return;if(e.status===403){main.innerHTML='<div class="sc-card sc-empty"><div class="big">🔒</div><h3>Only the owner can see this page.</h3></div>';return}SCH.fail(main,e,renderAdmin)}}
