@@ -28320,6 +28320,39 @@ Ev.build=function(T3,K,v,...rest){if(v!=='moths')return prev.call(this,T3,K,v,..
     journeys:[{name:'Natural selection',c:0xADB5BD,steps:[{p:[0,1,.8],part:'pale',text:'In clean countryside most peppered moths are pale, camouflaged on pale bark.',on:()=>{S.soot=0;S.p=.1;syncSliders(ex,[0])}},{p:[0,2,.8],part:'dark',text:'A mutation produces a dark form. On pale bark it stands out.'},
       {p:[0,1,.8],part:'bark',text:'In the industrial revolution, soot turned the bark black.',on:()=>{S.soot=1;syncSliders(ex,[1])}},{p:[2,2.5,1],part:'bird',text:'Now birds spot and eat the pale moths more often.'},{p:[0,1.6,.8],part:'dark',text:'Dark moths survive and breed more, passing on the dark allele. Over generations, most moths become dark.'}]}],jEnd:()=>{}}};
 })();
+// ---------- Sliding filaments, molecular-illustration quality: a sarcomere between two zigzag Z discs — thin filaments of twisted actin beads with tropomyosin, thick myosin filaments with paired heads that swivel and pull, the M line and calcium ions; the Z discs move together as it contracts (replaces the 'sarcomere' view of LIB.muscle) ----------
+(()=>{const LIB=L3.LIB,Mu=LIB.muscle;if(!Mu)return;const {V,readout,syncSliders}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const phys=(T3,c,o={})=>{const m=new T3.MeshPhysicalMaterial({color:c,roughness:o.rough??.45,clearcoat:o.cc??.3,emissive:o.e?new T3.Color(o.e):new T3.Color(0),emissiveIntensity:o.ei??0});m.userData.keepLook=1;return m};
+// join several geometries (each placed by a matrix) into one
+const merge=(T3,parts)=>{const P=[],N=[],I=[];let o=0;for(const [g0,m] of parts){const g=g0.clone().applyMatrix4(m),p=g.attributes.position,n=g.attributes.normal,idx=g.index;for(let i=0;i<p.count;i++){P.push(p.getX(i),p.getY(i),p.getZ(i));N.push(n.getX(i),n.getY(i),n.getZ(i))}for(let i=0;i<idx.count;i++)I.push(idx.getX(i)+o);o+=p.count}
+  const g=new T3.BufferGeometry();g.setAttribute('position',new T3.Float32BufferAttribute(P,3));g.setAttribute('normal',new T3.Float32BufferAttribute(N,3));g.setIndex(I);return g};
+const prev=Mu.build;
+Mu.build=function(T3,K,v,...rest){if(v!=='sarcomere')return prev.call(this,T3,K,v,...rest);const S={c:0};let ex=null,t=0;K.lin=0;const M4=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1),L=1.6;
+  // thin filament: two twisted strands of actin beads with tropomyosin in the grooves
+  const bead=new T3.SphereGeometry(.03,10,8),parts=[];for(let k=0;k*.05<L;k++)for(const s of [0,Math.PI]){const a=k*.42+s;parts.push([bead,M4.clone().makeTranslation(k*.05,Math.cos(a)*.026,Math.sin(a)*.026)])}const thin=merge(T3,parts);
+  const tro=[];for(const s of [Math.PI/2,-Math.PI/2]){const pts=[];for(let k=0;k<=40;k++){const x=k/40*L,a=x/.05*.42+s;pts.push([x,Math.cos(a)*.045,Math.sin(a)*.045])}tro.push(tube(T3,pts,.009,{rad:6,seg:120}))}const tr=merge(T3,tro.map(g=>[g,new T3.Matrix4()]));
+  const NT=48,thinI=new T3.InstancedMesh(thin,phys(T3,0x1A4A90,{rough:.5,cc:.15}),NT),trI=new T3.InstancedMesh(tr,phys(T3,0x1E6B2C,{rough:.5,cc:.15}),NT),th=[];
+  // thick filament: a shaft of myosin tails, paired heads along both halves (none in the middle)
+  const shaft=tube(T3,[[-1.2,0,0],[1.2,0,0]],u=>.05*(1-.3*Math.pow(Math.abs(u-.5)*2,6)),{rad:14,seg:60}),head=merge(T3,[[sculpt(T3,(x,y,z)=>{const k=1+.15*L3.nz(x*3,y*3,z*3,3);return [x*.035*k,y*.06*k,z*.03*k]},{seg:16}),M4.clone().makeTranslation(-.02,.06,0)],[sculpt(T3,(x,y,z)=>{const k=1+.15*L3.nz(x*3,y*3,z*3,5);return [x*.035*k,y*.06*k,z*.03*k]},{seg:16}),M4.clone().makeTranslation(.02,.065,.02)],[new T3.CylinderGeometry(.012,.012,.06,6),M4.clone().makeTranslation(0,.02,0)]]);
+  const myM=wet(T3,0xD9601A,{folds:24,var:.08,rough:.4,wet:.5,sheen:0,seed:731}),heads=[],NH=12*24,hI=new T3.InstancedMesh(head,phys(T3,0xD8701A,{rough:.5,cc:.15}),NH);
+  const rows=[];for(let i=0;i<4;i++)for(let j=0;j<3;j++)rows.push([-.75+i*.5,-.4+j*.4]);
+  rows.forEach(([y,z],r)=>{mesh(K,'myosin',shaft,myM,[0,y,z]);for(const s of [-1,1])th.push({s,y:y+.13,z},{s,y:y-.13,z});for(let k=0;k<24;k++){const side=k<12?-1:1,j=k%12,x=side*(.2+j*.08),a=j*2.1+r;heads.push({x,y,z,a,side,k})}});
+  [thinI,trI].forEach(m=>K.put('actin',m));K.put('heads',hI);
+  // Z discs (a zigzag lattice) and the M line
+  const zc=document.createElement('canvas');zc.width=128;zc.height=256;{const x=zc.getContext('2d');x.fillStyle='#2A2F4A';x.fillRect(0,0,128,256);x.strokeStyle='#8A93C8';x.lineWidth=4;for(let k=0;k<8;k++){x.beginPath();for(let yy=0;yy<=256;yy+=16)x.lineTo(16+k*14+(yy/16%2?6:-6),yy);x.stroke()}}
+  const zm=new T3.MeshPhysicalMaterial({color:0xC0C0C0,map:new T3.CanvasTexture(zc),roughness:.5,clearcoat:.3});zm.userData.keepLook=1;const zl=[-1,1].map(s=>mesh(K,'zline',new T3.BoxGeometry(.06,2.2,1.3),zm,[s*2.2,0,0]));
+  mesh(K,'myosin',new T3.BoxGeometry(.03,2.0,1.15),new T3.MeshPhysicalMaterial({color:0xF5D0A0,transparent:true,opacity:.35,depthWrite:false}),[0,0,0]);
+  const ca=new T3.InstancedMesh(new T3.SphereGeometry(.04,14,10),phys(T3,0x51CF66,{e:0x51CF66,ei:.6}),20),cs=[...Array(20)].map((_,i)=>[i*2.1,i*1.3,i*.7]);K.put('calcium',ipts(ca,[[1.4,1,.4],[-1.4,-1,-.4]]));
+  ipts(thinI,[[-1.6,.37,.4],[1.6,.37,.4]]);ipts(hI,[[.5,.3,.4],[-.5,.3,.4]]);
+  const tick=(dt,now)=>{t+=dt;const c=S.c,half=2.2-.6*c;zl[0].position.x=-half;zl[1].position.x=half;
+    th.forEach((f,i)=>{q.setFromAxisAngle(V(0,1,0),f.s>0?Math.PI:0);M4.compose(V(f.s*half,f.y,f.z),q,one);thinI.setMatrixAt(i,M4);trI.setMatrixAt(i,M4)});thinI.instanceMatrix.needsUpdate=trI.instanceMatrix.needsUpdate=true;
+    heads.forEach((h,i)=>{const sw=c>.02?Math.sin(t*12+h.k)*.45:0,e=new T3.Euler(h.a,0,h.side*(-.5+sw));q.setFromEuler(e);M4.compose(V(h.x,h.y,h.z),q,one);hI.setMatrixAt(i,M4)});hI.instanceMatrix.needsUpdate=true;
+    cs.forEach((p,i)=>{M4.compose(V(Math.sin(p[0]+t)*1.8,Math.cos(p[1])*1.0,Math.sin(p[2])*.6),q.identity(),V(1,1,1).multiplyScalar(c>.02?1:.001));ca.setMatrixAt(i,M4)});ca.instanceMatrix.needsUpdate=true;
+    if(ex&&S.k!==c){S.k=c;readout(ex,`Sarcomere length <b>${(2.5-.7*c).toFixed(2)} µm</b> · ${c>.05?'myosin heads pull the actin inwards: <b>contracting</b>':'relaxed'}`)}return true};
+  return {radius:2.5,view:[.25,.35],ground:0,tick,extra:el=>{ex=el;S.k=-1},sliders:[{icon:'⚡',label:'Contract',v:0,set:x=>{S.c=x}}],
+    tags:[['actin',[-1.6,.37,.45]],['myosin',[0,.75,.45]],['zline',()=>[-(2.2-.6*S.c),1.15,0]],['heads',[.52,.33,.45]],['calcium',[1.4,1.0,.4]]],
+    journeys:[{name:'Contract a muscle',c:0xFF922B,steps:[{p:[1.4,.8,.4],part:'calcium',text:'A nerve impulse arrives; calcium ions are released inside the muscle fibre.',on:()=>{S.c=.1}},{p:[.5,.25,.4],part:'heads',text:'The binding sites on actin are uncovered, and myosin heads attach to them.'},{p:[-1.4,.37,.4],part:'actin',text:'The heads swivel, pulling the actin filaments towards the centre. ATP lets each head detach and re-attach further along.',on:()=>{S.c=.7}},{p:[-1.6,0,0],part:'zline',text:'The Z lines move closer together: the sarcomere, and the whole muscle, shortens.',on:()=>{S.c=1}}]}],jEnd:()=>{S.c=0;syncSliders(ex,[0])}}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
