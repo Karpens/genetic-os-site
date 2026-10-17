@@ -27963,6 +27963,43 @@ Px.build=function(T3,K,v,...rest){if(v!=='tissues'&&v!=='stomata')return prev.ca
     tags:[['guard',[-1.8,.7,-.5]],['pore',[0,.6,-.5]],['vap',[1.6,1.5,.2]],['co2',[1.9,1.4,-.5]],['field',[1.6,.6,1.3]]],
     journeys:[{name:'Opening and closing',c:0x2F9E44,steps:[[.9,0,'guard','In light, guard cells pump in K⁺ ions; water follows by osmosis and they become turgid.'],[.9,0,'pore','Their thick inner walls make them bend apart: the stoma opens.'],[.9,0,'co2','CO₂ diffuses in for photosynthesis…'],[.9,0,'vap','…and water vapour diffuses out: transpiration.'],[.9,1,'guard','In drought, abscisic acid makes guard cells lose water: they close to save water.'],[.9,0,'field','Count stomata in a field of view and divide by its area: stomatal density.']].map(([L,h,part,text])=>({p:[0,.5,0],part,text,on:()=>{S.L=L;S.h=h;syncSliders(ex,[L,h]);upd()}}))}]}};
 })();
+// ---------- Making and secreting proteins, atlas quality: a cell cut in half — a nucleus with its double envelope, pores, chromatin and nucleolus, rough ER sheets studded with ribosomes, a stacked Golgi apparatus with budding vesicles, mitochondria, microtubules and a pair of centrioles; vesicles carry the protein along the microtubules and release it by exocytosis (replaces the 'secrete' view of LIB.cellx) ----------
+(()=>{const LIB=L3.LIB,Cx=LIB.cellx;if(!Cx)return;const {V}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Cx.build;
+Cx.build=function(T3,K,v,...rest){if(v!=='secrete')return prev.call(this,T3,K,v,...rest);const S={sp:.5};let t=0;K.lin=0;const r=L3.rnd(97),mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1),cy=1.15;
+  // the cell: back half of the membrane, a rim showing its thickness, a pale cytoplasm floor
+  const memM=wet(T3,0xF2D6C2,{lob:120,var:.06,rough:.35,wet:.6,seed:951,op:.55});memM.side=T3.DoubleSide;
+  const cg=new T3.SphereGeometry(1,128,72,Math.PI,Math.PI);cg.scale(2.95,1.35,1.55);mesh(K,'membrane',cg,memM,[0,cy,0],{order:1});
+  const rim=[];for(let i=0;i<=96;i++){const a=i/96*TAU;rim.push([Math.cos(a)*2.95,cy+Math.sin(a)*1.35,0])}mesh(K,'membrane',tube(T3,rim,.035,{rad:10,closed:true}),wet(T3,0xE8B898,{lob:40,var:.06,rough:.3,wet:.7,seed:952}));
+  const cyto=new T3.CircleGeometry(1,96);cyto.scale(2.7,1.22,1);mesh(K,null,cyto,wet(T3,0xFBF1E4,{lob:200,var:.05,rough:.6,wet:.15,sheen:0,seed:953,op:.35}),[0,cy,-.6],{order:0});
+  // nucleus: back half of its double envelope with pores, chromatin on the cut face, a dark nucleolus
+  const N0=V(-1.7,cy,0),nucM=wet(T3,0x9C82D4,{lob:90,veins:3,veinC:0x5A3A9A,var:.12,rough:.35,wet:.65,seed:954});
+  mesh(K,'nucleus',sculpt(T3,(x,y,z)=>{const k=1+.025*L3.nz(x*3,y*3,z*3,5);return [x*.6*k,y*.6*k,z*.6*k]},{seg:72,uv:2}),nucM,N0.toArray());
+  const pores=new T3.InstancedMesh(new T3.TorusGeometry(.03,.012,8,18),wet(T3,0x5F3DC4,{rough:.3,wet:.7,seed:956}),40),pp=[];for(let i=0;i<40;i++){const th=Math.acos(2*r()-1),ph=r()*TAU,d=V(Math.sin(th)*Math.cos(ph),Math.cos(th),Math.sin(th)*Math.sin(ph));if(d.x>.35)d.x=-d.x;d.normalize();const p=N0.clone().addScaledVector(d,.6);q.setFromUnitVectors(V(0,0,1),d);mm.compose(p,q,one);pores.setMatrixAt(i,mm);pp.push(p.toArray())}pores.instanceMatrix.needsUpdate=true;K.put('nucleus',ipts(pores,pp));
+  // rough ER: curved sheets wrapped round the nucleus, studded with ribosomes
+  const erM=wet(T3,0x8EC5F0,{lob:40,var:.08,rough:.3,wet:.75,seed:957});erM.side=T3.DoubleSide;const ribs=[];
+  for(let i=0;i<5;i++){const rr=.72+i*.11,g=new T3.SphereGeometry(rr,48,24,Math.PI-.95,1.9,Math.PI*.22,Math.PI*.56);const P=g.attributes.position;for(let k=0;k<P.count;k++){const w=1+.03*Math.sin(P.getY(k)*20+i);P.setXYZ(k,P.getX(k)*w,P.getY(k),P.getZ(k)*w*.5)}g.computeVertexNormals();
+    mesh(K,'rer',g,erM,N0.toArray());for(let k=0;k<60;k++){const a=Math.PI-.95+r()*1.9,b=Math.PI*.22+r()*Math.PI*.56,s=r()<.5?1.025:.975,x=-Math.cos(a)*Math.sin(b)*rr*s,y=Math.cos(b)*rr*s,z=Math.sin(a)*Math.sin(b)*rr*s*.5;ribs.push([N0.x+x,N0.y+y,N0.z+z])}}
+  const ribM=wet(T3,0x2A1A5A,{rough:.4,wet:.5,seed:958}),rib=new T3.InstancedMesh(new T3.SphereGeometry(.018,8,6),ribM,ribs.length+80);ribs.forEach((p,i)=>{mm.compose(V(...p),q.identity(),one);rib.setMatrixAt(i,mm)});
+  for(let i=0;i<80;i++){mm.compose(V(-2.3+r()*4.8,cy-.9+r()*1.8,-.9+r()*.9),q.identity(),one);rib.setMatrixAt(ribs.length+i,mm)}rib.instanceMatrix.needsUpdate=true;K.put('rer',ipts(rib,ribs.slice(0,20)));
+  // Golgi apparatus: a stack of curved, flattened sacs with swollen rims and small vesicles
+  const G0=V(.6,cy,-.1),goM=wet(T3,0xF0B848,{lob:30,var:.1,rough:.3,wet:.75,seed:959});
+  for(let i=0;i<6;i++){const w=.5-i*.035;mesh(K,'golgi',sculpt(T3,(x,y,z)=>{const rim=1+.25*Math.pow(Math.max(Math.abs(x),Math.abs(z)),6);return [x*w,y*.03*rim+(x*x)*.22,z*w*.65]},{seg:48,uv:1}),goM,[G0.x,G0.y-.25+i*.1,G0.z],{r:[0,0,-.15]})}
+  for(let i=0;i<10;i++){const s=i%2?1:-1;mesh(K,'golgi',new T3.SphereGeometry(.035,14,10),goM,[G0.x+s*(.5+r()*.1),G0.y-.2+r()*.5,G0.z+(r()-.5)*.3])}
+  // mitochondria with cristae
+  const miM=wet(T3,0xE8784A,{folds:18,var:.1,rough:.35,wet:.7,seed:960});[[-.6,cy-.75,-.3,.4],[1.6,cy+.7,-.4,-.3],[2.0,cy-.6,-.2,.2],[-.9,cy+.85,-.4,-.2]].forEach(([x,y,z,a])=>mesh(K,null,tube(T3,[[-.24,0,0],[0,.03,0],[.24,0,0]],u=>.11*Math.sqrt(Math.min(1,u/.12,(1-u)/.12)),{rad:20,seg:40}),miM,[x,y,z],{r:[0,.4,a]}));
+  // microtubules and a pair of centrioles (nine triplets each)
+  const mtM=wet(T3,0x5CB85C,{folds:30,var:.05,rough:.35,wet:.6,seed:961});[[[-1.7,cy,0],[-.6,cy+.15,.2],[.6,cy+.1,.1],[2.3,cy,0]],[[-1.3,cy-.3,0],[0,cy-.35,-.2],[1.5,cy-.25,-.1],[2.4,cy-.1,-.2]],[[-.6,cy+.65,.3],[.4,cy+.55,-.3],[1.7,cy+.35,-.3]]].forEach(p=>mesh(K,'cyto',tube(T3,p,.012,{rad:8}),mtM));
+  const c1=K.grp('centriole',{p:[-.6,cy+.65,.3]}),cnM=wet(T3,0x2F9E44,{rough:.35,wet:.6,seed:962});for(const rot of [[0,0,0],[Math.PI/2,0,0]]){const g=K.grp('centriole',{to:c1,r:rot});for(let i=0;i<9;i++)for(let k=0;k<3;k++){const a=i*TAU/9+k*.09,rr=.07+k*.012;mesh(K,'centriole',new T3.CylinderGeometry(.009,.009,.24,8),cnM,[Math.cos(a)*rr,0,Math.sin(a)*rr],{to:g})}}
+  // vesicles carrying the protein, released by exocytosis
+  const path=new T3.CatmullRomCurve3([[-1.15,cy,0],[-.4,cy,.05],[.2,cy-.05,.05],[.55,cy,0],[.9,cy+.05,0],[1.6,cy+.02,0],[2.75,cy,0]].map(p=>V(...p)));
+  const vM=wet(T3,0xF28AB0,{lob:30,var:.06,rough:.3,wet:.8,seed:963,op:.6}),pM=wet(T3,0xB0205A,{lob:20,rough:.35,wet:.7,seed:964});
+  const ves=[...Array(6)].map(()=>mesh(K,'vesicle',new T3.SphereGeometry(.075,24,16),vM,[0,0,0],{order:4})),prot=[...Array(6)].map(()=>mesh(K,'vesicle',sculpt(T3,(x,y,z)=>{const k=1+.25*L3.nz(x*3,y*3,z*3,7);return [x*.032*k,y*.032*k,z*.032*k]},{seg:16}),pM,[0,0,0]));
+  const tick=dt=>{t+=dt*(.15+S.sp*.4);ves.forEach((m,i)=>{const u=(t+i/6)%1;m.position.copy(path.getPointAt(Math.min(1,u)));prot[i].position.copy(m.position);const out=u>.94;m.visible=!out;if(out)prot[i].position.x+=(u-.94)*6;prot[i].rotation.y+=dt*2});return true};
+  return {radius:2.8,view:[.25,.25],ground:0,tick,sliders:[{icon:'⏩',label:'Speed',v:.5,set:x=>{S.sp=x}}],
+    tags:[['nucleus',[-1.7,cy+.75,0]],['rer',[-.85,cy+.75,0]],['golgi',[.6,cy+.5,0]],['vesicle',[1.4,cy+.3,0]],['membrane',[2.6,cy+.6,0]],['cyto',[1.5,cy-.35,-.1]],['centriole',[-.6,cy+.95,.3]]],
+    journeys:[{name:'A protein’s journey out',c:0xF06595,steps:[{p:[-1.7,cy,0],part:'nucleus',text:'The gene is transcribed into mRNA in the nucleus; the mRNA leaves through a nuclear pore.'},{p:[-.9,cy,0],part:'rer',text:'Ribosomes on the rough ER translate it; the protein folds inside the ER.'},{p:[-.2,cy,0],part:'vesicle',text:'It buds off in a vesicle and travels to the Golgi apparatus.'},{p:[.55,cy,0],part:'golgi',text:'The Golgi modifies it — for example adding carbohydrate — and packages it into secretory vesicles.'},{p:[2.6,cy,0],part:'membrane',text:'The vesicles move along microtubules, fuse with the membrane and release the protein by exocytosis.'}]}]}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
@@ -27989,6 +28026,10 @@ restyle('endocrine',{glucose:{pan:{c:0xE2B07A,lob:90,veins:4,veinC:0xA0562E,bump
   cycle:{ovary:{c:0xF0C8BC,lob:60,var:.08,rough:.4,wet:.55},uterus:{c:0xC85A5C,folds:30,veins:10,veinC:0x7A1A24,var:.1}}});
 const mol={lob:60,var:.1,rough:.35,wet:.6,sheen:0,bump:.02,uvs:[2,1]},enz={enzyme:{c:0x4C6EF5,lob:260,var:.14,rough:.5,wet:.3,sheen:0,bump:.04,uvs:[9,4.5]},substrate:mol,product:mol,comp:mol,noncomp:{lob:200,var:.12,rough:.45,wet:.3,sheen:0,bump:.03,uvs:[4,2]}};
 restyle('enzyme',{lock:enz,induced:enz,inhib:enz});
+const cel={lob:140,var:.08,rough:.35,wet:.7,sheen:0,bump:.015,uvs:[3,1.5]},mo={var:.05,rough:.3,wet:.7,sheen:0};
+restyle('immx',{mab:{bcell:cel,tumour:cel,hyb:cel,abs:mo},barriers:{skin:{folds:20,lob:60,var:.1,rough:.5,wet:.4,sheen:0},cilia:{lob:40,var:.06,sheen:0},acid:{lob:80,var:.1,sheen:0,uvs:[3,1.5]},infl:cel,ifn:{lob:30,sheen:0}},
+  recog:{lymph:cel,self:cel,target:cel,recept:mo},plantdef:{cuticle:{lob:40,var:.06,rough:.3,wet:.8,sheen:0},wall:{lob:90,var:.08,sheen:0},callose:{lob:40,sheen:0},fungus:{folds:20,lob:40,var:.08,sheen:0},chem:mo},
+  hiv:{virus:{lob:120,var:.08,sheen:0,bump:.015,uvs:[3,1.5]},tcell:cel,nucleus:{lob:120,var:.1,sheen:0,uvs:[3,1.5]},cd4:mo,rt:{lob:30,sheen:0}}});
 restyle('plant',{transport:{root:{c:0xE6D5B0,folds:16,lob:40,var:.08},xylem:{c:0x9A6A3C,folds:30,var:.1,rough:.45,wet:.4},phloem:{c:0xD9E6A8,lob:30,var:.06},stem:{c:0x5AA545,folds:14,var:.08,rough:.4,wet:.5},leaf:{c:0x4E9F3D,veins:8,veinC:0xCFE8BE,var:.08,rough:.4,wet:.55}}});
 })();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
