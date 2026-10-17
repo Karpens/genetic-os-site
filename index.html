@@ -27808,8 +27808,83 @@ Tf.build=function(T3,K,v,...rest){if(v!=='fluid'&&v!=='clot')return prev.call(th
     tags:[['wound',[0,cy+.95,-.2]],['plt',[-.45,cy+.1,-.5]],['fib',[.35,cy-.1,-.45]],['rbc',[-1.6,cy+.2,.1]]],
     journeys:[{name:'How blood clots',c:0xE03131,steps:ST.map((d,i)=>({p:[0,cy,0],part:['wound','plt','plt','fib','rbc'][i],text:d,on:()=>{S.s=i;syncSliders(ex,[i/4]);upd()}}))}]}};
 })();
+// ---------- Cell membranes, molecular-illustration quality: phospholipids with lumpy heads and two zigzag fatty-acid tails (one kinked), proteins with bumpy molecular surfaces (a five-part channel around its pore, a two-lobed carrier, a glycoprotein with branched sugar chains), flat cholesterol rings, O₂ molecules, glowing ions, an ATP molecule that loses a phosphate, water molecules and sugar rings in a glass U-tube (replaces all four views of LIB.membrane) ----------
+(()=>{const LIB=L3.LIB,Mb=LIB.membrane;if(!Mb)return;const {V,clamp,readout}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const phys=(T3,c,o={})=>{const m=new T3.MeshPhysicalMaterial({color:c,roughness:o.rough??.35,clearcoat:o.cc??.8,clearcoatRoughness:.25,sheen:o.sheen??.3,sheenColor:new T3.Color(0xFFFFFF),emissive:o.e?new T3.Color(o.e):new T3.Color(0),emissiveIntensity:o.ei??0,transparent:o.op!=null,opacity:o.op??1,depthWrite:o.op==null});m.userData.keepLook=1;return m};
+// a protein: a lumpy molecular surface (several scales of bumps)
+const prot=(T3,sx,sy,sz,seed,f)=>sculpt(T3,(x,y,z)=>{let k=1+.07*L3.nz(x*1.5,y*1.5,z*1.5,seed)+.035*L3.nz(x*4,y*4,z*4,seed+1)+.012*L3.nz(x*9,y*9,z*9,seed+2);if(f)k*=f(x,y,z);return [x*sx*k,y*sy*k,z*sz*k]},{seg:72,uv:2});
+const protM=(T3,c,seed)=>wet(T3,c,{lob:220,var:.08,rough:.45,wet:.35,sheen:0,bump:.008,seed});
+// a fatty-acid tail: a zigzag carbon chain; a kinked one has a cis double bond half way
+const tailGeo=(T3,kink)=>{const p=[];let x=0,y=0,a=-Math.PI/2;for(let k=0;k<=9;k++){p.push([x+(k%2?.022:-.022)*Math.cos(a+Math.PI/2),y,0]);if(kink&&k===4)a+=.55;x+=Math.cos(a)*.042;y+=Math.sin(a)*.042}return tube(T3,p,u=>.021*(u>.96?Math.sqrt((1-u)/.04):1)+.002,{rad:8,seg:40})};
+// a patch of bilayer: lumpy heads, two tails each; returns a tick that makes it shimmer
+const bilayer=(T3,K,W,D,y0,skip,r)=>{const pts=[];for(let i=0;i<W;i++)for(let k=0;k<D;k++)for(const s of [1,-1]){const x=-W*.15+i*.3+(k%2)*.15,z=-D*.15+k*.3;if(skip&&skip(x,z))continue;pts.push({x,z,s,ph:r()*TAU,ry:r()*TAU})}
+  const n=pts.length,head=new T3.InstancedMesh(sculpt(T3,(x,y,z)=>{const k=1+.2*L3.nz(x*2.5,y*2.5,z*2.5,3)+.08*L3.nz(x*6,y*6,z*6,4);return [x*.13*k,y*.105*k,z*.13*k]},{seg:24}),phys(T3,0xFFFFFF,{rough:.4,cc:.45,sheen:0}),n),
+    tA=new T3.InstancedMesh(tailGeo(T3,0),phys(T3,0xE9C452,{rough:.5,cc:.3,sheen:0}),n),tB=new T3.InstancedMesh(tailGeo(T3,1),phys(T3,0xE9C452,{rough:.5,cc:.3,sheen:0}),n),m=new T3.Matrix4(),q=new T3.Quaternion(),q2=new T3.Quaternion(),e=new T3.Euler(),c=new T3.Color(),one=V(1,1,1),o=V(0,0,0);
+  pts.forEach((p,i)=>head.setColorAt(i,c.setHex(r()<.82?0xD9533F:r()<.5?0x3D8BD0:0xE89A2E)));
+  [head,tA,tB].forEach(im=>K.put('phos',im));ipts(head,pts.slice(0,16).map(p=>[p.x,y0+p.s*.42,p.z]));
+  return t=>{pts.forEach((p,i)=>{const w=.03*Math.sin(t*1.7+p.ph),hy=y0+p.s*.42;e.set(p.s>0?0:Math.PI,p.ry+Math.sin(t*.7+p.ph)*.3,Math.sin(t*2+p.ph)*.1);q.setFromEuler(e);m.compose(o.set(p.x+w,hy,p.z),q,one);head.setMatrixAt(i,m);
+      for(const [im,dx] of [[tA,-.045],[tB,.045]]){const v=V(dx,-.08,0).applyQuaternion(q);m.compose(o.set(p.x+w+v.x,hy+v.y,p.z+v.z),q,one);im.setMatrixAt(i,m)}});[head,tA,tB].forEach(im=>im.instanceMatrix.needsUpdate=true)}};
+// a sugar ring (hexagon) for sugar chains and sucrose
+const ring=(T3,r)=>new T3.CylinderGeometry(r,r,r*.45,6);
+const prev=Mb.build;
+Mb.build=function(T3,K,v,...rest){if(!['fluid','diffusion','active','osmosis'].includes(v))return prev.call(this,T3,K,v,...rest);const r=L3.rnd(6),rn=(a,b)=>a+(b-a)*r();K.lin=0;const mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1);
+  if(v==='osmosis'){const S={c:.6,lev:0};
+    // a glass U-tube: pure water on the left, sugar solution on the right, a partially permeable membrane between
+    const U=new T3.CatmullRomCurve3([V(-1.2,1.8,0),V(-1.2,-.6,0),V(-1.0,-1.25,0),V(0,-1.45,0),V(1.0,-1.25,0),V(1.2,-.6,0),V(1.2,1.8,0)]);
+    const glass=new T3.MeshPhysicalMaterial({color:0xF4FAFF,roughness:.05,metalness:0,clearcoat:1,transparent:true,opacity:.2,depthWrite:false,side:T3.DoubleSide,envMapIntensity:1.4});glass.userData.keepLook=1;
+    K.put(null,new T3.Mesh(new T3.TubeGeometry(U,160,.44,48,false),glass));[-1.2,1.2].forEach(x=>K.put(null,new T3.Mesh(new T3.TorusGeometry(.44,.025,12,48),glass),{p:[x,1.8,0],r:[Math.PI/2,0,0]}));
+    const mem=wet(T3,0xE8A35A,{folds:30,var:.08,rough:.5,wet:.3,seed:701,op:.8});mesh(K,'ppm',new T3.CylinderGeometry(.42,.42,.035,48),mem,[0,-1.45,0],{r:[0,0,Math.PI/2]});
+    const lv=[-1,1].map(s=>K.put('level',new T3.Mesh(new T3.CircleGeometry(.41,48),phys(T3,0x74C0FC,{op:.55,rough:.05,cc:1})),{p:[s*1.2,.6,0],r:[-Math.PI/2,0,0]}));
+    // water molecules (red oxygen, two white hydrogens) and sucrose (two linked sugar rings)
+    const wg=new T3.SphereGeometry(.045,14,10),hg=new T3.SphereGeometry(.026,12,8),NWm=70,Ow=new T3.InstancedMesh(wg,phys(T3,0xE03131,{rough:.3}),NWm),Hw=new T3.InstancedMesh(hg,phys(T3,0xF8F9FA,{rough:.3}),NWm*2);K.put('water',ipts(Ow,[[-1.2,0,0],[1.2,0,0],[0,-1.4,0]]));K.put('water',Hw);
+    const wat=[...Array(NWm)].map(()=>({u:rn(0,1),j:V(rn(-.3,.3),0,rn(-.3,.3)),ax:V(rn(-1,1),rn(-1,1),rn(-1,1)).normalize()}));
+    const sugM=phys(T3,0xF5C842,{rough:.35}),sug=[...Array(16)].map((_,i)=>{const g=K.grp('sugar');[[-.075,0],[.075,.02]].forEach(([x,y],k)=>mesh(K,'sugar',ring(T3,.07),sugM,[x,y,0],{to:g,r:[Math.PI/2,k*.5,0]}));mesh(K,'sugar',new T3.SphereGeometry(.025,10,8),phys(T3,0xE03131),[0,.01,0],{to:g});g.userData.u=rn(.55,.98);g.userData.j=V(rn(-.25,.25),0,rn(-.25,.25));g.rotation.set(rn(0,3),rn(0,3),0);return g});
+    let ex=null,t=0;const pos=(u,j)=>U.getPointAt(u).add(j),hv=V(0,0,0);
+    const tick=(dt,now)=>{t+=dt;const goal=S.c*.9;S.lev+=(goal-S.lev)*Math.min(1,dt*.35);lv[0].position.y=.6-S.lev*.5;lv[1].position.y=.6+S.lev*.5;const top=[.6-S.lev*.5,.6+S.lev*.5];
+      wat.forEach((w,i)=>{const net=S.c*.15;w.u=(w.u+dt*(.04+net*(w.u<.5?1:.2))*(i%2?1:-1)+1)%1;let p=pos(w.u,w.j);const side=w.u<.5?0:1;if(p.y>top[side]-.05)p=pos(side?.62:.38,w.j);
+        q.setFromAxisAngle(w.ax,t*2+i);mm.compose(p,q,one);Ow.setMatrixAt(i,mm);[-1,1].forEach((s,k)=>{hv.set(s*.045,.035,0).applyQuaternion(q).add(p);mm.compose(hv,q,one);Hw.setMatrixAt(i*2+k,mm)})});Ow.instanceMatrix.needsUpdate=Hw.instanceMatrix.needsUpdate=true;
+      sug.forEach((g,i)=>{g.userData.u=Math.min(.98,Math.max(.53,g.userData.u+Math.sin(now*.001+i)*.002));const p=pos(g.userData.u,g.userData.j);if(p.y>top[1]-.1)p.y=top[1]-.1;g.position.copy(p);g.rotation.y+=dt*.3;g.visible=S.c>.05&&i<4+S.c*12});
+      if(ex&&S.k!==S.c){S.k=S.c;readout(ex,`<b>Sugar solution</b> on the right: ${(S.c*1).toFixed(2)} mol/dm³ · water moves <b>into the sugar solution</b> by osmosis, so its level rises`)}return true};
+    return {radius:2.4,view:[.1,.1],ground:0,tick,extra:el=>{ex=el;S.k=-1},sliders:[{icon:'🍬',label:'Sugar concentration',v:.6,set:x=>{S.c=x}}],
+      tags:[['ppm',[0,-1.45,.45],0],['water',[-1.2,-.3,.3]],['sugar',[1.2,-.3,.3]],['level',[1.2,1.1,.4],0]],journeys:[{name:'Watch osmosis',c:0x339AF0,steps:[{p:[-1.2,0,0],part:'water',text:'The left arm has pure water: a high concentration of water molecules.'},{p:[1.2,0,0],part:'sugar',text:'The right arm has sugar solution: a lower concentration of water.'},{p:[0,-1.45,0],part:'ppm',text:'Water molecules can pass through the membrane; sugar molecules are too big.'},{p:[1.2,1.0,0],part:'level',text:'More water moves into the sugar solution than out, so its level rises. That is osmosis.'}]}]}}
+  // the carrier: a two-lobed protein that spans the membrane
+  const carrier=(p,sc=1,seed=11)=>mesh(K,'carrier',prot(T3,.46*sc,.8*sc,.42*sc,seed,(x,y,z)=>1-.12*Math.exp(-(((y)/.25)**2))+.1*Math.exp(-(((x-.3)/.4)**2))),protM(T3,0x9B5DC8,702),p);
+  if(v==='active'){const tick0=bilayer(T3,K,14,8,0,(x,z)=>x*x+z*z<.5,r);const body=carrier([0,0,0],1.15,13);
+    const ionM=phys(T3,0x5F3DC4,{e:0x5F3DC4,ei:.25,rough:.25,sheen:0}),ions=[];for(let i=0;i<22;i++){const top=i<16,m=mesh(K,'ion',new T3.SphereGeometry(.085,24,16),ionM,[rn(-2,2),top?rn(.9,2):rn(-2,-.9),rn(-1.1,1.1)]);m.userData.base=m.position.clone();ions.push(m)}
+    const mover=mesh(K,'ion',new T3.SphereGeometry(.085,24,16),phys(T3,0x7950F2,{e:0x7950F2,ei:.7,rough:.25}),[0,-1,0]);
+    // ATP: adenine (two rings), ribose and a tail of three phosphates; the last one breaks off
+    const atp=K.grp('atp',{p:[1.6,-1.6,.5]}),aM=phys(T3,0x4DABF7),rM=phys(T3,0xF2B45E),pM=phys(T3,0xF76707,{e:0xF76707,ei:.2});
+    mesh(K,'atp',ring(T3,.07),aM,[-.2,.05,0],{to:atp,r:[Math.PI/2,0,0]});mesh(K,'atp',new T3.CylinderGeometry(.06,.06,.03,5),aM,[-.31,.06,0],{to:atp,r:[Math.PI/2,0,0]});mesh(K,'atp',new T3.CylinderGeometry(.06,.06,.03,5),rM,[-.08,-.04,0],{to:atp,r:[Math.PI/2,0,0]});
+    const P=[0,1,2].map(i=>mesh(K,'atp',new T3.SphereGeometry(.05,20,14),pM,[.04+i*.1,-.03,0],{to:atp}));
+    let t=0;const tick=(dt,now)=>{t+=dt;tick0(t);const ph=(t*.3)%1;mover.position.set(0,ph<.3?-1.6+ph/.3*1.1:ph<.6?-.5+(ph-.3)/.3*1.0:.5+(ph-.6)/.4*1.5,0);atp.position.lerpVectors(V(1.6,-1.6,.5),V(.45,-.45,.35),clamp(ph/.3));atp.visible=ph<.55;
+      P[2].position.set(.24+(ph>.3?(ph-.3)*1.2:0),-.03-(ph>.3?(ph-.3)*.8:0),0);const k=Math.sin(clamp((ph-.3)/.3)*Math.PI);body.scale.set(1+.12*k,1,1-.08*k);
+      ions.forEach((m,i)=>m.position.copy(m.userData.base).add(V(Math.sin(now*.001+i)*.06,Math.cos(now*.0013+i)*.06,0)));return true};
+    return {radius:2.5,view:[.15,.35],ground:0,tick,tags:[['carrier',[0,.95,.4]],['ion',ions[2].position.toArray()],['atp',[1.6,-1.4,.5]],['phos',[1.6,.42,.9],0]],
+      journeys:[{name:'Pump an ion',c:0x7950F2,steps:[{p:[0,-1.4,0],part:'ion',text:'Below the membrane there are few ions; above it there are many. The ions must go against the gradient.'},{p:[0,-.5,0],part:'carrier',text:'An ion binds to a specific carrier protein.'},{p:[.4,-.4,.3],part:'atp',text:'ATP from respiration gives energy, and the carrier changes shape…'},{p:[0,1.2,0],part:'ion',text:'…releasing the ion on the other side. This is active transport.'}]}]}}
+  // fluid mosaic and diffusion share a membrane patch
+  const holes=[[0,0,.55],[1.5,.8,.5],[-1.4,-.6,.5]],tick0=bilayer(T3,K,16,9,0,(x,z)=>holes.some(([hx,hz,hr])=>(x-hx)**2+(z-hz)**2<hr*hr),r);
+  // channel protein: five subunits around a water-filled pore
+  const chM=protM(T3,0x2FB5A0,703);for(let i=0;i<5;i++){const a=i/5*TAU;mesh(K,'channel',sculpt(T3,(x,y,z)=>{const k=1+.07*L3.nz(x*1.5,y*1.5,z*1.5,20+i)+.035*L3.nz(x*4,y*4,z*4,21+i),Y=Math.sign(y)*Math.pow(Math.abs(y),.45);return [x*.17*k*(1+.15*Math.abs(Y)),Y*.62*k,z*.17*k]},{seg:72,uv:2}),chM,[Math.cos(a)*.3,0,Math.sin(a)*.3],{r:[0,-a,0]})}
+  carrier([1.5,0,.8],1,11);
+  const gl=K.grp('glyco',{p:[-1.4,0,-.6]});mesh(K,'glyco',prot(T3,.4,.66,.38,31),protM(T3,0xE07BA6,704),null,{to:gl});
+  const sgM=phys(T3,0x51CF66,{rough:.35}),chain=(x,y,z,n,a,to)=>{for(let k=0;k<n;k++){mesh(K,'glyco',ring(T3,.055),sgM,[x+Math.sin(a)*k*.1,y+k*.1,z+Math.cos(a)*k*.06],{to,r:[k*.7,k,0]});if(k===2&&n>3)chain(x+Math.sin(a)*k*.1,y+k*.1,z,3,a+1.2,to)}};chain(0,.68,0,6,.3,gl);chain(.15,.6,.1,4,-.6,gl);
+  // cholesterol: flat four-ring molecules among the tails
+  const chol=prot(T3,.04,.12,.075,41,(x,y,z)=>1+.15*Math.cos(y*9)),cM=phys(T3,0xF5A623,{rough:.35});for(let i=0;i<10;i++)mesh(K,'chol',chol,cM,[rn(-2.3,2.3),(i%2?1:-1)*.2,rn(-1.2,1.2)],{r:[0,rn(0,3),0]});
+  if(v==='diffusion'){const S={g:.8};const oM=phys(T3,0xE03131,{rough:.3}),iM=phys(T3,0x12B886,{e:0x12B886,ei:.4,rough:.25}),parts=[];
+    for(let i=0;i<40;i++){const ch=i%5===0,g=K.grp(ch?'channel':'high');if(ch)mesh(K,'channel',new T3.SphereGeometry(.07,20,14),iM,null,{to:g});else[-1,1].forEach(s=>mesh(K,'high',new T3.SphereGeometry(.06,20,14),oM,[s*.05,0,0],{to:g}));
+      g.userData.p=V(rn(-2.2,2.2),rn(.8,2.2),rn(-1.2,1.2));g.userData.d=V(rn(-1,1),rn(-1,1),rn(-1,1)).normalize();g.userData.ch=ch;g.rotation.set(rn(0,3),rn(0,3),0);parts.push(g)}
+    const tint=(c,op)=>phys(T3,c,{op,rough:.1,cc:1});mesh(K,'low',new T3.BoxGeometry(4.8,1.2,2.6),tint(0xD0EBFF,.08),[0,-1.5,0]);mesh(K,'high',new T3.BoxGeometry(4.8,1.2,2.6),tint(0xFFE3E3,.08),[0,1.5,0]);let ex=null;
+    const tick=(dt,now)=>{tick0(now*.001);parts.forEach(m=>{const p=m.userData.p,d=m.userData.d;p.addScaledVector(d,dt*.6);if(Math.abs(p.x)>2.3)d.x*=-1;if(Math.abs(p.z)>1.25)d.z*=-1;
+      const ch=m.userData.ch;if(p.y>2.2||p.y<-2.2)d.y*=-1;if(Math.abs(p.y)<.6){const through=ch?Math.hypot(p.x,p.z)<.4:true;const goDown=d.y<0;if(!through||(!goDown&&r()>.2+.6*(1-S.g))){d.y*=-1;p.y+=d.y*.05}}m.position.copy(p);m.rotation.x+=dt});
+      if(ex&&S.k!==S.g){S.k=S.g;readout(ex,`Particles move both ways, but on average more go from <b>high</b> to <b>low</b> concentration: net diffusion downwards. Steeper gradient → faster diffusion.`)}return true};
+    return {radius:2.6,view:[.15,.3],ground:0,tick,extra:el=>{ex=el;S.k=-1},tags:[['phos',[2.2,.42,1.2],0],['high',[-2,1.9,1],0],['low',[-2,-1.9,1],0],['channel',[0,.8,.3]]],
+      journeys:[{name:'Watch diffusion',c:0xE03131,steps:[{p:[0,1.5,0],part:'high',text:'Above the membrane the particles are at a high concentration.'},{p:[0,0,.6],part:'phos',text:'Small particles like oxygen pass straight through the bilayer.'},{p:[0,.3,0],part:'channel',text:'Ions use channel proteins: facilitated diffusion.'},{p:[0,-1.4,0],part:'low',text:'Over time there is a net movement into the low concentration below. It needs no energy.'}]}]}}
+  const tick=(dt,now)=>{tick0(now*.001);return true};
+  return {radius:2.6,view:[.3,.35],ground:0,tick,tags:[['phos',[2.4,.42,1.3],0],['channel',[0,.85,0]],['carrier',[1.5,.9,.8]],['glyco',[-1.4,1.6,-.6]],['chol',[2.0,.5,-1.2]]],
+    journeys:[{name:'Tour the membrane',c:0x4DABF7,steps:[{p:[2.2,.4,1],part:'phos',text:'Two layers of phospholipids: heads face the water outside and inside the cell, tails face each other.'},{p:[0,0,0],part:'channel',text:'Channel proteins form pores that let particular ions through.'},{p:[1.5,0,.8],part:'carrier',text:'Carrier proteins change shape to carry specific molecules across.'},{p:[-1.4,1,-.6],part:'glyco',text:'Glycoproteins carry chains of sugars, used to recognise other cells.'},{p:[2,.2,-1],part:'chol',text:'Cholesterol helps keep the membrane at the right fluidity.'}]}]}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
-(()=>{const LIB=L3.LIB,{wet}=L3.lx.anat;
+(()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
 // spec = {view: {part: options for a wet material (c = colour, op = see-through), '*' for any part}, extra(T3,K,root,M) adds details}
 const restyle=(key,spec)=>{const L=LIB[key];if(!L)return;const ob=L.build;
@@ -27817,7 +27892,7 @@ const restyle=(key,spec)=>{const L=LIB[key];if(!L)return;const ob=L.build;
     root.traverse(o=>{if(!(o.isMesh||o.isInstancedMesh)||!o.material||Array.isArray(o.material))return;const id=partOf(o,root),sp=sv[id]||sv['*'];if(!sp||typeof sp!=='object')return;const m=o.material;if((m.map||m.vertexColors)&&!sp.force)return;
       const k=id+'|'+m.uuid;if(!cache.has(k)){const col=sp.c!=null?sp.c:m.color.getHex(),op=sp.op!=null?sp.op:(m.transparent&&m.opacity<.97?Math.max(.12,m.opacity):null);
         const n=wet(T3,col,Object.assign({seed:(col%97)+1,rough:.35,wet:.65},sp,{op}));if(m.emissive&&m.emissiveIntensity>0){n.emissive.copy(m.emissive);n.emissiveIntensity=m.emissiveIntensity}n.side=sp.side!=null?sp.side:m.side;cache.set(k,n)}
-      o.material=cache.get(k)});if(sv.extra)sv.extra(T3,K,root,M);return M}};
+      o.material=cache.get(k);const g=o.geometry;if(g&&!g.attributes.uv&&g.attributes.position){const P=g.attributes.position,U=new Float32Array(P.count*2);for(let i=0;i<P.count;i++){const x=P.getX(i),y=P.getY(i),z=P.getZ(i),l=Math.hypot(x,y,z)||1;const uv=sp.uvs||[3,1.5];U[i*2]=(Math.atan2(z,x)/TAU+.5)*uv[0];U[i*2+1]=(Math.asin(Math.max(-1,Math.min(1,y/l)))/Math.PI+.5)*uv[1]}g.setAttribute('uv',new THREE.BufferAttribute(U,2))}else if(g&&sp.uvs&&!g.userData.uvScaled){const U=g.attributes.uv;for(let i=0;i<U.count;i++)U.setXY(i,U.getX(i)*sp.uvs[0],U.getY(i)*sp.uvs[1]);U.needsUpdate=true;g.userData.uvScaled=1}});if(sv.extra)sv.extra(T3,K,root,M);return M}};
 L3.lx.restyle=restyle;
 const cellM={lob:90,var:.06,rough:.3,wet:.75},chrom={folds:40,lob:120,var:.1,rough:.4,wet:.55,bump:.01},mem={lob:80,var:.06,rough:.3,wet:.75};
 restyle('heart',{vessels:{collagen:{folds:26,var:.08,rough:.45,wet:.5},muscle:{folds:44,var:.1,rough:.4,wet:.55},endo:{lob:90,var:.06,rough:.25,wet:.85},capillary:{lob:60,var:.06,c:0xE88A8A},valve:{lob:30,var:.05,rough:.25,wet:.85},rbc:{c:0xB3202C,lob:20,var:.06,rough:.28,wet:.85,sheen:.3}},
@@ -27832,6 +27907,8 @@ restyle('pathogen',{virus:{capsid:{lob:120,var:.08},spike:{lob:20},rna:{var:.04}
 restyle('gameto',{both:{tubule:{...cellM,lob:180},sperm:{lob:30,var:.06},follicle:{...cellM,lob:160},oocyte:{...cellM,lob:120},polar:{lob:40}}});
 restyle('endocrine',{glucose:{pan:{c:0xE2B07A,lob:90,veins:4,veinC:0xA0562E,bump:.02,rough:.5,wet:.35},liver:{c:0x7E1E1A,veins:9,veinC:0x45100F,var:.1,rough:.28,wet:.85,sheen:.1,lob:220,bump:.004},glucose:{var:.06},glycogen:{lob:30}},
   cycle:{ovary:{c:0xF0C8BC,lob:60,var:.08,rough:.4,wet:.55},uterus:{c:0xC85A5C,folds:30,veins:10,veinC:0x7A1A24,var:.1}}});
+const mol={lob:60,var:.1,rough:.35,wet:.6,sheen:0,bump:.02,uvs:[2,1]},enz={enzyme:{c:0x4C6EF5,lob:260,var:.14,rough:.5,wet:.3,sheen:0,bump:.04,uvs:[9,4.5]},substrate:mol,product:mol,comp:mol,noncomp:{lob:200,var:.12,rough:.45,wet:.3,sheen:0,bump:.03,uvs:[4,2]}};
+restyle('enzyme',{lock:enz,induced:enz,inhib:enz});
 restyle('plant',{transport:{root:{c:0xE6D5B0,folds:16,lob:40,var:.08},xylem:{c:0x9A6A3C,folds:30,var:.1,rough:.45,wet:.4},phloem:{c:0xD9E6A8,lob:30,var:.06},stem:{c:0x5AA545,folds:14,var:.08,rough:.4,wet:.5},leaf:{c:0x4E9F3D,veins:8,veinC:0xCFE8BE,var:.08,rough:.4,wet:.55}}});
 })();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
