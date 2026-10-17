@@ -28251,6 +28251,75 @@ Ge.build=function(T3,K,v,...rest){if(!['tf','epi','lac'].includes(v))return prev
     tags:[['regulator',[-2.4,1.3,0]],['repressor',()=>rep.position.clone().add(V(0,.35,0))],['operator',[-.85,.35,.3]],['structural',[1.2,1.3,0]],['lactose',[-.4,2.1,0]],['polymerase',()=>pol.position.clone().add(V(0,.35,0))]],
     journeys:[{name:'An operon at work',c:0xE64980,steps:[[0,'regulator','The regulator gene makes a repressor protein all the time.'],[0,'operator','With no lactose, the repressor sits on the operator, blocking RNA polymerase.'],[1,'lactose','When lactose arrives it binds to the repressor, changing its shape so it falls off.'],[1,'structural','RNA polymerase transcribes lacZ and lacY: the cell makes the enzymes to use lactose.']].map(([l,part,text])=>({p:[-.3,1.1,0],part,text,on:()=>{S.lac=l;syncSliders(ex,[l]);last=-1}}))}]}};
 })();
+// ---------- Daphnia heart rate, atlas quality: a see-through water flea under a microscope objective — an amber carapace with a tail spine, the head with its black compound eye, big branched swimming antennae with bristles that beat, filter-feeding legs, a green coiled gut, eggs in the brood pouch and the small heart on its back that beats faster with caffeine or warmth (replaces the view of LIB.heartlab) ----------
+(()=>{const LIB=L3.LIB,Hl=LIB.heartlab;if(!Hl)return;const {V,clamp,readout,txt,syncSliders,gboard}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+Hl.build=function(T3,K,v){const S={c:0,T:.5};let ex=null,t=0;K.lin=0;
+  const steel=new T3.MeshPhysicalMaterial({color:0xBFC5CC,metalness:.85,roughness:.25,clearcoat:.4});steel.userData.keepLook=1;const black=new T3.MeshPhysicalMaterial({color:0x1A1D22,roughness:.35,clearcoat:.6});black.userData.keepLook=1;
+  // the microscope stage, slide and objective
+  mesh(K,null,new T3.BoxGeometry(7,.1,3.2),black,[0,-.05,0]);const glass=new T3.MeshPhysicalMaterial({color:0xEEF6FF,roughness:.05,clearcoat:1,transparent:true,opacity:.3,depthWrite:false});glass.userData.keepLook=1;
+  mesh(K,'slide',new T3.BoxGeometry(3.2,.06,1.6),glass,[-.6,.08,0],{order:5});mesh(K,'slide',new T3.CylinderGeometry(.95,.95,.02,64),new T3.MeshPhysicalMaterial({color:0xA5D8FF,roughness:.05,clearcoat:1,transparent:true,opacity:.35,depthWrite:false}),[-.6,.12,0],{order:5});
+  const obj=K.grp(null,{p:[-.6,2.05,0]});mesh(K,null,new T3.CylinderGeometry(.24,.24,.55,48),steel,[0,.3,0],{to:obj});mesh(K,null,new T3.CylinderGeometry(.245,.245,.04,48),new T3.MeshPhysicalMaterial({color:0xE03131,roughness:.3}),[0,.15,0],{to:obj});mesh(K,null,new T3.CylinderGeometry(.16,.12,.25,48),steel,[0,-.1,0],{to:obj});mesh(K,null,new T3.CylinderGeometry(.08,.08,.02,32),new T3.MeshPhysicalMaterial({color:0x3A7AD0,roughness:.05,clearcoat:1}),[0,-.23,0],{to:obj});
+  // the water flea (head to the right)
+  const d=K.grp('body',{p:[-.6,.68,0]}),carM=wet(T3,0xE8C890,{lob:160,veins:2,veinC:0xB08040,var:.08,rough:.25,wet:.85,sheen:0,seed:661,op:.32});carM.side=T3.DoubleSide;
+  mesh(K,'body',sculpt(T3,(x,y,z)=>{const k=1+.03*L3.nz(x*3,y*3,z*3,2);let X=x*.62,Y=y*.48*(1-.15*x),Z=z*.3;if(x<-.7){const s=(-.7-x)/.3;Y*=1-s*.6}return [X*k,Y*k,Z*k]},{seg:72,uv:2}),carM,[0,0,0],{to:d,order:6});
+  mesh(K,'body',tube(T3,[[-.55,.12,0],[-.9,.0,0],[-1.25,-.12,0]],u=>.05*(1-u)+.004,{rad:10}),carM,null,{to:d,order:6});
+  mesh(K,'body',sculpt(T3,(x,y,z)=>[x*.3,y*.28,z*.24],{seg:48,uv:1}),carM,[.62,.12,0],{to:d,order:6});
+  const eyeM=wet(T3,0x15171C,{lob:220,var:.05,rough:.15,wet:1,sheen:0,seed:662});mesh(K,'eye',new T3.SphereGeometry(.1,32,24),eyeM,[.78,.17,0],{to:d});mesh(K,'eye',new T3.SphereGeometry(.03,12,8),eyeM,[.68,.0,0],{to:d});
+  // swimming antennae with bristles, beating
+  const antM=wet(T3,0xD9B880,{folds:8,var:.06,rough:.35,wet:.6,seed:663,op:.8}),ants=[1,-1].map(s=>{const g=K.grp('body',{to:d,p:[.62,.25,s*.12]});mesh(K,'body',tube(T3,[[0,0,0],[.05,.25,s*.15],[0,.4,s*.3]],.028,{rad:10}),antM,null,{to:g});
+    [[.12,.55,.5],[-.25,.5,.42]].forEach(([dx,dy,dz])=>{const e=[dx,.4+dy*.5,s*(.3+dz*.6)];mesh(K,'body',tube(T3,[[0,.4,s*.3],e],.016,{rad:8}),antM,null,{to:g});for(let k=1;k<=4;k++){const p=[e[0]*k/4,.4+(e[1]-.4)*k/4,s*.3+(e[2]-s*.3)*k/4];mesh(K,'body',tube(T3,[p,[p[0]+.12,p[1]+.12,p[2]+s*.05]],.004,{rad:4,seg:4}),antM,null,{to:g})}});return g});
+  // gut (green with food), legs, eggs, and the heart
+  mesh(K,'body',tube(T3,[[.7,.0,0],[.45,-.1,.02],[.1,-.05,0],[-.25,-.12,.02],[-.5,-.2,0],[-.62,-.32,0]],u=>.05*(1+.25*Math.sin(u*30)),{rad:12}),wet(T3,0x5C9A24,{lob:60,var:.15,rough:.4,wet:.6,seed:664}),null,{to:d});
+  const legs=[...Array(5)].map((_,i)=>{const g=K.grp('body',{to:d,p:[.35-i*.14,-.18,0]});mesh(K,'body',tube(T3,[[0,0,0],[.03,-.12,.05],[.0,-.22,.06]],.012,{rad:6}),antM,null,{to:g});return g});
+  [...Array(5)].forEach((_,i)=>mesh(K,'body',new T3.SphereGeometry(.055,20,14),wet(T3,0x6A8A2A,{lob:20,var:.1,rough:.35,wet:.7,seed:665}),[-.15+i*.11,.25-Math.abs(i-2)*.02,(i%2-.5)*.06],{to:d}));
+  const heart=mesh(K,'heart',sculpt(T3,(x,y,z)=>[x*.11,y*.08,z*.07],{seg:32}),Object.assign(wet(T3,0xE04040,{lob:20,rough:.3,wet:.8,seed:666}),{emissive:new T3.Color(0xC92A2A),emissiveIntensity:.35}),[.3,.36,0],{to:d});
+  const B=gboard(T3,K,[2.2,1.1,-.4],1.7,1.4,'caffeine','beats/min',{id:'graph'});const ct=txt(T3,K,'',[-2.3,1.6,.5],{h:.17,part:'heart'});let ph=0,clock=0;
+  const bpm=()=>Math.round((180+(S.T*20-10)*9)*(1+S.c*.55));
+  const tick=dt=>{t+=dt;ph+=dt*bpm()/60;const s=1+Math.max(0,Math.sin(ph*TAU))*.35;heart.scale.set(s,1/s*1.1,s);clock+=dt;if(clock>15){clock=0;ph=0}ct.userData.set(`${bpm()} beats/min`);
+    ants.forEach((g,i)=>g.rotation.z=Math.sin(t*5)*.35-.1);legs.forEach((g,i)=>g.rotation.z=Math.sin(t*9+i*.8)*.4);d.position.y=.68+Math.sin(t*5)*.02;return true};
+  const upd=()=>{B.clear();const xs=[0,.25,.5,.75,1];B.line('graph',xs.map(c=>[c*.9+.05,clamp(((180+(S.T*20-10)*9)*(1+c*.55))/420)]),0xE03131,.012);
+    if(ex)readout(ex,`Caffeine <b>${(S.c*1).toFixed(2)} %</b> · water at <b>${Math.round(20+(S.T-.5)*20)} °C</b> · heart rate ≈ <b>${bpm()}</b> beats per minute (count for 15 s × 4) · caffeine is a stimulant and warmer water speeds up the reactions — change only one variable at a time`)};
+  return {radius:2.5,view:[.5,.2],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'☕',label:'Caffeine concentration',v:0,set:x=>{S.c=x;upd()}},{icon:'🌡️',label:'Water temperature',v:.5,set:x=>{S.T=x;upd()}}],
+    tags:[['body',[-1.3,1.2,0]],['heart',[-.3,1.45,.3]],['eye',[.2,1.2,.2]],['slide',[-2.0,.3,.7]],['graph',[2.2,2.05,-.4]]],
+    journeys:[{name:'Caffeine and heart rate',c:0xE03131,steps:[[0,.5,'slide','Put a Daphnia in a drop of pond water on a cavity slide and let it settle for a few minutes.'],[0,.5,'heart','Find the heart on its back. Count the beats for 15 seconds and multiply by 4.'],[.5,.5,'heart','Add a drop of caffeine solution: the heart beats faster.'],[1,.5,'graph','Repeat with each concentration and several Daphnia, then plot the mean heart rate.'],[0,.9,'heart','The microscope lamp warms the water — temperature must be kept the same, or it is the variable you change.']].map(([c,T,part,text])=>({p:[-.4,.8,0],part,text,on:()=>{S.c=c;S.T=T;syncSliders(ex,[c,T]);upd()}}))}]}};
+})();
+// ---------- Peppered moths and natural selection, atlas quality: a tree trunk with furrowed bark and pale lichen that blackens with soot, peppered and dark moths with patterned wings, furry bodies and antennae resting on it, and a great tit that flies round hunting (replaces the 'moths' view of LIB.evolution) ----------
+(()=>{const LIB=L3.LIB,Ev=LIB.evolution;if(!Ev)return;const {V,clamp,readout,syncSliders}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const cv=(w,h,f)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h);return c};
+const prev=Ev.build;
+Ev.build=function(T3,K,v,...rest){if(v!=='moths')return prev.call(this,T3,K,v,...rest);const S={soot:0,p:.1,t:0};let ex=null;K.lin=0;const r=L3.rnd(17),rn=(a,b)=>a+(b-a)*r();
+  // bark: furrows and plates with pale lichen patches
+  const bark=cv(512,1024,(x,w,h)=>{x.fillStyle='#6E6A62';x.fillRect(0,0,w,h);for(let i=0;i<70;i++){const x0=r()*w;x.strokeStyle=`rgba(40,36,30,${.35+r()*.4})`;x.lineWidth=3+r()*6;x.beginPath();let xx=x0;for(let y=-20;y<h+20;y+=24){xx+=(r()-.5)*10;y===-20?x.moveTo(xx,y):x.lineTo(xx,y)}x.stroke()}
+    for(let i=0;i<900;i++){x.fillStyle=`rgba(${150+r()*40},${148+r()*40},${135+r()*30},.25)`;x.fillRect(r()*w,r()*h,4+r()*14,2+r()*5)}
+    for(let i=0;i<120;i++){const px=r()*w,py=r()*h,rr=6+r()*28;for(let k=0;k<14;k++){x.fillStyle=`rgba(${170+r()*30},${185+r()*25},${160+r()*25},.5)`;x.beginPath();x.arc(px+(r()-.5)*rr,py+(r()-.5)*rr,2+r()*rr*.35,0,TAU);x.fill()}}});
+  const bt=new T3.CanvasTexture(bark);bt.wrapS=bt.wrapT=T3.RepeatWrapping;bt.repeat.set(2,2);bt.anisotropy=8;const barkM=new T3.MeshPhysicalMaterial({color:0xC8C8C8,map:bt,bumpMap:bt,bumpScale:.03,roughness:.95,clearcoat:0});barkM.userData.keepLook=1;
+  const trunk=mesh(K,'bark',new T3.CylinderGeometry(.75,.85,4.4,64,16),barkM,[0,1,0]);
+  for(let i=0;i<5;i++)mesh(K,'bark',tube(T3,[[0,2.4-i*.2,0],[(i%2?1:-1)*.8,2.7-i*.17,rn(-.3,.3)],[(i%2?1:-1)*1.6,2.9-i*.15,rn(-.5,.5)]],u=>(.13-i*.01)*(1-.6*u),{rad:16,uv:2}),barkM);
+  // moths: patterned wings (peppered or dark), furry body, antennae
+  const wingTex=dark=>cv(256,128,(x,w,h)=>{x.fillStyle=dark?'#26231F':'#CFCABD';x.fillRect(0,0,w,h);for(let i=0;i<900;i++){x.fillStyle=dark?`rgba(90,85,75,${r()*.5})`:`rgba(20,20,20,${.35+r()*.6})`;x.fillRect(r()*w,r()*h,1+r()*4,1+r()*3)}
+    if(!dark){x.strokeStyle='rgba(30,30,30,.6)';x.lineWidth=2;for(const yy of [.35,.62]){x.beginPath();for(let xx=0;xx<=w;xx+=8)x.lineTo(xx,h*yy+Math.sin(xx*.15)*5);x.stroke()}}});
+  const wm=[wingTex(0),wingTex(1)].map(c=>{const m=new T3.MeshPhysicalMaterial({color:0xB4B4B4,map:new T3.CanvasTexture(c),roughness:.9,side:T3.DoubleSide});m.userData.keepLook=1;return m});
+  const fw=new T3.Shape();fw.moveTo(0,0);fw.bezierCurveTo(.1,.08,.22,.14,.27,.1);fw.lineTo(.24,-.04);fw.bezierCurveTo(.15,-.06,.06,-.04,0,0);const hw=new T3.Shape();hw.moveTo(0,0);hw.bezierCurveTo(.06,-.02,.16,-.06,.17,-.13);hw.bezierCurveTo(.1,-.15,.04,-.1,0,0);
+  const wg=[new T3.ShapeGeometry(fw,12),new T3.ShapeGeometry(hw,12)];wg.forEach(g=>{const P=g.attributes.position,U=g.attributes.uv;for(let i=0;i<P.count;i++)U.setXY(i,P.getX(i)/.27,(P.getY(i)+.15)/.3)});
+  const bodyM=[wet(T3,0xC9C3B6,{lob:80,var:.1,rough:.9,wet:0,sheen:.6,seed:171}),wet(T3,0x2A2622,{lob:80,var:.1,rough:.9,wet:0,sheen:.6,seed:172})];
+  const mk=dark=>{const id=dark?'dark':'pale',g=K.grp(id);for(const s of [1,-1])for(const k of [0,1])K.put(id,new T3.Mesh(wg[k],wm[dark?1:0]),{to:g,s:[s,1,1]});
+    mesh(K,id,sculpt(T3,(x,y,z)=>[x*.025,y*.11,z*.025],{seg:20}),bodyM[dark?1:0],[0,-.03,.01],{to:g});for(const s of [1,-1])mesh(K,id,tube(T3,[[0,.07,.01],[s*.04,.13,.015],[s*.07,.16,.01]],.003,{rad:4,seg:8}),bodyM[dark?1:0],null,{to:g});return g};
+  const moths=[...Array(24)].map(()=>{const a=rn(-1.2,1.2),y=rn(-.6,2.6),g=mk(false),h=mk(true);for(const q of [g,h]){q.position.set(Math.sin(a)*.84,y,Math.cos(a)*.84);q.lookAt(Math.sin(a)*3,y,Math.cos(a)*3);q.rotateZ(rn(-.3,.3));q.scale.setScalar(1.15)}return {g,h}});
+  // a great tit: yellow breast, black head and stripe, white cheeks, blue-grey wings
+  const bird=K.grp('bird',{p:[2.4,2.6,1.2]}),fe=(c,seed)=>wet(T3,c,{folds:30,var:.12,rough:.8,wet:0,sheen:.5,sheenC:0xFFFFFF,seed});
+  mesh(K,'bird',sculpt(T3,(x,y,z)=>[x*.13,y*.12,z*.22],{seg:40}),fe(0xE8C83A,173),[0,0,0],{to:bird});mesh(K,'bird',sculpt(T3,(x,y,z)=>[x*.1,y*.1,z*.1],{seg:32}),fe(0x1A1A1A,174),[0,.1,.2],{to:bird});
+  [1,-1].forEach(s=>mesh(K,'bird',sculpt(T3,(x,y,z)=>[x*.02,y*.05,z*.06],{seg:16}),fe(0xF8F9FA,175),[s*.085,.09,.21],{to:bird}));mesh(K,'bird',new T3.ConeGeometry(.025,.07,12),fe(0x2A2A2A,176),[0,.09,.31],{to:bird,r:[Math.PI/2,0,0]});
+  mesh(K,'bird',tube(T3,[[0,-.02,.18],[0,-.1,.0],[0,-.08,-.12]],.025,{rad:8}),fe(0x1A1A1A,177),null,{to:bird});mesh(K,'bird',sculpt(T3,(x,y,z)=>[x*.05,y*.015,z*.14],{seg:20}),fe(0x6A86A8,178),[0,.04,-.3],{to:bird,r:[.2,0,0]});
+  const wings=[1,-1].map(s=>{const g=K.grp('bird',{to:bird,p:[s*.1,.05,0]});mesh(K,'bird',sculpt(T3,(x,y,z)=>[(x+1)*.13*s*.5,y*.015,z*.11],{seg:24}),fe(0x6A86A8,179),[0,0,0],{to:g});g.userData.s=s;return g});
+  const tick=(dt,now)=>{S.t+=dt;barkM.color.setHex(0xC8C8C8).lerp(new T3.Color(0x2B2F33),S.soot*.92);
+    const wd=.4+.6*S.soot,wl=1-.6*S.soot;S.p=clamp(S.p+dt*.08*(S.p*(1-S.p))*(wd-wl)*4+(S.soot>.5?.0004:-.0004),.02,.98);moths.forEach((m,i)=>{const dark=(i/24)<S.p;m.h.visible=dark;m.g.visible=!dark});
+    bird.position.set(2.4*Math.cos(S.t*.6),2.4+Math.sin(S.t*1.2)*.4,1.6*Math.sin(S.t*.6));bird.lookAt(V(-2.4*Math.sin(S.t*.6),0,1.6*Math.cos(S.t*.6)).add(bird.position));wings.forEach(g=>g.rotation.z=g.userData.s*Math.sin(S.t*16)*.7);
+    if(ex&&now-(S.rn||0)>300){S.rn=now;readout(ex,`<b>Bark</b>: ${S.soot<.3?'clean and pale':S.soot<.7?'darkening':'sooty and black'} · <b>dark moths</b> ${Math.round(S.p*100)}% of the population`)}return true};
+  return {radius:2.9,view:[.15,.3],ground:0,tick,extra:el=>{ex=el},sliders:[{icon:'🏭',label:'Pollution (soot on the bark)',v:0,set:x=>{S.soot=x}}],quizSkip:['bird'],
+    tags:[['bark',[0,-.6,.85],0],['pale',()=>moths.find(m=>m.g.visible)?.g.position.toArray()||[0,1,.8]],['dark',()=>moths.find(m=>m.h.visible)?.h.position.toArray()||[0,2,.8]],['bird',()=>bird.position.toArray()]],
+    journeys:[{name:'Natural selection',c:0xADB5BD,steps:[{p:[0,1,.8],part:'pale',text:'In clean countryside most peppered moths are pale, camouflaged on pale bark.',on:()=>{S.soot=0;S.p=.1;syncSliders(ex,[0])}},{p:[0,2,.8],part:'dark',text:'A mutation produces a dark form. On pale bark it stands out.'},
+      {p:[0,1,.8],part:'bark',text:'In the industrial revolution, soot turned the bark black.',on:()=>{S.soot=1;syncSliders(ex,[1])}},{p:[2,2.5,1],part:'bird',text:'Now birds spot and eat the pale moths more often.'},{p:[0,1.6,.8],part:'dark',text:'Dark moths survive and breed more, passing on the dark allele. Over generations, most moths become dark.'}]}],jEnd:()=>{}}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
