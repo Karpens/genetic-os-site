@@ -27276,6 +27276,51 @@ Fl.build=function(T3,K,v){if(v!=='flower')return old.call(this,T3,K,v);const r=L
     tags:[['petal',[0,.3,1.1],0],['sepal',[.5,-.7,.4],0],['anther',[.42,.85,.2]],['filament',[.33,.1,.2]],['stigma',[0,1.08,0]],['style',[.05,.4,0]],['ovary',[.1,-.35,.2]],['pollen',()=>pol.position.toArray()]],
     journeys:[{name:'From pollen to seed',c:0xFCC419,steps:[{p:[.42,.8,.2],part:'anther',text:'Anthers make pollen grains, which contain the male gametes.',on:()=>{S.p=0;S.goal=0}},{p:[0,1.0,0],part:'stigma',text:'An insect carries pollen to the sticky stigma of another flower: pollination.',on:()=>{S.goal=.5}},{p:[0,.4,0],part:'style',text:'The pollen grain grows a tube down through the style.',on:()=>{S.goal=1}},{p:[0,-.35,0],part:'ovary',text:'The male gamete fuses with the ovule: fertilisation. The ovule becomes a seed and the ovary a fruit.'}]}]}};
 })();
+// ---------- Organelles, atlas quality: the chloroplast (double envelope, thylakoid discs stacked in grana, ribbon-like lamellae, starch grains, lipid droplets) and the mitochondrion (double membrane, wavy cristae studded with ATP synthase knobs, granular matrix) (replace the 'chloro' view of LIB.plant and the 'mito' view of LIB.mito) ----------
+(()=>{const LIB=L3.LIB,{V,tween,readout,stream,syncSliders,carrow}=L3.lx,{wet,tube}=L3.lx.anat,TAU=Math.PI*2,rb=(T3,a,b,c,n=6)=>L3.sbox(T3,a,b,c,n,40);
+const Pl=LIB.plant,Mi=LIB.mito;
+if(Pl){const prev=Pl.build;Pl.build=function(T3,K,v){if(v!=='chloro')return prev.call(this,T3,K,v);const r=L3.rnd(11),rn=(a,b)=>a+(b-a)*r();
+    // chloroplast
+    const envO=wet(T3,0x78BE68,{lob:60,var:.06,rough:.3,wet:.75,op:.3,seed:191}),envI=wet(T3,0x9BD48C,{lob:60,var:.06,rough:.3,wet:.75,op:.22,seed:192}),thyM=wet(T3,0x2A6E2C,{lob:40,var:.1,rough:.35,wet:.5,sheen:0,seed:193}),lamM=wet(T3,0x4E9E48,{var:.08,rough:.3,wet:.7,seed:194});
+    K.put('envelope',new T3.Mesh(L3.blob(T3,1.6,2,.03,72,[1.5,.75,.85]),envO),{shell:1,rank:2});K.put('envelope',new T3.Mesh(L3.blob(T3,1.52,2,.03,72,[1.5,.75,.85]),envI),{shell:1,rank:1});
+    K.put('stroma',new T3.Mesh(L3.blob(T3,1.45,3,.02,64,[1.5,.72,.82]),wet(T3,0xC8E8BA,{lob:200,var:.06,rough:.35,wet:.5,op:.16,seed:195})));
+    // plastoglobuli: little lipid droplets in the stroma
+    const pg=new T3.InstancedMesh(new T3.SphereGeometry(.05,14,10),wet(T3,0xF1D27C,{rough:.3,wet:.8,seed:196}),18),m4=new T3.Matrix4();for(let q=0;q<18;q++){m4.makeTranslation(rn(-1.8,1.8),rn(-.55,.55),rn(-.8,.8));pg.setMatrixAt(q,m4)}pg.instanceMatrix.needsUpdate=true;K.put('stroma',pg);
+    const grana=[];for(const [x,z] of [[-1.5,.1],[-.8,-.45],[-.6,.5],[0,0],[.65,-.45],[.75,.45],[1.45,0]]){const g=K.grp('granum',{p:[x,-.35,z]});for(let k=0;k<7;k++){K.put('granum',new T3.Mesh(new T3.CylinderGeometry(.28,.28,.08,40),thyM),{to:g,p:[0,k*.11,0]});K.put('granum',new T3.Mesh(new T3.TorusGeometry(.28,.04,10,40),thyM),{to:g,p:[0,k*.11,0],r:[Math.PI/2,0,0]})}grana.push(g)}
+    for(let i=0;i<grana.length-1;i++){const a=grana[i].position.clone().add(V(0,.1,0)),b=grana[i+1].position.clone().add(V(0,.25,0));K.put('lamella',new T3.Mesh(tube(T3,[a,a.clone().lerp(b,.5).add(V(0,.05,0)),b],(u,an)=>.04*(1-.6*Math.abs(Math.sin(an))),{rad:16}),lamM))}
+    for(const [x,z] of [[-1.1,-.1],[.35,.2]])K.put('starch',new T3.Mesh(L3.blob(T3,.2,x*9,.05,40,[1.4,.8,1]),wet(T3,0xF3EEDF,{lob:30,var:.05,rough:.35,wet:.6,seed:197})),{p:[x,.35,z]});
+    K.tor('dna',[1.05,.35,-.2],.18,.015,0x7048E8,{r:[1,0,.4]});K.dots('dna',[...Array(14)].map(()=>[rn(-1.6,1.6),rn(-.3,.5),rn(-.6,.6)]),.03,0x845EF7);
+    const light=stream(T3,K,'granum',[[-.5,2.6,.6],[0,.2,0]],8,.05,0xFDE047,{speed:.3,glow:1});const co2=stream(T3,K,'stroma',[[2.8,.4,0],[1.0,.3,0],[.2,.4,.2]],10,.05,0x64748B,{speed:.12,jitter:.05});
+    const calvin=carrow(T3,K,'stroma',[[.35,.55,.6],[.75,.75,.4],[.85,.6,-.1],[.5,.5,-.35],[.15,.55,.0]],.025,0xFACC15,{mo:{emissive:0xFACC15,emissiveIntensity:.4}});
+    const tick=dt=>{light.tick(dt);co2.tick(dt);calvin.rotation.y+=dt*.6;return true};
+    return {radius:2.6,view:[.35,.45],ground:1.4,tick,quizSkip:['dna'],
+      tags:[['envelope',[0,1.18,0],0],['granum',[-.6,.4,.5]],['stroma',[.9,.0,.55]],['lamella',[-.3,-.05,0]],['starch',[-1.1,.55,-.1]],['dna',[1.05,.55,-.2]]],
+      journeys:[{name:'Photosynthesis step by step',c:0xFDE047,steps:[{p:[0,0,0],part:'granum',text:'Light is absorbed by chlorophyll in the thylakoid membranes of the grana.'},{p:[-.6,0,.5],part:'granum',text:'Light-dependent reaction: water is split (photolysis), releasing oxygen, and ATP and reduced NADP are made.'},
+        {p:[1.0,.3,0],part:'stroma',text:'Carbon dioxide diffuses into the stroma.'},{p:[.5,.55,.1],part:'stroma',text:'Light-independent reaction: in the Calvin cycle, RuBisCO fixes CO₂, and ATP and reduced NADP turn it into glucose.'},{p:[-1.1,.4,-.1],part:'starch',text:'Some glucose is stored as starch grains.'}]}]}};}
+if(Mi){const prev=Mi.build;Mi.build=function(T3,K,v){if(v!=='mito')return prev.call(this,T3,K,v);const r=L3.rnd(4),rn=(a,b)=>a+(b-a)*r();
+    if(v==='mito'){const S={o2:1,u:0,goal:0};
+      K.put('outer',new T3.Mesh(L3.blob(T3,1,3,.03,72,[2.1,.95,1.0]),wet(T3,0xE6956A,{lob:60,veins:0,var:.08,rough:.3,wet:.75,op:.35,seed:201})),{shell:1,rank:2});
+      K.put('matrix',new T3.Mesh(L3.blob(T3,.93,3,.03,64,[2.05,.88,.93]),wet(T3,0xF4CFA6,{lob:160,var:.08,rough:.35,wet:.6,op:.3,seed:202})),{shell:1,rank:1});
+      const crM=wet(T3,0xD0652E,{folds:20,lob:40,var:.08,rough:.3,wet:.7,seed:203}),knob=new T3.InstancedMesh(new T3.SphereGeometry(.028,10,8),wet(T3,0xF2B14A,{rough:.3,wet:.7,seed:204}),8*14),km=new T3.Matrix4();let kn=0;
+      for(let i=0;i<8;i++){const x=-1.55+i*.44,s=i%2?1:-1;K.put('cristae',new T3.Mesh(L3.lx.anat.sculpt(T3,(x2,y2,z2)=>[x2*.06+.035*Math.sin(z2*7+y2*3),y2*.52,z2*.7],{seg:48,uv:1}),crM),{p:[x,s*.32,0]});for(let k=0;k<14;k++){km.makeTranslation(x+(k%2?.08:-.08)+.035*Math.sin(((k/14)*2-1)*.7*7),s*.32+rn(-.4,.4),rn(-.6,.6));knob.setMatrixAt(kn++,km)}for(let k=0;k<3;k++)K.sph('atp',[x+.08,s*.32+(k-1)*.25,.35],.035,0xFCC419)}
+      knob.instanceMatrix.needsUpdate=true;K.put('cristae',knob);K.tor('matrix',[.2,.0,.45],.15,.012,0x7048E8,{r:[1,.2,0]});K.dots('matrix',[...Array(18)].map(()=>[rn(-1.6,1.6),rn(-.5,.5),rn(-.6,.6)]),.03,0xC2410C);
+      K.blob('cyto',[0,0,0],3,0xE7F5FF,{seed:1,n:.02,sc:[1.25,.85,.9],glass:.07,shell:1,rank:0});
+      const glu=K.grp('glucose');for(let k=0;k<6;k++){const a=k/6*TAU;K.sph('glucose',[Math.cos(a)*.16,Math.sin(a)*.16,0],.07,0x212529,{to:glu,gloss:1})}K.tor('glucose',[0,0,0],.16,.02,0x495057,{to:glu});
+      const path=new T3.CatmullRomCurve3([V(-3.6,1.3,.6),V(-2.8,.8,.5),V(-2.4,.3,.4),V(-1.6,.1,.2),V(-.6,0,.1),V(.4,0,.1)]);
+      const atps=[...Array(24)].map((_,i)=>{const m=K.sph('atp',[0,0,0],.07,0xFCC419,{gloss:1,mo:{emissive:0xFCC419,emissiveIntensity:.6}});m.userData.d=V(rn(-1,1),rn(-.6,1),rn(-1,1)).normalize();return m});
+      const co2=stream(T3,K,'co2',[[.2,.1,.2],[1.2,.8,.6],[2.6,1.6,1.0]],10,.06,0x868E96,{speed:.1,jitter:.12});const lac=K.sph('cyto',[-2.4,.3,.4],.12,0xE599F7,{gloss:1});
+      let ex=null;const tick=(dt,now)=>{tween(S,'u',S.goal,dt,.25);glu.position.copy(path.getPointAt(Math.min(1,S.u)));glu.rotation.z+=dt;glu.visible=S.u<.99;const aer=S.o2>.3,k=(now*.0004)%1;
+        atps.forEach((m,i)=>{const n=aer?24:3,on=i<n;m.visible=on;if(!on)return;const t=(k+i/n)%1,src=aer?V(-1.5+(i%8)*.44,0,0):V(-2.4,.3,.4);m.position.copy(src).addScaledVector(m.userData.d,.3+t*2.0);m.scale.setScalar(1-t*.6)});
+        co2.mesh.visible=aer;if(aer)co2.tick(dt);lac.visible=!aer;lac.scale.setScalar(1+.15*Math.sin(now*.004));
+        if(ex&&S.k!==S.o2){S.k=S.o2;readout(ex,aer?'<b>Aerobic respiration</b>: glucose + oxygen → carbon dioxide + water · about <b>32 ATP</b> per glucose':'<b>Anaerobic respiration</b> (muscle): glucose → lactic acid · only <b>2 ATP</b> per glucose · lactic acid builds up: an oxygen debt')}return true};
+      return {radius:2.9,view:[.25,.35],ground:1.6,tick,extra:el=>{ex=el;S.k=-1},jEnd:()=>{S.goal=0;S.u=0},sliders:[{icon:'🫁',label:'Oxygen supply',v:1,set:x=>{S.o2=x}}],quizSkip:['co2'],
+        tags:[['outer',[0,.98,.3],0],['cristae',[-.67,.6,.4]],['matrix',[.6,-.1,.5]],['glucose',()=>glu.position.toArray()],['atp',()=>atps[0].position.toArray()],['co2',[1.9,1.2,.8]],['cyto',[-2.6,-.8,.6],0]],
+        journeys:[{name:'Release the energy',c:0xFCC419,steps:[{p:[-3.4,1.2,.6],part:'glucose',text:'Glucose arrives in the cell from the blood.',on:()=>{S.u=0;S.goal=.35;S.o2=1;syncSliders(ex,[1])}},{p:[-2.4,.3,.4],part:'cyto',text:'In the cytoplasm, glycolysis splits it into two molecules of pyruvate, releasing a little ATP.'},
+          {p:[-.8,0,.1],part:'matrix',text:'With oxygen, pyruvate enters the mitochondrion. The Krebs cycle in the matrix releases carbon dioxide.',on:()=>{S.goal=1}},{p:[-.2,.32,.3],part:'cristae',text:'On the folded inner membrane, the electron transport chain and ATP synthase make most of the ATP. Oxygen is the final electron acceptor, forming water.'},
+          {p:[0,1.2,.5],part:'atp',text:'About 32 ATP per glucose carry the energy off to wherever the cell needs it.'},{p:[-2.4,.3,.4],part:'cyto',text:'Without enough oxygen (hard exercise), muscles respire anaerobically: glucose → lactic acid, only 2 ATP.',on:()=>{S.o2=0;syncSliders(ex,[0])}}]}]}}
+
+};}
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
