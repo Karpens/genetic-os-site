@@ -7223,7 +7223,7 @@ LIB.genetics={title:['🧩','Inheritance in 3D','Choose the parents’ alleles a
   more:{p1:['Homozygous: TT or tt. Heterozygous: Tt.','Like two copies of the same or different recipe.','Mendel worked this out with pea plants in the 1860s.'],p2:['Each parent gives one allele.','Like dealing one card from a pair.','Mendel grew about 28 000 pea plants.'],gamete:['Gametes are haploid.','Like half a set of instructions.','Each human egg or sperm has 23 chromosomes.'],grid:['Ratios are probabilities, not certainties.','Like coin tosses.','The Punnett square was invented by Reginald Punnett.'],offspring:['Tt × Tt → 3 tall : 1 short.','Like mixing colours where one always wins.','With small families, ratios are often different from the prediction.'],allele:['Capital letter = dominant.','Like a loud voice drowning out a quiet one.','Most characteristics are controlled by many genes, not one.'],
     mum:['Females: XX.','Like a pair of the same card.','The X chromosome carries about 900 genes.'],dad:['Males: XY.','Like one of each card.','The Y chromosome carries the SRY gene that starts male development.'],girl:['50% chance each time.','Like tossing a coin.','Slightly more boys than girls are born.'],boy:['The sperm decides the sex.','Like the second card dealt.','Sex-linked disorders like colour blindness are more common in boys.'],
     unaff:['Two carriers can have an affected child.','Like two people each holding a hidden card.','About 1 in 25 people in the UK carry the CF allele.'],carrier:['Carrier: Ff.','Like a hidden message.','Carriers can be found by genetic testing.'],affected:['Affected: ff.','Like both cards being the same hidden card.','CF causes thick mucus in the lungs and digestive system.'],male:['Squares = male.','Like a key on a map.','Pedigrees are used by genetic counsellors.'],female:['Circles = female.','Like a key on a map.','Shaded shapes show affected people.']},
-  build(T3,K,v){const plant=(id,tall,p,to)=>{const g=K.grp(id,{p,to}),h=tall?.9:.38;K.cyl(id,[0,h/2,0],.025,h,0x2F9E44,{to:g});for(let i=0;i<(tall?4:2);i++){const y=.15+i*(h-.15)/(tall?4:2),s=i%2?1:-1;K.put(id,new T3.Mesh(new T3.SphereGeometry(.09,12,8),K.mat(id,0x51CF66,{})),{to:g,p:[s*.08,y,0],s:[1.4,.5,.8]})}
+  build(T3,K,v){const plant=(id,tall,p,to)=>{if(L3.lx.peaPlant)return L3.lx.peaPlant(T3,K,id,tall,p,to);const g=K.grp(id,{p,to}),h=tall?.9:.38;K.cyl(id,[0,h/2,0],.025,h,0x2F9E44,{to:g});for(let i=0;i<(tall?4:2);i++){const y=.15+i*(h-.15)/(tall?4:2),s=i%2?1:-1;K.put(id,new T3.Mesh(new T3.SphereGeometry(.09,12,8),K.mat(id,0x51CF66,{})),{to:g,p:[s*.08,y,0],s:[1.4,.5,.8]})}
       K.sph(id,[0,h+.04,0],.07,0xBE4BDB,{to:g,gloss:1});K.cyl(id,[0,.04,0],.12,.08,0x8B5E3C,{to:g,r2:.1});return g};
     if(v==='cross'){const G=['TT','Tt','tt'],S={a:1,b:1};const base=K.box('grid',[0,-.03,0],[3.2,.06,3.2],0xF8F9FA,{});
       for(let i=0;i<=3;i++){K.box('grid',[-1.5+i*1,.01,.5],[.03,.03,3],0xCED4DA,{});K.box('grid',[.5,.01,-1.5+i*1],[3,.03,.03],0xCED4DA,{})}
@@ -28353,6 +28353,102 @@ Mu.build=function(T3,K,v,...rest){if(v!=='sarcomere')return prev.call(this,T3,K,
     tags:[['actin',[-1.6,.37,.45]],['myosin',[0,.75,.45]],['zline',()=>[-(2.2-.6*S.c),1.15,0]],['heads',[.52,.33,.45]],['calcium',[1.4,1.0,.4]]],
     journeys:[{name:'Contract a muscle',c:0xFF922B,steps:[{p:[1.4,.8,.4],part:'calcium',text:'A nerve impulse arrives; calcium ions are released inside the muscle fibre.',on:()=>{S.c=.1}},{p:[.5,.25,.4],part:'heads',text:'The binding sites on actin are uncovered, and myosin heads attach to them.'},{p:[-1.4,.37,.4],part:'actin',text:'The heads swivel, pulling the actin filaments towards the centre. ATP lets each head detach and re-attach further along.',on:()=>{S.c=.7}},{p:[-1.6,0,0],part:'zline',text:'The Z lines move closer together: the sarcomere, and the whole muscle, shortens.',on:()=>{S.c=1}}]}],jEnd:()=>{S.c=0;syncSliders(ex,[0])}}};
 })();
+// ---------- Eutrophication, atlas quality: a cut-away landscape — a ploughed field of young crops with soil layers on the cut face, nitrate and phosphate granules washing down the bank into a lake shown in cross-section with rippled water, a lake bed of mud and stones, waving pondweed that browns and collapses, a green algal scum that spreads, rod bacteria on the decaying plants, realistic fish that float belly-up when oxygen runs out, and an oxygen probe (replaces the 'eutro' view of LIB.pollute) ----------
+(()=>{const LIB=L3.LIB,Po=LIB.pollute;if(!Po)return;const {V,clamp,readout,txt,syncSliders,prop,own}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed));return c};
+const prev=Po.build;
+Po.build=function(T3,K,v,...rest){if(v!=='eutro')return prev.call(this,T3,K,v,...rest);const S={t:0};let ex=null,ph=0;K.lin=0;const r=L3.rnd(47),mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1);
+  const mat=(c,o={})=>{const m=new T3.MeshPhysicalMaterial({color:o.col??0x8E8E8E,map:c?new T3.CanvasTexture(c):null,roughness:o.rough??.85,clearcoat:o.cc??0,transparent:o.op!=null,opacity:o.op??1,depthWrite:o.op==null,side:o.side??T3.FrontSide});if(m.map){m.map.anisotropy=8;if(o.rep){m.map.wrapS=m.map.wrapT=T3.RepeatWrapping;m.map.repeat.set(...o.rep)}}if(o.bump){m.bumpMap=m.map;m.bumpScale=o.bump}m.userData.keepLook=1;return m};
+  // soil cut face: topsoil, subsoil, clay
+  const soil=mat(cv(512,256,(x,w,h,r)=>{const L=[['#4A3424',0,.35],['#7A5634',.35,.7],['#A8794A',.7,1]];L.forEach(([c,a,b])=>{x.fillStyle=c;x.fillRect(0,a*h,w,(b-a)*h)});for(let i=0;i<1600;i++){{const d=r()<.5;x.fillStyle=`rgba(${d?30:200},${d?20:170},${d?10:120},${r()*.35})`};x.fillRect(r()*w,r()*h,2+r()*3,2+r()*3)}
+    for(let i=0;i<40;i++){x.strokeStyle='rgba(230,210,180,.35)';x.lineWidth=1;x.beginPath();let px=r()*w,py=r()*h*.4;x.moveTo(px,py);for(let k=0;k<6;k++){px+=(r()-.5)*14;py+=6+r()*8;x.lineTo(px,py)}x.stroke()}},31),{rough:.95,bump:.01});
+  const furrow=mat(cv(512,512,(x,w,h,r)=>{for(let y=0;y<h;y++){const v=Math.sin(y/h*TAU*10);x.fillStyle=`rgb(${80+v*20},${58+v*14},${38+v*10})`;x.fillRect(0,y,w,1)}for(let i=0;i<3000;i++){{const d=r()<.5;x.fillStyle=`rgba(${d?40:150},${d?30:120},${d?20:90},.4)`};x.fillRect(r()*w,r()*h,2,2)}},32),{rough:.95,bump:.02});
+  mesh(K,'field',new T3.BoxGeometry(2,.7,3),[soil,soil,furrow,soil,soil,soil],[-2.0,.35,0]);
+  // young crop plants in rows
+  const leafM=wet(T3,0x5E9A2C,{veins:6,veinC:0xA8D080,var:.1,rough:.5,wet:.3,sheen:0,seed:331}),crop=new T3.Group();for(let k=0;k<5;k++){const a=k/5*TAU,l=new T3.Mesh(sculpt(T3,(x,y,z)=>[x*.03,y*.006,(z+1)*.07],{seg:12}),leafM);l.rotation.set(-.6,a,0);l.position.y=.05;crop.add(l)}const stem=new T3.Mesh(new T3.CylinderGeometry(.008,.012,.1,6),leafM);stem.position.y=.03;crop.add(stem);
+  for(let i=0;i<6;i++)for(let j=0;j<7;j++){const c=crop.clone();c.position.set(-2.85+i*.34,.71,-1.3+j*.43);c.rotation.y=r()*TAU;c.scale.setScalar(.9+r()*.4);c.traverse(o=>{if(o.isMesh)o.userData.part='field'});K.put('field',c)}
+  // the lake in cross-section: bank, mud bed with stones, water body with a rippled surface
+  const mud=mat(cv(512,128,(x,w,h,r)=>{x.fillStyle='#5A4632';x.fillRect(0,0,w,h);for(let i=0;i<900;i++){{const d=r()<.5;x.fillStyle=`rgba(${d?30:140},${d?25:120},${d?20:90},.5)`};x.beginPath();x.arc(r()*w,r()*h,1+r()*3,0,TAU);x.fill()}},33),{rough:.95,bump:.01});
+  mesh(K,null,new T3.BoxGeometry(4,.12,3),mud,[1.0,.06,0]);const st=new T3.InstancedMesh(sculpt(T3,(x,y,z)=>{const k=1+.2*L3.nz(x*2,y*2,z*2,4);return [x*.06*k,y*.035*k,z*.05*k]},{seg:12}),wet(T3,0x8A8478,{lob:20,var:.15,rough:.7,wet:.2,sheen:0,seed:334}),40);for(let i=0;i<40;i++){q.setFromEuler(new T3.Euler(0,r()*TAU,0));mm.compose(V(-.9+r()*3.8,.13,-1.4+r()*2.8),q,V(1,1,1).multiplyScalar(.6+r()*.9));st.setMatrixAt(i,mm)}st.instanceMatrix.needsUpdate=true;K.put(null,st);
+  mesh(K,'runoff',sculpt(T3,(x,y,z)=>{const t=(x+1)/2;return [-.95+t*.1,(y+1)/2*.7*(1-t*.75)+0,z*1.5]},{seg:24}),soil,[-.05,0,0]);
+  const wM=new T3.MeshPhysicalMaterial({color:0x1A6090,roughness:.05,clearcoat:1,transparent:true,opacity:.55,depthWrite:false,envMapIntensity:1.2});wM.userData.keepLook=1;mesh(K,null,new T3.BoxGeometry(3.9,.56,2.9),wM,[1.0,.4,0],{order:5});
+  const rip=new T3.PlaneGeometry(3.9,2.9,64,48);rip.rotateX(-Math.PI/2);const RP=rip.attributes.position,rbase=new Float32Array(RP.array);const sM=new T3.MeshPhysicalMaterial({color:0x5AA8D8,roughness:.03,clearcoat:1,transparent:true,opacity:.35,depthWrite:false});sM.userData.keepLook=1;const rp=own(mesh(K,null,rip,sM,[1.0,.685,0],{order:6}));
+  // algal bloom: green scum patches that spread across the surface
+  const ag=cv(512,512,(x,w,h,r)=>{x.clearRect(0,0,w,h);for(let i=0;i<500;i++){const px=r()*w,py=r()*h,rr=4+r()*22;x.fillStyle=`hsla(${95+r()*25},${55+r()*20}%,${28+r()*15}%,.55)`;x.beginPath();x.arc(px,py,rr,0,TAU);x.fill()}for(let i=0;i<3000;i++){x.fillStyle='rgba(30,90,20,.6)';x.fillRect(r()*w,r()*h,2,2)}},35);
+  const aM=new T3.MeshPhysicalMaterial({color:0xB0B0B0,map:new T3.CanvasTexture(ag),roughness:.6,transparent:true,opacity:.95,depthWrite:false,alphaTest:.02});aM.userData.keepLook=1;const alg=own(mesh(K,'algae',new T3.PlaneGeometry(3.9,2.9),aM,[1.0,.705,0],{r:[-Math.PI/2,0,0],order:8}));
+  // pondweed: wavy ribbons rising from the bed
+  const pwM=wet(T3,0x3E8A2E,{veins:4,veinC:0x9AD080,var:.12,rough:.45,wet:.6,sheen:0,seed:336});const pl=[...Array(14)].map((_,i)=>{const g=K.grp('plants',{p:[-.6+(i%7)*.5+r()*.15,.12,-1.0+Math.floor(i/7)*1.2+r()*.3]});const pts=[...Array(7)].map((_,k)=>[Math.sin(k*.9+i)*.04,k*.075,Math.cos(k*.7+i)*.03]);
+    mesh(K,'plants',tube(T3,pts,.008,{rad:6}),pwM,null,{to:g});for(let k=1;k<7;k++){const l=mesh(K,'plants',sculpt(T3,(x,y,z)=>[x*.05,y*.006,z*.014],{seg:10}),pwM,[pts[k][0]+.03,pts[k][1],pts[k][2]],{to:g,r:[0,k*1.3,.4]})}return g});
+  const fishes=[...Array(6)].map((_,i)=>prop(T3,K,'fish','fish',[0,.4,0],{c:[0xD9822B,0x8CA8C0,0xC0A060][i%3],s:.85}));
+  const bact=new T3.InstancedMesh(new T3.CapsuleGeometry(.012,.04,4,8),wet(T3,0x7A8A5A,{rough:.4,wet:.6,seed:337}),60),bs=[...Array(60)].map(()=>[-.6+r()*3.2,.14+r()*.15,-1.1+r()*2.2,r()*TAU]);K.put('bact',ipts(bact,bs.slice(0,10).map(b=>b.slice(0,3))));
+  const run=new T3.InstancedMesh(new T3.IcosahedronGeometry(.035,1),new T3.MeshPhysicalMaterial({color:0xF5D040,emissive:0xC0A020,emissiveIntensity:.3,roughness:.3,clearcoat:.8}),24);run.material.userData.keepLook=1;K.put('runoff',ipts(run,[[-1.2,.75,0],[-.2,.45,0]]));
+  // oxygen probe and meter
+  const steel=new T3.MeshPhysicalMaterial({color:0xC8CDD2,metalness:.85,roughness:.25});steel.userData.keepLook=1;mesh(K,null,tube(T3,[[3.0,.25,1.1],[3.05,1.2,1.15]],.02,{rad:10}),steel);
+  mesh(K,null,new T3.BoxGeometry(.18,1.0,.14),new T3.MeshPhysicalMaterial({color:0xF1F3F5,roughness:.4,clearcoat:.4}),[3.35,.6,1.2]);const o2b=mesh(K,null,new T3.BoxGeometry(.12,1,.15),new T3.MeshPhysicalMaterial({color:0x339AF0,emissive:0x1C7ED6,emissiveIntensity:.3}),[3.35,.1,1.2]);txt(T3,K,'O₂',[3.35,1.25,1.2],{h:.15});
+  const ST=['Fertiliser washes off the field into the lake','Algae grow rapidly into a bloom','The bloom blocks light, so water plants die','Bacteria decompose the dead plants and use up the oxygen','Fish suffocate and die'];
+  const upd=()=>{const t=S.t,s=Math.min(4,Math.floor(t*5));if(ex)readout(ex,ST.map((x,i)=>i===s?`<b>${x}</b>`:x).join(' → '))};
+  const cG=new T3.Color(0xFFFFFF),cB=new T3.Color(0xB08850);
+  const tick=dt=>{ph+=dt;const t=S.t,a=clamp(t*2.5);alg.visible=a>.02;alg.scale.set(Math.max(.02,a),Math.max(.02,a),1);alg.position.x=1.0-1.95*(1-a);
+    for(let i=0;i<RP.count;i++){const x=rbase[i*3],z=rbase[i*3+2];RP.setY(i,Math.sin(x*6+ph*1.5)*.006+Math.cos(z*7+ph)*.006)}RP.needsUpdate=true;rip.computeVertexNormals();
+    const die=clamp((t-.35)*3);pwM.color.copy(cG).lerp(cB,die);pl.forEach((g,i)=>{g.scale.set(1,1-die*.75,1);g.rotation.z=Math.sin(ph*1.2+i)*.12*(1-die)+die*(i%2?.9:-.9)});
+    bs.forEach((b,i)=>{const on=t>.5&&i<(t-.5)*130;mm.compose(V(b[0]+Math.sin(ph+i)*.02,b[1],b[2]),q.setFromEuler(new T3.Euler(b[3],ph+i,0)),V(1,1,1).multiplyScalar(on?1:.001));bact.setMatrixAt(i,mm)});bact.instanceMatrix.needsUpdate=true;
+    const ox=1-clamp((t-.5)*2.4);o2b.scale.y=.05+ox*.95;o2b.position.y=.1+o2b.scale.y/2;
+    fishes.forEach((f,i)=>{const dead=t>.8;f.position.set(-.3+((ph*.2+i*.37)%1)*2.6*(dead?0:1)+(dead?i*.42:0),dead?.66:.35+Math.sin(ph*2+i)*.06,-.9+i*.35);f.rotation.set(dead?Math.PI:0,0,0)});
+    for(let i=0;i<24;i++){const u=((ph*.3+i/24)%1);mm.compose(V(-1.2+u*1.5,.74-u*.42,-1.2+(i%6)*.48),q.identity(),V(1,1,1).multiplyScalar(t<.5?1:.001));run.setMatrixAt(i,mm)}run.instanceMatrix.needsUpdate=true;return true};
+  return {radius:2.8,view:[.4,.25],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'⏳',label:'Time after fertiliser use',v:0,set:x=>{S.t=x;upd()}}],
+    tags:[['field',[-2,1.2,0]],['runoff',[-.6,.9,0]],['algae',[1.6,.95,0]],['plants',[.6,.75,-.8]],['bact',[1.5,.4,.9]],['fish',[2.4,.8,.4]]],
+    journeys:[{name:'From fertiliser to dead fish',c:0x2F9E44,steps:[[0,'runoff','Rain washes nitrates and phosphates off the field into the lake.'],[.25,'algae','Algae grow quickly into a bloom across the surface.'],[.45,'plants','The bloom blocks light, so plants under the water die.'],[.65,'bact','Bacteria decompose them, using up the dissolved oxygen.'],[.95,'fish','The fish suffocate: the lake is eutrophic.']].map(([t,part,text])=>({p:[.6,.5,0],part,text,on:()=>{S.t=t;syncSliders(ex,[t]);upd()}}))}]}};
+})();
+// ---------- Zones of inhibition, lab-photo quality: a clear glass Petri dish with its lid propped, amber agar covered by a cloudy, grainy bacterial lawn, white paper discs with printed letters, clear halos that grow round them (showing the bare agar), taped edges and a steel ruler (replaces the 'zones' view of LIB.micro) ----------
+(()=>{const LIB=L3.LIB,Mi=LIB.micro;if(!Mi)return;const {V,clamp,readout,txt,syncSliders,gboard}=L3.lx,{mesh}=L3.lx.anat,TAU=Math.PI*2;
+const r1=x=>Math.round(x*10)/10;
+const prev=Mi.build;
+Mi.build=function(T3,K,v,...rest){if(v!=='zones')return prev.call(this,T3,K,v,...rest);const S={t:.6};let ex=null;K.lin=0;
+  const pm=o=>{const m=new T3.MeshPhysicalMaterial(o);m.userData.keepLook=1;return m};
+  const glass=pm({color:0xF2F8FF,roughness:.04,clearcoat:1,clearcoatRoughness:.03,transparent:true,opacity:.22,depthWrite:false,side:T3.DoubleSide,envMapIntensity:1.5});
+  const pl=K.grp('plate',{p:[-.4,0,0]}),R=1.26,DS=[['A',-.55,-.45,.42],['B',.55,-.45,.25],['C',-.55,.45,.12],['control',.55,.45,0]];
+  // dish base and lid (lid tilted back, resting on the edge)
+  mesh(K,'plate',new T3.CylinderGeometry(R+.04,R+.04,.16,96,1,true),glass,[0,.08,0],{to:pl,order:6});mesh(K,'plate',new T3.CircleGeometry(R+.04,96),glass,[0,.002,0],{to:pl,r:[-Math.PI/2,0,0],order:6});
+  const lid=K.grp('plate',{to:pl,p:[0,.2,-1.0],r:[-.5,0,0]});mesh(K,'plate',new T3.CylinderGeometry(R+.09,R+.09,.1,96,1,true),glass,[0,0,1.0],{to:lid,order:7});mesh(K,'plate',new T3.CircleGeometry(R+.09,96),glass,[0,.05,1.0],{to:lid,r:[-Math.PI/2,0,0],order:7});
+  // agar with the bacterial lawn: a canvas painted per frame size, the lawn removed inside each zone
+  const N=1024,cv=document.createElement('canvas');cv.width=cv.height=N;const x=cv.getContext('2d'),rnd=L3.rnd(61),grain=[...Array(9000)].map(()=>[rnd()*N,rnd()*N,.6+rnd()*1.8,rnd()]),cols=[...Array(60)].map(()=>[rnd()*N,rnd()*N,3+rnd()*7]);
+  const toPx=(px,pz)=>[N/2+pz/R*N/2,N/2-px/R*N/2];
+  const paint=g=>{x.fillStyle='#B8862E';x.fillRect(0,0,N,N);const ag=x.createRadialGradient(N/2,N/2,0,N/2,N/2,N/2);ag.addColorStop(0,'rgba(240,200,110,.35)');ag.addColorStop(1,'rgba(150,100,30,.35)');x.fillStyle=ag;x.fillRect(0,0,N,N);
+    // the lawn: creamy, grainy, slightly uneven
+    x.save();x.beginPath();x.arc(N/2,N/2,N/2-6,0,TAU);for(const [,dx,dz,r] of DS){const rr=r?(r*g*1.1+.1)/R*N/2:0;if(rr>0){const [cx,cy]=toPx(dx,dz);x.moveTo(cx+rr,cy);x.arc(cx,cy,rr,0,TAU,true)}}x.clip('evenodd');
+    x.fillStyle='rgba(206,190,140,.95)';x.fillRect(0,0,N,N);for(const [gx,gy,s,v] of grain){x.fillStyle=v<.5?'rgba(160,140,90,.55)':'rgba(240,232,205,.55)';x.fillRect(gx,gy,s,s)}
+    for(const [cx2,cy2,cr] of cols){const gr=x.createRadialGradient(cx2,cy2,0,cx2,cy2,cr);gr.addColorStop(0,'rgba(245,238,212,.9)');gr.addColorStop(1,'rgba(206,190,140,0)');x.fillStyle=gr;x.beginPath();x.arc(cx2,cy2,cr,0,TAU);x.fill()}x.restore();
+    // zone rims: a faint ring where growth thins out
+    for(const [,dx,dz,r] of DS){if(!r)continue;const rr=(r*g*1.1+.1)/R*N/2,[cx,cy]=toPx(dx,dz);x.strokeStyle='rgba(190,170,120,.7)';x.lineWidth=5;x.beginPath();x.arc(cx,cy,rr+2,0,TAU);x.stroke()}
+    tx.needsUpdate=true};
+  const tx=new T3.CanvasTexture(cv);tx.anisotropy=8;tx.encoding=T3.sRGBEncoding;const agar=pm({color:0xC8C8C8,map:tx,bumpMap:tx,bumpScale:.006,roughness:.55,clearcoat:.35,clearcoatRoughness:.3});
+  mesh(K,'zone',new T3.CylinderGeometry(R,R,.06,96),[pm({color:0xB88A38,roughness:.3,clearcoat:.6,transparent:true,opacity:.85}),agar,agar],[0,.035,0],{to:pl});
+  // paper discs with printed letters
+  DS.forEach(([n,dx,dz])=>{const c=document.createElement('canvas');c.width=c.height=128;const y=c.getContext('2d');y.fillStyle='#FBFBF7';y.beginPath();y.arc(64,64,62,0,TAU);y.fill();for(let i=0;i<200;i++){y.fillStyle='rgba(200,200,190,.4)';y.fillRect(Math.random()*128,Math.random()*128,2,2)}y.fillStyle='#333';y.font='bold 44px sans-serif';y.textAlign='center';y.textBaseline='middle';y.fillText(n==='control'?'W':n,64,66);
+    const m=pm({color:0xFFFFFF,map:new T3.CanvasTexture(c),roughness:.85,transparent:true,alphaTest:.5});mesh(K,'disc',new T3.CylinderGeometry(.1,.1,.012,40),[pm({color:0xF4F4EE,roughness:.9}),m,m],[dx,.072,dz],{to:pl});txt(T3,K,n,[dx,.25,dz],{h:.09,to:pl,part:'disc'})});
+  // tape strips on the edge and a steel ruler
+  const tape=pm({color:0xF5EFD8,roughness:.6,transparent:true,opacity:.85});[-.6,.6].forEach(a=>mesh(K,'plate',new T3.BoxGeometry(.32,.17,.01),tape,[Math.sin(a)*(R+.05),.08,Math.cos(a)*(R+.05)],{to:pl,r:[0,a,0]}));
+  const rl=K.grp('ruler',{p:[-.4,.13,1.55]}),steel=pm({color:0xC9CED3,metalness:.9,roughness:.25,clearcoat:.4});mesh(K,'ruler',new T3.BoxGeometry(2.6,.02,.22),steel,[0,0,0],{to:rl});
+  const mk=new T3.InstancedMesh(new T3.BoxGeometry(.006,.004,1),pm({color:0x1A1A1A,roughness:.6}),27),mm=new T3.Matrix4();for(let i=0;i<=26;i++){mm.compose(V(-1.3+i*.1,.012,-.06),new T3.Quaternion(),V(1,1,i%5?.06:.11));mk.setMatrixAt(i,mm)}mk.instanceMatrix.needsUpdate=true;K.put('ruler',mk,{to:rl});
+  const B=gboard(T3,K,[2.3,1.1,-.3],1.4,1.2,'disc','zone area',{id:'zone'});
+  let last=-1;const upd=()=>{const g=S.t;if(Math.abs(g-last)>.004){last=g;paint(g)}B.clear();DS.forEach(([n,,,r],i)=>{const a=Math.PI*Math.pow(r*g*1.1*10,2)/12;B.line('zone',[[.12+i*.25,0],[.12+i*.25,clamp(a)]],0x1C7ED6,.04)});
+    if(ex)readout(ex,`After ${Math.round(g*48)} h: disc A zone ≈ <b>${r1(DS[0][3]*g*22+2)} mm</b> across, B ≈ ${r1(DS[1][3]*g*22+2)} mm, C ≈ ${r1(DS[2][3]*g*22+2)} mm, control: no zone · area = πr² · A is the most effective antimicrobial (if all diffuse equally) · use aseptic technique and incubate at 25 °C`)};
+  paint(S.t);
+  return {radius:2.4,view:[.7,.1],ground:0,tick:()=>false,extra:el=>{ex=el;upd()},sliders:[{icon:'⏳',label:'Incubation time',v:S.t,set:x=>{S.t=x;upd()}}],
+    tags:[['plate',[-1.6,.4,0]],['disc',[.15,.45,-.45]],['zone',[-.95,.4,-.45]],['ruler',[-.4,.35,1.55]]],
+    journeys:[{name:'Comparing antimicrobials',c:0x1C7ED6,steps:[[0,'plate','Spread bacteria evenly over the agar to make a lawn.'],[0,'disc','Add paper discs soaked in different antibiotics, and a control disc soaked in water.'],[1,'zone','After incubation, clear zones show where the bacteria couldn’t grow.'],[1,'ruler','Measure the diameter, halve it and work out the area: πr². Bigger zone, more effective.']].map(([g,part,text])=>({p:[-.4,.3,0],part,text,on:()=>{S.t=g;syncSliders(ex,[g]);upd()}}))}]}};
+})();
+// ---------- Pondweed in the light-intensity practical: a real Canadian pondweed (Elodea) sprig — a cut stem with whorls of three narrow, veined leaves — in place of the simple shapes (adds to the 'bubbles' view of LIB.photolab) ----------
+(()=>{const LIB=L3.LIB,Pl=LIB.photolab;if(!Pl)return;const {wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a);
+const prev=Pl.build;
+Pl.build=function(T3,K,v,...rest){const probe=K.grp(null),root=probe.parent;root.remove(probe);const M=prev.call(this,T3,K,v,...rest);if(v!=='bubbles'||!M)return M;
+  let host=null;const c={};root.traverse(o=>{if(o.isMesh&&o.userData.part==='weed'&&o.material&&o.material.color){o.material.color.getHSL(c);if(c.h>.2&&c.h<.45&&c.s>.3&&!o.material.transparent){o.visible=false;host=host||o.parent}}});if(!host)return M;
+  const lf=wet(T3,0x3E8A2E,{veins:6,veinC:0xA8D890,var:.1,rough:.4,wet:.7,sheen:0,seed:771}),st=wet(T3,0x5A9A3A,{folds:8,var:.06,rough:.4,wet:.6,sheen:0,seed:772});
+  const pts=[[0,.1,0],[.04,.4,.01],[-.02,.75,0],[0,1.05,0]];host.add(Object.assign(new THREE.Mesh(tube(T3,pts,.012,{rad:8}),st),{userData:{part:'weed'}}));
+  const cv=new THREE.CatmullRomCurve3(pts.map(p=>V(...p))),leaf=sculpt(T3,(x,y,z)=>{const t=(x+1)/2;return [t*.11,y*.003,z*.016*Math.sin(Math.PI*Math.min(1,t*1.15))]},{seg:16}),n=15*3,im=new THREE.InstancedMesh(leaf,lf,n),m=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
+  for(let i=0;i<15;i++){const p=cv.getPointAt(.04+i*.064);for(let k=0;k<3;k++){e.set(0,k*TAU/3+i*.6,.65+i*.01);q.setFromEuler(e);m.compose(p,q,V(1,1,1).multiplyScalar(1-i*.03));im.setMatrixAt(i*3+k,m)}}
+  im.instanceMatrix.needsUpdate=true;im.userData.part='weed';im.userData.pts=[[0,.2,0],[0,1,0]];host.add(im);return M};
+})();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
 const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed||5));return c};
@@ -28407,6 +28503,19 @@ P.cow=(T3,K,g,id,o)=>{const hm=M(T3,'cow',()=>pm(T3,friesian(T3),0xFFFFFF,{rough
     for(const x of [.19,-.19]){add(g,id,tube(T3,[[x,.26,s*.08],[x,.12,s*.08],[x,.03,s*.08]],u=>.032*(1-.3*u),{rad:10}),hm);add(g,id,new T3.CylinderGeometry(.03,.034,.03,12),dk,[x,.015,s*.08])}}
   add(g,id,ell(T3,.06,.045,.06),pk,[-.1,.2,0]);add(g,id,tube(T3,[[-.27,.38,0],[-.3,.25,0],[-.29,.12,0]],.008,{rad:6}),hm);add(g,id,ell(T3,.015,.03,.015),dk,[-.29,.11,0])};
 L3.lx.propX=P;
+// a pea plant in a terracotta pot: zigzag stem, compound leaves with paired leaflets, big stipules, curling tendrils and a purple pea flower
+L3.lx.peaPlant=(T3,K,id,tall,p,to)=>{const g=K.grp(id,{p,to}),h=tall?.9:.38,T=THREE,lf=M(T3,'pealeaf',()=>wet(T3,0x4A8A26,{veins:8,veinC:0x9CC878,var:.1,rough:.5,wet:.3,sheen:0,seed:381})),st=M(T3,'peastem',()=>wet(T3,0x5E9A2C,{folds:10,var:.06,rough:.45,wet:.4,sheen:0,seed:382})),
+    pot=M(T3,'pot',()=>wet(T3,0xB8643A,{lob:60,var:.1,rough:.85,wet:.05,sheen:0,seed:383})),soil=M(T3,'soil',()=>wet(T3,0x4A3424,{lob:200,var:.2,rough:.95,wet:0,sheen:0,seed:384})),fl=M(T3,'peaflower',()=>wet(T3,0xA05AD8,{veins:10,veinC:0x6A2AA0,var:.08,rough:.4,wet:.4,sheen:.3,seed:385}));
+  add(g,id,new T.LatheGeometry([[0,0],[.085,0],[.1,.08],[.115,.1],[.12,.1],[.12,.11],[.105,.11],[.1,.1]].map(([x,y])=>new T.Vector2(x,y)),32),pot);add(g,id,new T.CircleGeometry(.1,24),soil,[0,.095,0],[-Math.PI/2,0,0]);
+  const n=tall?5:2,pts=[[0,.09,0]];for(let i=1;i<=n;i++)pts.push([(i%2?.012:-.012),.09+i*(h-.09)/n,0]);add(g,id,tube(T3,pts,u=>.013*(1-.4*u)+.004,{rad:8}),st);
+  const leaflet=ell(T3,.045,.004,.025,3,.02),stip=ell(T3,.035,.003,.03,5,.02);
+  for(let i=1;i<=n;i++){const [x0,y0]=pts[i],s=i%2?1:-1,a=s*.3;
+    add(g,id,stip,lf,[x0+s*.02,y0-.01,.02],[0,a,-s*.3]);add(g,id,stip,lf,[x0+s*.02,y0-.01,-.02],[0,-a,-s*.3]);
+    const pe=[[x0,y0,0],[x0+s*.08,y0+.03,0],[x0+s*.15,y0+.05,0]];add(g,id,tube(T3,pe,.004,{rad:5,seg:10}),st);
+    [.05,.11].forEach(t=>{const px=x0+s*t,py=y0+.02+t*.2;for(const z of [1,-1])add(g,id,leaflet,lf,[px,py,z*.028],[z*.35,0,s*.1])});
+    const tw=[];for(let k=0;k<=24;k++){const a2=k/24*TAU*1.6;tw.push([x0+s*(.15+.05*k/24),y0+.05+Math.sin(a2)*.015,Math.cos(a2)*.015])}add(g,id,tube(T3,tw,.0025,{rad:4,seg:40}),st)}
+  const ft=pts[n];add(g,id,ell(T3,.018,.025,.018),st,[ft[0],h+.01,0]);add(g,id,sculpt(T3,(x,y,z)=>[x*.055,(y+.2)*.05,z*.01+Math.pow(x,2)*.015],{seg:24}),fl,[ft[0],h+.06,-.005]);
+  for(const s of [1,-1])add(g,id,ell(T3,.025,.02,.012),fl,[ft[0]+s*.02,h+.035,.015],[0,s*.4,0]);return g};
 // biology models build with the realistic props
 const bio='heart lungs digest enzyme plant mito membrane pathogen immune division genetics evolution ecosystem kidney endocrine eye muscle molbio flower dnatech lab health nervous brainscan cellx stem foodlab gameto pollute popn biodiv evox enzx sensory pgr inherit heartlab homeo cvd immx clonex gmo biolab biomath gasx membx resp micro photolab plantx diabetes tfluid conflict genetech geneexp dnacode ans'.split(' ');
 // flat green ground gets a grass texture and flat blue water gets ripples (their own colours stay, so colour changes still work)
