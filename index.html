@@ -27321,6 +27321,32 @@ if(Mi){const prev=Mi.build;Mi.build=function(T3,K,v){if(v!=='mito')return prev.c
 
 };}
 })();
+// ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
+(()=>{const LIB=L3.LIB,{wet}=L3.lx.anat;
+const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
+// spec = {view: {part: options for a wet material (c = colour, op = see-through), '*' for any part}, extra(T3,K,root,M) adds details}
+const restyle=(key,spec)=>{const L=LIB[key];if(!L)return;const ob=L.build;
+  L.build=function(T3,K,v,...a){const probe=K.grp(null),root=probe.parent;root.remove(probe);const M=ob.call(this,T3,K,v,...a);const sv=spec[v];if(!sv||!M)return M;const cache=new Map();
+    root.traverse(o=>{if(!(o.isMesh||o.isInstancedMesh)||!o.material||Array.isArray(o.material))return;const id=partOf(o,root),sp=sv[id]||sv['*'];if(!sp||typeof sp!=='object')return;const m=o.material;if((m.map||m.vertexColors)&&!sp.force)return;
+      const k=id+'|'+m.uuid;if(!cache.has(k)){const col=sp.c!=null?sp.c:m.color.getHex(),op=sp.op!=null?sp.op:(m.transparent&&m.opacity<.97?Math.max(.12,m.opacity):null);
+        const n=wet(T3,col,Object.assign({seed:(col%97)+1,rough:.35,wet:.65},sp,{op}));if(m.emissive&&m.emissiveIntensity>0){n.emissive.copy(m.emissive);n.emissiveIntensity=m.emissiveIntensity}n.side=sp.side!=null?sp.side:m.side;cache.set(k,n)}
+      o.material=cache.get(k)});if(sv.extra)sv.extra(T3,K,root,M);return M}};
+L3.lx.restyle=restyle;
+const cellM={lob:90,var:.06,rough:.3,wet:.75},chrom={folds:40,lob:120,var:.1,rough:.4,wet:.55,bump:.01},mem={lob:80,var:.06,rough:.3,wet:.75};
+restyle('heart',{vessels:{collagen:{folds:26,var:.08,rough:.45,wet:.5},muscle:{folds:44,var:.1,rough:.4,wet:.55},endo:{lob:90,var:.06,rough:.25,wet:.85},capillary:{lob:60,var:.06,c:0xE88A8A},valve:{lob:30,var:.05,rough:.25,wet:.85},rbc:{c:0xB3202C,lob:20,var:.06,rough:.28,wet:.85,sheen:.3}},
+  blood:{rbc:{c:0xB3202C,lob:20,var:.06,rough:.28,wet:.85,sheen:.3},phago:{...cellM,lob:140},lympho:{...cellM,lob:140},platelet:{c:0xD9A441,lob:40,var:.08},plasma:{c:0xF4DE9A,lob:40,op:.16},fibrin:{c:0xE8DCC0,folds:20}}});
+restyle('division',{mitosis:{chrom:chrom,cell:{...mem,c:0xE4ECF3},nucleus:{...mem,lob:140,c:0xC4B2EA},spindle:{c:0xD2E9B0,var:.04},daughter:{...mem,c:0xE4ECF3}},
+  meiosis:{chrom:chrom,cell:{...mem,c:0xE4ECF3},nucleus:{...mem,lob:140,c:0xC4B2EA},spindle:{c:0xD2E9B0,var:.04},daughter:{...mem,c:0xE4ECF3}},
+  chromosome:{chromatid:{...chrom,folds:60},centromere:{lob:30},gene:{lob:30},histone:{lob:40,var:.08},dna:{var:.04}}});
+restyle('immune',{phago:{phagocyte:{...cellM,lob:160},bact:{lob:60,var:.08,c:0x8DBF5A},vacuole:{lob:30},lyso:{lob:30},nucleus:{lob:120,var:.1}},antibody:{lympho:{...cellM,lob:160},ab:{var:.04,rough:.25,wet:.8},antigen:{lob:30},clump:{lob:60},bact:{lob:60,c:0x8DBF5A}}});
+restyle('pathogen',{virus:{capsid:{lob:120,var:.08},spike:{lob:20},rna:{var:.04},host:{...cellM,lob:180},copies:{lob:80}},
+  bacterium:{wall:{lob:80,var:.08},membrane:{lob:60},dna:{var:.06},plasmid:{var:.06},ribo:{lob:20},flagellum:{folds:20},pili:{var:.04},capsule:{lob:60,var:.05}},
+  fungus:{hyphae:{folds:20,lob:40,var:.08},spores:{lob:40},sporangium:{lob:60},leafh:{lob:120,var:.12}},malaria:{plasmodium:{lob:60},rbcm:{c:0xB3202C,lob:20,var:.06,rough:.28,wet:.85}}});
+restyle('gameto',{both:{tubule:{...cellM,lob:180},sperm:{lob:30,var:.06},follicle:{...cellM,lob:160},oocyte:{...cellM,lob:120},polar:{lob:40}}});
+restyle('endocrine',{glucose:{pan:{c:0xE2B07A,lob:90,veins:4,veinC:0xA0562E,bump:.02,rough:.5,wet:.35},liver:{c:0x7E1E1A,veins:9,veinC:0x45100F,var:.1,rough:.28,wet:.85,sheen:.1,lob:220,bump:.004},glucose:{var:.06},glycogen:{lob:30}},
+  cycle:{ovary:{c:0xF0C8BC,lob:60,var:.08,rough:.4,wet:.55},uterus:{c:0xC85A5C,folds:30,veins:10,veinC:0x7A1A24,var:.1}}});
+restyle('plant',{transport:{root:{c:0xE6D5B0,folds:16,lob:40,var:.08},xylem:{c:0x9A6A3C,folds:30,var:.1,rough:.45,wet:.4},phloem:{c:0xD9E6A8,lob:30,var:.06},stem:{c:0x5AA545,folds:14,var:.08,rough:.4,wet:.5},leaf:{c:0x4E9F3D,veins:8,veinC:0xCFE8BE,var:.08,rough:.4,wet:.55}}});
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
