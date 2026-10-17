@@ -26577,7 +26577,9 @@ const body=(T3,K,o={})=>{const g=K.grp(null,{p:o.p,s:o.s}),op=o.op??.2,c=o.c??0x
     add(tube(T3,[[s*.36,-1.55,0],[s*.38,-2.0,.02],[s*.39,-2.35,.03]],u=>(.33-.06*u)*cap(u,0,.18),{seg:40,rad:40}))}
   return g};
 
-L3.lx.anat={smoothN,tissueTex,wet,tube,cap,sculpt,gland,mesh,body};
+// sample points of an instanced mesh (or given points), so focusing on its part frames the right place
+const ipts=(im,pp)=>{if(pp){im.userData.pts=pp.map(p=>p.isVector3?p.toArray():p);return im}const m=new THREE.Matrix4(),p=V(0,0,0),c=im.count,n=Math.min(24,c),o=[];for(let i=0;i<n;i++){im.getMatrixAt(Math.floor(i*c/n),m);p.setFromMatrixPosition(m);o.push(p.toArray())}im.userData.pts=o;return im};
+L3.lx.anat={smoothN,tissueTex,wet,tube,cap,sculpt,gland,mesh,body,ipts};
 })();
 // ---------- Digestive system, atlas quality: real organ shapes and wet tissue inside a see-through body (replaces the 'system' view of LIB.digest) ----------
 (()=>{const LIB=L3.LIB,D=LIB.digest;if(!D)return;const {V,tween}=L3.lx,{wet,tube,cap,sculpt,gland,mesh,body}=L3.lx.anat,TAU=Math.PI*2;
@@ -27399,6 +27401,241 @@ if(Mi){const prev=Mi.build;Mi.build=function(T3,K,v){if(v!=='mito')return prev.c
           {p:[0,1.2,.5],part:'atp',text:'About 32 ATP per glucose carry the energy off to wherever the cell needs it.'},{p:[-2.4,.3,.4],part:'cyto',text:'Without enough oxygen (hard exercise), muscles respire anaerobically: glucose → lactic acid, only 2 ATP.',on:()=>{S.o2=0;syncSliders(ex,[0])}}]}]}}
 
 };}
+})();
+// ---------- Cardiovascular disease, atlas quality: a cut-open coronary artery showing its three wall layers, an atheroma (fatty core under a fibrous cap) that grows, red blood cells that slow down, a clot when the plaque bursts, and a beating heart with coronary arteries, cardiac veins and fat where the muscle beyond the blockage dies; treatments with a wire-mesh stent on a balloon, LDL and a statin bottle, a tissue replacement valve and a donor heart in a cool box (replaces both views of LIB.cvd) ----------
+(()=>{const LIB=L3.LIB,Cv=LIB.cvd;if(!Cv)return;const {V,clamp,readout,txt,syncSliders,lathe}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+// a thick-walled tube along x with a window cut out of it (angles a0..a1 are kept); ri/ro give the inner and outer radius; cut edges and ends are closed. o.swap turns the texture so folds run around the tube
+const wallGeo=(T3,x0,x1,ri,ro,a0,a1,o={})=>{const nu=o.nu||80,na=o.na||64,P=[],U=[],I=[],uv=o.uv||2,len=x1-x0,arc=a1-a0;
+  const pt=(x,a,r)=>[x,r*Math.cos(a),r*Math.sin(a)],X=u=>x0+len*u,A=v=>a0+arc*v,rw=(x,a,w)=>ri(x,a)+(ro(x,a)-ri(x,a))*w;
+  const grid=(nI,nJ,f,flip,tu)=>{const b=P.length/3;for(let i=0;i<=nI;i++)for(let j=0;j<=nJ;j++){P.push(...f(i/nI,j/nJ));const t=tu(i/nI,j/nJ);U.push(...(o.swap?[t[1],t[0]]:t))}
+    for(let i=0;i<nI;i++)for(let j=0;j<nJ;j++){const a=b+i*(nJ+1)+j,c=a+nJ+1;if(flip)I.push(a,a+1,c,c,a+1,c+1);else I.push(a,c,a+1,c,c+1,a+1)}};
+  grid(nu,na,(u,v)=>pt(X(u),A(v),ro(X(u),A(v))),1,(u,v)=>[u*len*uv,v*arc*.7*uv]);
+  grid(nu,na,(u,v)=>pt(X(u),A(v),ri(X(u),A(v))),0,(u,v)=>[u*len*uv,v*arc*.45*uv]);
+  grid(nu,3,(u,w)=>pt(X(u),a0,rw(X(u),a0,w)),1,(u,w)=>[u*len*uv,w*.2*uv]);grid(nu,3,(u,w)=>pt(X(u),a1,rw(X(u),a1,w)),0,(u,w)=>[u*len*uv,w*.2*uv]);
+  grid(na,3,(v,w)=>pt(x0,A(v),rw(x0,A(v),w)),0,(v,w)=>[v*arc*.7*uv,w*.2*uv]);grid(na,3,(v,w)=>pt(x1,A(v),rw(x1,A(v),w)),1,(v,w)=>[v*arc*.7*uv,w*.2*uv]);
+  const g=new T3.BufferGeometry();g.setAttribute('position',new T3.Float32BufferAttribute(P,3));g.setAttribute('uv',new T3.Float32BufferAttribute(U,2));g.setIndex(I);g.computeVertexNormals();return g};
+// the three layers of an artery wall: shiny lining (intima), smooth muscle (media) and the tough outer coat (adventitia), the outer ones cut back so all three show
+const artery=(T3,K,id,R,x0,x1,o={})=>{const g=K.grp(id,{p:o.p,to:o.to}),ac=Math.PI/2-.5,w=o.win??1.15,a0=ac+w,a1=ac+TAU-w,c=r=>()=>r;
+  const L=[[R,R*1.09,0,wet(T3,0xE29C9A,{lob:50,veins:3,veinC:0xB04050,var:.08,rough:.22,wet:.9,sheen:.4,seed:311}),{}],
+    [R*1.09,R*1.45,o.step??.22,wet(T3,0xB9474A,{folds:46,veins:2,veinC:0x7A1A24,var:.1,rough:.4,wet:.6,seed:312}),{swap:1}],
+    [R*1.45,R*1.7,(o.step??.22)*2,wet(T3,0xEBD2B0,{veins:14,veinC:0xB0303A,folds:8,var:.08,rough:.5,wet:.4,seed:313}),{}]];
+  L.forEach(([ri,ro,cut,m,oo])=>mesh(K,id,wallGeo(T3,x0+cut,x1,c(ri),c(ro),a0,a1,{uv:2.4,...oo}),m,null,{to:g}));return {g,a0,a1,ac}};
+// a fatty plaque: a lump bent to the curve of the lining (radius R) with half-length hl, width hw and height h, bulging into the lumen along local +y
+const lumpGeo=(T3,R,hl,hw,h,seed=3)=>sculpt(T3,(x,y,z)=>{const Z=z*hw,bend=R-Math.sqrt(Math.max(0,R*R-Z*Z)),k=1+.06*L3.nz(x*3,y*3,z*3,seed);return [x*hl*k,(y>0?y*h*k:y*.05)+bend-.004,Z*k]},{seg:72,uv:1});
+// a red blood cell: a disc with a dimple on both sides
+const rbcGeo=T3=>{const p=[[0,-.0085],[.018,-.0105],[.036,-.0165],[.052,-.0215],[.063,-.02],[.07,-.013],[.073,0],[.07,.013],[.063,.02],[.052,.0215],[.036,.0165],[.018,.0105],[0,.0085]];const g=lathe(T3,p,28);g.computeVertexNormals();return g};
+const rbcMat=T3=>Object.assign(wet(T3,0xB3202C,{lob:20,var:.06,rough:.28,wet:.85,sheen:.3,seed:321}),{side:T3.DoubleSide});
+// the outside of the heart: cone-shaped ventricles, apex down and to its left, with grooves for the coronary vessels
+const heartShape=(x,y,z)=>{const h=Math.sqrt(Math.max(1e-6,1-y*y)),ph=Math.atan2(x,z);
+  let H=y>.45?Math.sqrt(Math.max(0,1-((y-.45)/.55)**2)):Math.pow(Math.max(0,(y+1)/1.45),.62);
+  H*=1-.045*Math.exp(-(((ph-.35)/.1)**2))*(y<.45?1:0)-.05*Math.exp(-(((y-.42)/.06)**2))+.025*L3.nz(x*2,y*2,z*2,5);const k=H/h;return [x*k*.82,y*1.05,z*k*.72]};
+const heart=(T3,K,id,p,s,o={})=>{const g=K.grp(id,{p,to:o.to,r:[0,-.4,.38]});g.scale.setScalar(s);
+  const geo=sculpt(T3,heartShape,{seg:120,uv:2}),hit=new T3.Mesh(geo,new T3.MeshBasicMaterial({side:T3.DoubleSide})),rc=new T3.Raycaster();hit.updateMatrixWorld(true);
+  const surf=(y,ph,off=0)=>{rc.set(V(0,y*1.05,0),V(Math.sin(ph)*.82,0,Math.cos(ph)*.72).normalize());const q=rc.intersectObject(hit)[0];return q?q.point.clone().add(q.face.normal.clone().multiplyScalar(off)):null};
+  const myo=wet(T3,0x7A2224,{veins:16,veinC:0x3E0A10,fat:4,var:.16,rough:.38,wet:.65,sheen:.25,seed:301}),atM=wet(T3,0x8A2C30,{veins:10,veinC:0x3E0A10,var:.14,rough:.4,wet:.6,seed:302}),
+    fat=wet(T3,0xF0CC63,{lob:60,var:.1,rough:.32,wet:.7,seed:303}),artM=wet(T3,0xC8302C,{veins:2,var:.05,rough:.25,wet:.85,seed:304}),venM=wet(T3,0x3E52A8,{var:.05,rough:.25,wet:.85,seed:305}),
+    aoM=wet(T3,0xD0574F,{folds:6,veins:4,veinC:0x8A1E24,var:.06,rough:.3,wet:.75,seed:306}),puM=wet(T3,0x5468B8,{folds:6,var:.06,rough:.3,wet:.75,seed:307});
+  const hm=mesh(K,id,geo,myo,null,{to:g});
+  const blob=(pp,sc,seed,m,r)=>mesh(K,id,sculpt(T3,(x,y,z)=>{const q=1+.05*L3.nz(x*2,y*2,z*2,seed);return [x*sc[0]*q,y*sc[1]*q,z*sc[2]*q]},{seg:56,uv:1}),m,pp,{to:g,r});
+  blob([-.58,.86,.02],[.42,.36,.42],7,atM);blob([.42,.98,-.25],[.36,.28,.36],8,atM);
+  const ear=(pp,r)=>mesh(K,id,sculpt(T3,(x,y,z)=>{const w=1+.16*Math.sin(Math.atan2(z,x)*6);return [x*.3*w,y*.1,z*.18*w]},{seg:48,uv:1}),atM,pp,{to:g,r});ear([-.46,.96,.34],[.3,.5,-.3]);ear([.58,.84,.3],[.2,-.6,.3]);
+  // great vessels: aorta with its arch and branches, pulmonary trunk, superior vena cava
+  mesh(K,id,tube(T3,[[.02,.8,.12],[0,1.3,.16],[-.06,1.68,.04],[.15,1.98,-.15],[.48,1.9,-.32],[.62,1.5,-.42],[.64,.95,-.48]],.17,{rad:28}),aoM,null,{to:g});
+  [[-.02,1.82,-.02],[.16,1.97,-.12],[.34,1.97,-.22]].forEach(([x,y,z],i)=>mesh(K,id,tube(T3,[[x,y-.08,z],[x-.04+i*.03,y+.25,z],[x-.06+i*.05,y+.45,z]],.05-i*.004,{rad:14}),aoM,null,{to:g}));
+  mesh(K,id,tube(T3,[[.28,.78,.34],[.32,1.2,.36],[.32,1.48,.14],[.55,1.58,-.06],[.86,1.55,-.12]],.15,{rad:24}),puM,null,{to:g});mesh(K,id,tube(T3,[[.32,1.44,.16],[.05,1.55,-.08],[-.3,1.52,-.16]],.1,{rad:18}),puM,null,{to:g});
+  mesh(K,id,tube(T3,[[-.62,2.2,-.08],[-.6,1.6,-.04],[-.58,1.05,0]],.13,{rad:20}),puM,null,{to:g});
+  // fat in the grooves, coronary arteries on top and the cardiac veins beside them
+  const ring=[];for(let a=-Math.PI;a<Math.PI;a+=.16){const q=surf(.43,a,-.01);q&&ring.push(q)}mesh(K,id,tube(T3,ring,(u,a)=>.06*(1+.3*Math.sin(u*70)*Math.sin(a*3+u*20)),{rad:16,closed:true}),fat,null,{to:g});
+  const path=(pp,off)=>pp.map(([y,ph])=>surf(y,ph,off)).filter(Boolean),vs=(pp,r,m,taper=.5)=>mesh(K,id,tube(T3,path(pp,r*.55),u=>r*(1-taper*u),{rad:12}),m,null,{to:g});
+  const ladP=[[.5,.22],[.38,.33],[.2,.36]],ladD=[[.2,.36],[0,.38],[-.3,.38],[-.6,.34],[-.85,.25],[-.97,.12]];
+  mesh(K,id,tube(T3,path([[.42,.37],[.2,.38],[-.1,.39],[-.5,.36],[-.8,.28]],0),(u,a)=>.045*(1+.3*Math.sin(u*60)*Math.sin(a*3)),{rad:14}),fat,null,{to:g});
+  mesh(K,id,tube(T3,[V(.06,.95,.2),...path([[.5,.22]],.03)],.04,{rad:12}),artM,null,{to:g});mesh(K,id,tube(T3,[V(-.06,.93,.22),...path([[.48,-.15]],.03)],.038,{rad:12}),artM,null,{to:g});
+  vs(ladP,.04,artM,.1);const ladM=artM.clone(),lad=[vs(ladD,.036,ladM)];[[[.12,.37],[0,.6],[-.2,.85]],[[-.25,.38],[-.4,.65],[-.55,.85]]].forEach(pp=>lad.push(vs(pp,.024,ladM)));
+  vs([[.45,.4],[.42,.8],[.42,1.3],[.42,1.9],[.4,2.4]],.034,artM);vs([[.42,1.2],[.1,1.35],[-.3,1.45]],.024,artM);
+  vs([[.48,-.15],[.44,-.6],[.42,-1.2],[.42,-1.9],[.4,-2.5]],.036,artM);vs([[.43,-1.0],[0,-1.15],[-.4,-1.1]],.024,artM);
+  vs([[-.85,.36],[-.5,.46],[-.1,.48],[.25,.47],[.42,.6],[.43,1.1]],.03,venM,.0);vs([[-.2,-.7],[-.5,-.85],[-.75,-.95]],.02,venM);
+  // the part of the wall supplied by the lower LAD: it turns pale and dies when the artery is blocked (two soft-edged layers)
+  const P=geo.attributes.position,Nn=geo.attributes.normal,I=geo.index,wt=new Float32Array(P.count);
+  for(let i=0;i<P.count;i++){const y=P.getY(i)/1.05,ph=Math.atan2(P.getX(i)/.82,P.getZ(i)/.72),d=Math.hypot((y+.45)/.62,(ph-.4)/1.05);wt[i]=Math.max(0,1-d)*(1+.3*L3.nz(P.getX(i)*4,y*4,P.getZ(i)*4,9))}
+  const patch=(th,op,col)=>{const pos=[],nor=[],uvs=[],UV=geo.attributes.uv;for(let t=0;t<I.count;t+=3){const a=I.getX(t),b=I.getX(t+1),c=I.getX(t+2);if(Math.min(wt[a],wt[b],wt[c])<th)continue;
+      for(const k of [a,b,c]){pos.push(P.getX(k)+Nn.getX(k)*.006*(1+op),P.getY(k)+Nn.getY(k)*.006*(1+op),P.getZ(k)+Nn.getZ(k)*.006*(1+op));nor.push(Nn.getX(k),Nn.getY(k),Nn.getZ(k));uvs.push(UV.getX(k),UV.getY(k))}}
+    const pg=new T3.BufferGeometry();pg.setAttribute('position',new T3.Float32BufferAttribute(pos,3));pg.setAttribute('normal',new T3.Float32BufferAttribute(nor,3));pg.setAttribute('uv',new T3.Float32BufferAttribute(uvs,2));
+    const m=wet(T3,col,{lob:70,veins:3,veinC:0x5A2A3A,var:.2,rough:.6,wet:.25,seed:309});m.polygonOffset=true;m.polygonOffsetFactor=-2-op;const pm=mesh(K,id,pg,m,null,{to:g});pm.userData.op=op;return pm};
+  const dead=[patch(.08,0,0x5E1E30),patch(.32,1,0xD8B8A4)];
+  const bp=surf(.2,.36,.04);const clot=mesh(K,id,sculpt(T3,(x,y,z)=>{const k=1+.2*L3.nz(x*3,y*3,z*3,4);return [x*.06*k,y*.06*k,z*.06*k]},{seg:24}),wet(T3,0x5E0F14,{lob:30,var:.1,rough:.4,wet:.7,seed:308}),bp.toArray(),{to:g});
+  return {g,s,hm,lad,ladM,dead,clot,bp,surf,
+    set:b=>{dead.forEach(m=>m.visible=b>.5);clot.visible=b>.5;ladM.color.setScalar(1-b*.6)},
+    beat:(t,rate)=>{const b=Math.pow(Math.max(0,Math.sin(t*rate*Math.PI)),6);g.scale.setScalar(s*(1+b*.035))}}};
+
+const prev=Cv.build;
+Cv.build=function(T3,K,v,...rest){if(v!=='disease'&&v!=='treat')return prev.call(this,T3,K,v,...rest);const S={r:.2,t:0};let ex=null,t=0;K.lin=0;
+  if(v==='disease'){const R=.42,cy=.95,xp=-.95;
+    const A=artery(T3,K,'artery',R,-2.75,.55,{p:[0,cy,0]});
+    // the atheroma sits on the far, lower wall: a fibrous cap you can see through, its yellow fatty core, foam cells and cholesterol crystals
+    const ap=A.ac+Math.PI-.55,dir=V(0,Math.cos(ap),Math.sin(ap)),pg=K.grp('plaque',{p:[xp,cy+dir.y*R,dir.z*R],r:[ap+Math.PI,0,0]});
+    const capM=wet(T3,0xF3DDA6,{lob:40,veins:2,veinC:0xC07060,var:.1,rough:.3,wet:.8,seed:331,op:.8}),coreM=wet(T3,0xF0B93C,{lob:90,var:.14,rough:.4,wet:.6,seed:332}),
+      foamM=wet(T3,0xF7D774,{lob:30,var:.08,rough:.35,wet:.6,seed:333}),xtal=new T3.MeshPhysicalMaterial({color:0xFFFDF2,roughness:.1,metalness:0,clearcoat:1,transparent:true,opacity:.85});
+    const cap=mesh(K,'plaque',lumpGeo(T3,R,.55,.36,.2,3),capM,null,{to:pg,order:3}),core=mesh(K,'plaque',lumpGeo(T3,R,.4,.27,.14,6),coreM,[0,-.005,0],{to:pg});
+    const rr=L3.rnd(41),fo=new T3.InstancedMesh(new T3.SphereGeometry(.028,14,10),foamM,26),xs=new T3.InstancedMesh(new T3.BoxGeometry(.11,.006,.022),xtal,18),mm=new T3.Matrix4(),q=new T3.Quaternion();
+    for(let i=0;i<26;i++){const a=rr()*TAU,d=Math.sqrt(rr());mm.compose(V(Math.cos(a)*d*.36,.02+rr()*.05,Math.sin(a)*d*.22),q,V(1,.8,1));fo.setMatrixAt(i,mm)}
+    for(let i=0;i<18;i++){q.setFromEuler(new T3.Euler(rr()*.4,rr()*TAU,rr()*.4));mm.compose(V((rr()-.5)*.5,.03+rr()*.06,(rr()-.5)*.28),q,V(1,1,1));xs.setMatrixAt(i,mm)}
+    [fo,xs].forEach(m=>{m.instanceMatrix.needsUpdate=true;K.put('plaque',ipts(m),{to:pg})});
+    const tear=mesh(K,'clot',tube(T3,[[-.18,.2,.06],[-.05,.205,-.02],[.06,.2,.04],[.17,.19,-.03]],u=>.012*Math.sin(Math.PI*u)+.002,{rad:8}),wet(T3,0x4A0A10,{var:.05,seed:334}),null,{to:pg});
+    // the clot: dark red, held together by pale fibrin threads, with trapped red cells
+    const cg=K.grp('clot',{p:[xp,cy,0]}),clotM=wet(T3,0x6A1218,{lob:50,veins:4,veinC:0x3A0508,var:.14,rough:.45,wet:.7,seed:335});
+    mesh(K,'clot',sculpt(T3,(x,y,z)=>{const k=1+.16*L3.nz(x*2.5,y*2.5,z*2.5,8)+.06*Math.sin(x*14)*Math.sin(z*11);return [x*.42*k,y*.27*k,z*.27*k]},{seg:72,uv:1}),clotM,[0,-.04,0],{to:cg});
+    const fib=wet(T3,0xF1E6CF,{folds:6,var:.04,rough:.35,wet:.6,seed:336});for(let i=0;i<14;i++){const a=rr()*TAU,b=rr()*TAU,pts=[...Array(5)].map((_,k)=>{const s=(k/4-.5)*1.1;return [s*.5+Math.cos(a)*.05,Math.sin(b+s*2)*.2+Math.cos(a+s)*.06,Math.cos(b+s*2)*.2]});mesh(K,'clot',tube(T3,pts,.006,{rad:6}),fib,null,{to:cg})}
+    const trap=new T3.InstancedMesh(rbcGeo(T3),rbcMat(T3),24);for(let i=0;i<24;i++){q.setFromEuler(new T3.Euler(rr()*TAU,rr()*TAU,0));const a=rr()*TAU;mm.compose(V((rr()-.5)*.7,Math.cos(a)*.22,Math.sin(a)*.22),q,V(.9,.9,.9));trap.setMatrixAt(i,mm)}trap.instanceMatrix.needsUpdate=true;K.put('clot',ipts(trap),{to:cg});
+    // flowing red blood cells, squeezed past the plaque
+    const N=70,rbc=new T3.InstancedMesh(rbcGeo(T3),rbcMat(T3),N),cs=[...Array(N)].map(()=>({u:rr(),a:rr()*TAU,r:Math.sqrt(rr()),ax:V(rr()-.5,rr()-.5,rr()-.5).normalize(),sp:1+rr(),ph:rr()*TAU}));K.put('blood',ipts(rbc,[...Array(12)].map((_,i)=>[-2.6+i*.28,cy+(i%2?.25:-.25),(i%3-1)*.2])));
+    const flow=(dt,sp,h)=>{const x0=-2.7,x1=.5;cs.forEach((c,i)=>{c.u=(c.u+dt*sp*.09*(.8+c.r*.3))%1;const x=x0+(x1-x0)*c.u,hp=h*Math.sqrt(Math.max(0,1-((x-xp)/.55)**2)),Rl=.37-hp*.5;
+        q.setFromAxisAngle(c.ax,c.ph+t*c.sp*(sp>.05?2:.3));mm.compose(V(x,cy+Math.cos(c.a)*c.r*Rl-dir.y*hp*.5,Math.sin(c.a)*c.r*Rl-dir.z*hp*.5),q,V(1,1,1));rbc.setMatrixAt(i,mm)});rbc.instanceMatrix.needsUpdate=true};
+    // the heart, its LAD branch blocked at the ringed spot (linked to the cut-open artery)
+    const H=heart(T3,K,'heart',[2.05,1.0,0],.72);H.g.updateMatrix();const bw=H.bp.clone().applyMatrix4(H.g.matrix);
+    const lk=new T3.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.55,depthWrite:false});K.put('heart',new T3.Mesh(new T3.TorusGeometry(.09,.006,8,48),lk),{p:bw.toArray()});
+    K.put('heart',new T3.Mesh(tube(T3,[[.62,cy+.3,.25],[1.1,cy+.35,.35],[bw.x-.09,bw.y,bw.z]],.005,{rad:6}),lk));
+    const RF=['smoking','high LDL cholesterol','high blood pressure','no exercise','obesity','diabetes'];const chips=RF.map((n,i)=>txt(T3,K,n,[-2.25+(i%3)*1.15,2.3-Math.floor(i/3)*.24,0],{h:.12,part:'risk',c:'#C92A2A'}));
+    let h=0;const geoH=r=>.03+r*.27;
+    const tick=dt=>{t+=dt;const r=S.r,block=r>.85;h+=(geoH(r)-h)*Math.min(1,dt*6);const k=h/.2;cap.scale.set(.55+.45*Math.min(1,k),k,.7+.3*Math.min(1,k));core.scale.set(.5+.5*Math.min(1,k),k*.95,.7+.3*Math.min(1,k));
+        fo.scale.set(1,k,1);xs.scale.set(1,k,1);fo.visible=xs.visible=r>.3;tear.visible=block;tear.position.y=h-.2;cg.visible=block;cg.scale.setScalar(.85+Math.sin(t*3)*.02);
+        flow(dt,block?0:Math.max(.12,1-r*.85),block?.37:h);H.set(block?1:0);H.beat(t,block?2.4:1.3+r);return true};
+    const upd=()=>{const n=Math.round(S.r*6);chips.forEach((c,i)=>c.material.opacity=i<n?1:.28);const st=S.r<.3?'healthy lining':S.r<.6?'fatty streak under the lining':S.r<.85?'large atheroma — the artery is narrowed, less oxygen reaches the heart (angina)':'the plaque has burst: a <b>blood clot blocks the artery — heart attack</b>';
+      if(ex)readout(ex,`Risk factors: <b>${n}</b> · ${st} · blood flow <b>${Math.round(Math.max(0,S.r>.85?0:100-S.r*80))}%</b> · these factors are <b>correlated</b> with CVD; controlled studies show which ones <b>cause</b> it`)};
+    return {radius:2.85,view:[.22,.15],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'🚬',label:'Risk factors and years',v:S.r,set:x=>{S.r=x;upd()}}],
+      tags:[['artery',[-2.45,1.75,0]],['plaque',[xp,cy-.25,-.2]],['blood',[-2.0,cy,0]],['clot',[xp,cy+.3,.1]],['heart',[2.05,2.45,0]],['risk',[-1.1,2.55,0]]],
+      journeys:[{name:'From a damaged artery to a heart attack',c:0xC92A2A,steps:[[.05,'artery','A healthy coronary artery: smooth lining, blood flows freely to the heart muscle.'],[.35,'plaque','High blood pressure or smoking damage the lining; LDL cholesterol and white blood cells build up under it.'],[.7,'blood','The atheroma narrows the lumen: less blood and oxygen reach the heart — chest pain (angina).'],[.95,'clot','The plaque bursts, platelets stick, and a clot blocks the artery.'],[.95,'heart','The muscle beyond it gets no oxygen and starts to die: a heart attack.'],[.6,'risk','More risk factors, more CVD — a correlation. Large controlled studies show smoking and high LDL actually cause it.']].map(([r,part,text])=>({p:[0,1,0],part,text,on:()=>{S.r=r;syncSliders(ex,[r]);upd()}}))}]}}
+  // treatments
+  const X=[-2.45,-.82,.85,2.45],rr=L3.rnd(57),mm=new T3.Matrix4(),q=new T3.Quaternion(),white=new T3.MeshPhysicalMaterial({color:0xF8F9FA,roughness:.4,clearcoat:.3});white.userData.keepLook=1;
+  // stent: a wire mesh on a balloon catheter, opened inside a narrowed artery
+  const sg=K.grp('stent',{p:[X[0],.95,0]}),Rs=.34;artery(T3,K,'stent',.36,-.7,.7,{to:sg,step:.12});
+  const ap2=Math.PI*1.5-1.05,spl=K.grp('stent',{to:sg,p:[0,Math.cos(ap2)*.36,Math.sin(ap2)*.36],r:[ap2+Math.PI,0,0]});
+  mesh(K,'stent',lumpGeo(T3,.36,.45,.3,.2,5),wet(T3,0xF2C35A,{lob:80,var:.12,rough:.35,wet:.65,seed:341}),null,{to:spl});
+  const metal=new T3.MeshPhysicalMaterial({color:0xD5DADF,metalness:.9,roughness:.22,clearcoat:.4,envMapIntensity:1.2}),struts=[];metal.userData.keepLook=1;
+  const zig=[];for(let k=0;k<6;k++){const xc=-.5+k*.2,pts=[];for(let j=0;j<=20;j++)pts.push([xc+(j%2?.07:-.07),Math.cos(j/20*TAU)*Rs,Math.sin(j/20*TAU)*Rs]);zig.push(tube(T3,pts.slice(0,20),.011,{rad:6,closed:true,seg:160}))}
+  for(let k=0;k<5;k++)for(let j=0;j<4;j++){const a=(j/4+(k%2)*.125)*TAU;zig.push(tube(T3,[[-.43+k*.2,Math.cos(a)*Rs,Math.sin(a)*Rs],[-.37+k*.2,Math.cos(a)*Rs,Math.sin(a)*Rs]],.01,{rad:6,seg:4}))}
+  zig.forEach(gm=>{const P=gm.attributes.position,cyl=new Float32Array(P.count*3);for(let i=0;i<P.count;i++){cyl[i*3]=P.getX(i);cyl[i*3+1]=Math.atan2(P.getZ(i),P.getY(i));cyl[i*3+2]=Math.hypot(P.getY(i),P.getZ(i))-Rs}gm.userData.cyl=cyl;struts.push(mesh(K,'stent',gm,metal,null,{to:sg}))});
+  const opened=e=>{const Rn=.2+e*(Rs-.2),sx=1.08-e*.08;struts.forEach(m=>{const P=m.geometry.attributes.position,c=m.geometry.userData.cyl;for(let i=0;i<P.count;i++){const r=Rn+c[i*3+2];P.setXYZ(i,c[i*3]*sx,Math.cos(c[i*3+1])*r,Math.sin(c[i*3+1])*r)}P.needsUpdate=true})};
+  const bal=mesh(K,'stent',tube(T3,[[-.55,0,0],[.55,0,0]],u=>.3*Math.min(1,Math.sin(Math.PI*u)*2.2),{rad:24,seg:40}),new T3.MeshPhysicalMaterial({color:0x5AA9F0,roughness:.15,clearcoat:1,transparent:true,opacity:.55,depthWrite:false}),null,{to:sg});
+  mesh(K,'stent',tube(T3,[[-1.25,-.1,.05],[-.9,-.02,0],[-.55,0,0]],.022,{rad:10}),white,null,{to:sg});
+  mesh(K,'stent',tube(T3,[[-.6,0,0],[.75,0,0],[.95,.02,0]],.006,{rad:6}),metal,null,{to:sg});
+  // statins: LDL particles in the blood fall as the liver makes less cholesterol
+  const vs=K.grp('statin',{p:[X[1],.95,0]});mesh(K,'statin',tube(T3,[[-.7,0,0],[.7,0,0]],.32,{rad:40,seg:30}),Object.assign(wet(T3,0xE08A88,{veins:6,veinC:0xA02838,var:.06,rough:.25,wet:.85,seed:342,op:.3}),{side:T3.DoubleSide}),null,{to:vs,order:3});
+  const ldlM=wet(T3,0xF2C94C,{lob:40,var:.1,rough:.35,wet:.7,seed:343}),ldl=[...Array(18)].map(()=>mesh(K,'statin',new T3.SphereGeometry(.05,24,16),ldlM,null,{to:vs}));
+  const cells=new T3.InstancedMesh(rbcGeo(T3),rbcMat(T3),20),cp=[...Array(20)].map(()=>[rr(),rr()*TAU,Math.sqrt(rr())*.22,rr()*TAU]);K.put('statin',ipts(cells,[[-.6,0,0],[.6,0,0],[0,.25,0],[0,-.25,0]]),{to:vs});
+  const bot=K.grp('statin',{p:[X[1],0,.85]}),amber=new T3.MeshPhysicalMaterial({color:0xC86A1E,roughness:.15,clearcoat:1,transparent:true,opacity:.72,depthWrite:false});
+  mesh(K,'statin',lathe(T3,[[0,0],[.15,0],[.16,.02],[.16,.42],[.13,.47],[.12,.5],[0,.5]],40),amber,null,{to:bot});
+  mesh(K,'statin',new T3.CylinderGeometry(.135,.135,.1,40),white,[0,.55,0],{to:bot});
+  const lab=document.createElement('canvas');lab.width=256;lab.height=96;{const c=lab.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,256,96);c.fillStyle='#1C7ED6';c.fillRect(0,0,256,22);c.fillStyle='#212529';c.font='bold 30px sans-serif';c.fillText('Statin',14,58);c.font='18px sans-serif';c.fillText('20 mg · once daily',14,84)}
+  const lt=new T3.CanvasTexture(lab);mesh(K,'statin',new T3.CylinderGeometry(.163,.163,.2,40,1,true,-.9,1.8),new T3.MeshStandardMaterial({map:lt,roughness:.6}),[0,.24,0],{to:bot});
+  [0,1,2].forEach(i=>mesh(K,'statin',lathe(T3,[[0,-.018],[.04,-.016],[.05,-.008],[.052,0],[.05,.008],[.04,.016],[0,.018]],28),white,[.3+i*.13,.02,.12-i*.06],{to:bot,r:[0,i,0]}));
+  // replacement valve: a fabric sewing ring, three posts and three tissue leaflets that open and close
+  const vg=K.grp('valve',{p:[X[2],1.0,0],r:[-.35,.55,0]}),Rv=.36,fab=wet(T3,0xF4EEE2,{folds:70,var:.05,rough:.7,wet:.1,seed:344}),leafM=Object.assign(wet(T3,0xE0B58C,{veins:5,veinC:0xB07050,lob:30,var:.1,rough:.35,wet:.75,seed:345}),{side:T3.DoubleSide});
+  mesh(K,'valve',new T3.TorusGeometry(Rv+.05,.065,24,96),fab,null,{to:vg});mesh(K,'valve',new T3.CylinderGeometry(Rv+.01,Rv+.01,.12,64,1,true),Object.assign(fab.clone(),{side:T3.DoubleSide}),[0,0,.06],{to:vg,r:[Math.PI/2,0,0]});
+  [0,1,2].forEach(i=>{const a=Math.PI/2+Math.PI/3+i*TAU/3;mesh(K,'valve',tube(T3,[[Math.cos(a)*Rv,Math.sin(a)*Rv,0],[Math.cos(a)*Rv*.97,Math.sin(a)*Rv*.97,.3]],u=>.03*(1-.4*u),{rad:12,seg:8}),fab,null,{to:vg})});
+  const lgeo=(()=>{const g=new T3.PlaneGeometry(1,1,24,16),P=g.attributes.position;for(let i=0;i<P.count;i++){const u=P.getX(i)*2,v=.5-P.getY(i),th=Math.PI/2+u*Math.PI/3,ax=Rv*Math.cos(th),ay=Rv*Math.sin(th)-Rv;P.setXYZ(i,ax*(1-v),ay+(-Rv-ay)*v,-.1*Math.sin(Math.PI*v)*(1-u*u))}g.computeVertexNormals();return g})();
+  const cusps=[0,1,2].map(i=>{const pg=K.grp('valve',{to:vg,r:[0,0,i*TAU/3]}),hg=K.grp('valve',{to:pg,p:[0,Rv,0]});mesh(K,'valve',lgeo,leafM,null,{to:hg});return hg});
+  // transplant: a donor heart in a sterile bag over an open cool box with ice
+  const tg=K.grp('trans',{p:[X[3],0,0]}),boxM=new T3.MeshPhysicalMaterial({color:0x0B4F8A,roughness:.35,clearcoat:.6}),lidM=new T3.MeshPhysicalMaterial({color:0xF1F3F5,roughness:.4,clearcoat:.4});boxM.userData.keepLook=lidM.userData.keepLook=1;
+  [[0,.03,0,.9,.06,.6],[-.43,.3,0,.04,.54,.6],[.43,.3,0,.04,.54,.6],[0,.3,-.28,.9,.54,.04],[0,.3,.28,.9,.54,.04]].forEach(([x,y,z,w,h,d])=>mesh(K,'trans',new T3.BoxGeometry(w,h,d),boxM,[x,y,z],{to:tg}));
+  mesh(K,'trans',new T3.BoxGeometry(.92,.06,.62),lidM,[0,.88,-.43],{to:tg,r:[1.15,0,0]});
+  const ice=new T3.InstancedMesh(new T3.BoxGeometry(.11,.09,.1),new T3.MeshPhysicalMaterial({color:0xE7F5FF,roughness:.05,clearcoat:1,transparent:true,opacity:.6,depthWrite:false}),22);
+  for(let i=0;i<22;i++){q.setFromEuler(new T3.Euler(rr(),rr()*3,rr()));mm.compose(V((rr()-.5)*.75,.5+rr()*.06,(rr()-.5)*.45),q,V(1,1,1));ice.setMatrixAt(i,mm)}ice.instanceMatrix.needsUpdate=true;K.put('trans',ipts(ice),{to:tg});
+  const DH=heart(T3,K,'trans',[0,.95,0],.27,{to:tg});DH.set(0);mesh(K,'trans',sculpt(T3,(x,y,z)=>{const k=1+.05*L3.nz(x*3,y*3,z*3,2);return [x*.38*k,y*.55*k,z*.32*k]},{seg:48}),new T3.MeshPhysicalMaterial({color:0xF8FBFF,roughness:.1,clearcoat:1,transparent:true,opacity:.18,depthWrite:false}),[0,1.0,0],{to:tg,order:4});
+  txt(T3,K,'donor heart',[0,1.8,0],{h:.1,to:tg,part:'trans'});
+  const N=['stent','statins','replacement valve','heart transplant'];X.forEach((x,i)=>txt(T3,K,N[i],[x,2.05,0],{h:.13,part:['stent','statin','valve','trans'][i]}));
+  const tick=dt=>{t+=dt*.3;const u=t%1,inf=clamp(Math.sin(u*Math.PI)*1.6),open=clamp(u*2);bal.scale.set(1,.45+inf*.5,.45+inf*.5);opened(open);spl.scale.set(1,1-open*.6,1);
+    ldl.forEach((d,i)=>{const w=(u*2+i/18)%1;d.position.set(-.6+w*1.2,Math.sin(i*2.1)*.18,Math.cos(i*1.3)*.18);d.visible=i/18<1-(u>.5?.6:0)});
+    cp.forEach((c,i)=>{const w=(c[0]+t*.6)%1;q.setFromEuler(new T3.Euler(c[3]+t,c[3],0));mm.compose(V(-.62+w*1.24,Math.cos(c[1])*c[2],Math.sin(c[1])*c[2]),q,V(1,1,1));cells.setMatrixAt(i,mm)});cells.instanceMatrix.needsUpdate=true;
+    const op=Math.max(0,Math.sin(t*12));cusps.forEach(g=>g.rotation.x=-op*1.15);DH.beat(t*3,1);return true};
+  const D=[['Stent','a mesh tube on a balloon is pushed into the narrowed artery and expanded; quick, no major surgery — but the artery can narrow again and a clot can form on the stent'],['Statins','lower LDL cholesterol so plaques grow more slowly; cheap and effective — but taken every day for life, with possible side effects such as muscle pain'],['Replacement valve','a leaky or stiff valve is replaced with a mechanical one (lasts, but needs blood thinners) or a biological one from a pig or cow (wears out)'],['Heart transplant','for heart failure: a donor heart is transplanted; needs a tissue-matched donor and lifelong immunosuppressant drugs to prevent rejection']];
+  const upd=()=>{const [n,d]=D[S.t];if(ex)readout(ex,`<b>${n}</b>: ${d}`)};
+  return {radius:2.85,view:[.25,.1],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'💊',label:'Treatment',v:0,set:x=>{S.t=Math.round(x*3);upd()}}],
+    tags:[['stent',[X[0],1.65,0]],['statin',[X[1],1.6,0]],['valve',[X[2],1.6,0]],['trans',[X[3],1.9,0]]],
+    journeys:[{name:'Four treatments',c:0x1C7ED6,steps:[0,1,2,3].map(i=>({p:[X[i],.9,0],part:['stent','statin','valve','trans'][i],text:`${D[i][0]}: ${D[i][1]}.`,on:()=>{S.t=i;syncSliders(ex,[i/3]);upd()}}))}]}};
+})();
+// ---------- Gills and tracheae, atlas quality: a bony gill arch with rakers, arteries and two rows of feathery filaments, and a magnified filament whose lamellae carry red cells against the water flow; a see-through locust with silvery ringed tracheae, spiracles, air sacs and tracheoles running into the flight muscles (replaces both views of LIB.gasx) ----------
+(()=>{const LIB=L3.LIB,Gx=LIB.gasx;if(!Gx)return;const {V,readout,txt,syncSliders,gboard}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+// silvery tubes stiffened by rings of chitin (taenidia): stripes across the tube
+let RT=null;const ringTex=T3=>{if(RT)return RT;const c=document.createElement('canvas');c.width=128;c.height=64;const x=c.getContext('2d');x.fillStyle='#E6EBEF';x.fillRect(0,0,128,64);
+  for(let i=0;i<16;i++){x.fillStyle='rgba(120,132,145,.75)';x.fillRect(i*8+3,0,2,64)}const t=new T3.CanvasTexture(c);t.wrapS=t.wrapT=T3.RepeatWrapping;t.anisotropy=8;return RT=t};
+const silver=T3=>{const t=ringTex(T3),m=new T3.MeshPhysicalMaterial({color:0xFFFFFF,map:t,bumpMap:t,bumpScale:.004,roughness:.22,metalness:.15,clearcoat:1,clearcoatRoughness:.15,sheen:.4,sheenColor:new T3.Color(0xDDE8F0)});m.userData.keepLook=1;return m};
+const prev=Gx.build;
+Gx.build=function(T3,K,v,...rest){if(v!=='gills'&&v!=='trachea')return prev.call(this,T3,K,v,...rest);const S={s:v==='gills'?1:.5};let ex=null,t=0;K.lin=0;
+  const r=L3.rnd(61),mm=new T3.Matrix4(),q=new T3.Quaternion(),c0=new T3.Color(),c1=new T3.Color(),cc=new T3.Color(),Y=V(0,1,0);
+  if(v==='gills'){
+    // the gill arch: bone with rakers on its inner edge, the afferent (blue) and efferent (red) arteries along it
+    const archPts=[[-2.65,.95,0],[-2.0,1.36,0],[-1.2,1.58,0],[-.4,1.55,0],[.25,1.3,0]],boneM=wet(T3,0xEDE2CF,{veins:5,veinC:0xC05050,var:.07,rough:.45,wet:.5,seed:401});
+    const ag=tube(T3,archPts,u=>.085*(1-.3*Math.abs(u-.5)),{rad:20}),cv=ag.userData.curve;mesh(K,'arch',ag,boneM);
+    const along=(f,n=40)=>[...Array(n+1)].map((_,i)=>{const u=.02+.96*i/n,p=cv.getPointAt(u),tg=cv.getTangentAt(u);return f(p,V(tg.y,-tg.x,0).normalize(),u)});
+    mesh(K,'blood',tube(T3,along((p,n)=>p.clone().addScaledVector(n,.07).add(V(0,0,.05))),.026,{rad:12}),wet(T3,0x4A5DB0,{var:.05,rough:.25,wet:.85,seed:402}));
+    mesh(K,'blood',tube(T3,along((p,n)=>p.clone().addScaledVector(n,.07).add(V(0,0,-.05))),.026,{rad:12}),wet(T3,0xC8302C,{var:.05,rough:.25,wet:.85,seed:403}));
+    along((p,n)=>mesh(K,'arch',tube(T3,[p.clone().addScaledVector(n,-.05),p.clone().addScaledVector(n,-.2).add(V(0,0,.06))],u=>.022*(1-u)+.003,{rad:8,seg:8}),boneM),16);
+    // two rows of filaments, each fringed with lamellae
+    const filM=wet(T3,0xA81E30,{veins:6,veinC:0x5A0A18,folds:30,var:.1,rough:.4,wet:.6,sheen:0,seed:404}),N=34,fils=[],lams=[];
+    for(let i=0;i<N;i++){const u=.05+.9*i/(N-1),p=cv.getPointAt(u),tg=cv.getTangentAt(u),n=V(tg.y,-tg.x,0).normalize(),L=.95*(1-.45*Math.abs(u-.55));
+      for(const row of [-1,1]){const d=n.clone().add(V(0,0,row*.4)).normalize(),bend=V(0,0,row*.06),a=p.clone().addScaledVector(d,.06),b=p.clone().addScaledVector(d,L*.55).add(bend),e=p.clone().addScaledVector(d,L).add(bend.clone().multiplyScalar(2.2));
+        fils.push(mesh(K,'fil',tube(T3,[a,b,e],u=>.022*(1-.55*u),{rad:8,seg:24}),filM));for(let k=0;k<16;k++){const w=k/15,pp=new T3.CatmullRomCurve3([a,b,e]).getPointAt(.06+w*.9);lams.push([pp,d,1-.55*w])}}}
+    const lamIM=new T3.InstancedMesh(new T3.BoxGeometry(.1,.009,.06),wet(T3,0xC83445,{veins:4,veinC:0x7A1020,var:.08,rough:.4,wet:.6,sheen:0,seed:405}),lams.length);
+    lams.forEach(([p,d,s],i)=>{q.setFromUnitVectors(Y,d);mm.compose(p,q,V(s,1,s));lamIM.setMatrixAt(i,mm)});lamIM.instanceMatrix.needsUpdate=true;K.put('lam',ipts(lamIM));
+    // the magnified filament: a flat blade with lamellae stacked on both faces
+    const B=V(1.8,.95,0),bladeM=wet(T3,0x9E1E2E,{veins:10,veinC:0x5A0A18,var:.1,rough:.35,wet:.75,seed:406}),lamM=wet(T3,0xD04858,{veins:14,veinC:0x8A1020,lob:30,var:.08,rough:.35,wet:.7,sheen:0,seed:407,op:.6});
+    const sg=(x,e)=>Math.sign(x)*Math.pow(Math.abs(x),e);mesh(K,'fil',sculpt(T3,(x,y,z)=>[sg(x,.35)*.72,sg(y,.35)*.72,z*.045],{seg:64,uv:2}),bladeM,B.toArray());
+    const LY=[...Array(9)].map((_,i)=>.35+i*.15);
+    const lamGeo=sculpt(T3,(x,y,z)=>[sg(x,.55)*.66,y*.012,z*.16],{seg:48,uv:1});LY.forEach(y=>[1,-1].forEach(s=>mesh(K,'lam',lamGeo,lamM,[B.x,y,s*.21],{order:2})));
+    const affM=wet(T3,0x4A5DB0,{var:.05,rough:.25,wet:.85,seed:408}),effM=wet(T3,0xC8302C,{var:.05,rough:.25,wet:.85,seed:409});
+    const ves=[mesh(K,'blood',tube(T3,[[2.52,.2,0],[2.52,1.7,0]],.045,{rad:16}),affM),mesh(K,'blood',tube(T3,[[1.08,.2,0],[1.08,1.7,0]],.045,{rad:16}),effM)];
+    // red cells moving through the lamellae, water flowing between them
+    const nb=LY.length*2*6,rbc=new T3.InstancedMesh(new T3.SphereGeometry(.024,12,8),wet(T3,0xFFFFFF,{lob:10,var:.03,rough:.3,wet:.85,seed:410}),nb),bs=[...Array(nb)].map((_,i)=>({y:LY[Math.floor(i/12)],z:(i%12<6?1:-1)*(.12+r()*.16),u:r()}));bs.forEach((b,i)=>rbc.setColorAt(i,c0));K.put('blood',ipts(rbc,LY.flatMap(y=>[[1.15,y,.2],[2.45,y,-.2]])));
+    const nw=90,wat=new T3.InstancedMesh(new T3.SphereGeometry(.028,12,8),Object.assign(new T3.MeshStandardMaterial({color:0xFFFFFF,roughness:.35}),{userData:{keepLook:1}}),nw),
+      ws=[...Array(nw)].map(()=>({y:LY[Math.floor(r()*8)]+.075+(r()-.5)*.05,z:(r()<.5?1:-1)*(.08+r()*.28),u:r()}));ws.forEach((w,i)=>wat.setColorAt(i,c0));K.put('water',ipts(wat,LY.flatMap(y=>[[1.0,y+.07,.3],[2.6,y+.07,-.3]])));
+    // a ring round one filament, linked to the magnified view
+    const hp=fils[fils.length-9].geometry.userData.curve.getPointAt(.55),lk=new T3.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.55,depthWrite:false});
+    K.put('fil',new T3.Mesh(new T3.TorusGeometry(.12,.006,8,48),lk),{p:hp.toArray()});[[1.05,1.7],[1.05,.2]].forEach(([x,y])=>K.put('fil',new T3.Mesh(tube(T3,[hp.toArray(),[x,y,0]],.004,{rad:6,seg:6}),lk)));
+    const wl=txt(T3,K,'water → (high O₂ in)',[1.8,.02,.62],{h:.1,part:'water'}),bl=txt(T3,K,'← blood (low O₂ in)',[1.8,.02,-.62],{h:.1,part:'blood'});
+    const G=gboard(T3,K,[-1.2,2.35,-.6],2.2,.72,'distance along lamella','O₂ saturation',{id:'lam'});
+    const draw=()=>{G.clear();const k=S.s>=.5;G.line('water',[...Array(21)].map((_,i)=>[i/20,k?.95-i/20*.7:.95-(i/20)*.4]),0x4DABF7,.012);G.line('blood',[...Array(21)].map((_,i)=>[i/20,k?.85-i/20*.7:.1+(i/20)*.4]),0xE03131,.012)};
+    c0.setHex(0x4B2A6A);c1.setHex(0xE8303A);const w0=new T3.Color(0x1E7FE0),w1=new T3.Color(0x7FA8D0);
+    const tick=dt=>{t+=dt;const k=S.s>=.5,x0=1.12,x1=2.48;
+      bs.forEach((b,i)=>{b.u=(b.u+dt*.16)%1;const x=k?x1-(x1-x0)*b.u:x0+(x1-x0)*b.u,sat=k?b.u:Math.min(b.u,.5)*1.0;mm.compose(V(x,b.y,b.z),q.identity(),V(1.3,.45,1));rbc.setMatrixAt(i,mm);rbc.setColorAt(i,cc.copy(c0).lerp(c1,sat))});
+      ws.forEach((w,i)=>{w.u=(w.u+dt*.2)%1;const x=.95+1.7*w.u;mm.compose(V(x,w.y,w.z),q.identity(),V(1,1,1));wat.setMatrixAt(i,mm);wat.setColorAt(i,cc.copy(w0).lerp(w1,k?w.u*.85:Math.min(w.u,.5)*.85))});
+      [rbc,wat].forEach(m=>{m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true});return true};
+    const upd=()=>{draw();const k=S.s>=.5;bl.userData.set(k?'← blood (low O₂ in)':'blood → (parallel)');ves[0].material=k?affM:effM;ves[1].material=k?effM:affM;
+      if(ex)readout(ex,k?'<b>Countercurrent flow</b>: water and blood flow in opposite directions, so the water next to the blood always has more oxygen — diffusion happens along the whole lamella and the blood picks up about 80% of the oxygen':'<b>Parallel flow</b> (for comparison): the two quickly reach the same concentration halfway along, so diffusion stops and the blood only reaches about 50% saturation')};
+    return {radius:2.8,view:[.28,.2],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'🔁',label:'Parallel or countercurrent flow',v:1,set:x=>{S.s=x<.5?0:1;upd()}}],
+      tags:[['arch',[-1.2,1.75,0]],['fil',[-2.2,.55,.3]],['lam',[1.8,1.62,.3]],['water',[1.0,.45,.45]],['blood',[2.55,1.75,0]]],
+      journeys:[{name:'Countercurrent exchange',c:0x4DABF7,steps:[[1,'arch','Each gill arch carries two rows of filaments.'],[1,'lam','The filaments are covered in thin lamellae full of capillaries: a huge surface area.'],[1,'water','Water flows over the lamellae…'],[1,'blood','…and blood flows through them the opposite way.'],[1,'lam','There is always a concentration gradient, so oxygen diffuses in along the whole length.'],[0,'lam','With parallel flow the gradient disappears halfway: much less oxygen is taken up.']].map(([s,part,text])=>({p:[0,.7,0],part,text,on:()=>{S.s=s;syncSliders(ex,[s]);upd()}}))}]}}
+  // ---- a locust with a see-through body wall ----
+  const cy=.8,chit=wet(T3,0x8A6A3A,{lob:40,var:.14,rough:.3,wet:.85,sheen:.3,seed:421,op:.3}),legM=wet(T3,0x7E6A36,{folds:10,var:.12,rough:.35,wet:.7,seed:422}),eyeM=wet(T3,0x3A2A1C,{lob:200,var:.1,rough:.15,wet:1,seed:423});
+  chit.side=T3.DoubleSide;const body=K.grp(null,{p:[0,cy,0]}),ell=(p,s,m,o={})=>mesh(K,o.id??null,sculpt(T3,(x,y,z)=>{const k=1+.03*L3.nz(x*2,y*2,z*2,o.seed||3);return [x*s[0]*k,y*s[1]*k,z*s[2]*k]},{seg:56,uv:1}),m,p,{to:o.to||body,r:o.r,order:o.order??5});
+  ell([-1.9,.08,0],[.36,.42,.32],chit,{r:[0,0,-.35]});[1,-1].forEach(s=>{mesh(K,null,new T3.SphereGeometry(.13,32,24),eyeM,[-1.98,.24,s*.24],{to:body,s:[1,1.2,.6]});
+    mesh(K,null,tube(T3,[[-2.12,.36,s*.1],[-2.2,.75,s*.2],[-2.0,1.15,s*.32],[-1.7,1.4,s*.38]],u=>.014*(1-.4*u),{rad:8}),legM,null,{to:body})});
+  ell([-.98,.06,0],[.6,.42,.38],chit,{seed:5});const segs=[...Array(9)].map((_,i)=>mesh(K,null,sculpt(T3,(x,y,z)=>{const k=1+.03*L3.nz(x*2,y*2,z*2,7+i),sx=Math.sign(x)*Math.pow(Math.abs(x),.45);return [sx*.18*k,y*(.36-i*.022)*k,z*(.33-i*.02)*k]},{seg:56,uv:1}),chit,[-.22+i*.27,-.02-i*.012,0],{to:body,order:5}));
+  // legs: two short pairs and the big jumping legs
+  [1,-1].forEach(s=>{[[-1.3,.0],[-.85,.0]].forEach(([x])=>mesh(K,null,tube(T3,[[x,-.25,s*.2],[x-.1,-.5,s*.45],[x-.25,-.62,s*.6],[x-.15,-.78,s*.65]],u=>.03*(1-.5*u),{rad:10}),legM,null,{to:body}));
+    mesh(K,null,tube(T3,[[-.5,-.28,s*.3],[.15,-.3,s*.55],[.85,-.12,s*.62]],u=>.07*(1-.45*Math.abs(u-.4)),{rad:14}),legM,null,{to:body});mesh(K,null,tube(T3,[[.85,-.12,s*.62],[.55,-.5,s*.66],[.2,-.82,s*.66]],u=>.03*(1-.4*u),{rad:10}),legM,null,{to:body})});
+  // wings raised above the back
+  const wingM=Object.assign(wet(T3,0xE8DEC8,{veins:30,veinC:0x7A5A30,var:.05,rough:.3,wet:.5,seed:424,op:.32}),{side:T3.DoubleSide});[1,-1].forEach(s=>mesh(K,null,sculpt(T3,(x,y,z)=>[x*1.2,y*.006,z*.32],{seg:48,uv:2}),wingM,[-.1,.62,s*.32],{to:body,r:[s*.55,0,-.12],order:6}));
+  // tracheae: main trunks, lateral trunks by the spiracles and segmental branches between them
+  const sil=silver(T3),tr=(pts,rad,id='trach')=>mesh(K,id,tube(T3,pts,rad,{rad:12,uv:6}),sil,null,{to:body});
+  [1,-1].forEach(s=>{tr([[-1.95,.12,s*.1],[-1.4,.18,s*.14],[-.9,.2,s*.16],[-.3,.12,s*.16],[.5,.06,s*.14],[1.3,0,s*.1],[2.05,-.04,s*.05]],.032);tr([[-1.2,-.1,s*.26],[-.3,-.16,s*.27],[.6,-.18,s*.24],[1.6,-.16,s*.16]],.022)});
+  const spx=[-1.25,-.7,...[...Array(7)].map((_,i)=>-.18+i*.27)],sps=[];
+  spx.forEach((x,i)=>{const zz=(x<-.3?.36:.33-Math.max(0,i-2)*.02),yy=x<-.3?-.12:-.17;[1,-1].forEach(s=>{tr([[x,yy,s*zz*.98],[x,yy+.02,s*.26],[x+.02,.06,s*.18],[x+.04,.12,s*.15]],.016)});
+    const sp=K.grp('spir',{to:body,p:[x,yy,zz],r:[0,0,0]});mesh(K,'spir',new T3.TorusGeometry(.04,.014,10,28),wet(T3,0x3A2414,{lob:10,rough:.3,wet:.8,seed:425}),null,{to:sp,s:[1,.65,1]});mesh(K,'spir',new T3.CircleGeometry(.035,24),new T3.MeshBasicMaterial({color:0x120A06}),[0,0,-.004],{to:sp,s:[1,.65,1]});sps.push(sp)});
+  // air sacs in the abdomen, inflating and deflating as it pumps
+  const sacM=new T3.MeshPhysicalMaterial({color:0xEEF4F8,roughness:.12,clearcoat:1,transparent:true,opacity:.42,depthWrite:false,sheen:.5,sheenColor:new T3.Color(0xFFFFFF)});sacM.userData.keepLook=1;
+  const sacs=[[.25,.0,.12],[.7,-.02,-.1],[1.15,-.05,.08],[-.95,.28,0]].map(([x,y,z],i)=>ell([x,y,z],i===3?[.24,.1,.16]:[.14,.11,.1],sacM,{id:'trach',seed:30+i,order:4}));
+  // flight muscles in the thorax with tracheoles running into them
+  const musM=wet(T3,0x9A3A2A,{folds:24,veins:3,veinC:0x5A1A10,var:.1,rough:.4,wet:.6,seed:426});for(let i=0;i<7;i++)for(const s of [1,-1]){const x=-1.32+i*.11;mesh(K,'muscle',tube(T3,[[x,-.22,s*.12],[x+.02,.06,s*.15],[x,.32,s*.12]],u=>.045*(1-.25*Math.abs(u-.5)*2),{rad:12}),musM,null,{to:body})}
+  const tlM=silver(T3);for(let i=0;i<26;i++){const s=i%2?1:-1,x=-1.35+r()*.75,a=V(-1.0+(r()-.5)*.4,.2,s*.15),m1=V(x,.1+r()*.15,s*(.14+r()*.06)),e=V(x+(r()-.5)*.08,-.1+r()*.35,s*(.1+r()*.08));mesh(K,'tracheole',tube(T3,[a,m1,e],u=>.008*(1-.6*u),{rad:6,seg:20}),tlM,null,{to:body})}
+  // air drawn in through a spiracle, along the tracheae to the muscles
+  const air=[...Array(16)].map(()=>mesh(K,'trach',new T3.SphereGeometry(.03,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0x8FD0FF,roughness:.1,clearcoat:1,emissive:0x2A7BD0,emissiveIntensity:.5}),{userData:{keepLook:1}}),null,{to:body})),
+    acv=new T3.CatmullRomCurve3([V(.1,-.1,1.0),V(.1,-.17,.34),V(.11,.06,.18),V(-.3,.12,.16),V(-.9,.2,.16),V(-1.1,.1,.15),V(-1.15,0,.13)]);
+  const tick=dt=>{t+=dt;const a=S.s,pump=Math.sin(t*(2+a*6))*a;segs.forEach((g,i)=>g.scale.set(1,1+pump*.06,1+pump*.05));sacs.slice(0,3).forEach(g=>g.scale.setScalar(1+pump*.25));sps.forEach(s=>s.scale.setScalar(.8+a*.5));
+    air.forEach((m,i)=>{const u=((t*(.08+a*.25))+i/16)%1;m.position.copy(acv.getPointAt(u))});return true};
+  const upd=()=>{if(ex)readout(ex,`Activity: <b>${S.s<.3?'resting':S.s<.7?'walking':'flying'}</b> · air enters through spiracles, flows down tracheae (kept open by chitin rings) into tracheoles that reach each muscle fibre · ${S.s>.6?'active muscles make lactate, which draws the fluid out of the tracheole ends, so air reaches the muscle faster; abdominal pumping ventilates the system':'oxygen diffuses down the concentration gradient straight to the cells — no blood needed'}`)};
+  return {radius:2.5,view:[.3,.35],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'🪰',label:'Activity',v:S.s,set:x=>{S.s=x;upd()}}],
+    tags:[['spir',[.33,cy-.4,.45]],['trach',[1.3,cy+.25,.2]],['tracheole',[-.9,cy+.55,.2]],['muscle',[-1.3,cy+.45,0]]],
+    journeys:[{name:'Air straight to the muscles',c:0x74C0FC,steps:[[.2,'spir','Air enters through spiracles along the abdomen; they can close to reduce water loss.'],[.2,'trach','Tracheae are tubes kept open by rings of chitin.'],[.5,'tracheole','They branch into tracheoles that reach every muscle fibre.'],[.9,'muscle','During flight the fluid at the tracheole ends is drawn into the muscle, so air gets right to the cells.']].map(([s,part,text])=>({p:[0,.8,.3],part,text,on:()=>{S.s=s;syncSliders(ex,[s]);upd()}}))}]}};
 })();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat;
