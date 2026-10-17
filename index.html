@@ -27045,6 +27045,139 @@ En.build=function(T3,K,v){if(v!=='glands')return old.call(this,T3,K,v);
     tags:[['pit',[0,3.1,.32]],['thy',[.2,2.45,.22]],['adr',[.42,.65,0]],['pan',[.52,.66,.05]],['ovary',[.42,-1.1,.1]],['hormone',[.28,1.6,.2]]],
     journeys:[{name:'A hormone’s journey',c:0xE64980,steps:[{p:[0,3.03,.06],part:'pit',text:'The pituitary gland in the brain releases hormones that control other glands.'},{p:[0,2.42,.1],part:'thy',text:'For example TSH tells the thyroid to release thyroxine, which controls metabolism.'},{p:[.25,1.6,.15],part:'hormone',text:'Hormones travel in the blood plasma to their target organs.'},{p:[.36,.53,-.12],part:'adr',text:'In a fright, the adrenal glands release adrenaline: the heart beats faster to get more oxygen and glucose to the muscles.'},{p:[.08,.54,-.19],part:'pan',text:'The pancreas releases insulin and glucagon to control blood glucose.'}]}]}};
 })();
+// ---------- The nephron, atlas quality: a glomerular tuft of capillary loops in a see-through Bowman's capsule, wet see-through tubules with peritubular capillaries and vasa recta, cortex and medulla behind (replaces the 'nephron' view of LIB.kidney) ----------
+(()=>{const LIB=L3.LIB,Kd=LIB.kidney;if(!Kd)return;const {V,readout,stream,vtube}=L3.lx,{wet,tube}=L3.lx.anat,TAU=Math.PI*2;
+const old=Kd.build;
+Kd.build=function(T3,K,v,st){if(v!=='nephron')return old.call(this,T3,K,v,st);const r=L3.rnd(23),rn=(a,b)=>a+(b-a)*r();
+    if(v==='nephron'){const S={adh:.5};
+      const art=wet(T3,0xC0302E,{veins:2,var:.08,rough:.3,wet:.8,seed:121}),ven=wet(T3,0x5B5FC0,{veins:2,var:.08,rough:.3,wet:.8,seed:122});
+      // cortex and medulla behind the nephron: the medulla striped by tubules and vessels
+      const zt=(()=>{const c=document.createElement('canvas');c.width=256;c.height=512;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,0,512);g.addColorStop(0,'#B05A4C');g.addColorStop(.44,'#A44E44');g.addColorStop(.46,'#7C2B33');g.addColorStop(1,'#6A2230');x.fillStyle=g;x.fillRect(0,0,256,512);
+        for(let i=0;i<70;i++){x.strokeStyle=`rgba(40,8,14,${.15+r()*.25})`;x.lineWidth=1+r()*2;const X=r()*256;x.beginPath();x.moveTo(X,236);x.lineTo(X+(r()-.5)*20,512);x.stroke()}for(let i=0;i<300;i++){x.fillStyle=`rgba(${150+r()*60|0},70,60,.35)`;x.beginPath();x.arc(r()*256,r()*230,1+r()*3,0,TAU);x.fill()}
+        const t=new T3.CanvasTexture(c);return t})();
+      K.put(null,new T3.Mesh(new T3.PlaneGeometry(7.6,6.2),new T3.MeshStandardMaterial({map:zt,roughness:.8,transparent:true,opacity:.35,depthWrite:false})),{p:[.3,.15,-.9]});
+      // glomerulus: a tuft of capillary loops fed by the wider afferent arteriole, drained by the narrower efferent one
+      const gc=V(-1.8,1.6,0);for(let l=0;l<14;l++){const ax=V(Math.cos(l*2.4),Math.sin(l*1.7),Math.cos(l*1.3)).normalize(),pts=[];for(let k=0;k<=16;k++){const t=k/16,a=t*TAU*.9;pts.push(gc.clone().add(ax.clone().multiplyScalar(.28*Math.sin(a/2)).add(V(Math.cos(a+l)*.16,Math.sin(a*1.3+l)*.18,Math.sin(a+l*.7)*.16))))}
+        K.put('glom',new T3.Mesh(tube(T3,pts,.032,{rad:10,seg:40}),art))}
+      const bc=new T3.Mesh(new T3.SphereGeometry(.62,64,48,0,TAU,0,Math.PI*.78),wet(T3,0xF2B8B8,{lob:80,var:.06,rough:.3,wet:.7,op:.42,seed:123}));K.put('bowman',bc,{p:[-1.8,1.6,0],r:[0,0,-Math.PI/2+.3]});
+      K.put('glom',new T3.Mesh(tube(T3,[[-3.0,2.4,0],[-2.3,1.9,0],[-1.95,1.7,0]],.07,{rad:16}),art));K.put('glom',new T3.Mesh(tube(T3,[[-1.7,1.75,0],[-1.5,2.4,0],[-1.2,2.8,0]],.05,{rad:16}),art));
+      const pct=[[-1.25,1.45,0]];for(let k=0;k<=24;k++){const t=k/24;pct.push([-1.1+t*1.4+Math.sin(t*20)*.18,1.4+Math.cos(t*20)*.22,Math.sin(t*14)*.25])}pct.push([.5,1.2,0]);
+      // tubules: a wet wall you can see through, with the filtrate inside; peritubular capillaries wrap them
+      const tube2=(id,pts,c)=>{K.put(id,new T3.Mesh(tube(T3,pts,.1,{rad:24,uv:4}),wet(T3,c,{folds:18,lob:60,var:.08,rough:.3,wet:.75,op:.55,seed:c%101})));return pts};
+      const wrap=(pts,c0,c1,off)=>{const cv=new T3.CatmullRomCurve3(pts.map(p=>V(...p))),q=[];for(let k=0;k<=60;k++){const u=k/60,p=cv.getPointAt(u),tg=cv.getTangentAt(u),n=V(0,0,1).cross(tg).normalize(),a=u*40+off;q.push(p.clone().addScaledVector(n,Math.cos(a)*.16).add(V(0,0,Math.sin(a)*.16)))}
+        const g=tube(T3,q,.018,{rad:8,seg:160}),col=[],P=g.attributes.position;for(let k=0;k<P.count;k++){const u=Math.floor(k/9)/160,cc=new T3.Color(c0).lerp(new T3.Color(c1),u);col.push(cc.r,cc.g,cc.b)}g.setAttribute('color',new T3.Float32BufferAttribute(col,3));
+        K.put(null,new T3.Mesh(g,new T3.MeshStandardMaterial({vertexColors:true,roughness:.35})))};
+      wrap(tube2('pct',pct,0xF2B84A),0xC0302E,0x8A5AA8,0);tube2('loop',[[.5,1.2,0],[.55,0,0],[.6,-1.6,0],[.85,-2.1,0],[1.1,-1.6,0],[1.15,0,0],[1.2,1.0,0]],0x5AA9E6);
+      K.put(null,new T3.Mesh(tube(T3,[[.32,1.0,.22],[.36,-1.7,.22],[.85,-2.4,.22],[1.34,-1.7,.22],[1.38,1.0,.22]],.03,{rad:10}),art));
+      const dct=[[1.2,1.0,0]];for(let k=0;k<=16;k++){const t=k/16;dct.push([1.3+t*.9+Math.sin(t*14)*.15,1.25+Math.cos(t*14)*.18,Math.sin(t*10)*.2])}dct.push([2.4,1.0,0]);wrap(tube2('dct',dct,0x52B86A),0x8A5AA8,0x4A55B8,1.5);
+      tube2('duct',[[2.4,1.0,0],[2.6,1.8,0],[2.65,2.4,0],[2.65,0,0],[2.65,-2.6,0]],0x8D6BE8);
+      const filt=stream(T3,K,'glom',[[-1.8,1.6,0],[-1.25,1.45,0],...pct.slice(1),[.55,0,0],[.6,-1.6,0],[.85,-2.1,0],[1.1,-1.6,0],[1.15,0,0],...dct,[2.6,1.8,0],[2.65,0,0],[2.65,-2.6,0]],40,.045,0xFFD43B,{speed:.04,glow:.4});
+      const glu=stream(T3,K,'pct',[[-.6,1.4,0],[-.5,1.9,.3],[-.3,2.5,.4]],8,.05,0x51CF66,{speed:.15,glow:.4}),wat=stream(T3,K,'duct',[[2.65,-.5,0],[3.2,-.3,.2],[3.8,-.1,.3]],10,.05,0x339AF0,{speed:.15,glow:.4});
+      const adhP=[...Array(10)].map((_,i)=>K.sph('adh',[3.3+rn(-.3,.3),.6+rn(-1.4,1.4),rn(-.3,.3)],.06,0xE64980,{gloss:1}));
+      let ex=null;const tick=dt=>{filt.tick(dt);glu.tick(dt);wat.tick(dt,.2+1.8*S.adh);wat.mesh.visible=S.adh>.05;adhP.forEach((m,i)=>m.visible=i<S.adh*10);
+        if(ex&&S.k!==S.adh){S.k=S.adh;readout(ex,`<b>ADH</b> ${S.adh<.3?'low (you have drunk a lot)':S.adh<.7?'normal':'high (you are dehydrated)'} · urine is <b>${S.adh<.3?'large volume, dilute':S.adh<.7?'normal':'small volume, concentrated'}</b>`)}return true};
+      return {radius:3.2,view:[.15,.25],ground:2.7,tick,extra:el=>{ex=el;S.k=-1},sliders:[{icon:'💧',label:'ADH in the blood',v:.5,set:x=>{S.adh=x}}],
+        tags:[['glom',[-1.8,1.6,.35]],['bowman',[-2.2,2.1,.3],0],['pct',[-.4,1.8,.3]],['loop',[.85,-2.0,.15]],['dct',[1.7,1.5,.2]],['duct',[2.65,-1.5,.15]],['adh',[3.3,1.6,0]]],
+        journeys:[{name:'Make urine',c:0xFFD43B,steps:[{p:[-1.8,1.6,0],part:'glom',text:'Blood enters the glomerulus at high pressure.'},{p:[-1.8,1.6,0],part:'bowman',text:'Water, glucose, ions and urea are squeezed into Bowman’s capsule: ultrafiltration. Cells and proteins stay in the blood.'},{p:[-.5,1.5,0],part:'pct',text:'In the proximal tubule all the glucose and much of the water and ions are reabsorbed.'},
+          {p:[.85,-1.9,0],part:'loop',text:'The loop of Henle makes the medulla salty.'},{p:[1.7,1.3,0],part:'dct',text:'The distal tubule fine-tunes the ions.'},{p:[2.65,-.5,0],part:'duct',text:'In the collecting duct, ADH controls how much water is reabsorbed. The rest flows on as urine.'}]}]}}
+};
+})();
+// ---------- Villi, atlas quality: the gut wall in layers (lining, submucosa, two muscle layers), wet villi made of cells, a see-through villus showing its capillaries and lacteal (replaces the 'villus' view of LIB.digest) ----------
+(()=>{const LIB=L3.LIB,D=LIB.digest;if(!D)return;const {V,clamp,ease,stream,vtube}=L3.lx,{wet,tube,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const prev=D.build;
+D.build=function(T3,K,v){if(v!=='villus')return prev.call(this,T3,K,v);const r=L3.rnd(3),rn=(a,b)=>a+(b-a)*r();
+    // a patch of intestine wall covered in villi; the front one is see-through so you can see inside
+    const mucM=wet(T3,0xEC9AA2,{lob:160,veins:6,veinC:0xA02838,var:.1,rough:.35,wet:.7,seed:131}),vilM=wet(T3,0xF1A0A8,{lob:220,veins:4,veinC:0xA02838,var:.1,rough:.32,wet:.75,bump:.008,seed:132});
+    mesh(K,'epith',new T3.BoxGeometry(4.4,.24,3,8,1,6),mucM,[0,-.12,0]);
+    // the layers under the lining: submucosa, then circular and longitudinal muscle
+    mesh(K,null,new T3.BoxGeometry(4.4,.3,3),wet(T3,0xF1D3C2,{lob:80,veins:8,veinC:0xB03040,var:.08,rough:.45,wet:.4,seed:133}),[0,-.39,0]);
+    mesh(K,null,new T3.BoxGeometry(4.4,.22,3),wet(T3,0xA8312D,{folds:40,var:.1,rough:.45,wet:.45,seed:134}),[0,-.65,0]);
+    mesh(K,null,new T3.BoxGeometry(4.4,.16,3),wet(T3,0x962A28,{folds:30,var:.1,rough:.45,wet:.45,seed:135}),[0,-.84,0],{r:[0,Math.PI/2,0],s:[3/4.4,1,4.4/3]});const vil=[];
+    for(let i=0;i<5;i++)for(let k=0;k<4;k++){const x=-1.7+i*.85+(k%2)*.35,z=-1.1+k*.7;if(Math.abs(x)<.4&&Math.abs(z-.7)<.4)continue;const h=1.4+rn(-.2,.2);
+      vil.push(K.put('villus',new T3.Mesh(vtube(T3,[[x,0,z],[x+rn(-.08,.08),h*.5,z],[x+rn(-.1,.1),h,z]],u=>.3*(u>.85?Math.sqrt(Math.max(0,1-((u-.85)/.15)**2))*1+.0:1),40,20),vilM)))}
+    const fx=0,fz=.75,F=[[fx,0,fz],[fx,.85,fz],[fx,1.7,fz]];
+    K.put('villus',new T3.Mesh(vtube(T3,F,u=>.42*(u>.86?Math.sqrt(Math.max(0,1-((u-.86)/.14)**2)):1),40,28),wet(T3,0xF5A8B4,{lob:200,var:.08,rough:.3,wet:.75,op:.32,seed:136})),{shell:1,rank:1});
+    // microvilli on the see-through villus
+    const mv=[];for(let i=0;i<160;i++){const a=rn(0,TAU),y=rn(.1,1.55),rr=.42*(y>1.46?Math.sqrt(Math.max(0,1-((y-1.46)/.24)**2)):1);mv.push([fx+Math.cos(a)*(rr+.02),y,fz+Math.sin(a)*(rr+.02)])}K.dots('micro',mv,.025,0xFBCFE8);
+    // capillary loop and lacteal inside
+    const loop=[[fx-.22,0,fz],[fx-.25,.8,fz+.05],[fx-.15,1.45,fz],[fx,1.55,fz-.05],[fx+.15,1.45,fz],[fx+.25,.8,fz+.05],[fx+.22,0,fz]],lg=new T3.TubeGeometry(new T3.CatmullRomCurve3(loop.map(a=>V(...a))),80,.045,8),col=[];
+    for(let q=0;q<lg.attributes.position.count;q++){const u=Math.floor(q/9)/80,cc=new T3.Color(0xE03131).lerp(new T3.Color(0x3B5BDB),u);col.push(cc.r,cc.g,cc.b)}lg.setAttribute('color',new T3.Float32BufferAttribute(col,3));
+    K.put('capillary',new T3.Mesh(lg,new T3.MeshStandardMaterial({vertexColors:true,roughness:.4})));
+    K.put('lacteal',new T3.Mesh(tube(T3,[[fx,0,fz],[fx,.8,fz],[fx,1.35,fz]],u=>.07*(u>.9?Math.sqrt(Math.max(0,1-((u-.9)/.1)**2)):1),{rad:16}),wet(T3,0xF6F2E6,{var:.04,rough:.25,wet:.8,op:.85,seed:137})));
+    const blood=stream(T3,K,'capillary',loop,14,.035,0xE03131,{speed:.12});
+    // food molecules in the gut being absorbed
+    const mols=[];for(let i=0;i<24;i++){const fat=i%4===0,c=fat?0xFDE68A:i%2?0xFACC15:0x34D399,m=K.sph('food',[rn(-1.8,1.8),rn(.3,2.2),rn(-1,1.4)],.06,c,{gloss:1,mo:{emissive:c,emissiveIntensity:.3}});m.userData.fat=fat;m.userData.h=m.position.clone();mols.push(m)}
+    const S={t:0};const tick=dt=>{blood.tick(dt);S.t+=dt;mols.forEach((m,i)=>{const k=((S.t*.12+i/24)%1),tgt=m.userData.fat?V(fx,1.1,fz):V(fx+(i%2?-.22:.22),.9,fz);m.position.copy(m.userData.h).lerp(tgt,ease(clamp(k*1.3)));m.visible=k<.78});return true};
+    return {radius:2.5,view:[.2,.4],ground:.3,tick,quizSkip:['food','micro'],
+      tags:[['villus',[fx,1.85,fz],0],['micro',[fx+.45,1.0,fz]],['epith',[1.6,0,1.2],0],['capillary',[fx+.24,.8,fz+.05]],['lacteal',[fx,1.2,fz]],['food',()=>mols[1].position.toArray()]],
+      journeys:[{name:'Absorb the food',c:0x34D399,steps:[{p:[fx,1.8,fz],part:'villus',text:'The inside of the small intestine is covered in villi, which give a huge surface area.'},{p:[fx+.45,1.0,fz],part:'micro',text:'Each cell has microvilli, which make the surface area even bigger.'},
+        {p:[.8,1.4,.6],part:'food',text:'Small soluble molecules from digestion, such as glucose and amino acids, are absorbed by diffusion and active transport.'},{p:[fx+.24,.8,fz],part:'capillary',text:'They pass into the capillaries and are carried away in the blood, so the concentration gradient stays steep.'},{p:[fx,1.15,fz],part:'lacteal',text:'Fatty acids and glycerol go into the lacteal, part of the lymphatic system.'}]}]}};
+})();
+// ---------- Alveoli, atlas quality: wet see-through air sacs made of cells, elastic fibres, a ridged bronchiole and glossy capillaries (replaces the 'alveoli' view of LIB.lungs) ----------
+(()=>{const LIB=L3.LIB,Lu=LIB.lungs;if(!Lu)return;const {V,vtube}=L3.lx,{wet,tube}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Lu.build;
+Lu.build=function(T3,K,v){if(v!=='alveoli')return prev.call(this,T3,K,v);const r=L3.rnd(5),rn=(a,b)=>a+(b-a)*r();
+    // alveoli: a bunch of air sacs wrapped in capillaries, with gases diffusing across
+    const C=[[0,0,0],[.9,.35,.25],[-.85,.4,.2],[.15,1.0,-.2],[.5,-.8,.35],[-.55,-.75,.3],[0,.15,.95]].map(a=>V(...a));
+    const alvM=wet(T3,0xF5B4C0,{lob:160,veins:3,veinC:0xC04060,var:.08,rough:.3,wet:.75,op:.42,seed:141}),sacs=C.map((c,i)=>{const m=new T3.Mesh(L3.blob(T3,.62,i+1,.06,64),alvM);return K.put('alveolus',m,{p:c.toArray(),shell:1,rank:1})});
+    // elastic fibres around the sacs (they let the alveoli stretch and recoil)
+    const ef=new T3.MeshStandardMaterial({color:0xF7F1E0,roughness:.35,transparent:true,opacity:.85});for(let i=0;i<14;i++){const c=C[i%C.length],ax=V(rn(-1,1),rn(-1,1),rn(-1,1)).normalize(),u=V(0,1,0).cross(ax).normalize(),w=ax.clone().cross(u),pts=[];
+      for(let k=0;k<=24;k++){const t=k/24*TAU*.6;pts.push(c.clone().addScaledVector(u.clone().multiplyScalar(Math.cos(t)).addScaledVector(w,Math.sin(t)),.645))}K.put('wall',new T3.Mesh(tube(T3,pts,.008,{rad:6,seg:40}),ef))}
+    K.put('bronchiole',new T3.Mesh(tube(T3,[[0,.4,-.4],[0,1.4,-1.0],[.1,2.6,-1.4]],u=>.3-.1*u,{rad:28,uv:3}),wet(T3,0xE9A9B4,{folds:16,veins:4,veinC:0xB03050,var:.08,rough:.32,wet:.75,op:.6,seed:142})));
+    // capillaries: a net over the sacs, blue where blood arrives and red where it leaves
+    // each sac is wrapped in a few loops of capillary that hug its surface
+    const cap=[];for(let i=0;i<C.length*3;i++){const c=C[i%C.length],ax=V(rn(-1,1),rn(-1,1),rn(-1,1)).normalize(),u=V(1,0,0).cross(ax).normalize(),w=ax.clone().cross(u),pts=[],a0=rn(0,TAU);
+      for(let k=0;k<=30;k++){const t=a0+k/30*TAU*.8,d=u.clone().multiplyScalar(Math.cos(t)).addScaledVector(w,Math.sin(t)).addScaledVector(ax,.18*Math.sin(t*3+i));pts.push(c.clone().addScaledVector(d.normalize(),.66))}
+      const g=new T3.TubeGeometry(new T3.CatmullRomCurve3(pts),80,.035,8),col=[],P=g.attributes.position;for(let q=0;q<P.count;q++){const u=Math.floor(q/9)/80,cc=new T3.Color(0x3B5BDB).lerp(new T3.Color(0xE03131),u);col.push(cc.r,cc.g,cc.b)}
+      g.setAttribute('color',new T3.Float32BufferAttribute(col,3));const m=new T3.Mesh(g,new T3.MeshPhysicalMaterial({vertexColors:true,roughness:.3,clearcoat:.6,clearcoatRoughness:.3}));K.put('capillary',m);cap.push(pts)}
+    // gases: oxygen in, carbon dioxide out
+    const gas=(id,c,n,inward)=>{const geo=new T3.SphereGeometry(.05,10,8),im=new T3.InstancedMesh(geo,K.mat(id,c,{gloss:1,mo:{emissive:c,emissiveIntensity:.4}}),n),m=new T3.Matrix4(),ps=[];
+      for(let i=0;i<n;i++){const s=C[i%C.length],dir=V(rn(-1,1),rn(-1,1),rn(-1,1)).normalize();ps.push({s,dir,t:rn(0,1)})}K.put(id,im);im.userData.pts=ps.slice(0,8).map(q=>q.s.clone().addScaledVector(q.dir,.45).toArray());
+      return dt=>{ps.forEach((q,i)=>{q.t=(q.t+dt*.28)%1;const d=inward?.2+q.t*.55:.75-q.t*.55,p=q.s.clone().addScaledVector(q.dir,d);m.makeTranslation(p.x,p.y,p.z);im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true}};
+    const o2=gas('o2',0xEF4444,60,true),co2=gas('co2',0x64748B,40,false);
+    const tick=dt=>{o2(dt);co2(dt);return true};
+    return {radius:2.2,view:[.25,.5],ground:1.7,tick,tags:[['alveolus',[0,.66,.3],0],['bronchiole',[0,1.6,-1.05],0],['capillary',cap[2][12].toArray(),0],['o2',[.3,.3,.55]],['co2',[-.3,-.2,.55]],['wall',[.62,.2,.2]]],
+      journeys:[{name:'Swap the gases',c:0xF87171,steps:[{p:[0,1.6,-1.05],part:'bronchiole',text:'Fresh air arrives through a bronchiole, rich in oxygen.'},{p:[0,0,.4],part:'alveolus',text:'It fills the alveoli: tiny sacs with walls only one cell thick.'},{p:[.3,.3,.55],part:'o2',text:'Oxygen diffuses from the air, where its concentration is high, into the blood in the capillaries, where it is low.'},
+        {p:[-.3,-.2,.55],part:'co2',text:'Carbon dioxide diffuses the other way, from the blood into the alveolus, and is breathed out.'},{p:cap[2][12].toArray(),part:'capillary',text:'Blood keeps flowing, carrying the oxygen away, so the concentration gradient stays steep.'}]}]}};
+})();
+// ---------- Skin and temperature control, atlas quality: epidermis with its horny layer and ridges, see-through dermis with collagen, fat lobules, a hair follicle with sebaceous gland and arrector muscle, a coiled sweat gland and duct, capillary loops into the dermal papillae and a layered pressure receptor (replaces the 'skin' view of LIB.kidney) ----------
+(()=>{const LIB=L3.LIB,Kd=LIB.kidney;if(!Kd)return;const {V,readout,syncSliders}=L3.lx,{wet,tube,sculpt,gland,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Kd.build;
+Kd.build=function(T3,K,v,st){if(v!=='skin')return prev.call(this,T3,K,v,st);const r=L3.rnd(23),rn=(a,b)=>a+(b-a)*r();
+  const S={temp:.5};
+  const epiM=wet(T3,0xE7B08A,{lob:220,var:.1,rough:.6,wet:.2,seed:151}),corn=wet(T3,0xF0D2B2,{lob:140,var:.1,rough:.8,wet:.08,bump:.015,seed:152}),
+    derM=wet(T3,0xF2BEB4,{folds:70,veins:10,veinC:0xC04050,var:.1,rough:.45,wet:.35,op:.42,seed:153}),fatM=wet(T3,0xF1D27C,{lob:40,var:.08,rough:.35,wet:.6,seed:154}),
+    sweatM=wet(T3,0x8EC3EA,{folds:10,var:.06,rough:.3,wet:.8,seed:155}),hairM=wet(T3,0x3A2416,{folds:20,var:.06,rough:.35,wet:.5,seed:156}),folM=wet(T3,0xE2A386,{lob:60,rough:.4,wet:.5,op:.75,seed:157}),
+    sebM=wet(T3,0xF0DC9C,{lob:60,rough:.35,wet:.6,seed:158}),musM=wet(T3,0xB03A35,{folds:30,rough:.45,wet:.45,seed:159}),art=wet(T3,0xC0302E,{veins:2,rough:.3,wet:.8,seed:160}),
+    ven=wet(T3,0x4F5BB8,{veins:2,rough:.3,wet:.8,seed:161}),nerveM=wet(T3,0xF1C84B,{folds:12,rough:.3,wet:.75,seed:162}),pac=wet(T3,0xF5E9D0,{lob:40,var:.05,rough:.3,wet:.7,op:.8,seed:163});
+  // epidermis: living layer and the flaky horny layer on top; ridges dip into the dermis
+  const ridge=new T3.PlaneGeometry(3.6,2,72,40);ridge.rotateX(-Math.PI/2);{const P=ridge.attributes.position;for(let i=0;i<P.count;i++){const x=P.getX(i),z=P.getZ(i);P.setY(i,-.06*Math.abs(Math.sin(x*5+Math.sin(z*3)))-.02)}ridge.computeVertexNormals()}
+  mesh(K,'epi',new T3.BoxGeometry(3.6,.2,2,24,1,14),epiM,[0,1.0,0]);mesh(K,'epi',new T3.BoxGeometry(3.6,.07,2,24,1,14),corn,[0,1.135,0]);mesh(K,'epi',ridge,Object.assign(epiM.clone(),{side:T3.DoubleSide}),[0,.9,0]);
+  // dermis (see-through, collagen texture) and the fatty layer below
+  mesh(K,null,new T3.BoxGeometry(3.6,1.35,2),derM,[0,.2,0],{order:4});
+  const fl=new T3.InstancedMesh(new T3.SphereGeometry(1,20,14),fatM,80),mm=new T3.Matrix4();for(let i=0;i<80;i++){const s=.13+r()*.08;mm.compose(V(rn(-1.7,1.7),rn(-.95,-.6),rn(-.9,.9)),new T3.Quaternion(),V(s*1.15,s*.8,s));fl.setMatrixAt(i,mm)}fl.instanceMatrix.needsUpdate=true;K.put(null,fl);
+  // sweat gland: a coiled tube deep in the dermis, its duct spiralling up to a pore
+  const sweat=K.grp('sweat',{p:[-.9,0,0]});const coil=[];for(let k=0;k<=80;k++){const t=k/80*TAU*3.5;coil.push([Math.cos(t)*.15,-.4+Math.sin(t*.5)*.06+k*.002,Math.sin(t)*.15])}
+  mesh(K,'sweat',tube(T3,coil,.045,{rad:14,seg:200}),sweatM,null,{to:sweat});const duct=[];for(let k=0;k<=30;k++){const t=k/30;duct.push([Math.sin(t*14)*.05*(t>.6?1:.3),-.25+t*1.42,Math.cos(t*14)*.05*(t>.6?1:.3)])}
+  mesh(K,'sweat',tube(T3,duct,.025,{rad:10,seg:80}),sweatM,null,{to:sweat});
+  const drops=[...Array(6)].map(()=>K.sph('sweat',[-.9+rn(-.3,.3),1.2,rn(-.3,.3)],.05,0x74C0FC,{glass:.8}));
+  // hair: follicle with bulb, shaft, sebaceous gland and the arrector pili muscle (raises the hair when cold)
+  const hair=K.grp('hair',{p:[.9,.6,0]});mesh(K,'hair',tube(T3,[[0,-.55,0],[0,0,0],[0,.55,0]],u=>.09+.03*Math.max(0,.2-u),{rad:20}),folM,null,{to:hair,order:3});
+  mesh(K,'hair',sculpt(T3,(x,y,z)=>[x*.11,y*.1,z*.11],{seg:32}),folM,[0,-.58,0],{to:hair});mesh(K,'hair',tube(T3,[[0,-.5,0],[0,.3,0],[0,.9,.02],[.05,1.4,.05]],u=>.032-.01*u,{rad:12}),hairM,null,{to:hair});
+  mesh(K,'hair',gland(T3,[.1,.08,.08],5,.2),sebM,[-.13,.1,0],{to:hair});const ere=mesh(K,'hair',tube(T3,[[.05,-.15,0],[.18,.05,0],[.32,.32,0]],.03,{rad:12}),musM,null,{to:hair});
+  // blood vessels: a surface arteriole that widens or narrows, a deep vessel, and capillary loops rising into the ridges
+  const vs=K.grp('vessel');const vt=mesh(K,'vessel',tube(T3,[[-1.8,.55,.5],[0,.6,.5],[1.8,.55,.5]],.06,{rad:16}),art,null,{to:vs});mesh(K,'vessel',tube(T3,[[-1.8,-.4,.5],[0,-.45,.5],[1.8,-.4,.5]],.08,{rad:16}),ven,null,{to:vs});
+  for(let i=0;i<9;i++){const x=-1.6+i*.4;mesh(K,'vessel',tube(T3,[[x,.58,.5],[x+.02,.82,.48],[x+.1,.86,.48],[x+.12,.6,.5]],.012,{rad:6,seg:20}),i%2?ven:art,null,{to:vs})}
+  // receptor: a layered pressure receptor (Pacinian corpuscle) with its nerve fibre
+  const rec=mesh(K,'receptor',sculpt(T3,(x,y,z)=>{const k=1+.04*Math.sin(Math.atan2(z,x)*8);return [x*.12*k,y*.2,z*.12*k]},{seg:40}),pac,[1.5,.6,-.4]);
+  mesh(K,'receptor',tube(T3,[[1.5,.42,-.4],[1.6,0,-.5],[1.8,-.5,-.6]],.018,{rad:10}),nerveM);
+  let ex=null;const tick=(dt,now)=>{const h=S.temp,w=.4+1.6*h;vt.geometry.dispose();vt.geometry=tube(T3,[[-1.8,.55,.5],[0,.6,.5],[1.8,.55,.5]],.03*w,{rad:16,seg:60});
+    drops.forEach((d,i)=>{d.visible=h>.55;d.position.y=1.2+((now*.0005+i*.17)%1)*.05});hair.rotation.z=h<.4?-.9*(1-h/.4):0;ere.scale.set(1,h<.4?.8:1,1);
+    if(ex&&S.k!==S.temp){S.k=S.temp;const T=(35.5+h*3).toFixed(1);readout(ex,`<b>Core temperature</b> ${T} °C · ${h>.55?'too hot: <b>sweating</b> and <b>vasodilation</b> (more blood near the surface)':h<.4?'too cold: <b>shivering</b>, <b>vasoconstriction</b> and hairs raised':'normal: about 37 °C'}`)}return true};
+  return {radius:2.4,view:[.2,.4],ground:1.4,tick,extra:el=>{ex=el;S.k=-1},sliders:[{icon:'🌡️',label:'Body temperature',v:.5,set:x=>{S.temp=x}}],
+    tags:[['epi',[-1.6,1.18,1],0],['sweat',[-.9,.1,.2]],['vessel',[0,.6,.55]],['hair',[.9,1.6,0]],['receptor',[1.5,.85,-.4]]],
+    journeys:[{name:'Cool down',c:0x74C0FC,steps:[{p:[1.5,.6,-.4],part:'receptor',text:'Receptors detect that you are too hot and the thermoregulatory centre in the brain responds.',on:()=>{S.temp=.9;syncSliders(ex,[.9])}},{p:[-.9,.6,0],part:'sweat',text:'Sweat glands release sweat; as it evaporates it transfers energy away from the skin.'},{p:[0,.6,.5],part:'vessel',text:'Arterioles to the skin widen (vasodilation): more blood flows near the surface and loses heat by radiation.'},{p:[.9,.8,0],part:'hair',text:'When you are cold, the opposite happens: vasoconstriction, shivering, and hairs stand up.',on:()=>{S.temp=.15;syncSliders(ex,[.15])}}]}]}};
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
