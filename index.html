@@ -26963,6 +26963,51 @@ Nv.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
     tags:[['brain',[0,3.5,.2]],['cord',[-.12,1.55,-.28]],['nerves',[-1.05,1.0,.05]],['receptor',[1.32,-.5,.25]],['effector',[1.15,1.5,.2]],['impulse',[.62,1.95,.05]]],
     journeys:[{name:'Stimulus to response',c:0xFFD43B,steps:[{p:[1.27,-.6,.2],part:'receptor',text:'The flame is the stimulus. Pain receptors in the fingertip detect it.'},{p:[1.12,.6,.05],part:'nerves',text:'Sensory neurones in the nerves of the arm carry electrical impulses towards the spinal cord.'},{p:[0,1.6,-.3],part:'cord',text:'The spinal cord carries the impulses up to the brain. Together they are the central nervous system.'},{p:[0,3.2,0],part:'brain',text:'The brain coordinates a response and sends impulses back down.'},{p:[1.02,1.45,.12],part:'effector',text:'Motor neurones carry impulses to the effector — the biceps — which contracts and moves the hand away.'}]}]}};
 })();
+// ---------- The eye, atlas quality: veined sclera, dark choroid, retina with vessels and the optic disc, a fibrous textured iris, clear cornea, ciliary body with zonules, rectus muscles and the optic nerve with its vessels (replaces both views of LIB.eye) ----------
+(()=>{const LIB=L3.LIB,Ey=LIB.eye;if(!Ey)return;const {V,readout,lathe,vtube}=L3.lx,{wet,tube}=L3.lx.anat,TAU=Math.PI*2;
+let IT=null;
+// iris: radial fibres, crypts, a collarette ring, a dark pupillary ruff and a darker outer rim
+const irisTex=T3=>{if(IT)return IT;const N=512,c=document.createElement('canvas');c.width=c.height=N;const x=c.getContext('2d'),r=L3.rnd(61),C=N/2;
+  const g=x.createRadialGradient(C,C,N*.17,C,C,N*.5);g.addColorStop(0,'#3B2A1A');g.addColorStop(.18,'#7A5A2E');g.addColorStop(.32,'#4F7FA8');g.addColorStop(.8,'#3E6E98');g.addColorStop(.96,'#1F3550');g.addColorStop(1,'#14202E');x.fillStyle=g;x.fillRect(0,0,N,N);
+  for(let i=0;i<900;i++){const a=r()*Math.PI*2,r0=N*(.18+r()*.08),r1=N*(.3+r()*.19),l=r()<.5;x.strokeStyle=l?`rgba(190,215,235,${.15+r()*.25})`:`rgba(20,35,55,${.15+r()*.25})`;x.lineWidth=.6+r()*1.4;x.beginPath();x.moveTo(C+Math.cos(a)*r0,C+Math.sin(a)*r0);x.quadraticCurveTo(C+Math.cos(a+.06)*(r0+r1)/2,C+Math.sin(a+.06)*(r0+r1)/2,C+Math.cos(a)*r1,C+Math.sin(a)*r1);x.stroke()}
+  for(let i=0;i<40;i++){const a=r()*Math.PI*2,rr=N*(.27+r()*.14);x.fillStyle='rgba(15,25,40,.35)';x.beginPath();x.ellipse(C+Math.cos(a)*rr,C+Math.sin(a)*rr,4+r()*6,2+r()*3,a,0,Math.PI*2);x.fill()}
+  x.strokeStyle='rgba(160,120,70,.7)';x.lineWidth=5;x.beginPath();for(let i=0;i<=96;i++){const a=i/96*Math.PI*2,rr=N*(.27+.012*Math.sin(a*11));i?x.lineTo(C+Math.cos(a)*rr,C+Math.sin(a)*rr):x.moveTo(C+Math.cos(a)*rr,C+Math.sin(a)*rr)}x.stroke();
+  const t=new T3.CanvasTexture(c);t.anisotropy=8;return IT=t};
+Ey.build=function(T3,K,v){const S={light:.5,near:0,fix:0},defect=v==='defects';
+    const eyeG=K.grp(null,{r:[0,-Math.PI/2,0]});
+    const scl=Object.assign(wet(T3,0xF3F0EA,{veins:9,veinC:0xC23B3B,var:.04,rough:.3,wet:.85,sheen:.15,seed:101}),{side:T3.DoubleSide}),cho=Object.assign(wet(T3,0x4A2A22,{veins:6,veinC:0x7A2020,var:.12,rough:.5,wet:.4,seed:102}),{side:T3.DoubleSide}),
+      ret=Object.assign(wet(T3,0xD8642E,{veins:14,veinC:0x8E1B1B,var:.1,rough:.45,wet:.55,seed:103}),{side:T3.DoubleSide});
+    K.put('sclera',new T3.Mesh(new T3.SphereGeometry(1.2,96,72),scl),{to:eyeG,clip:1,shell:1,rank:1});
+    K.put(null,new T3.Mesh(new T3.SphereGeometry(1.17,72,54,0,TAU,Math.PI*.3,Math.PI*.7),cho),{to:eyeG,r:[-Math.PI/2,0,0],clip:1});
+    K.put('retina',new T3.Mesh(new T3.SphereGeometry(1.14,72,54,0,TAU,Math.PI*.35,Math.PI*.65),ret),{to:eyeG,r:[-Math.PI/2,0,0],clip:1});
+    K.put('retina',new T3.Mesh(new T3.CircleGeometry(.09,32),new T3.MeshStandardMaterial({color:0xF2D6A2,roughness:.5,side:T3.DoubleSide})),{to:eyeG,p:[0,-.15,-1.125]});
+    K.put('cornea',new T3.Mesh(new T3.SphereGeometry(.62,64,32,0,TAU,0,Math.PI*.33),new T3.MeshPhysicalMaterial({color:0xE6F4FF,roughness:.02,metalness:0,clearcoat:1,clearcoatRoughness:.02,transparent:true,opacity:.22,depthWrite:false,side:T3.DoubleSide,envMapIntensity:1.2})),{to:eyeG,p:[0,0,.75],r:[Math.PI/2,0,0]});
+    const iris=K.put('iris',new T3.Mesh(new T3.RingGeometry(.18,.52,96),new T3.MeshPhysicalMaterial({map:irisTex(T3),roughness:.45,clearcoat:.5,clearcoatRoughness:.3,side:T3.DoubleSide})),{to:eyeG,p:[0,0,.9]});
+    // extraocular muscles: four rectus muscles holding the eyeball, running back towards the optic nerve
+    const mus=wet(T3,0xA8312D,{folds:40,veins:5,veinC:0x5E1218,var:.1,rough:.42,wet:.5,seed:104});for(let i=0;i<4;i++){const a=i/4*TAU+Math.PI/4,c=Math.cos(a),s2=Math.sin(a);
+      K.put(null,new T3.Mesh(tube(T3,[[c*1.1,s2*1.1,.35],[c*1.25,s2*1.25,-.3],[c*.95,s2*.95,-1.2],[c*.45,s2*.45,-2.0]],(u,b2)=>(.13-.06*u)*(1-.55*Math.abs(Math.sin(b2))),{rad:16,uv:2}),mus),{to:eyeG})}
+    const pupil=K.put('pupil',new T3.Mesh(new T3.CircleGeometry(.18,40),K.mat('pupil',0x0B0B0D,{glass:.92})),{to:eyeG,p:[0,0,.905]});
+    const lensG=lathe(T3,[[0,-.18],[.3,-.12],[.42,0],[.3,.12],[0,.18]],48);lensG.rotateX(Math.PI/2);const lens=K.put('lens',new T3.Mesh(lensG,K.mat('lens',0xFFF3BF,{glass:.55})),{to:eyeG,p:[0,0,.66]});
+    K.put('ciliary',new T3.Mesh(new T3.TorusGeometry(.56,.075,20,96),wet(T3,0x5E2A26,{folds:30,var:.1,rough:.45,wet:.5,seed:105})),{to:eyeG,p:[0,0,.66]});
+    const zon=new T3.MeshStandardMaterial({color:0xF5F2EA,roughness:.3,transparent:true,opacity:.8});for(let i=0;i<48;i++){const a=i/48*TAU;K.put('ciliary',new T3.Mesh(new T3.CylinderGeometry(.004,.004,.1,4),zon),{to:eyeG,p:[Math.cos(a)*.47,Math.sin(a)*.47,.66+(i%2?.02:-.02)],r:[0,0,a+Math.PI/2]})}
+    K.put('optic',new T3.Mesh(tube(T3,[[0,-.15,-1.1],[0,-.2,-1.6],[0,-.3,-2.1]],.17,{rad:28,uv:3}),wet(T3,0xEDE0C2,{folds:14,veins:6,veinC:0xB03030,var:.06,rough:.35,wet:.7,seed:106})),{to:eyeG});
+    for(const [c,dx] of [[0xC0302E,.05],[0x3F55B5,-.05]])K.put('optic',new T3.Mesh(tube(T3,[[dx,-.15,-1.12],[dx,-.2,-1.5],[dx*2.2,-.28,-1.9],[dx*3.5,-.4,-2.05]],.022,{rad:10}),wet(T3,c,{veins:2,rough:.3,wet:.8,seed:107+(dx>0?1:0)})),{to:eyeG});K.sph(null,[0,0,0],1.12,0xE7F5FF,{to:eyeG,glass:.06});
+    // light rays from an object at the left, meeting on the retina
+    const rays=[...Array(3)].map(()=>K.tube('rays',[[0,0,0],[1,0,0]],.012,0xFDE047,{seg:4,mo:{emissive:0xFDE047,emissiveIntensity:.8}}));const obj=K.cone(null,[-4,.0,0],.15,.5,0x40C057,{});
+    let glasses=null;if(defect){glasses=K.put('glasses',new T3.Mesh(lathe(T3,[[0,-.06],[.55,-.12],[.6,0],[.55,.12],[0,.06]],48),K.mat('glasses',0xA5D8FF,{glass:.45})),{p:[-1.9,0,0],r:[0,0,Math.PI/2]})}
+    const setRay=(m,pts)=>{m.geometry.dispose();m.geometry=new T3.TubeGeometry(new T3.CatmullRomCurve3(pts.map(p=>V(...p)),false,'catmullrom',0),40,.012,6)};
+    let ex=null;const tick=dt=>{const pr=.08+.32*(1-S.light);pupil.scale.setScalar(pr/.18);iris.geometry.dispose();iris.geometry=new T3.RingGeometry(pr,.52,64);
+      const near=defect?(S.fix>.5?.5:.0):S.near,fat=1+.45*near;lens.scale.set(1,1,fat);const objX=defect?-4:-4+near*2.4;obj.position.x=objX;
+      let focus=-1.14;if(defect){const short=S.fix<.5;focus=(S.corr?-1.14:(short?-.6:-1.7))}
+      [-.18,0,.18].forEach((h,i)=>setRay(rays[i],[[objX,0,0],[-.66,h*2,0],[-.62,h*1.8,0],[-focus,0,0]].map(([x,y,z])=>[x,y,z])));
+      if(glasses)glasses.visible=!!S.corr;
+      if(ex&&S.k!==`${S.light}|${S.near}|${S.fix}|${S.corr}`){S.k=`${S.light}|${S.near}|${S.fix}|${S.corr}`;readout(ex,defect?`<b>${S.fix<.5?'Short sight (myopia)':'Long sight (hyperopia)'}</b> · ${S.corr?'corrected with a '+(S.fix<.5?'<b>concave</b> (diverging)':'<b>convex</b> (converging)')+' lens: the image is on the retina':'the image forms '+(S.fix<.5?'<b>in front of</b>':'<b>behind</b>')+' the retina, so it is blurred'}`:`<b>Light</b>: ${S.light<.33?'dim → pupil wide':S.light<.66?'normal':'bright → pupil small'} · <b>object</b>: ${near>.5?'near → lens fat':'far → lens thin'}`)}return true};
+    return {radius:2.4,view:[.25,.4],ground:1.6,tick,extra:el=>{ex=el;S.k=''},cut:{u:[[0,0,1],[0,0,1]],r:1.25,def:.85},quizSkip:['rays'],
+      sliders:defect?[{icon:'👓',label:'Short sight · long sight',v:0,set:x=>{S.fix=x}},{icon:'🔧',label:'Glasses on',v:0,set:x=>{S.corr=x>.5}}]:[{icon:'💡',label:'Brightness',v:.5,set:x=>{S.light=x}},{icon:'🔍',label:'Look at something near',v:0,set:x=>{S.near=x}}],
+      tags:[['cornea',[-.95,.35,.2]],['iris',[-.9,.45,0]],['pupil',[-.92,0,.05]],['lens',[-.66,-.35,0]],['ciliary',[-.66,.6,0]],['retina',[1.05,.4,0]],['optic',[1.9,-.25,0],0],['sclera',[0,1.22,0],0],['rays',[-2,.1,0]],...(defect?[['glasses',[-1.9,.7,0]]]:[])],
+      journeys:[{name:defect?'Fix short sight':'Focus near and far',c:0xFDE047,steps:(defect?[[{fix:0,corr:0},'rays','In short sight the eyeball is too long or the lens too strong: light from a distant object focuses in front of the retina.'],[{fix:0,corr:1},'glasses','A concave lens spreads the rays out first, so they focus on the retina.'],[{fix:1,corr:0},'rays','In long sight the image of a near object forms behind the retina.'],[{fix:1,corr:1},'glasses','A convex lens converges the rays a little before they enter the eye.']]
+        :[[{light:.5,near:0},'cornea','Light from the object is refracted by the cornea…'],[{},'lens','…and focused by the lens onto the retina.'],[{near:1},'ciliary','For a near object the ciliary muscles contract, the suspensory ligaments slacken, and the lens gets fatter.'],[{near:0},'ciliary','For a distant object the ciliary muscles relax, the ligaments pull tight, and the lens gets thinner.'],[{light:1},'pupil','In bright light the iris makes the pupil smaller, to protect the retina.'],[{light:.5},'optic','The retina sends impulses along the optic nerve to the brain.']]).map(([st,part,text])=>({p:part==='optic'?[1.6,-.2,0]:part==='retina'?[1,.2,0]:part==='glasses'?[-1.9,0,0]:part==='rays'?[-1.6,0,0]:[-.7,0,0],part,text,on:()=>{Object.assign(S,st)}}))}]}};
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
