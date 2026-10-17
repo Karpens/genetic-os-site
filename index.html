@@ -28854,6 +28854,59 @@ Dc.build=function(T3,K,v,...rest){if(v!=='mut'&&v!=='mendel')return prev.call(th
     tags:[['parents',[-2.3,1.85,-.6]],['f1',[-.8,1.5,-.6]],['f2',[1.05,1.55,-.6]],['tally',[-.6,.3,.95]]],
     journeys:[{name:'Mendel’s experiment',c:0x9C36B5,steps:[[0,'parents','Mendel crossed true-breeding purple-flowered peas with white-flowered ones.'],[1,'f1','All the offspring had purple flowers — the white seemed to vanish.'],[2,'f2','Crossing those, white reappeared: about 3 purple to 1 white.'],[2,'tally','He explained it with pairs of “factors” — the alleles we know today.']].map(([g,part,text])=>({p:[0,.5,-.4],part,text,on:()=>{S.g=g;syncSliders(ex,[g/2]);upd()}}))}]}};
 })();
+// ---------- Boy or girl, and family trees, in microscope and museum quality: the mother’s XX and father’s XY as real G-banded chromosomes, eggs with zona pellucida and corona radiata cells, swimming X- and Y-carrying sperm, and a glossy Punnett board whose boxes hold the XX or XY pair of each child; a family tree of polished acrylic symbols on brushed-metal lines (replaces the 'sex' and 'pedigree' views of LIB.genetics) ----------
+(()=>{const LIB=L3.LIB,Gn=LIB.genetics;if(!Gn)return;const {V,txt}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const pm=(T3,o)=>{const m=new T3.MeshPhysicalMaterial(o);m.userData.keepLook=1;return m};
+const gs=(x,w)=>Math.exp(-(x/w)*(x/w));
+const bandTex=(T3,seed,base)=>{const rr=L3.rnd(seed),c=document.createElement('canvas');c.width=256;c.height=16;const x=c.getContext('2d');x.fillStyle=base||'#B9A2DA';x.fillRect(0,0,256,16);let p=8;while(p<248){const w=4+rr()*14,d=rr();x.fillStyle=d<.45?'#1E0C40':d<.75?'#4A2E80':'#8A6CBC';x.fillRect(p,0,w,16);p+=w+4+rr()*16}const t=new T3.CanvasTexture(c);t.encoding=T3.sRGBEncoding;return t};
+// one metaphase chromosome: two sister chromatids pinched together at the centromere
+const chromo=(T3,K,id,to,p,h,R,cen,mat)=>{const g=K.grp(id,{to,p}),cp=(s,u)=>[s*R*(1.1-.95*gs(u-cen,.13)),(u-cen)*h,0],cr=u=>R*(.35+.65*Math.pow(Math.sin(Math.PI*u),.35))*(1-.4*gs(u-cen,.05));
+  for(const s of [-1,1]){const pts=[];for(let k=0;k<=16;k++)pts.push(cp(s,k/16));mesh(K,id,tube(T3,pts,u=>cr(u),{rad:14,seg:48}),mat,null,{to:g})}return g};
+const prev=Gn.build;
+Gn.build=function(T3,K,v,...rest){if(v!=='sex'&&v!=='pedigree')return prev.call(this,T3,K,v,...rest);K.lin=0;
+  if(v==='sex'){const r=L3.rnd(17);
+    // the Punnett board: glossy white with raised grey dividers
+    mesh(K,'grid',new T3.BoxGeometry(3.2,.08,3.2),pm(T3,{color:0xF4F5F7,roughness:.25,clearcoat:1,clearcoatRoughness:.1}),[0,-.04,0]);const dv=pm(T3,{color:0xA8B0BC,metalness:.6,roughness:.3});
+    for(let i=0;i<=3;i++){mesh(K,'grid',new T3.BoxGeometry(.035,.04,3),dv,[-1.5+i,.02,.5]);mesh(K,'grid',new T3.BoxGeometry(3,.04,.035),dv,[.5,.02,-1.5+i])}
+    const XM=pm(T3,{color:0xB0B0B0,map:bandTex(T3,511,'#D8A6C8'),roughness:.4,clearcoat:.5}),XD=pm(T3,{color:0xB0B0B0,map:bandTex(T3,512,'#D8A6C8'),roughness:.4,clearcoat:.5}),YM=pm(T3,{color:0xB0B0B0,map:bandTex(T3,513,'#9EC0E8'),roughness:.4,clearcoat:.5});
+    const X=(id,to,p,s=1)=>chromo(T3,K,id,to,p,.62*s,.075*s,.4,XM),Y=(id,to,p,s=1)=>chromo(T3,K,id,to,p,.3*s,.07*s,.3,YM);
+    // parents: their sex chromosomes standing on pedestals
+    const ped=pm(T3,{color:0x2A2E36,roughness:.35,clearcoat:.8,envMapIntensity:.6});
+    const mum=K.grp('mum',{p:[0,0,-2.6]});mesh(K,'mum',new T3.CylinderGeometry(.55,.6,.12,48),ped,[0,.06,0],{to:mum});X('mum',mum,[-.18,.62,0],1.3);chromo(T3,K,'mum',mum,[.18,.62,0],.62*1.3,.075*1.3,.4,XD);txt(T3,K,'Mother  XX',[0,1.35,-2.6],{part:'mum',h:.2,bg:'#FFDEEB'});
+    const dad=K.grp('dad',{p:[-2.6,0,0]});mesh(K,'dad',new T3.CylinderGeometry(.55,.6,.12,48),ped,[0,.06,0],{to:dad});X('dad',dad,[-.18,.62,0],1.3);Y('dad',dad,[.2,.42,0],1.3);txt(T3,K,'Father  XY',[-2.6,1.35,0],{part:'dad',h:.2,bg:'#D0EBFF'});
+    // eggs across the top: zona pellucida, corona radiata cells, nucleus
+    const eggM=wet(T3,0xF0C8A8,{lob:80,var:.08,rough:.35,wet:.6,sheen:.2,seed:931,op:.88}),zona=pm(T3,{color:0xF8F4EC,roughness:.12,clearcoat:1,transparent:true,opacity:.28,depthWrite:false,side:T3.DoubleSide}),crM=wet(T3,0xE8D0B8,{var:.1,rough:.4,wet:.5,sheen:0,seed:932});
+    [0,1].forEach(i=>{const g=K.grp('mum',{p:[i,.42,-1.0]});mesh(K,'mum',new T3.SphereGeometry(.2,40,28),eggM,null,{to:g});mesh(K,'mum',new T3.SphereGeometry(.25,40,28),zona,null,{to:g,order:6});mesh(K,'mum',new T3.SphereGeometry(.07,20,14),wet(T3,0x9A5A40,{seed:933}),[.04,.05,.08],{to:g});
+      const N=46,im=new T3.InstancedMesh(new T3.SphereGeometry(.045,10,8),crM,N),mm=new T3.Matrix4(),q=new T3.Quaternion();for(let k=0;k<N;k++){const y=1-2*(k+.5)/N,rr=Math.sqrt(1-y*y),a=k*2.4;mm.compose(V(Math.cos(a)*rr*.29,y*.29,Math.sin(a)*rr*.29),q,V(1,.8+r()*.4,1));im.setMatrixAt(k,mm)}im.instanceMatrix.needsUpdate=true;K.put('mum',im,{to:g});
+      txt(T3,K,'X',[i,.95,-1.0],{part:'mum',h:.24,bg:'#FFDEEB'})});
+    // sperm down the side: head with acrosome, midpiece and a beating tail
+    const hM=wet(T3,0xE8E0D0,{var:.08,rough:.35,wet:.6,sheen:.2,seed:934}),acM=wet(T3,0xC8D8F0,{var:.08,rough:.35,wet:.6,sheen:0,seed:935}),mpM=wet(T3,0xD8B890,{folds:20,var:.1,rough:.4,wet:.5,sheen:0,seed:936}),tlM=pm(T3,{color:0xE8E2D6,roughness:.4,clearcoat:.4});
+    const NT=34,sperm=[0,1].map(j=>{const g=K.grp('dad',{p:[-.85,.42,j],s:[1.8,1.8,1.8]});mesh(K,'dad',sculpt(T3,(x,y,z)=>[x*.09,y*.035,z*.06],{seg:32}),hM,[.08,0,0],{to:g});mesh(K,'dad',sculpt(T3,(x,y,z)=>[x*.06,y*.038,z*.062],{seg:24}),acM,[.12,0,0],{to:g});
+      mesh(K,'dad',tube(T3,[[0,0,0],[-.12,0,0]],.02,{rad:10,seg:6}),mpM,null,{to:g});const tl=new T3.InstancedMesh(new T3.SphereGeometry(.014,8,6),tlM,NT);K.put('dad',tl,{to:g});txt(T3,K,j?'Y':'X',[-1.0,.95,j],{part:'dad',h:.24,bg:'#D0EBFF'});return {g,tl,j}});
+    // children: each box holds the pair of sex chromosomes from one egg and one sperm
+    const kids=[];for(let i=0;i<2;i++)for(let j=0;j<2;j++){const boy=j===1,id=boy?'boy':'girl',g=K.grp(id,{p:[i,0,j]});mesh(K,id,new T3.CylinderGeometry(.36,.38,.05,40),pm(T3,{color:boy?0xCFE4FF:0xFFD8E8,roughness:.3,clearcoat:1}),[0,.025,0],{to:g});
+      X(id,g,[-.12,.5,0]);if(boy)Y(id,g,[.13,.33,0]);else chromo(T3,K,id,g,[.12,.5,0],.62,.075,.4,XD);txt(T3,K,boy?'XY  boy':'XX  girl',[i,1.0,j],{part:id,h:.16});kids.push(g)}
+    const mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1);
+    const tick=(dt,now)=>{const t=now*.001;kids.forEach((k,i)=>{k.rotation.y=Math.sin(t*.6+i)*.5});sperm.forEach(s=>{s.g.position.x=-.85+Math.sin(t*1.3+s.j)*.05;for(let k=0;k<NT;k++){const u=k/(NT-1),x=-.12-u*.62,y=Math.sin(u*9-t*9+s.j)*.05*u;mm.compose(V(x,y,0),q,V(1-u*.6,1-u*.6,1-u*.6));s.tl.setMatrixAt(k,mm)}s.tl.instanceMatrix.needsUpdate=true});return true};
+    return {radius:2.6,view:[.62,.6],ground:0,tick,tags:[['mum',[0,1.65,-2.6],0],['dad',[-2.6,1.65,0],0],['grid',[1.6,.05,1.6],0],['girl',[0,1.2,0]],['boy',[1,1.2,1]]],
+      journeys:[{name:'Boy or girl?',c:0xF06595,steps:[{p:[0,.6,-2.6],part:'mum',text:'The mother is XX, so every egg has an X chromosome.'},{p:[-2.6,.6,0],part:'dad',text:'The father is XY, so half his sperm carry X and half carry Y.'},{p:[.5,.3,.5],part:'grid',text:'The Punnett square shows the four equally likely combinations.'},{p:[.5,.6,0],part:'girl',text:'XX gives a girl…'},{p:[.5,.6,1],part:'boy',text:'…and XY gives a boy: a 50% chance each time.'}]}]}}
+  // ---------- family tree: polished acrylic symbols on brushed-metal lines ----------
+  const ppl=[],white=pm(T3,{color:0xF7F8FA,roughness:.12,clearcoat:1,clearcoatRoughness:.05,transmission:.0}),purple=pm(T3,{color:0x1E0868,roughness:.12,clearcoat:1,clearcoatRoughness:.05}),rim=pm(T3,{color:0x9AA3B0,metalness:.85,roughness:.25});
+  const person=(x,y,male,state)=>{const id=state===2?'affected':state===1?'carrier':'unaff',g=K.grp(id,{p:[x,y,0]}),mat=state===2?purple:white;
+    if(male){mesh(K,id,L3.sbox(T3,.28,.28,.12,8,32),mat,null,{to:g});mesh(K,id,new T3.TorusGeometry(.4,.012,8,4),rim,[0,0,.07],{to:g,r:[0,0,Math.PI/4]})}else{mesh(K,id,new T3.CylinderGeometry(.3,.3,.24,48),mat,null,{to:g,r:[Math.PI/2,0,0]});mesh(K,id,new T3.TorusGeometry(.3,.012,8,48),rim,[0,0,.125],{to:g})}
+    if(state===1){mesh(K,'carrier',male?new T3.BoxGeometry(.28,.56,.25):new T3.CylinderGeometry(.3,.3,.25,48,1,false,0,Math.PI),purple,male?[.14,0,0]:[0,0,0],{to:g,r:male?null:[Math.PI/2,0,0]})}
+    mesh(K,male?'male':'female',new T3.SphereGeometry(.05,16,12),pm(T3,{color:male?0x1C7ED6:0xE64980,roughness:.2,clearcoat:1}),[0,-.42,0],{to:g});ppl.push(g);return g};
+  const line=(a,b)=>mesh(K,null,tube(T3,[a,b],.022,{rad:10,seg:2}),rim);
+  person(-1.2,1.6,true,1);person(-.2,1.6,false,1);line([-.9,1.6,0],[-.5,1.6,0]);line([-.7,1.6,0],[-.7,1.0,0]);line([-2.2,1.0,0],[.8,1.0,0]);
+  [[-2.2,true,0],[-1.2,false,2],[-.2,true,1],[.8,false,1]].forEach(([x,m,s])=>{line([x,1.0,0],[x,.75,0]);person(x,.45,m,s)});person(1.8,.45,true,1);line([1.1,.45,0],[1.5,.45,0]);line([1.3,.45,0],[1.3,-.2,0]);
+  person(1.3,-.55,false,2);
+  // a frosted backing panel, like a museum display
+  mesh(K,null,L3.sbox(T3,2.6,1.55,.03,8,32),pm(T3,{color:0xE8ECF2,roughness:.6,clearcoat:.3,transparent:true,opacity:.55,depthWrite:false}),[-.2,.55,-.35],{order:3});
+  const tick=(dt,now)=>{ppl.forEach((g,i)=>g.rotation.y=Math.sin(now*.0008+i)*.3);return true};
+  return {radius:2.4,view:[.1,.1],ground:1.4,tick,tags:[['unaff',[-2.2,.85,0]],['carrier',[-1.2,2.0,0]],['affected',[-1.2,.85,0]],['male',[-2.2,0,0]],['female',[-.2,1.15,0]]],
+    journeys:[{name:'Read the family tree',c:0x7048E8,steps:[{p:[-.7,1.6,0],part:'carrier',text:'Neither parent has cystic fibrosis, but they have an affected daughter. So both must be carriers (Ff).'},{p:[-1.2,.45,0],part:'affected',text:'The daughter has cystic fibrosis: she inherited the recessive allele from both parents (ff).'},
+      {p:[.8,.45,0],part:'carrier',text:'Her sister is a carrier and has a child with a carrier man.'},{p:[1.3,-.55,0],part:'affected',text:'Each of their children has a 25% chance of having cystic fibrosis.'}]}]}};
+})();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
 const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed||5));return c};
