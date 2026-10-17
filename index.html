@@ -17201,13 +17201,22 @@ LIB.nervous={title:['🧠','The nervous system in 3D','Follow an impulse from a 
       journeys:[{name:'Two systems',c:0xFF922B,steps:[{p:[0,2.4,0],part:'brain',text:'The brain and spinal cord form the central nervous system. Everything else is peripheral.'},{p:[-.8,1.3,0],part:'somatic',text:'Somatic nerves go to skeletal muscles — the movements you choose.'},{p:[0,1.6,-.12],part:'symp',text:'The sympathetic chain beside the spine prepares the body for fight or flight.',on:()=>{S.f=1;syncSliders(ex,[1]);upd()}},{p:[.07,1.62,.13],part:'heart',text:'The heart races, the pupils widen and the airways open up.'},{p:[.08,1.9,.05],part:'para',text:'The vagus nerve, parasympathetic, calms things down again: rest and digest.',on:()=>{S.f=0;syncSliders(ex,[0]);upd()}}]}]}}};
 
 // ===== Brain scans: CT, MRI, fMRI and PET =====
-const brainSlice=(x,W,H,mode,h,task)=>{x.fillStyle='#05070D';x.fillRect(0,0,W,H);const cx=W/2,cy=H/2,R=Math.min(W,H)*.4*Math.sqrt(Math.max(.05,1-((h-.55)/.5)**2));const wob=a=>1+.03*Math.sin(a*9)+.02*Math.sin(a*23);
-  const path=(sc)=>{x.beginPath();for(let i=0;i<=120;i++){const a=i/120*TAU,r=R*sc*wob(a);x.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r)}x.closePath()};
-  if(mode==='ct'){x.fillStyle='#EDEDED';path(1.08);x.fill();x.fillStyle='#7B7B7B';path(1);x.fill();x.fillStyle='#4A4A4A';x.beginPath();x.ellipse(cx-R*.12,cy,R*.08,R*.32,0,0,TAU);x.ellipse(cx+R*.12,cy,R*.08,R*.32,0,0,TAU);x.fill()}
-  else{x.fillStyle=mode==='pet'?'#1B1E2B':'#1F1F1F';path(1.08);x.fill();const g=x.createRadialGradient(cx,cy,R*.2,cx,cy,R);g.addColorStop(0,mode==='pet'?'#262A3F':'#9A9A9A');g.addColorStop(1,mode==='pet'?'#353A58':'#D8D8D8');x.fillStyle=g;path(1);x.fill();
-    if(mode!=='pet'){x.strokeStyle='#5C5C5C';x.lineWidth=2;for(let k=0;k<26;k++){const a=k/26*TAU,r=R*wob(a);x.beginPath();x.moveTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r);x.lineTo(cx+Math.cos(a)*r*.62,cy+Math.sin(a)*r*.75);x.stroke()}x.fillStyle='#202020';x.beginPath();x.ellipse(cx-R*.12,cy,R*.07,R*.3,0,0,TAU);x.ellipse(cx+R*.12,cy,R*.07,R*.3,0,0,TAU);x.fill();x.fillStyle='#BDBDBD';x.fillRect(cx-1.5,cy-R*.95,3,R*1.9)}
-    const spots=mode==='fmri'?[[[-.35,-.55],[.35,-.55]],[[-.6,-.1]],[[-.05,.75],[.05,.75]],[[.6,.05]]][task]||[]:mode==='pet'?[[-.45,-.4],[.45,-.4],[-.5,.3],[.5,.3],[0,.7],[-.15,-.1],[.2,0]]:[];
-    for(const [sx,sy] of spots){const gx=cx+sx*R*.85,gy=cy+sy*R,rr=R*(mode==='pet'?.28:.18),gg=x.createRadialGradient(gx,gy,0,gx,gy,rr);gg.addColorStop(0,mode==='pet'?'rgba(255,240,80,.95)':'rgba(255,60,30,.95)');gg.addColorStop(.5,mode==='pet'?'rgba(255,120,0,.6)':'rgba(255,170,0,.55)');gg.addColorStop(1,'rgba(255,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,rr,0,TAU);x.fill()}}
+const brainSlice=(x,W,H,mode,h,task)=>{x.fillStyle='#030405';x.fillRect(0,0,W,H);const cx=W/2,cy=H/2,R=Math.min(W,H)*.4*Math.sqrt(Math.max(.05,1-((h-.55)/.5)**2));const wob=a=>1+.03*Math.sin(a*9)+.02*Math.sin(a*23);
+  const path=(f)=>{x.beginPath();for(let i=0;i<=360;i++){const a=i/360*TAU,r=f(a);x.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r)}x.closePath()};
+  // the cortex folds: gyri (fingers of white matter) reaching out into the grey matter, sulci cutting in from the surface
+  const gyr=a=>R*(.6+.2*Math.pow(Math.abs(Math.sin(a*12+1.7*Math.sin(a*3)+.6*Math.sin(a*7))),.55))*wob(a),outer=a=>R*wob(a),pet=mode==='pet',ct=mode==='ct';
+  const scalp=ct?'#F2F2F2':pet?'#0B0D1A':'#C9C9C9',bone=ct?'#FFFFFF':'#141414',gm=ct?'#6E6E6E':pet?'#2A2F55':'#7C7C7C',wm=ct?'#7E7E7E':pet?'#1C2040':'#D2D2D2',csf=ct?'#2E2E2E':pet?'#0B0D1A':'#1A1A1A';
+  x.fillStyle=scalp;path(a=>outer(a)*1.13);x.fill();x.fillStyle=bone;path(a=>outer(a)*(ct?1.1:1.08));x.fill();if(ct){x.fillStyle='#BDBDBD';path(a=>outer(a)*1.06);x.fill()}
+  x.fillStyle=csf;path(a=>outer(a)*1.02);x.fill();x.fillStyle=gm;path(outer);x.fill();
+  x.fillStyle=wm;path(gyr);x.fill();
+  x.strokeStyle=csf;x.lineWidth=Math.max(1.5,W/220);for(let k=0;k<48;k++){const a=(k+.5)/48*TAU+.07*Math.sin(k*1.7),ro=outer(a),ri=gyr(a+.06)*.98;x.beginPath();x.moveTo(cx+Math.cos(a)*ro*.85,cy+Math.sin(a)*ro);x.quadraticCurveTo(cx+Math.cos(a+.03)*(ro+ri)/2*.85,cy+Math.sin(a+.03)*(ro+ri)/2,cx+Math.cos(a+.02)*ri*.85*1.02,cy+Math.sin(a+.02)*ri*1.02);x.stroke()}
+  // ventricles (butterfly), midline fissure and basal grey matter
+  x.fillStyle=csf;x.beginPath();x.moveTo(cx,cy-R*.32);for(const s of [-1,1]){x.bezierCurveTo(cx+s*R*.06,cy-R*.36,cx+s*R*.2,cy-R*.3,cx+s*R*.15,cy-R*.1);x.bezierCurveTo(cx+s*R*.1,cy+R*.05,cx+s*R*.2,cy+R*.25,cx+s*R*.12,cy+R*.32);x.bezierCurveTo(cx+s*R*.05,cy+R*.2,cx,cy+R*.1,cx,cy-R*.32)}x.fill();
+  x.strokeStyle=csf;x.lineWidth=Math.max(2,W/160);x.beginPath();x.moveTo(cx,cy-R*1.02);x.lineTo(cx,cy-R*.35);x.moveTo(cx,cy+R*.35);x.lineTo(cx,cy+R*1.02);x.stroke();
+  if(!pet){x.fillStyle=gm;for(const s of [-1,1]){x.beginPath();x.ellipse(cx+s*R*.3,cy+R*.02,R*.08,R*.17,s*.2,0,TAU);x.fill()}}
+  const spots=mode==='fmri'?[[[-.35,-.55],[.35,-.55]],[[-.6,-.1]],[[-.05,.75],[.05,.75]],[[.6,.05]]][task]||[]:pet?[[-.45,-.4],[.45,-.4],[-.5,.3],[.5,.3],[0,.7],[-.15,-.1],[.2,0]]:[];
+  if(pet){x.globalCompositeOperation='lighter';for(let a=0;a<TAU;a+=.18){const r0=(outer(a)+gyr(a))/2,gx=cx+Math.cos(a)*r0*.85,gy=cy+Math.sin(a)*r0,gg=x.createRadialGradient(gx,gy,0,gx,gy,R*.16);gg.addColorStop(0,'rgba(40,120,255,.55)');gg.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,R*.16,0,TAU);x.fill()}x.globalCompositeOperation='source-over'}
+  for(const [sx,sy] of spots){const gx=cx+sx*R*.85,gy=cy+sy*R,rr=R*(pet?.28:.18),gg=x.createRadialGradient(gx,gy,0,gx,gy,rr);gg.addColorStop(0,pet?'rgba(255,240,80,.95)':'rgba(255,60,30,.95)');gg.addColorStop(.5,pet?'rgba(255,120,0,.6)':'rgba(255,170,0,.55)');gg.addColorStop(1,'rgba(255,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,rr,0,TAU);x.fill()}
   x.fillStyle='#FFFFFF';x.font=`700 ${Math.round(H*.07)}px Inter,sans-serif`;x.fillText(mode.toUpperCase(),14,H*.1)};
 LIB.brainscan={title:['🩻','Brain scans in 3D','Slide a patient into the scanner and slice through the brain with CT, MRI, fMRI and PET — see what each technique shows and what it can’t.'],
   match:{biology:/brain imaging|scanning techniques|ct.{0,4}mri|fmri|\bpet scan/i,psychology:/brain scann|scanning techniques|ways of studying the brain|fmri|\beeg\b|\berps?\b|brain imaging/i},
@@ -17226,7 +17235,7 @@ LIB.brainscan={title:['🩻','Brain scans in 3D','Slide a patient into the scann
     K.tor('scanner',[-1.05,1.0,0],.66,.04,v==='ct'?0xFAB005:v==='pet'?0xE03131:0x339AF0,{r:[0,Math.PI/2,0],mo:{emissive:v==='ct'?0xFAB005:v==='pet'?0xE03131:0x339AF0,emissiveIntensity:.6}});
     K.box(null,[.2,.55,0],[2.6,.1,.6],0xCED4DA,{gloss:1});K.box(null,[.6,.27,0],[.3,.5,.3],0xADB5BD,{});const pt=K.grp('patient',{p:[-.4,.7,0]});const f=fig(T3,K,'patient',[0,0,0],0x74C0FC,{h:1.6,to:pt});f.rotation.z=Math.PI/2;f.position.set(0,.12,0);
     const BR=V(1.25,1.9,0),brain=own(K.blob('brain',BR.toArray(),.55,0xF8C8DC,{seed:6,n:.12,sc:[1.2,.85,1],glass:.55}));K.blob('brain',[BR.x,BR.y-.45,0],.2,0xF3A0BE,{seed:2,sc:[1,.8,1],glass:.6});const sl=own(K.box('slice',[BR.x,BR.y,0],[1.6,.012,1.3],0x339AF0,{glass:.45}));
-    const scr=panel(T3,K,'screen',[2.15,.95,-.6],1.2,1.2,(x,W,H)=>brainSlice(x,W,H,v,S.h,S.task),{res:256});K.box('screen',[2.15,.95,-.66],[1.3,1.3,.06],0x212529,{});scr.rotation.y=-.35;
+    const scr=panel(T3,K,'screen',[2.15,.95,-.6],1.2,1.2,(x,W,H)=>brainSlice(x,W,H,v,S.h,S.task),{res:512});K.box('screen',[2.15,.95,-.66],[1.3,1.3,.06],0x212529,{});scr.rotation.y=-.35;
     const TK=['rest','moving the right hand','reading words','looking at pictures','speaking'],TA=[[0,0],[[-.35,-.55],[.35,-.55]]];let t=0;
     const upd=()=>{sl.position.y=BR.y-.5+S.h*1;scr.userData.redraw();const T=['','Moving: motor cortex','Reading: Broca’s and Wernicke’s areas','Seeing: visual cortex (occipital lobe)','Speaking: Broca’s area'];
       const info={ct:'X-rays from many angles → slices · shows bone, bleeding and tumours · fast and cheap · ionising radiation',mri:'Magnetic field + radio waves → detailed soft tissue · no ionising radiation · slow, loud, expensive',fmri:`Measures blood oxygen (BOLD) · task: <b>${['rest — no strong activity','moving the hand: motor cortex','reading: language areas','looking: visual cortex at the back'][S.task]}</b> · shows activity seconds after it happens`,pet:'Radioactive glucose tracer → bright where cells use the most glucose · shows metabolism · radiation, lower resolution'}[v];
@@ -28510,6 +28519,20 @@ Mb.build=function(T3,K,v,...rest){if(!['carbs','protein','lipid','water'].includ
     dots.userData.pts=pairs.slice(0,4).map(([i,j])=>mols[i].position.clone().add(mols[j].position).multiplyScalar(.5).toArray());return true};
   return {radius:2.3,view:[.2,.3],ground:0,tick,tags:[['h2o',()=>mols[0].position.toArray()],['hbond',()=>pairs[0]?mols[pairs[0][0]].position.clone().add(mols[pairs[0][1]].position).multiplyScalar(.5).toArray():[0,0,0]],['ion',()=>na.position.toArray()]],
     journeys:[{name:'Why water is special',c:0x4DABF7,steps:[{p:[0,0,0],part:'h2o',text:'Each water molecule is polar: the oxygen is slightly negative, the hydrogens slightly positive.'},{p:[0,0,0],part:'hbond',text:'Opposite charges attract, forming hydrogen bonds between molecules. They make water cohesive and slow to heat up.'},{p:[0,0,0],part:'ion',text:'Water surrounds and dissolves ions, so it carries them around organisms. Around a sodium ion the slightly negative oxygens all point inwards.'}]}]}};
+})();
+// ---------- Brain scans: a real folded brain (gyri and sulci, cerebellum, brainstem) in place of the simple blob, and a glossy white scanner with a dark bore (adds to all views of LIB.brainscan) ----------
+(()=>{const LIB=L3.LIB,Bs=LIB.brainscan;if(!Bs)return;const {wet,tube,sculpt}=L3.lx.anat;
+const prev=Bs.build;
+Bs.build=function(T3,K,v,...rest){const probe=K.grp(null),root=probe.parent;root.remove(probe);const M=prev.call(this,T3,K,v,...rest);if(!M)return M;
+  let br=null;const plastic=new T3.MeshPhysicalMaterial({color:0xF4F6F8,roughness:.25,clearcoat:1,clearcoatRoughness:.1});plastic.userData.keepLook=1;
+  root.traverse(o=>{if(!o.isMesh)return;const p=o.userData.part;if(p==='brain'){if(!br||o.position.y>br.y)br={x:o.position.x,y:o.position.y,z:o.position.z};o.visible=false}
+    if(p==='scanner'&&o.material&&o.material.color&&o.material.color.getHSL({}).l>.85)o.material=plastic});
+  if(!br)return M;const g=K.grp('brain',{p:[br.x,br.y,br.z]});
+  const brM=wet(T3,0xE2A49A,{veins:16,veinC:0xA82838,var:.12,rough:.5,wet:.45,sheen:0,seed:881,op:.62});
+  K.put('brain',new THREE.Mesh(sculpt(T3,(x,y,z)=>{let X=x*.64,Y=y*.46,Z=z*.52;if(y<0&&x>-.2)Z*=1+.12*(-y);const k=1+.065*Math.pow(1-Math.abs(Math.sin(L3.nz(x*1.9,y*1.9,z*1.9,7)*3.1)),1.6)-.03;return [X*k,Y*k,Z*k]},{seg:140,uv:3}),brM),{to:g});
+  K.put('brain',new THREE.Mesh(sculpt(T3,(x,y,z)=>{const k=1+.05*Math.sin(y*28);return [x*.24*k,y*.13*k,z*.3*k]},{seg:64,uv:2}),wet(T3,0xD99A94,{folds:30,var:.1,rough:.45,wet:.5,sheen:0,seed:882,op:.7})),{to:g,p:[-.42,-.32,0]});
+  K.put('brain',new THREE.Mesh(tube(T3,[[-.1,-.2,0],[-.18,-.45,0],[-.24,-.7,0]],u=>.1-.02*u,{rad:20}),wet(T3,0xE8C4B0,{folds:10,var:.06,rough:.4,wet:.55,sheen:0,seed:883,op:.75})),{to:g});
+  return M};
 })();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
