@@ -27178,6 +27178,104 @@ Kd.build=function(T3,K,v,st){if(v!=='skin')return prev.call(this,T3,K,v,st);cons
     tags:[['epi',[-1.6,1.18,1],0],['sweat',[-.9,.1,.2]],['vessel',[0,.6,.55]],['hair',[.9,1.6,0]],['receptor',[1.5,.85,-.4]]],
     journeys:[{name:'Cool down',c:0x74C0FC,steps:[{p:[1.5,.6,-.4],part:'receptor',text:'Receptors detect that you are too hot and the thermoregulatory centre in the brain responds.',on:()=>{S.temp=.9;syncSliders(ex,[.9])}},{p:[-.9,.6,0],part:'sweat',text:'Sweat glands release sweat; as it evaporates it transfers energy away from the skin.'},{p:[0,.6,.5],part:'vessel',text:'Arterioles to the skin widen (vasodilation): more blood flows near the surface and loses heat by radiation.'},{p:[.9,.8,0],part:'hair',text:'When you are cold, the opposite happens: vasoconstriction, shivering, and hairs stand up.',on:()=>{S.temp=.15;syncSliders(ex,[.15])}}]}]}};
 })();
+// ---------- Inside a leaf, atlas quality: waxy cuticle, see-through epidermis and mesophyll cells with nuclei and lens-shaped chloroplasts, xylem vessels with lignin rings, phloem sieve tubes with sieve plates, a bundle sheath and green guard cells (replaces the 'leaf' view of LIB.plant) ----------
+(()=>{const LIB=L3.LIB,Pl=LIB.plant;if(!Pl)return;const {V,readout,stream,syncSliders}=L3.lx,{wet}=L3.lx.anat,TAU=Math.PI*2,rb=(T3,a,b,c,n=6)=>L3.sbox(T3,a,b,c,n,40);
+const prev=Pl.build;
+Pl.build=function(T3,K,v){if(v!=='leaf')return prev.call(this,T3,K,v);const r=L3.rnd(11),rn=(a,b)=>a+(b-a)*r();
+    if(v==='leaf'){const W=2.3,Z=.8,S={light:.7,co2:.4,open:1};
+      const wax=new T3.MeshPhysicalMaterial({color:0xF2FAE8,roughness:.08,clearcoat:1,clearcoatRoughness:.05,transparent:true,opacity:.42,depthWrite:false,envMapIntensity:1.1}),
+        epM=wet(T3,0xD9EEC4,{lob:30,var:.06,rough:.3,wet:.7,op:.6,seed:171}),palM=wet(T3,0x98CC74,{lob:40,var:.08,rough:.3,wet:.7,op:.42,seed:172}),spM=wet(T3,0xB4DB92,{lob:40,var:.08,rough:.3,wet:.7,op:.45,seed:173}),
+        nucM=wet(T3,0x8E9A86,{lob:30,var:.08,rough:.35,wet:.6,seed:174}),xyM=Object.assign(wet(T3,0x9A6A3C,{folds:30,var:.1,rough:.45,wet:.4,seed:175}),{side:T3.DoubleSide}),phM=wet(T3,0xD9E6A8,{lob:30,var:.06,rough:.35,wet:.6,op:.7,seed:176}),
+        bsM=wet(T3,0xE8F2D2,{lob:30,var:.06,rough:.3,wet:.7,op:.5,seed:177}),gcM=wet(T3,0x5DAE58,{lob:30,var:.08,rough:.3,wet:.7,seed:178});
+      // chloroplasts: lens-shaped, dark green and glossy (instanced)
+      const chlM=new T3.MeshPhysicalMaterial({color:0x2E7D32,roughness:.35,clearcoat:.6,emissive:0x2F9E44,emissiveIntensity:.15}),lens=new T3.SphereGeometry(1,16,12);lens.scale(1,.45,.7);
+      const lensSet=(id,pts,s)=>{const im=new T3.InstancedMesh(lens,chlM,pts.length),m=new T3.Matrix4();pts.forEach((p,i)=>{m.compose(V(...p),new T3.Quaternion().setFromEuler(new T3.Euler(rn(0,3),rn(0,3),rn(0,3))),V(s,s,s));im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true;return K.put(id,im)};
+      K.put('cuticle',new T3.Mesh(new T3.BoxGeometry(W*2,.06,Z*2),wax),{p:[0,1.24,0]});
+      for(let i=0;i<11;i++)K.put('upper',new T3.Mesh(rb(T3,.2,.11,Z-.02),epM),{p:[-W+.21+i*.42,1.08,0]});
+      const chl=[];
+      for(let i=0;i<12;i++)for(const z of [-.4,.4]){const x=-W+.2+i*.385;K.put('palisade',new T3.Mesh(rb(T3,.16,.42,.34,5),palM),{p:[x,.5,z]});K.put('palisade',new T3.Mesh(new T3.SphereGeometry(.045,16,12),nucM),{p:[x+.06,.68,z]});
+        for(let k=0;k<9;k++){const a=k/9*TAU;chl.push([x+Math.cos(a)*.12,.5+rn(-.32,.32),z+Math.sin(a)*.26])}}
+      const cd=lensSet('palisade',chl,.05);
+      const sp=[];for(let i=0;i<16;i++){const x=rn(-W+.25,W-.25),y=rn(-.75,-.05),z=rn(-.5,.5);if(Math.abs(x)<.45&&y<-.15)continue;K.put('spongy',new T3.Mesh(L3.blob(T3,.22,i,.12,32,[1.2,.9,1.6]),spM),{p:[x,y,z]});for(let k=0;k<4;k++)sp.push([x+rn(-.15,.15),y+rn(-.12,.12),z+rn(-.25,.25)])}
+      lensSet('spongy',sp,.045);
+      // vein: xylem and phloem
+      K.put('xylem',new T3.Mesh(rb(T3,.42,.36,Z,4),bsM),{p:[0,-.42,0]});for(const [x,y] of [[-.15,-.32],[.13,-.3],[0,-.22],[-.02,-.44]]){K.put('xylem',new T3.Mesh(new T3.CylinderGeometry(.08,.08,Z*2,32,1,true),xyM),{p:[x,y,0],r:[Math.PI/2,0,0]});for(let q=0;q<7;q++)K.put('xylem',new T3.Mesh(new T3.TorusGeometry(.078,.012,8,32),xyM),{p:[x,y,-Z+.1+q*(Z*2-.2)/6]});}
+      for(const [x,y] of [[-.12,-.6],[.1,-.58],[0,-.66]]){K.put('phloem',new T3.Mesh(new T3.CylinderGeometry(.06,.06,Z*2,24),phM),{p:[x,y,0],r:[Math.PI/2,0,0]});for(let q=0;q<3;q++)K.put('phloem',new T3.Mesh(new T3.CircleGeometry(.058,20),new T3.MeshStandardMaterial({color:0x9AA86A,side:T3.DoubleSide,roughness:.5})),{p:[x,y,-Z*.6+q*Z*.6]});}
+      // lower epidermis with two stomata
+      const stomX=[-1.25,1.25],guards=[];for(let i=0;i<11;i++){const x=-W+.21+i*.42;if(stomX.some(s=>Math.abs(s-x)<.3))continue;K.put('upper',new T3.Mesh(rb(T3,.2,.1,Z-.02),epM),{p:[x,-1.08,0]})}
+      for(const sx of stomX)for(const s of [-1,1]){const g=K.grp('stomata',{p:[sx+s*.13,-1.08,0]});K.put('stomata',new T3.Mesh(rb(T3,.11,.1,.3,4),gcM),{to:g});guards.push({g,s,x:sx})}
+      K.put('cuticle',new T3.Mesh(new T3.BoxGeometry(W*2,.03,Z*2),wax),{p:[0,-1.2,0]});
+      // light rays, and gases moving in and out
+      const rays=[];for(let i=0;i<5;i++){const x=-1.8+i*.9;rays.push(K.cyl('light',[x+.25,2.2,0],.03,1.6,0xFDE047,{r:[0,0,.3],mo:{emissive:0xFDE047,emissiveIntensity:.9}}))}
+      const sun=K.sph('light',[1.1,3.2,-.4],.32,0xFDE047,{mo:{emissive:0xFDB022,emissiveIntensity:1}});
+      const co2=stomX.map(sx=>stream(T3,K,'co2',[[sx,-1.9,.2],[sx,-1.1,0],[sx*.7,-.5,.1],[sx*.5,.3,0]],8,.055,0x64748B,{speed:.12,jitter:.06})),o2=stomX.map(sx=>stream(T3,K,'o2',[[sx*.5,.3,-.1],[sx*.75,-.4,-.15],[sx,-1.1,-.05],[sx+.1,-1.9,-.2]],8,.055,0xEF4444,{speed:.12,jitter:.06}));
+      let ex=null;const tick=dt=>{const L=S.light,c=.25+.75*S.co2,rate=Math.min(L*1.05,c)*(.2+.8*S.open);
+        guards.forEach(o=>{o.g.position.x=o.x+o.s*(.11+.07*S.open)});rays.forEach(m=>{m.material.opacity=.15+.85*L;m.material.transparent=true});sun.scale.setScalar(.6+.6*L);cd.material.emissiveIntensity=.1+.9*rate;
+        co2.forEach(s=>{s.tick(dt,rate*1.4+.05);s.mesh.visible=S.open>.08});o2.forEach(s=>{s.tick(dt,rate*1.4);s.mesh.visible=rate>.04&&S.open>.08});
+        const key=`${S.light}|${S.co2}|${S.open}`;if(ex&&key!==S.key){S.key=key;const lim=S.open<.3?'carbon dioxide (stomata nearly closed)':L*1.05<c?'light intensity':'carbon dioxide concentration';readout(ex,`<b>Light</b> ${Math.round(L*100)}% · <b>CO₂</b> ${(0.04+S.co2*.12).toFixed(2)}% · <b>rate of photosynthesis</b> ${Math.round(rate*100)}% · limited by <b>${lim}</b>`)}return true};
+      return {radius:2.9,view:[.22,.45],ground:2,tick,extra:el=>{ex=el;S.key=''},quizSkip:['co2','o2','light'],
+        sliders:[{icon:'☀️',label:'Light intensity',v:S.light,set:x=>{S.light=x}},{icon:'💨',label:'Carbon dioxide',v:S.co2,set:x=>{S.co2=x}},{icon:'🚪',label:'Stomata open',v:1,set:x=>{S.open=x}}],
+        tags:[['cuticle',[-1.9,1.3,.8],0],['upper',[-1.5,1.08,.8],0],['palisade',[-.5,.6,.75]],['spongy',[1.3,-.45,.6]],['xylem',[0,-.27,.82]],['phloem',[0,-.62,.82]],['stomata',[1.25,-1.1,.35]],['co2',[-1.25,-1.6,.2]],['o2',[1.35,-1.6,-.2]],['light',[1.1,3.2,-.4],0]],
+        journeys:[{name:'Make glucose',c:0x51CF66,steps:[{p:[1.1,2.6,-.2],part:'light',text:'Light falls on the leaf and passes through the transparent upper epidermis.',on:()=>{S.light=.8;S.co2=.6;S.open=1;syncSliders(ex,[.8,.6,1])}},{p:[-.5,.5,.4],part:'palisade',text:'Chlorophyll in the chloroplasts of the palisade cells absorbs the light energy.'},
+          {p:[-1.25,-1.0,.2],part:'co2',text:'Carbon dioxide diffuses in through the open stomata and through the air spaces of the spongy layer.'},{p:[0,-.3,.6],part:'xylem',text:'Water arrives from the roots in the xylem.'},{p:[-.3,.5,.4],part:'palisade',text:'Carbon dioxide and water react to make glucose and oxygen. This is endothermic: it needs the energy from light.'},
+          {p:[1.25,-1.3,0],part:'o2',text:'Oxygen diffuses out through the stomata.'},{p:[0,-.62,.6],part:'phloem',text:'Glucose is turned into sucrose and carried away in the phloem, to be used for respiration or stored as starch.'}]}]}}
+
+};
+})();
+// ---------- A flower, atlas quality: curved velvety petals with veins, green sepals and a leaf, a see-through ovary with ovules, a lobed sticky stigma, stamens with two-lobed anthers dusted with pollen, and a striped bee (replaces the 'flower' view of LIB.flower) ----------
+(()=>{const LIB=L3.LIB,Fl=LIB.flower;if(!Fl)return;const {V,tween,ease,clamp}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const TX={};
+const canvasTex=(T3,key,w,h,draw)=>{if(TX[key])return TX[key];const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T3.CanvasTexture(c);t.anisotropy=8;return TX[key]=t};
+// a curved, cupped blade: u along the length, v across (petals, sepals, leaves)
+const blade=(T3,L,W,cup,curl,tip=.8)=>{const nu=28,nv=14,pos=[],uv=[],idx=[];
+  for(let i=0;i<=nu;i++){const u=i/nu,w=W*Math.pow(Math.sin(Math.PI*Math.min(1,u*.94+.03)),tip)*(1-.15*u);for(let j=0;j<=nv;j++){const v=j/nv*2-1;pos.push(v*w,u*L*(1-.12*curl*u),cup*v*v*w*2+curl*u*u*L*.35);uv.push(j/nv,u)}}
+  for(let i=0;i<nu;i++)for(let j=0;j<nv;j++){const a=i*(nv+1)+j,b=a+nv+1;idx.push(a,b,a+1,b,b+1,a+1)}
+  const g=new T3.BufferGeometry();g.setAttribute('position',new T3.Float32BufferAttribute(pos,3));g.setAttribute('uv',new T3.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();return g};
+const veinsTex=(T3,key,base,tip,vein,edge)=>canvasTex(T3,key,256,512,(x,w,h)=>{const g=x.createLinearGradient(0,h,0,0);g.addColorStop(0,base);g.addColorStop(.55,tip);g.addColorStop(1,edge);x.fillStyle=g;x.fillRect(0,0,w,h);
+  const r=L3.rnd(key.length*7);x.strokeStyle=vein;for(let i=0;i<26;i++){const a=(i/25-.5)*1.5;x.lineWidth=i%5?1:2.2;x.beginPath();x.moveTo(w/2,h);x.bezierCurveTo(w/2+Math.sin(a)*w*.15,h*.6,w/2+Math.sin(a)*w*.42,h*.3,w/2+Math.sin(a)*w*.5*(1+.1*r()),h*.04);x.stroke()}
+  for(let i=0;i<500;i++){x.fillStyle=`rgba(255,255,255,${r()*.08})`;x.fillRect(r()*w,r()*h,2,2)}});
+const old=Fl.build;
+Fl.build=function(T3,K,v){if(v!=='flower')return old.call(this,T3,K,v);const r=L3.rnd(29),rn=(a,b)=>a+(b-a)*r();
+  const S={p:0,goal:0};
+  const petM=new T3.MeshPhysicalMaterial({map:veinsTex(T3,'petal',' #FFF6E8'.trim(),'#F48FB1','rgba(214,51,108,.35)','#E04F8A'),roughness:.55,sheen:1,sheenRoughness:.4,sheenColor:new T3.Color(0xFFD1E3),side:T3.DoubleSide,clearcoat:.15});
+  const sepM=new T3.MeshPhysicalMaterial({map:veinsTex(T3,'sepal2','#6DB04C','#3F8F33','rgba(20,60,20,.35)','#367F2C'),roughness:.5,sheen:.08,sheenColor:new T3.Color(0xE8FFE0),side:T3.DoubleSide});
+  const leafM=new T3.MeshPhysicalMaterial({map:veinsTex(T3,'leaf2','#4E9A3A','#3A8530','rgba(200,240,180,.3)','#2F7428'),roughness:.4,clearcoat:.5,clearcoatRoughness:.3,side:T3.DoubleSide});
+  const stemM=wet(T3,0x5AA545,{folds:14,var:.08,rough:.4,wet:.5,seed:181}),ovM=wet(T3,0x9ED36A,{lob:40,var:.08,rough:.3,wet:.7,op:.5,seed:182}),ovuM=wet(T3,0xF7EFCB,{lob:20,rough:.3,wet:.7,seed:183}),
+    stigM=wet(T3,0xD8E04A,{lob:120,var:.1,rough:.25,wet:.95,bump:.015,seed:184}),filM=wet(T3,0xF8F4E8,{var:.04,rough:.35,wet:.5,seed:185}),antM=wet(T3,0xE89A1C,{lob:60,var:.1,rough:.45,wet:.3,bump:.012,seed:186});
+  // stem with a leaf, receptacle
+  mesh(K,null,tube(T3,[[0,-2.2,0],[.03,-1.4,.02],[0,-.62,0]],u=>.075-.015*u,{rad:24,uv:3}),stemM);
+  mesh(K,null,blade(T3,1.3,.38,.06,.35,.7),leafM,[.05,-1.5,0],{r:[.2,.6,-1.15]});mesh(K,null,sculpt(T3,(x,y,z)=>[x*.16,y*.12,z*.16],{seg:40}),stemM,[0,-.58,0]);
+  // petals and sepals
+  for(let i=0;i<6;i++){const g=K.grp('petal',{r:[0,i/6*TAU,0]});mesh(K,'petal',blade(T3,1.45,.5,.12,.45),petM,[0,-.5,.05],{to:g,r:[-1.0,0,0]})}
+  for(let i=0;i<5;i++){const g=K.grp('sepal',{r:[0,i/5*TAU+.3,0]});mesh(K,'sepal',blade(T3,.75,.22,.1,.3,1),sepM,[0,-.55,.05],{to:g,r:[-2.0,0,0]})}
+  // carpel: see-through ovary with ovules, style and a lobed sticky stigma
+  mesh(K,'ovary',sculpt(T3,(x,y,z)=>{const k=1+.06*Math.sin(Math.atan2(z,x)*3);return [x*.3*k,y*.36,z*.3*k]},{seg:48,uv:1}),ovM,[0,-.35,0],{order:3});
+  for(let i=0;i<8;i++)mesh(K,'ovary',sculpt(T3,(x,y,z)=>[x*.05,y*.065,z*.05],{seg:20}),ovuM,[Math.cos(i*1.6)*.12,-.5+i*.04,Math.sin(i*1.6)*.12]);
+  mesh(K,'style',tube(T3,[[0,-.05,0],[.01,.4,0],[0,.88,0]],u=>.045-.012*u,{rad:16}),stemM);
+  for(let i=0;i<3;i++){const a=i/3*TAU;mesh(K,'stigma',sculpt(T3,(x,y,z)=>[x*.08,y*.05,z*.08],{seg:28,uv:1}),stigM,[Math.cos(a)*.07,.95,Math.sin(a)*.07],{r:[Math.sin(a)*.5,0,Math.cos(a)*.5]})}
+  // stamens: filaments with two-lobed anthers covered in pollen
+  const pg=new T3.SphereGeometry(.012,8,6),pm=new T3.MeshStandardMaterial({color:0xFFD43B,roughness:.6}),pts=[];
+  for(let i=0;i<6;i++){const a=i/6*TAU+.5,top=[Math.cos(a)*.42,.65,Math.sin(a)*.42];mesh(K,'filament',tube(T3,[[Math.cos(a)*.15,-.45,Math.sin(a)*.15],[Math.cos(a)*.3,.1,Math.sin(a)*.3],top],.018,{rad:10}),filM);
+    for(const s of [-1,1]){const p=[top[0]+Math.cos(a+Math.PI/2)*.035*s,top[1]+.08,top[2]+Math.sin(a+Math.PI/2)*.035*s];mesh(K,'anther',new T3.CapsuleGeometry(.04,.1,8,16),antM,p);for(let k=0;k<10;k++)pts.push([p[0]+rn(-.05,.05),p[1]+rn(-.08,.08),p[2]+rn(-.05,.05)])}}
+  const pim=new T3.InstancedMesh(pg,pm,pts.length),m4=new T3.Matrix4();pts.forEach((p,i)=>{m4.makeTranslation(...p);pim.setMatrixAt(i,m4)});pim.instanceMatrix.needsUpdate=true;K.put('anther',pim);
+  // the travelling pollen grain and its tube
+  const pol=mesh(K,'pollen',sculpt(T3,(x,y,z)=>{const k=1+.12*Math.max(0,Math.sin(x*9)*Math.sin(y*9)*Math.sin(z*9));return [x*.05*k,y*.05*k,z*.05*k]},{seg:24}),wet(T3,0xFCC419,{lob:30,rough:.5,wet:.3,seed:187}),[0,0,0]);
+  const tubeL=mesh(K,'pollen',tube(T3,[[0,.95,0],[0,.35,0],[0,-.3,.05]],.015,{rad:8}),new T3.MeshStandardMaterial({color:0xFFF3BF,emissive:0xFFF3BF,emissiveIntensity:.5}));
+  // a bee: striped abdomen, fuzzy thorax, head, glassy veined wings, legs
+  const bee=K.grp(null,{}),beeStripe=canvasTex(T3,'bee',256,64,(x,w,h)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#2B2118':'#F2B01E';x.fillRect(i*w/8,0,w/8+1,h)}});
+  mesh(K,null,sculpt(T3,(x,y,z)=>[x*.16,y*.09,z*.09],{seg:32}),new T3.MeshStandardMaterial({map:beeStripe,roughness:.5}),[-.12,0,0],{to:bee});
+  mesh(K,null,sculpt(T3,(x,y,z)=>[x*.08,y*.08,z*.08],{seg:24}),wet(T3,0x8A5A22,{lob:200,rough:.9,wet:.05,bump:.03,seed:188}),[.06,.01,0],{to:bee});
+  mesh(K,null,new T3.SphereGeometry(.05,20,14),new T3.MeshStandardMaterial({color:0x1E1A16,roughness:.4}),[.15,.0,0],{to:bee});
+  const wingM=new T3.MeshPhysicalMaterial({color:0xEAF4FF,roughness:.05,transparent:true,opacity:.35,side:T3.DoubleSide,clearcoat:1,depthWrite:false});
+  const wings=[-1,1].map(s=>mesh(K,null,sculpt(T3,(x,y,z)=>[x*.14,y*.005,z*.05],{seg:20}),wingM,[0,.07,s*.1],{to:bee,r:[0,s*.4,0]}));
+  for(const s of [-1,1])for(let i=0;i<3;i++)mesh(K,null,tube(T3,[[.02+i*.04,-.03,s*.04],[.03+i*.04,-.1,s*.09],[.01+i*.04,-.16,s*.1]],.006,{rad:6,seg:8}),new T3.MeshStandardMaterial({color:0x2B2118}),null,{to:bee});
+  const tick=(dt,now)=>{tween(S,'p',S.goal,dt,.2);const p=S.p,a=clamp(p/.5),b=clamp((p-.5)/.5);const from=V(Math.cos(.5)*.42,.75,Math.sin(.5)*.42);
+    const t=now*.001;bee.position.set(Math.cos(t)*1.8,1.2+Math.sin(t*3)*.2,Math.sin(t)*1.8);bee.rotation.y=-t+Math.PI;wings.forEach((w,i)=>{w.rotation.x=(i?1:-1)*.5*Math.sin(now*.06)});
+    pol.position.copy(from).lerp(V(0,1.0,0),ease(a));pol.visible=p>.01;tubeL.visible=b>0;tubeL.scale.set(1,Math.max(.01,b),1);tubeL.position.y=(1-b)*.95;return true};
+  return {radius:2.35,view:[.3,.4],ground:2.2,tick,sliders:[{icon:'🐝',label:'Pollinate',v:0,set:x=>{S.goal=x;S.p=x}}],jEnd:()=>{S.goal=0},
+    tags:[['petal',[0,.3,1.1],0],['sepal',[.5,-.7,.4],0],['anther',[.42,.85,.2]],['filament',[.33,.1,.2]],['stigma',[0,1.08,0]],['style',[.05,.4,0]],['ovary',[.1,-.35,.2]],['pollen',()=>pol.position.toArray()]],
+    journeys:[{name:'From pollen to seed',c:0xFCC419,steps:[{p:[.42,.8,.2],part:'anther',text:'Anthers make pollen grains, which contain the male gametes.',on:()=>{S.p=0;S.goal=0}},{p:[0,1.0,0],part:'stigma',text:'An insect carries pollen to the sticky stigma of another flower: pollination.',on:()=>{S.goal=.5}},{p:[0,.4,0],part:'style',text:'The pollen grain grows a tube down through the style.',on:()=>{S.goal=1}},{p:[0,-.35,0],part:'ovary',text:'The male gamete fuses with the ovule: fertilisation. The ovule becomes a seed and the ovary a fruit.'}]}]}};
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
