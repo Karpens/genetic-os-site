@@ -28056,6 +28056,85 @@ Ho.build=function(T3,K,v,...rest){if(v!=='osmo')return prev.call(this,T3,K,v,...
     tags:[['hypo',[-2.2,2.75,0]],['pit',[-2.55,1.3,.3]],['adh',[-1.0,1.05,.4]],['duct',[1.45,2.55,0]],['aqua',[1.75,1.4,.3]],['urine',[2.65,1.05,.6]]],
     journeys:[{name:'Saving water',c:0x845EF7,steps:[[.15,'hypo','You are dehydrated: blood water potential falls and osmoreceptors in the hypothalamus lose water and shrink.'],[.15,'pit','The posterior pituitary releases more ADH into the blood.'],[.15,'adh','ADH travels in the blood to the kidneys.'],[.15,'aqua','It makes collecting duct cells insert aquaporins into their membranes.'],[.15,'duct','Water leaves the duct by osmosis into the salty medulla and back into the blood.'],[.15,'urine','Result: a small volume of concentrated urine.'],[.9,'urine','After drinking lots of water: little ADH, few aquaporins, lots of pale urine.']].map(([w,part,text])=>({p:[0,1,0],part,text,on:()=>{S.w=w;syncSliders(ex,[w]);upd()}}))}]}};
 })();
+// ---------- Specialised cells, atlas quality: a sperm with acrosome, nucleus, a midpiece wrapped in mitochondria and a beating tail; a nerve cell with dendrites and a myelinated axon; a striated muscle fibre with many nuclei and myofibrils at its cut end; a root hair cell with its vacuole and long hair; red blood cells; xylem vessels with spiral lignin; phloem sieve tubes with sieve plates and a companion cell (replaces the 'special' view of LIB.stem) ----------
+(()=>{const LIB=L3.LIB,St=LIB.stem;if(!St)return;const {V}=L3.lx,{wet,tube,sculpt,mesh,rbcGeo,rbcMat}=L3.lx.anat,TAU=Math.PI*2;
+const prev=St.build;
+St.build=function(T3,K,v,...rest){if(v!=='special')return prev.call(this,T3,K,v,...rest);K.lin=0;const r=L3.rnd(33);let t=0;
+  const glass=new T3.MeshPhysicalMaterial({color:0xEEF6FF,roughness:.05,clearcoat:1,transparent:true,opacity:.35,depthWrite:false});glass.userData.keepLook=1;
+  const stand=x=>{mesh(K,null,new T3.CylinderGeometry(.42,.45,.08,48),glass,[x,.04,0]);mesh(K,null,new T3.CylinderGeometry(.43,.43,.012,48),new T3.MeshBasicMaterial({color:0xA5C8E8,transparent:true,opacity:.6}),[x,.085,0])};
+  const G=[];
+  // sperm: head with acrosome cap and nucleus, midpiece with a spiral of mitochondria, a long beating tail
+  {const g=K.grp('sperm',{p:[-2.6,.15,0]});G.push(g);stand(-2.6);
+    mesh(K,'sperm',sculpt(T3,(x,y,z)=>[x*.13,y*.19*(y>0?1:.9),z*.07],{seg:40}),wet(T3,0xC8D8F0,{lob:30,var:.06,rough:.3,wet:.8,seed:331,op:.7}),[0,1.32,0],{to:g,order:3});
+    mesh(K,'sperm',sculpt(T3,(x,y,z)=>[x*.1,y*.14,z*.055],{seg:32}),wet(T3,0x4A3A8A,{lob:30,var:.1,rough:.35,wet:.7,seed:332}),[0,1.29,0],{to:g});
+    mesh(K,'sperm',sculpt(T3,(x,y,z)=>[x*.135,y*.09,z*.075],{seg:32}),wet(T3,0x9BD4E8,{lob:20,rough:.3,wet:.8,seed:333,op:.65}),[0,1.43,0],{to:g,order:4});
+    mesh(K,'sperm',tube(T3,[[0,1.13,0],[0,.95,0]],.035,{rad:14}),wet(T3,0xE0C890,{seed:334}),null,{to:g});const sp=[];for(let k=0;k<=60;k++){const a=k/60*TAU*5;sp.push([Math.cos(a)*.04,1.13-k/60*.18,Math.sin(a)*.04])}
+    mesh(K,'sperm',tube(T3,sp,.016,{rad:8,seg:180}),wet(T3,0xE8784A,{folds:6,rough:.35,wet:.7,seed:335}),null,{to:g});
+    const tailGeo=tube(T3,[...Array(31)].map((_,k)=>[0,.95-k/30*.85,0]),u=>.022*(1-.7*u)+.003,{rad:8,seg:120}),tail=mesh(K,'sperm',tailGeo,wet(T3,0xD8D0C0,{rough:.35,wet:.7,seed:336}),null,{to:g}),P=tailGeo.attributes.position,base=new Float32Array(P.array);
+    g.userData.tick=tt=>{for(let i=0;i<P.count;i++){const y=base[i*3+1],u=(.95-y)/.85;P.setX(i,base[i*3]+Math.sin(u*9-tt*8)*.09*u)}P.needsUpdate=true}}
+  // nerve cell: a star-shaped cell body with dendrites, a myelinated axon and branched endings
+  {const g=K.grp('nerve',{p:[-1.5,.15,0]});G.push(g);stand(-1.5);const nm=wet(T3,0xF0C060,{lob:30,var:.08,rough:.35,wet:.7,seed:341}),my=wet(T3,0xF5F1E6,{folds:10,var:.04,rough:.25,wet:.85,seed:342});
+    mesh(K,'nerve',sculpt(T3,(x,y,z)=>{const a=Math.atan2(z,x),k=1+.35*Math.pow(Math.max(0,Math.cos(a*5)),6)*(1-Math.abs(y));return [x*.17*k,y*.14,z*.17*k]},{seg:48}),nm,[0,1.3,0],{to:g});mesh(K,'nerve',new T3.SphereGeometry(.06,20,14),wet(T3,0x6A4A9A,{seed:343}),[0,1.3,.08],{to:g});
+    for(let i=0;i<5;i++){const a=i/5*TAU+.3,p0=[Math.cos(a)*.17,1.32,Math.sin(a)*.17],p1=[Math.cos(a)*.33,1.42+r()*.1,Math.sin(a)*.33];mesh(K,'nerve',tube(T3,[p0,p1,[Math.cos(a+.3)*.45,1.55,Math.sin(a+.3)*.42]],u=>.025*(1-.7*u),{rad:8}),nm,null,{to:g});mesh(K,'nerve',tube(T3,[p1,[Math.cos(a-.4)*.43,1.4,Math.sin(a-.4)*.43]],.008,{rad:6}),nm,null,{to:g})}
+    mesh(K,'nerve',tube(T3,[[0,1.17,0],[.02,.7,0],[0,.25,0]],.02,{rad:8}),nm,null,{to:g});for(let k=0;k<4;k++){const y0=1.05-k*.21;mesh(K,'nerve',tube(T3,[[0,y0,0],[0,y0-.17,0]],u=>.055*Math.sqrt(Math.min(1,u/.15,(1-u)/.15)),{rad:14,seg:16}),my,null,{to:g})}
+    for(let i=0;i<4;i++){const a=i/4*TAU;mesh(K,'nerve',tube(T3,[[0,.27,0],[Math.cos(a)*.12,.17,Math.sin(a)*.12]],.008,{rad:6}),nm,null,{to:g});mesh(K,'nerve',new T3.SphereGeometry(.022,12,8),nm,[Math.cos(a)*.12,.17,Math.sin(a)*.12],{to:g})}}
+  // muscle fibre: striated, with nuclei at the edge and myofibrils showing at the cut end
+  {const g=K.grp('muscle',{p:[-.4,.15,0]});G.push(g);stand(-.4);const sc=document.createElement('canvas');sc.width=64;sc.height=256;{const x=sc.getContext('2d');x.fillStyle='#C9504A';x.fillRect(0,0,64,256);for(let y=0;y<256;y+=16){x.fillStyle='#8A2A2A';x.fillRect(0,y,64,6);x.fillStyle='#E07A70';x.fillRect(0,y+9,64,2)}}
+    const st=new T3.CanvasTexture(sc);st.wrapS=st.wrapT=T3.RepeatWrapping;st.repeat.set(4,3);const fm=new T3.MeshPhysicalMaterial({color:0xD8D8D8,map:st,bumpMap:st,bumpScale:.004,roughness:.4,clearcoat:.6});fm.userData.keepLook=1;
+    mesh(K,'muscle',new T3.CylinderGeometry(.17,.17,1.25,48,1,true),fm,[0,.78,0],{to:g});mesh(K,'muscle',new T3.SphereGeometry(.17,32,16,0,TAU,Math.PI/2,Math.PI/2),fm,[0,.155,0],{to:g});
+    const mf=new T3.InstancedMesh(new T3.CylinderGeometry(.022,.022,.02,10),wet(T3,0xB03A35,{seed:351}),40),mm=new T3.Matrix4();let k=0;for(let i=0;i<40;i++){const a=r()*TAU,d=Math.sqrt(r())*.15;mm.makeTranslation(Math.cos(a)*d,1.41,Math.sin(a)*d);mf.setMatrixAt(k++,mm)}mf.instanceMatrix.needsUpdate=true;K.put('muscle',mf,{to:g});
+    mesh(K,'muscle',new T3.CircleGeometry(.17,48),wet(T3,0xE8A098,{seed:352}),[0,1.405,0],{to:g,r:[-Math.PI/2,0,0]});
+    for(let i=0;i<7;i++){const a=i*2.1,y=.35+i*.15;mesh(K,'muscle',sculpt(T3,(x,yy,z)=>[x*.025,yy*.06,z*.025],{seg:16}),wet(T3,0x5A3A9A,{seed:353}),[Math.cos(a)*.172,y,Math.sin(a)*.172],{to:g})}}
+  // root hair cell: a box-shaped cell with a wall, a big vacuole, its nucleus and the long hair
+  {const g=K.grp('roothair',{p:[.7,.15,0]});G.push(g);stand(.7);const wall=wet(T3,0xC9D68E,{lob:30,var:.08,rough:.35,wet:.6,seed:361,op:.7});
+    mesh(K,'roothair',sculpt(T3,(x,y,z)=>{const f=v=>Math.sign(v)*Math.pow(Math.abs(v),.4);return [f(x)*.22,f(y)*.3,f(z)*.2]},{seg:32}),wall,[-.1,.45,0],{to:g,order:4});
+    mesh(K,'roothair',tube(T3,[[.08,.6,0],[.25,.85,0],[.3,1.15,.02],[.28,1.5,.05]],u=>.055*(1-.25*u)*(u>.95?Math.sqrt((1-u)/.05):1)+.003,{rad:14}),wall,null,{to:g,order:4});
+    mesh(K,'roothair',sculpt(T3,(x,y,z)=>[x*.15,y*.22,z*.14],{seg:32}),wet(T3,0xC8E4F8,{lob:20,rough:.25,wet:.85,seed:362,op:.5}),[-.12,.43,0],{to:g,order:3});
+    mesh(K,'roothair',new T3.SphereGeometry(.05,20,14),wet(T3,0x6A4A9A,{seed:363}),[.24,1.05,.02],{to:g})}
+  // red blood cells: biconcave discs
+  {const g=K.grp('rbc',{p:[1.8,.15,0]});G.push(g);stand(1.8);const geo=rbcGeo(T3),m=rbcMat(T3);[[0,.4,0,1.3,0],[.08,.85,.05,.4,.5],[-.06,1.3,0,-.7,-.3]].forEach(([x,y,z,a,b])=>mesh(K,'rbc',geo,m,[x,y,z],{to:g,r:[a,b,0],s:[3.6,3.6,3.6]}))}
+  // xylem: hollow vessels with spiral lignin; phloem: sieve tubes, sieve plates and a companion cell
+  {const g=K.grp('xylem',{p:[2.9,.15,-.6]});G.push(g);const wm=wet(T3,0xE8D6A8,{lob:20,var:.06,rough:.4,wet:.5,seed:371,op:.55});wm.side=T3.DoubleSide;const lg=wet(T3,0x8B5E3C,{rough:.4,wet:.5,seed:372});
+    for(let i=0;i<3;i++){mesh(K,'xylem',new T3.CylinderGeometry(.13,.13,.34,32,1,true),wm,[0,.25+i*.36,0],{to:g,order:3});const sp=[];for(let k=0;k<=80;k++){const a=k/80*TAU*5;sp.push([Math.cos(a)*.125,.08+i*.36+k/80*.34,Math.sin(a)*.125])}mesh(K,'xylem',tube(T3,sp,.012,{rad:6,seg:200}),lg,null,{to:g})}}
+  {const g=K.grp('phloem',{p:[2.9,.15,.6]});G.push(g);const sm=wet(T3,0x9CD8A8,{lob:30,var:.06,rough:.35,wet:.7,seed:381,op:.5});sm.side=T3.DoubleSide;const pl=wet(T3,0x2F7A3E,{seed:382});
+    for(let i=0;i<3;i++){mesh(K,'phloem',new T3.CylinderGeometry(.11,.11,.34,32,1,true),sm,[0,.25+i*.36,0],{to:g,order:3});const sg=new T3.CircleGeometry(.11,32);mesh(K,'phloem',sg,pl,[0,.42+i*.36,0],{to:g,r:[-Math.PI/2,0,0]});for(let k=0;k<7;k++){const a=k/7*TAU;mesh(K,'phloem',new T3.CircleGeometry(.018,12),new T3.MeshBasicMaterial({color:0xDFF5E3}),[Math.cos(a)*.06,.423+i*.36,Math.sin(a)*.06],{to:g,r:[-Math.PI/2,0,0]})}}
+    mesh(K,'phloem',tube(T3,[[.16,.1,0],[.16,1.15,0]],u=>.05*Math.sqrt(Math.min(1,u/.05,(1-u)/.05))+.003,{rad:14}),wet(T3,0xB8E8C0,{lob:30,rough:.35,wet:.7,seed:383,op:.75}),null,{to:g});mesh(K,'phloem',new T3.SphereGeometry(.03,12,8),wet(T3,0x5A3A9A,{seed:384}),[.16,.6,0],{to:g})}
+  const tick=dt=>{t+=dt;G.forEach((g,i)=>{if(i<5)g.rotation.y+=dt*.4;if(g.userData.tick)g.userData.tick(t)});G[0].position.x=-2.6+Math.sin(t*3)*.03;return true};
+  return {radius:3,view:[.2,.1],ground:0,tick,
+    tags:[['sperm',[-2.6,1.9,0]],['nerve',[-1.5,1.9,0]],['muscle',[-.4,1.75,0]],['roothair',[.7,1.85,0]],['rbc',[1.8,1.6,0]],['xylem',[2.9,1.4,-.6]],['phloem',[2.9,1.45,.6]]],
+    journeys:[{name:'Built for the job',c:0x1C7ED6,steps:[[-2.6,'sperm','A sperm cell has a tail to swim and lots of mitochondria to power it.'],[-1.5,'nerve','A nerve cell has a long axon to carry impulses and branches to connect to other cells.'],[-.4,'muscle','Muscle cells contain protein filaments that slide to make them contract.'],[.7,'roothair','A root hair cell’s long extension gives a big surface area for absorbing water and minerals.'],[2.9,'xylem','Xylem cells are dead, hollow and strengthened with lignin: tubes for water.']].map(([x,part,text])=>({p:[x,.85,0],part,text}))}]}};
+})();
+// ---------- Cells to organism, atlas quality: a spindle-shaped smooth muscle cell, a block of muscle tissue made of many of them, the stomach with its folds and blood vessels, the digestive system (oesophagus, stomach, liver, small and large intestine) and a see-through body with that system inside (replaces the 'levels' view of LIB.health) ----------
+(()=>{const LIB=L3.LIB,Hl=LIB.health;if(!Hl)return;const {V,carrow}=L3.lx,{wet,tube,sculpt,mesh,ipts,body}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Hl.build;
+Hl.build=function(T3,K,v,...rest){if(v!=='levels')return prev.call(this,T3,K,v,...rest);K.lin=0;const r=L3.rnd(55),items=[];
+  const musM=wet(T3,0xE07A78,{lob:40,var:.1,rough:.35,wet:.7,seed:551,op:.85}),nucM=wet(T3,0x5A3A9A,{lob:20,var:.1,rough:.35,wet:.7,seed:552}),stM=wet(T3,0xE89488,{folds:26,veins:10,veinC:0xA02838,var:.1,rough:.35,wet:.75,seed:553}),
+    liM=wet(T3,0x7E2A22,{lob:180,veins:6,veinC:0x4A1210,var:.1,rough:.3,wet:.8,seed:554}),siM=wet(T3,0xF0A8A0,{folds:30,veins:8,veinC:0xB04050,var:.08,rough:.35,wet:.75,seed:555}),liG=wet(T3,0xE6B48C,{folds:20,veins:6,veinC:0xA05040,var:.1,rough:.4,wet:.6,seed:556}),art=wet(T3,0xC0302E,{rough:.3,wet:.8,seed:557});
+  const spindle=sculpt(T3,(x,y,z)=>{const w=Math.pow(Math.max(0,1-x*x),.8);return [x*.45,y*.09*w+.0,z*.09*w]},{seg:40});
+  // cell
+  const cell=K.grp('cell',{p:[-3,0,0]});mesh(K,'cell',spindle,musM,null,{to:cell,order:3});mesh(K,'cell',sculpt(T3,(x,y,z)=>[x*.13,y*.035,z*.035],{seg:24}),nucM,null,{to:cell});items.push(cell);
+  // tissue: many spindle cells packed side by side
+  const tis=K.grp('tissue',{p:[-1.6,0,0]}),n=54,ti=new T3.InstancedMesh(spindle,wet(T3,0xE07A78,{lob:40,var:.12,rough:.35,wet:.7,seed:558}),n),tn=new T3.InstancedMesh(sculpt(T3,(x,y,z)=>[x*.13,y*.035,z*.035],{seg:16}),nucM,n),mm=new T3.Matrix4(),q=new T3.Quaternion();
+  for(let i=0;i<n;i++){const row=i%6,col=Math.floor(i/6)%3,lay=Math.floor(i/18),p=V((col-1)*.32+(row%2)*.16+(r()-.5)*.05,-.27+row*.11,(lay-1)*.15+(r()-.5)*.03);q.setFromEuler(new T3.Euler(0,(r()-.5)*.2,(r()-.5)*.15));mm.compose(p,q,V(.75,1,1));ti.setMatrixAt(i,mm);tn.setMatrixAt(i,mm)}
+  [ti,tn].forEach(m=>{m.instanceMatrix.needsUpdate=true;K.put('tissue',ipts(m),{to:tis})});items.push(tis);
+  // the stomach: J-shaped, with folds and vessels
+  const stomach=(to,s,id)=>{const P=[[-.3,.55,0],[-.22,.32,0],[-.05,.2,0],[.2,.15,0],[.36,-.05,0],[.28,-.3,0],[.02,-.38,0],[-.22,-.3,0],[-.32,-.18,.02]],rf=u=>u<.12?.06:u>.9?.06+.1*Math.max(0,(1-u)/.1)*0:.06+.24*Math.sin(Math.PI*Math.min(1,(u-.12)/.75))*(u<.5?1:.9);
+    const g=K.grp(id,{to,s:[s,s,s]});mesh(K,id,tube(T3,P,u=>rf(u)*(1+.04*Math.sin(u*80)),{rad:28}),stM,null,{to:g});const cv=new T3.CatmullRomCurve3(P.map(p=>V(...p)));
+    [.35,.55,.75].forEach(u=>{const p=cv.getPointAt(u),nn=cv.getTangentAt(u);mesh(K,id,tube(T3,[p.clone().add(V(nn.y*.32,-nn.x*.32,.05)),p.clone().add(V(nn.y*.2,-nn.x*.2,.2))],.012,{rad:6,seg:6}),art,null,{to:g})});return {g,cv}};
+  const org=K.grp('organ',{p:[0,0,0]});stomach(org,1,'organ');mesh(K,'organ',tube(T3,[[-.32,-.18,.02],[-.45,-.12,.05],[-.5,.05,.08]],.06,{rad:16}),siM,null,{to:org});items.push(org);
+  // the digestive system (built at any size)
+  const system=(to,s,id)=>{const g=K.grp(id,{to,s:[s,s,s]});mesh(K,id,tube(T3,[[-.05,.95,0],[-.05,.7,0],[.0,.45,0]],.035,{rad:12}),stM,null,{to:g});stomach(g,.55,id).g.position.set(.12,.25,0);
+    mesh(K,id,sculpt(T3,(x,y,z)=>{const k=1+.06*L3.nz(x*2,y*2,z*2,3);return [x*.38*k*(x<0?1.15:.8),y*.17*k*(1-.3*x),z*.2*k]},{seg:48,uv:1}),liM,[-.15,.42,.1],{to:g,r:[0,0,-.1]});
+    const lg=[];for(let k=0;k<=40;k++){const a=k/40*TAU*.85-Math.PI*.42;lg.push([Math.cos(a)*.38,-.22+Math.sin(a)*.32,.05])}lg.push([.0,-.6,.05],[.0,-.72,.03]);mesh(K,id,tube(T3,lg,u=>.07*(1+.12*Math.sin(u*120)),{rad:16}),liG,null,{to:g});
+    const si=[];for(let k=0;k<=160;k++){const a=k/160*TAU*5,rr=.06+.18*Math.abs(Math.sin(k/160*Math.PI*3));si.push([Math.cos(a)*rr*1.1,-.2+Math.sin(a)*rr*.8-(k/160)*.08,.12+Math.sin(a*1.3)*.04])}mesh(K,id,tube(T3,si,.035,{rad:10,seg:400}),siM,null,{to:g});return g};
+  const sys=K.grp('system',{p:[1.6,-.1,0]});system(sys,1,'system');items.push(sys);
+  // the organism: a see-through body with the digestive system inside
+  const orgm=K.grp('organism',{p:[3.0,0,0]});body(T3,K,{p:[3.0,-.12,0],s:[.3,.3,.3],op:.34});system(orgm,.32,'organism').position.set(0,.12,.05);items.push(orgm);
+  [0,1,2,3].forEach(i=>carrow(T3,K,null,[[-2.6+i*1.6,.75,0],[-2.3+i*1.6,.9,0],[-2.0+i*1.6,.75,0]],.02,0xADB5BD,{}));
+  const tick=(dt,now)=>{items.forEach((g,i)=>{if(i<4)g.rotation.y=Math.sin(now*.0006+i)*.3});return true};
+  return {radius:3.1,view:[.1,.1],ground:0,tick,tags:[['cell',[-3,.35,0]],['tissue',[-1.6,.5,0]],['organ',[0,.65,0]],['system',[1.6,.95,0]],['organism',[3.0,1.2,0]]],
+    journeys:[{name:'Build up an organism',c:0xF08C8C,steps:[[-3,'cell','A muscle cell is specialised to contract.'],[-1.6,'tissue','Many muscle cells together make muscle tissue.'],[0,'organ','Muscle, glandular and epithelial tissues make up an organ: the stomach.'],[1.6,'system','The stomach works with other organs in the digestive system.'],[3,'organism','All the organ systems together make the organism.']].map(([x,part,text])=>({p:[x,0,0],part,text}))}]}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
