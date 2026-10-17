@@ -28000,6 +28000,62 @@ Cx.build=function(T3,K,v,...rest){if(v!=='secrete')return prev.call(this,T3,K,v,
     tags:[['nucleus',[-1.7,cy+.75,0]],['rer',[-.85,cy+.75,0]],['golgi',[.6,cy+.5,0]],['vesicle',[1.4,cy+.3,0]],['membrane',[2.6,cy+.6,0]],['cyto',[1.5,cy-.35,-.1]],['centriole',[-.6,cy+.95,.3]]],
     journeys:[{name:'A protein’s journey out',c:0xF06595,steps:[{p:[-1.7,cy,0],part:'nucleus',text:'The gene is transcribed into mRNA in the nucleus; the mRNA leaves through a nuclear pore.'},{p:[-.9,cy,0],part:'rer',text:'Ribosomes on the rough ER translate it; the protein folds inside the ER.'},{p:[-.2,cy,0],part:'vesicle',text:'It buds off in a vesicle and travels to the Golgi apparatus.'},{p:[.55,cy,0],part:'golgi',text:'The Golgi modifies it — for example adding carbohydrate — and packages it into secretory vesicles.'},{p:[2.6,cy,0],part:'membrane',text:'The vesicles move along microtubules, fuse with the membrane and release the protein by exocytosis.'}]}]}};
 })();
+// ---------- ADH and water balance, atlas quality: a see-through brain with the hypothalamus, the pituitary on its stalk and the nerve fibres carrying ADH to the posterior lobe; a blood vessel to a kidney cut open to show cortex and medulla; a magnified collecting duct made of cuboidal cells whose aquaporins let water out into the salty medulla and a capillary; a beaker of urine that changes volume and colour (replaces the 'osmo' view of LIB.homeo) ----------
+(()=>{const LIB=L3.LIB,Ho=LIB.homeo;if(!Ho)return;const {V,clamp,readout,syncSliders,txt}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Ho.build;
+Ho.build=function(T3,K,v,...rest){if(v!=='osmo')return prev.call(this,T3,K,v,...rest);const S={w:.5};let ex=null,t=0;K.lin=0;const r=L3.rnd(77),mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1),cc=new T3.Color();
+  // the brain (front to the left), cerebellum and brainstem; hypothalamus and pituitary at its base
+  const B=K.grp(null,{p:[-2.15,2.05,0],r:[0,-Math.PI/2,0]}),brM=wet(T3,0xE2A098,{veins:16,veinC:0xA82838,var:.12,rough:.5,wet:.45,sheen:0,seed:771,op:.58});
+  mesh(K,null,sculpt(T3,(x,y,z)=>{let X=x*.62,Y=y*.5,Z=z*.8;if(y<0&&z>-.2)X*=1+.18*(-y);const k=1+.06*Math.pow(1-Math.abs(Math.sin(L3.nz(x*1.9,y*1.9,z*1.9,7)*3.1)),1.6)-.03;return [X*k,Y*k,Z*k]},{seg:140,uv:3}),brM,null,{to:B,order:6});
+  mesh(K,null,sculpt(T3,(x,y,z)=>{const k=1+.05*Math.sin(y*28);return [x*.42*k,y*.2*k,z*.26*k]},{seg:64,uv:2}),wet(T3,0xD99A94,{folds:30,var:.1,rough:.45,wet:.5,seed:772,op:.55}),[0,-.42,-.58],{to:B,order:5});
+  mesh(K,null,tube(T3,[[0,-.25,-.15],[0,-.55,-.3],[0,-.95,-.42]],u=>.13-.03*u,{rad:20}),wet(T3,0xE8C4B0,{folds:10,var:.06,rough:.4,wet:.55,seed:773,op:.6}),null,{to:B,order:5});
+  const hy=mesh(K,'hypo',sculpt(T3,(x,y,z)=>{const k=1+.1*L3.nz(x*3,y*3,z*3,4);return [x*.16*k,y*.11*k,z*.18*k]},{seg:40}),Object.assign(wet(T3,0xE0508A,{lob:30,var:.1,rough:.35,wet:.7,seed:774}),{emissive:new T3.Color(0xE64980),emissiveIntensity:.25}),[0,-.32,.12],{to:B});
+  mesh(K,'pit',tube(T3,[[0,-.4,.15],[0,-.55,.2],[0,-.66,.21]],.03,{rad:10}),wet(T3,0xC07AC8,{rough:.35,wet:.7,seed:775}),null,{to:B});
+  mesh(K,'pit',sculpt(T3,(x,y,z)=>[x*.1,y*.08,z*.09],{seg:32}),wet(T3,0xD9A0C0,{lob:30,var:.08,rough:.35,wet:.7,seed:776}),[0,-.72,.28],{to:B});
+  mesh(K,'pit',sculpt(T3,(x,y,z)=>[x*.08,y*.07,z*.07],{seg:32}),Object.assign(wet(T3,0x9C4FC0,{lob:30,var:.08,rough:.35,wet:.7,seed:777}),{emissive:new T3.Color(0x845EF7),emissiveIntensity:.2}),[0,-.72,.15],{to:B});
+  // nerve fibres from the hypothalamus down the stalk carry ADH in vesicles
+  const fib=[...Array(4)].map((_,i)=>{const pts=[[-.06+i*.04,-.32,.1],[-.02+i*.013,-.5,.17],[0,-.66,.18],[-.02+i*.015,-.72,.15]];mesh(K,'pit',tube(T3,pts,.006,{rad:6}),wet(T3,0xF5D36A,{seed:778}),null,{to:B});return new T3.CatmullRomCurve3(pts.map(p=>V(...p)))});
+  const adhM=new T3.MeshPhysicalMaterial({color:0x845EF7,emissive:0x845EF7,emissiveIntensity:.6,roughness:.2,clearcoat:1});adhM.userData.keepLook=1;const nv=fib.flatMap((c,i)=>[0,1,2].map(k=>({c,u:k/3+i*.1,m:mesh(K,'adh',new T3.SphereGeometry(.018,12,8),adhM,null,{to:B})})));
+  // the blood vessel from the pituitary to the kidney; ADH in the blood
+  const vpath=[V(-2.3,1.3,0),V(-2.0,1.0,.3),V(-1.75,.9,.38),V(-1.0,.75,.4),V(-.4,.85,.35),V(-.05,1.0,.2)];mesh(K,'adh',tube(T3,vpath,.075,{rad:20}),wet(T3,0xC03030,{veins:2,var:.05,rough:.25,wet:.8,seed:779,op:.55}),null,{order:4});
+  const vcv=new T3.CatmullRomCurve3(vpath),NA=18,adh=new T3.InstancedMesh(new T3.SphereGeometry(.035,14,10),adhM,NA),as=[...Array(NA)].map(()=>({u:r(),o:V(r()-.5,r()-.5,r()-.5).multiplyScalar(.07)}));K.put('adh',ipts(adh,vpath));
+  // the kidney, cut open: cortex, medullary pyramids and pelvis
+  const kd=K.grp('duct',{p:[.35,1.0,0],r:[0,0,.15]}),kM=wet(T3,0x8A2A2A,{veins:10,veinC:0x4A0E14,var:.12,rough:.35,wet:.7,seed:780});
+  const kc=document.createElement('canvas');kc.width=kc.height=512;{const x=kc.getContext('2d');x.fillStyle='#C2524A';x.fillRect(0,0,512,512);x.fillStyle='#9A2E30';for(let i=0;i<7;i++){const a=-1.2+i*.4;x.beginPath();x.moveTo(256+Math.cos(a+Math.PI)*60,256+Math.sin(a+Math.PI)*60);x.lineTo(256+Math.cos(a+Math.PI-.18)*190,256+Math.sin(a+Math.PI-.18)*190);x.lineTo(256+Math.cos(a+Math.PI+.18)*190,256+Math.sin(a+Math.PI+.18)*190);x.fill()}
+    x.strokeStyle='rgba(90,20,30,.6)';x.lineWidth=2;for(let i=0;i<160;i++){const a=Math.PI-1.3+r()*2.6,d=60+r()*130;x.beginPath();x.moveTo(256+Math.cos(a)*d,256+Math.sin(a)*d);x.lineTo(256+Math.cos(a)*(d+18),256+Math.sin(a)*(d+18));x.stroke()}x.fillStyle='#F2D68A';x.beginPath();x.ellipse(300,256,70,45,0,0,TAU);x.fill()}
+  const kshape=(x,y,z)=>{const k=1-.32*Math.exp(-(((x-.95)/.35)**2)-(y/.45)**2);return [x*.3*k,y*.45,z*.18]};mesh(K,'duct',sculpt(T3,kshape,{seg:72,uv:2}),kM,null,{to:kd});
+  const kf=new T3.CircleGeometry(1,64);kf.scale(.29,.44,1);const kfm=new T3.MeshPhysicalMaterial({color:0xD0D0D0,map:new T3.CanvasTexture(kc),roughness:.4,clearcoat:.6});kfm.userData.keepLook=1;mesh(K,'duct',kf,kfm,[0,0,.181],{to:kd});
+  // the collecting duct, magnified: a tube of cuboidal cells (back half), aquaporins on the inside face, the salty medulla and a capillary
+  const D=K.grp('duct',{p:[1.45,0,0]}),rin=.24,rout=.42,rows=10,per=12,cellsM=wet(T3,0xE9B9A0,{lob:60,var:.08,rough:.35,wet:.65,seed:781}),nM=wet(T3,0x6A4A9A,{lob:30,var:.1,rough:.35,wet:.7,seed:782});
+  const cg=sculpt(T3,(x,y,z)=>{const e=.35,f=v=>Math.sign(v)*Math.pow(Math.abs(v),e);return [f(x)*.5,f(y)*.5,f(z)*.5]},{seg:16});const nc=rows*per,ci=new T3.InstancedMesh(cg,cellsM,nc),ni=new T3.InstancedMesh(new T3.SphereGeometry(.045,12,8),nM,nc);let k=0;
+  for(let i=0;i<rows;i++)for(let j=0;j<per;j++,k++){const a=Math.PI*.5+(j+.5)/per*Math.PI,y=.25+i*.2,c=V(Math.sin(a)*(rin+rout)/2,y,Math.cos(a)*(rin+rout)/2);q.setFromAxisAngle(V(0,1,0),a);mm.compose(c,q,V(.092,.19,rout-rin));ci.setMatrixAt(k,mm);mm.compose(c,q,one);ni.setMatrixAt(k,mm)}
+  [ci,ni].forEach(m=>{m.instanceMatrix.needsUpdate=true;K.put('duct',m,{to:D})});ipts(ci,[[0,.3,-.3],[0,2.1,-.3]]);
+  const NAQ=40,aq=new T3.InstancedMesh(new T3.CylinderGeometry(.028,.028,.07,12),Object.assign(new T3.MeshPhysicalMaterial({color:0x1C7ED6,emissive:0x1C7ED6,emissiveIntensity:.25,roughness:.3,clearcoat:.8}),{userData:{keepLook:1}}),NAQ),aqp=[];
+  for(let i=0;i<NAQ;i++){const a=Math.PI*.55+r()*Math.PI*.9,y=.3+r()*1.8,p=V(Math.sin(a)*rin,y,Math.cos(a)*rin);q.setFromUnitVectors(V(0,1,0),V(Math.sin(a),0,Math.cos(a)));aqp.push({p,q:q.clone()})}K.put('aqua',ipts(aq,aqp.slice(0,12).map(o=>o.p.toArray())),{to:D});
+  mesh(K,'duct',new T3.BoxGeometry(1.5,2.2,.5),wet(T3,0xF2DDB0,{lob:60,var:.06,rough:.5,wet:.3,seed:783,op:.3}),[0,1.2,-.75],{to:D,order:2});txt(T3,K,'salty medulla',[-.55,.15,-.5],{h:.1,to:D,part:'duct'});
+  mesh(K,'duct',tube(T3,[[.55,.1,-.6],[.6,1.2,-.62],[.55,2.3,-.6]],.07,{rad:16}),wet(T3,0xC03030,{veins:2,rough:.25,wet:.8,seed:784,op:.7}),null,{to:D});
+  const NW=24,wat=new T3.InstancedMesh(new T3.SphereGeometry(.03,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0x4DABF7,roughness:.1,clearcoat:1,emissive:0x1C5FA0,emissiveIntensity:.2}),{userData:{keepLook:1}}),NW),ws=[...Array(NW)].map(()=>({u:r(),a:Math.PI*.6+r()*Math.PI*.8,y:.4+r()*1.6}));K.put('duct',wat,{to:D});
+  const NF=14,fl=new T3.InstancedMesh(new T3.SphereGeometry(.035,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0xFFD43B,emissive:0xC09000,emissiveIntensity:.2,roughness:.3}),{userData:{keepLook:1}}),NF),fs=[...Array(NF)].map(()=>({u:r(),x:(r()-.5)*.2,z:(r()-.5)*.2}));K.put('urine',fl,{to:D});
+  // a magnifier line from the kidney's medulla to the duct
+  const lk=new T3.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.5,depthWrite:false});K.put('duct',new T3.Mesh(tube(T3,[[.4,1.05,.2],[.95,1.6,.2],[1.2,2.3,0]],.005,{rad:6}),lk));K.put('duct',new T3.Mesh(new T3.TorusGeometry(.09,.006,8,40),lk),{p:[.4,1.05,.2]});
+  // the urine
+  const bk=K.grp('urine',{p:[2.65,0,.6]}),glass=new T3.MeshPhysicalMaterial({color:0xF4FAFF,roughness:.05,clearcoat:1,transparent:true,opacity:.22,depthWrite:false,side:T3.DoubleSide});glass.userData.keepLook=1;
+  mesh(K,'urine',new T3.CylinderGeometry(.3,.28,.8,48,1,true),glass,[0,.4,0],{to:bk,order:5});mesh(K,'urine',new T3.TorusGeometry(.3,.012,8,48),glass,[0,.8,0],{to:bk,r:[Math.PI/2,0,0]});
+  const urM=new T3.MeshPhysicalMaterial({color:0xFAB005,roughness:.05,clearcoat:1,transparent:true,opacity:.82});urM.userData.keepLook=1;const ur=mesh(K,'urine',new T3.CylinderGeometry(.27,.26,1,48),urM,[0,.2,0],{to:bk,order:4});
+  const lvl=()=>clamp(1-S.w);
+  const tick=dt=>{t+=dt;const a=lvl();
+    nv.forEach(n=>{n.u=(n.u+dt*(.15+a*.5))%1;n.m.position.copy(n.c.getPointAt(n.u));n.m.visible=a>.12});
+    as.forEach((s,i)=>{s.u=(s.u+dt*(.06+a*.18))%1;mm.compose(vcv.getPointAt(s.u).add(s.o),q.identity(),V(1,1,1).multiplyScalar(i/NA<a+.1?1:.001));adh.setMatrixAt(i,mm)});adh.instanceMatrix.needsUpdate=true;
+    hy.scale.setScalar(1-a*.2);hy.material.emissiveIntensity=.15+a*.5;
+    aqp.forEach((o,i)=>{mm.compose(o.p,o.q,V(1,1,1).multiplyScalar(i/NAQ<a?1:.001));aq.setMatrixAt(i,mm)});aq.instanceMatrix.needsUpdate=true;
+    ws.forEach((w,i)=>{w.u=(w.u+dt*.35)%1;const d=rin*.6+w.u*.75,sc=i/NW<a?1:.001;mm.compose(V(Math.sin(w.a)*d,w.y,Math.cos(w.a)*d),q.identity(),V(sc,sc,sc));wat.setMatrixAt(i,mm)});wat.instanceMatrix.needsUpdate=true;
+    fs.forEach((f,i)=>{f.u=(f.u+dt*(.1+(1-a)*.25))%1;mm.compose(V(f.x,2.3-f.u*2.2,f.z),q.identity(),one);fl.setMatrixAt(i,mm)});fl.instanceMatrix.needsUpdate=true;
+    const vol=.15+(1-a)*.6;ur.scale.y=vol;ur.position.y=vol/2+.01;urM.color.setHSL(.13,.9,.75-a*.35);return true};
+  const upd=()=>{const a=lvl();if(ex)readout(ex,`Blood water potential: <b>${S.w<.35?'low (dehydrated)':S.w>.65?'high (drunk lots of water)':'normal'}</b> · ADH released: <b>${a>.65?'a lot':a<.35?'very little':'some'}</b> · aquaporins in the collecting duct: ${a>.5?'many':'few'} → ${a>.5?'more water reabsorbed: <b>small volume of concentrated, dark urine</b>':'less water reabsorbed: <b>large volume of dilute, pale urine</b>'}`)};
+  return {radius:2.85,view:[.2,.05],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'💧',label:'Blood water potential',v:S.w,set:x=>{S.w=x;upd()}}],
+    tags:[['hypo',[-2.2,2.75,0]],['pit',[-2.55,1.3,.3]],['adh',[-1.0,1.05,.4]],['duct',[1.45,2.55,0]],['aqua',[1.75,1.4,.3]],['urine',[2.65,1.05,.6]]],
+    journeys:[{name:'Saving water',c:0x845EF7,steps:[[.15,'hypo','You are dehydrated: blood water potential falls and osmoreceptors in the hypothalamus lose water and shrink.'],[.15,'pit','The posterior pituitary releases more ADH into the blood.'],[.15,'adh','ADH travels in the blood to the kidneys.'],[.15,'aqua','It makes collecting duct cells insert aquaporins into their membranes.'],[.15,'duct','Water leaves the duct by osmosis into the salty medulla and back into the blood.'],[.15,'urine','Result: a small volume of concentrated urine.'],[.9,'urine','After drinking lots of water: little ADH, few aquaporins, lots of pale urine.']].map(([w,part,text])=>({p:[0,1,0],part,text,on:()=>{S.w=w;syncSliders(ex,[w]);upd()}}))}]}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
