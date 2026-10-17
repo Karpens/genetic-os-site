@@ -27883,6 +27883,86 @@ Mb.build=function(T3,K,v,...rest){if(!['fluid','diffusion','active','osmosis'].i
   return {radius:2.6,view:[.3,.35],ground:0,tick,tags:[['phos',[2.4,.42,1.3],0],['channel',[0,.85,0]],['carrier',[1.5,.9,.8]],['glyco',[-1.4,1.6,-.6]],['chol',[2.0,.5,-1.2]]],
     journeys:[{name:'Tour the membrane',c:0x4DABF7,steps:[{p:[2.2,.4,1],part:'phos',text:'Two layers of phospholipids: heads face the water outside and inside the cell, tails face each other.'},{p:[0,0,0],part:'channel',text:'Channel proteins form pores that let particular ions through.'},{p:[1.5,0,.8],part:'carrier',text:'Carrier proteins change shape to carry specific molecules across.'},{p:[-1.4,1,-.6],part:'glyco',text:'Glycoproteins carry chains of sugars, used to recognise other cells.'},{p:[2,.2,-1],part:'chol',text:'Cholesterol helps keep the membrane at the right fluidity.'}]}]}};
 })();
+// ---------- Plants up close, atlas quality: a stem cut open like a stained microscope section (pith, a ring of vascular bundles with red lignified xylem vessels, cambium, phloem sieve tubes, fibre caps, cortex and epidermis, with spiral-thickened vessels on the cut faces); the underside of a leaf with jigsaw-shaped epidermal cells, kidney-shaped guard cells with chloroplasts and the spongy mesophyll on the cut edge (replaces the 'tissues' and 'stomata' views of LIB.plantx) ----------
+(()=>{const LIB=L3.LIB,Px=LIB.plantx;if(!Px)return;const {V,readout,syncSliders,txt}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const cv=(w,h,f)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h);return c};
+const tex=(T3,c,o={})=>{const t=new T3.CanvasTexture(c);t.anisotropy=8;if(o.rep){t.wrapS=t.wrapT=T3.RepeatWrapping;t.repeat.set(...o.rep)}return t};
+const mat=(T3,map,o={})=>{const m=new T3.MeshPhysicalMaterial({color:o.c??0xC4C4C4,map,bumpMap:o.bump?map:null,bumpScale:o.bump||0,roughness:o.rough??.5,clearcoat:o.cc??.3,clearcoatRoughness:.4,side:o.side??T3.FrontSide,transparent:o.op!=null,opacity:o.op??1,depthWrite:o.op==null});m.userData.keepLook=1;return m};
+// cells packed into a region: random circles relaxed apart, drawn with walls
+const cells=(x,rnd,n,fit,rmin,rmax,fill,wall,ww)=>{const P=[],G=new Map(),cs=rmax*2,key=(i,j)=>i*100003+j;let tries=0;while(P.length<n&&tries++<n*40){const p=fit(rnd());if(!p)continue;const r=rmin+(rmax-rmin)*rnd(),gi=Math.floor(p[0]/cs),gj=Math.floor(p[1]/cs);let hit=false;
+    for(let i=gi-1;i<=gi+1&&!hit;i++)for(let j=gj-1;j<=gj+1&&!hit;j++){const L=G.get(key(i,j));if(L)for(const q of L)if(Math.hypot(q[0]-p[0],q[1]-p[1])<(q[2]+r)*.92){hit=true;break}}if(hit)continue;const c=[p[0],p[1],r];P.push(c);const k=key(gi,gj);G.has(k)?G.get(k).push(c):G.set(k,[c])}
+  for(const [px,py,r] of P){x.beginPath();x.ellipse(px,py,r,r*(.85+rnd()*.3),rnd()*3,0,TAU);x.fillStyle=typeof fill==='function'?fill():fill;x.fill();x.lineWidth=ww;x.strokeStyle=wall;x.stroke()}return P};
+const prev=Px.build;
+Px.build=function(T3,K,v,...rest){if(v!=='tissues'&&v!=='stomata')return prev.call(this,T3,K,v,...rest);const S={s:0,L:.7,h:0};let ex=null,t=0;K.lin=0;const rnd=L3.rnd(91),mm=new T3.Matrix4(),q=new T3.Quaternion(),one=V(1,1,1);
+  if(v==='tissues'){const R=1.05,H=1.5,y0=.08,NB=8,rb=.62;
+    // cross-section, drawn like a stained slide: polar position (r 0..R, angle θ from the front, x = r sin θ, z = r cos θ)
+    const N=2048,C=N/2,s=C/R,at=(r,th)=>[C+r*Math.sin(th)*s,C+r*Math.cos(th)*s];
+    const top=cv(N,N,(x)=>{x.fillStyle='#CFDB9E';x.fillRect(0,0,N,N);
+      cells(x,rnd,900,u=>{const r=Math.sqrt(rnd())*.45*R,a=u*TAU;return at(r,a)},14,30,()=>`hsl(${68+rnd()*15},50%,${80+rnd()*6}%)`,'#6E7D35',3);
+      cells(x,rnd,2600,u=>{const r=(.82+rnd()*.12)*R,a=u*TAU;return at(r,a)},8,15,()=>`hsl(${95+rnd()*20},45%,${70+rnd()*8}%)`,'#4F6E2A',2.4);
+      for(let i=0;i<NB;i++){const a0=Math.PI/4+i*TAU/NB,inB=(r0,r1,da)=>u=>{const r=r0+(r1-r0)*rnd(),a=a0+(u-.5)*da;return at(r*R,a)};
+        cells(x,rnd,60,inB(.46,.6,.32),7,12,'#EFB8C4','#A0103A',4);cells(x,rnd,14,inB(.48,.6,.26),13,22,'#FBE9EC','#A0103A',6);
+        cells(x,rnd,70,inB(.61,.645,.34),4,6,'#EDE3B0','#8A7A30',2);cells(x,rnd,90,inB(.65,.75,.34),5,9,()=>rnd()<.3?'#5FA585':'#9CCDB4','#2B6B4A',2);cells(x,rnd,60,inB(.76,.8,.3),5,8,'#E79AB0','#8C0D3E',4.5)}
+      for(let i=0;i<360;i++){const a=i/360*TAU;const [px,py]=at(.975*R,a);x.save();x.translate(px,py);x.rotate(-a);x.fillStyle='#A9C873';x.strokeStyle='#4F6E2A';x.lineWidth=2.5;x.fillRect(-9,-14,18,26);x.strokeRect(-9,-14,18,26);x.restore()}
+      x.beginPath();x.arc(C,C,R*s-2,0,TAU);x.lineWidth=7;x.strokeStyle='#B89A2A';x.stroke()});
+    // the cut faces along the stem: pith → xylem (spiral vessels) → cambium → phloem (sieve plates) → fibres → cortex → epidermis
+    const L=cv(1024,1024,(x,w,h)=>{x.fillStyle='#CFDB9E';x.fillRect(0,0,w,h);const X=u=>u*w;const brick=(u0,u1,cw,ch,fill,wall)=>{for(let y=0;y<h;y+=ch){const off=(y/ch%2)*cw/2;for(let xx=X(u0)-off;xx<X(u1);xx+=cw){x.fillStyle=typeof fill==='function'?fill():fill;x.strokeStyle=wall;x.lineWidth=2;const a=Math.max(X(u0),xx),b=Math.min(X(u1),xx+cw);if(b-a<3)continue;x.beginPath();x.roundRect?x.roundRect(a+1,y+1,b-a-2,ch-2,6):x.rect(a+1,y+1,b-a-2,ch-2);x.fill();x.stroke()}}};
+      brick(0,.45,52,60,()=>`hsl(${68+rnd()*15},50%,${80+rnd()*6}%)`,'#6E7D35');
+      for(let k=0;k<5;k++){const c0=X(.46+k*.028),cw=k<2?16:24;x.fillStyle='#FBE9EC';x.fillRect(c0,0,cw,h);x.strokeStyle='#A0103A';x.lineWidth=3;x.strokeRect(c0,0,cw,h);x.lineWidth=3.5;
+        if(k<1)for(let y=0;y<h;y+=22){x.beginPath();x.moveTo(c0,y);x.lineTo(c0+cw,y);x.stroke()}else{x.beginPath();for(let y=-20;y<h+20;y+=14){x.moveTo(c0,y);x.lineTo(c0+cw,y+(k<2?10:12))}x.stroke()}}
+      brick(.6,.645,10,46,'#EDE3B0','#8A7A30');
+      for(let k=0;k<4;k++){const c0=X(.65+k*.026),cw=18;x.fillStyle='#9CCDB4';x.fillRect(c0,0,cw,h);x.strokeStyle='#2B6B4A';x.lineWidth=2;x.strokeRect(c0,0,cw,h);for(let y=30+k*20;y<h;y+=130){x.fillStyle='#4E8F6A';for(let d=0;d<5;d++)x.fillRect(c0+2+d*3.3,y,2,4);x.fillRect(c0,y+5,cw,1.5)}
+        x.fillStyle='#5FA585';x.fillRect(c0+cw,0,6,h);for(let y=10+k*35;y<h;y+=70){x.fillStyle='#5B7F6A';x.beginPath();x.arc(c0+cw+3,y,2.5,0,TAU);x.fill()}}
+      for(let k=0;k<4;k++){const c0=X(.76+k*.01);x.fillStyle='#E79AB0';x.fillRect(c0,0,9,h);x.strokeStyle='#8C0D3E';x.lineWidth=3;x.strokeRect(c0,0,9,h)}
+      brick(.8,.95,30,40,()=>`hsl(${95+rnd()*20},45%,${70+rnd()*8}%)`,'#4F6E2A');for(let i=0;i<500;i++){x.fillStyle='rgba(60,140,60,.65)';x.beginPath();x.arc(X(.8+rnd()*.15),rnd()*h,2.5,0,TAU);x.fill()}
+      brick(.95,1,14,22,'#A9C873','#4F6E2A');x.fillStyle='#C9B458';x.fillRect(w-5,0,5,h)});
+    const g=K.grp(null,{p:[0,y0,0]}),topM=mat(T3,tex(T3,top),{rough:.6,cc:.2,bump:.004,c:0x6E6E6E});const disc=new T3.CircleGeometry(R,128,-Math.PI/4,1.5*Math.PI);disc.rotateX(-Math.PI/2);mesh(K,'cortex',disc,topM,[0,H,0],{to:g});
+    const sideM=wet(T3,0x5FA548,{folds:40,veins:2,veinC:0x3E7A2A,var:.08,rough:.4,wet:.55,seed:901});const side=new T3.CylinderGeometry(R,R,H,128,1,true,Math.PI/4,1.5*Math.PI);const U=side.attributes.uv;for(let i=0;i<U.count;i++)U.setXY(i,U.getY(i)*2,U.getX(i)*6);mesh(K,'epi',side,sideM,[0,H/2,0],{to:g});
+    const LM=mat(T3,tex(T3,L),{rough:.5,cc:.4,bump:.003,side:T3.DoubleSide}),face=th=>{const gm=new T3.BufferGeometry(),d=[Math.sin(th),Math.cos(th)];gm.setAttribute('position',new T3.Float32BufferAttribute([0,0,0,R*d[0],0,R*d[1],R*d[0],H,R*d[1],0,H,0],3));gm.setAttribute('uv',new T3.Float32BufferAttribute([0,0,1,0,1,1,0,1],2));gm.setIndex([0,1,2,0,2,3]);gm.computeVertexNormals();return gm};
+    [Math.PI/4,-Math.PI/4].forEach(th=>mesh(K,'cortex',face(th),LM,null,{to:g}));
+    // glowing overlays on the cut faces for the tissue being shown
+    const band=(id,u0,u1,c)=>{const m=new T3.MeshBasicMaterial({color:c,transparent:true,opacity:0,depthWrite:false,blending:T3.AdditiveBlending,side:T3.DoubleSide});[Math.PI/4,-Math.PI/4].forEach(th=>{const d=[Math.sin(th),Math.cos(th)],o=th>0?.004:-.004,gm=new T3.BufferGeometry(),a=u0*R,b=u1*R,n=[Math.cos(th)*o,-Math.sin(th)*o];
+      gm.setAttribute('position',new T3.Float32BufferAttribute([a*d[0]+n[0],0,a*d[1]+n[1],b*d[0]+n[0],0,b*d[1]+n[1],b*d[0]+n[0],H,b*d[1]+n[1],a*d[0]+n[0],H,a*d[1]+n[1]],3));gm.setIndex([0,1,2,0,2,3]);mesh(K,id,gm,m,null,{to:g,order:5})});return m};
+    const glow={xylem:band('xylem',.46,.6,0xFF3B5C),cambium:band('cambium',.6,.645,0xFFD43B),phloem:band('phloem',.65,.8,0x3BC9DB)};
+    // water rising in the xylem, sugars moving both ways in the phloem (on the cut faces)
+    const dots=(id,n,c,u0,u1,dir)=>{const im=new T3.InstancedMesh(new T3.SphereGeometry(.022,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:c,emissive:c,emissiveIntensity:.5,roughness:.2,clearcoat:1}),{userData:{keepLook:1}}),n),ps=[...Array(n)].map((_,i)=>({u:rnd(),r:(u0+(u1-u0)*rnd())*R,th:i%2?Math.PI/4-.03:-Math.PI/4+.03,d:dir||(i%3?1:-1)}));K.put(id,ipts(im,[[0,y0,0],[0,y0+H,0]]),{to:g});return {im,ps}};
+    const W=dots('xylem',40,0x4DABF7,.47,.59,1),Sg=dots('phloem',30,0xF59F00,.66,.75,0);
+    txt(T3,K,'water ↑',[-1.55,1.25,0],{h:.12,part:'xylem'});txt(T3,K,'sugars ↕',[1.55,1.25,0],{h:.12,part:'phloem'});
+    const tick=dt=>{t+=dt;for(const D of [W,Sg]){D.ps.forEach((p,i)=>{p.u=(p.u+dt*(D===W?.18:.1)+1)%1;const y=(p.d>0?p.u:1-p.u)*H;mm.compose(V(p.r*Math.sin(p.th),y,p.r*Math.cos(p.th)),q,one);D.im.setMatrixAt(i,mm)});D.im.instanceMatrix.needsUpdate=true}
+      const k=['xylem','phloem','cambium'][S.s];for(const n in glow)glow[n].opacity=n===k?.28+.08*Math.sin(t*3):0;return true};
+    const upd=()=>{if(ex)readout(ex,S.s===0?'<b>Xylem</b>: dead hollow vessels with lignin-thickened walls (stained red) and no end walls — water and mineral ions move <b>up</b> in the transpiration stream (cohesion–tension)':S.s===1?'<b>Phloem</b>: living sieve tube elements with sieve plates, each with a companion cell — sucrose and amino acids move <b>up and down</b> (translocation, from source to sink)':'<b>Cambium</b>: a layer of dividing cells between xylem and phloem that makes new vascular tissue')};
+    return {radius:2.1,view:[.45,.3],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'🔍',label:'Show xylem · phloem · cambium',v:0,set:x=>{S.s=Math.round(x*2);upd()}}],
+      tags:[['xylem',[-.4,y0+H+.15,.4]],['phloem',[.55,y0+H+.15,.5]],['cambium',[.1,y0+H+.2,-.7]],['cortex',[0,y0+H+.15,-.3]],['epi',[-1.05,y0+.6,.3]]],
+      journeys:[{name:'Inside a stem',c:0xE03131,steps:[[0,'epi','The epidermis and waxy cuticle cover the stem.'],[0,'xylem','In each vascular bundle the xylem is on the inside: water and minerals go up.'],[1,'phloem','The phloem is on the outside: sugars travel up and down.'],[2,'cambium','Between them, cambium cells divide to make new xylem and phloem.'],[0,'cortex','The bundles form a ring around the cortex and pith, which store food and support the stem.']].map(([s,part,text])=>({p:[0,.8,0],part,text,on:()=>{S.s=s;syncSliders(ex,[s/2]);upd()}}))}]}}
+  // ---- the underside of a leaf ----
+  const sf=K.grp('field',{p:[0,.3,0]}),W=4.4,D=2.4,T=.32;
+  // jigsaw-shaped pavement cells: a wobbly Voronoi pattern
+  const ST=[];for(let i=0;i<6;i++)ST.push([-1.6+(i%3)*1.6,-.5+Math.floor(i/3)*1.0]);
+  const pv=cv(1024,560,(x,w,h)=>{const sites=[...Array(70)].map(()=>[rnd()*w,rnd()*h]),img=x.createImageData(w,h),cs=sites.map(()=>[150+rnd()*20,205+rnd()*15,120+rnd()*20]);
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){const qx=px+9*Math.sin(py*.09)+6*Math.sin(px*.13+py*.05),qy=py+9*Math.sin(px*.08)+6*Math.cos(py*.12);let a=1e9,b=1e9,k=0;for(let i=0;i<sites.length;i++){const dx=qx-sites[i][0],dy=qy-sites[i][1],d=dx*dx+dy*dy;if(d<a){b=a;a=d;k=i}else if(d<b)b=d}
+      const e=Math.sqrt(b)-Math.sqrt(a),o=(py*w+px)*4,c=cs[k];if(e<3.5){img.data[o]=70;img.data[o+1]=100;img.data[o+2]=50}else{img.data[o]=c[0];img.data[o+1]=c[1];img.data[o+2]=c[2]}img.data[o+3]=255}x.putImageData(img,0,0)});
+  const mes=cv(1024,128,(x,w,h)=>{x.fillStyle='#CFE3B0';x.fillRect(0,0,w,h);cells(x,rnd,260,()=>[rnd()*w,18+rnd()*(h-40)],8,16,()=>`hsl(${100+rnd()*20},45%,${62+rnd()*10}%)`,'#4F7A35',2);for(let i=0;i<900;i++){x.fillStyle='rgba(40,120,40,.7)';x.beginPath();x.arc(rnd()*w,18+rnd()*(h-40),2.2,0,TAU);x.fill()}
+    x.fillStyle='#E6F0D0';x.fillRect(0,0,w,12);x.fillRect(0,h-14,w,14);x.strokeStyle='#7E9A50';x.lineWidth=2;for(let xx=0;xx<w;xx+=22){x.strokeRect(xx,0,22,12);x.strokeRect(xx+11,h-14,22,14)}});
+  const topM=mat(T3,tex(T3,pv),{rough:.55,cc:.3,bump:.003,c:0x7A7A7A}),sideM=mat(T3,tex(T3,mes,{rep:[1,1]}),{rough:.5,cc:.3}),bodyM=wet(T3,0x9CC77A,{var:.06,seed:902});
+  mesh(K,'field',new T3.BoxGeometry(W,T,D),[sideM,sideM,topM,bodyM,sideM,sideM],[0,-T/2,0],{to:sf});
+  // guard cells: two kidney-shaped cells around each pore, with chloroplasts inside
+  const gcM=wet(T3,0x4FA03A,{lob:30,var:.1,rough:.3,wet:.8,seed:903,op:.88}),chM=wet(T3,0x2B8A3E,{lob:20,var:.1,rough:.35,wet:.7,seed:904}),poreM=new T3.MeshBasicMaterial({color:0x18230F});
+  const gGeo=new T3.TorusGeometry(.17,.075,24,48,Math.PI);gGeo.rotateX(Math.PI/2);gGeo.scale(1,.75,1.35);
+  const sto=ST.map(([x,z])=>{const pair=[-1,1].map(s=>{const g=K.grp('guard',{to:sf,p:[x,.02,z]}),m=mesh(K,'guard',gGeo,gcM,null,{to:g,r:[0,s>0?0:Math.PI,0]});m.rotation.y=s>0?Math.PI/2:-Math.PI/2;for(let k=0;k<5;k++){const a=-1.2+k*.6;mesh(K,'guard',new T3.SphereGeometry(.022,12,8),chM,[s*.17*Math.abs(Math.cos(a)),0,.23*Math.sin(a)],{to:g})}g.userData.s=s;return g});
+    const pore=mesh(K,'pore',new T3.CircleGeometry(.1,32),poreM,[x,.04,z],{to:sf,r:[-Math.PI/2,0,0]});return {pair,pore,x,z}});
+  // water vapour out and CO₂ in (carbon atom with two oxygens)
+  const vap=new T3.InstancedMesh(new T3.SphereGeometry(.03,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0xA5D8FF,roughness:.1,clearcoat:1,transparent:true,opacity:.7,depthWrite:false}),{userData:{keepLook:1}}),24),vs=[...Array(24)].map((_,i)=>({u:rnd(),k:i%6,j:V(rnd()-.5,0,rnd()-.5)}));K.put('vap',ipts(vap,ST.map(([x,z])=>[x,.9,z])));
+  const cC=new T3.InstancedMesh(new T3.SphereGeometry(.03,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0x343A40,roughness:.3}),{userData:{keepLook:1}}),12),cO=new T3.InstancedMesh(new T3.SphereGeometry(.027,12,8),Object.assign(new T3.MeshPhysicalMaterial({color:0xE03131,roughness:.3}),{userData:{keepLook:1}}),24),cs2=[...Array(12)].map((_,i)=>({u:rnd(),k:i%6,a:rnd()*3}));K.put('co2',ipts(cC,ST.map(([x,z])=>[x+.3,1.2,z])));K.put('co2',cO);
+  mesh(K,'field',new T3.TorusGeometry(.75,.02,12,96),Object.assign(new T3.MeshBasicMaterial({color:0x1C7ED6}),{}),[1.6,.1,.5],{to:sf,r:[Math.PI/2,0,0]});
+  const tick=dt=>{t+=dt;const o=S.L*(1-S.h*.9);sto.forEach(s=>{s.pair.forEach(g=>{g.position.x=s.x+g.userData.s*(.015+o*.06);g.scale.set(1+o*.15,1,1)});s.pore.scale.set(.25+o*.9,.15+o*1.6,1)});
+    vs.forEach((p,i)=>{p.u=(p.u+dt*.35)%1;const [x,z]=ST[p.k];mm.compose(V(x+p.j.x*.3*p.u,.35+p.u*1.0,z+p.j.z*.3*p.u),q.identity(),V(1,1,1).multiplyScalar(o>.15?1-p.u*.5:.001));vap.setMatrixAt(i,mm)});
+    cs2.forEach((p,i)=>{p.u=(p.u+dt*.3)%1;const [x,z]=ST[p.k],c=V(x+.25*(1-p.u),.35+1.1*(1-p.u),z),sc=o>.15?1:.001;mm.compose(c,q.identity(),V(sc,sc,sc));cC.setMatrixAt(i,mm);[-1,1].forEach((s,k)=>{mm.compose(V(c.x+s*.05*Math.cos(p.a+t),c.y,c.z+s*.05*Math.sin(p.a+t)),q,V(sc,sc,sc));cO.setMatrixAt(i*2+k,mm)})});
+    [vap,cC,cO].forEach(m=>m.instanceMatrix.needsUpdate=true);return true};
+  const upd=()=>{const o=S.L*(1-S.h*.9);if(ex)readout(ex,`Light <b>${Math.round(S.L*100)}%</b>, water stress <b>${Math.round(S.h*100)}%</b> → stomata <b>${o>.5?'open':o>.2?'half open':'closed'}</b> · ${o>.2?'guard cells are turgid (K⁺ and water moved in) and bend apart: CO₂ diffuses in, water vapour diffuses out':'guard cells are flaccid: the pore closes, saving water but stopping CO₂ getting in'} · stomatal density = stomata counted ÷ area of the field of view (here 3 in 0.2 mm² = 15 per mm²)`)};
+  return {radius:2.6,view:[.65,.1],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'💡',label:'Light',v:S.L,set:x=>{S.L=x;upd()}},{icon:'🏜️',label:'Drought (water stress)',v:0,set:x=>{S.h=x;upd()}}],
+    tags:[['guard',[-1.8,.7,-.5]],['pore',[0,.6,-.5]],['vap',[1.6,1.5,.2]],['co2',[1.9,1.4,-.5]],['field',[1.6,.6,1.3]]],
+    journeys:[{name:'Opening and closing',c:0x2F9E44,steps:[[.9,0,'guard','In light, guard cells pump in K⁺ ions; water follows by osmosis and they become turgid.'],[.9,0,'pore','Their thick inner walls make them bend apart: the stoma opens.'],[.9,0,'co2','CO₂ diffuses in for photosynthesis…'],[.9,0,'vap','…and water vapour diffuses out: transpiration.'],[.9,1,'guard','In drought, abscisic acid makes guard cells lose water: they close to save water.'],[.9,0,'field','Count stomata in a field of view and divide by its area: stomatal density.']].map(([L,h,part,text])=>({p:[0,.5,0],part,text,on:()=>{S.L=L;S.h=h;syncSliders(ex,[L,h]);upd()}}))}]}};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
