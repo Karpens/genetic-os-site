@@ -7223,7 +7223,7 @@ LIB.genetics={title:['🧩','Inheritance in 3D','Choose the parents’ alleles a
   more:{p1:['Homozygous: TT or tt. Heterozygous: Tt.','Like two copies of the same or different recipe.','Mendel worked this out with pea plants in the 1860s.'],p2:['Each parent gives one allele.','Like dealing one card from a pair.','Mendel grew about 28 000 pea plants.'],gamete:['Gametes are haploid.','Like half a set of instructions.','Each human egg or sperm has 23 chromosomes.'],grid:['Ratios are probabilities, not certainties.','Like coin tosses.','The Punnett square was invented by Reginald Punnett.'],offspring:['Tt × Tt → 3 tall : 1 short.','Like mixing colours where one always wins.','With small families, ratios are often different from the prediction.'],allele:['Capital letter = dominant.','Like a loud voice drowning out a quiet one.','Most characteristics are controlled by many genes, not one.'],
     mum:['Females: XX.','Like a pair of the same card.','The X chromosome carries about 900 genes.'],dad:['Males: XY.','Like one of each card.','The Y chromosome carries the SRY gene that starts male development.'],girl:['50% chance each time.','Like tossing a coin.','Slightly more boys than girls are born.'],boy:['The sperm decides the sex.','Like the second card dealt.','Sex-linked disorders like colour blindness are more common in boys.'],
     unaff:['Two carriers can have an affected child.','Like two people each holding a hidden card.','About 1 in 25 people in the UK carry the CF allele.'],carrier:['Carrier: Ff.','Like a hidden message.','Carriers can be found by genetic testing.'],affected:['Affected: ff.','Like both cards being the same hidden card.','CF causes thick mucus in the lungs and digestive system.'],male:['Squares = male.','Like a key on a map.','Pedigrees are used by genetic counsellors.'],female:['Circles = female.','Like a key on a map.','Shaded shapes show affected people.']},
-  build(T3,K,v){const plant=(id,tall,p,to)=>{const g=K.grp(id,{p,to}),h=tall?.9:.38;K.cyl(id,[0,h/2,0],.025,h,0x2F9E44,{to:g});for(let i=0;i<(tall?4:2);i++){const y=.15+i*(h-.15)/(tall?4:2),s=i%2?1:-1;K.put(id,new T3.Mesh(new T3.SphereGeometry(.09,12,8),K.mat(id,0x51CF66,{})),{to:g,p:[s*.08,y,0],s:[1.4,.5,.8]})}
+  build(T3,K,v){const plant=(id,tall,p,to)=>{if(L3.lx.peaPlant)return L3.lx.peaPlant(T3,K,id,tall,p,to);const g=K.grp(id,{p,to}),h=tall?.9:.38;K.cyl(id,[0,h/2,0],.025,h,0x2F9E44,{to:g});for(let i=0;i<(tall?4:2);i++){const y=.15+i*(h-.15)/(tall?4:2),s=i%2?1:-1;K.put(id,new T3.Mesh(new T3.SphereGeometry(.09,12,8),K.mat(id,0x51CF66,{})),{to:g,p:[s*.08,y,0],s:[1.4,.5,.8]})}
       K.sph(id,[0,h+.04,0],.07,0xBE4BDB,{to:g,gloss:1});K.cyl(id,[0,.04,0],.12,.08,0x8B5E3C,{to:g,r2:.1});return g};
     if(v==='cross'){const G=['TT','Tt','tt'],S={a:1,b:1};const base=K.box('grid',[0,-.03,0],[3.2,.06,3.2],0xF8F9FA,{});
       for(let i=0;i<=3;i++){K.box('grid',[-1.5+i*1,.01,.5],[.03,.03,3],0xCED4DA,{});K.box('grid',[.5,.01,-1.5+i*1],[3,.03,.03],0xCED4DA,{})}
@@ -28438,6 +28438,17 @@ Mi.build=function(T3,K,v,...rest){if(v!=='zones')return prev.call(this,T3,K,v,..
     tags:[['plate',[-1.6,.4,0]],['disc',[.15,.45,-.45]],['zone',[-.95,.4,-.45]],['ruler',[-.4,.35,1.55]]],
     journeys:[{name:'Comparing antimicrobials',c:0x1C7ED6,steps:[[0,'plate','Spread bacteria evenly over the agar to make a lawn.'],[0,'disc','Add paper discs soaked in different antibiotics, and a control disc soaked in water.'],[1,'zone','After incubation, clear zones show where the bacteria couldn’t grow.'],[1,'ruler','Measure the diameter, halve it and work out the area: πr². Bigger zone, more effective.']].map(([g,part,text])=>({p:[-.4,.3,0],part,text,on:()=>{S.t=g;syncSliders(ex,[g]);upd()}}))}]}};
 })();
+// ---------- Pondweed in the light-intensity practical: a real Canadian pondweed (Elodea) sprig — a cut stem with whorls of three narrow, veined leaves — in place of the simple shapes (adds to the 'bubbles' view of LIB.photolab) ----------
+(()=>{const LIB=L3.LIB,Pl=LIB.photolab;if(!Pl)return;const {wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a);
+const prev=Pl.build;
+Pl.build=function(T3,K,v,...rest){const probe=K.grp(null),root=probe.parent;root.remove(probe);const M=prev.call(this,T3,K,v,...rest);if(v!=='bubbles'||!M)return M;
+  let host=null;const c={};root.traverse(o=>{if(o.isMesh&&o.userData.part==='weed'&&o.material&&o.material.color){o.material.color.getHSL(c);if(c.h>.2&&c.h<.45&&c.s>.3&&!o.material.transparent){o.visible=false;host=host||o.parent}}});if(!host)return M;
+  const lf=wet(T3,0x3E8A2E,{veins:6,veinC:0xA8D890,var:.1,rough:.4,wet:.7,sheen:0,seed:771}),st=wet(T3,0x5A9A3A,{folds:8,var:.06,rough:.4,wet:.6,sheen:0,seed:772});
+  const pts=[[0,.1,0],[.04,.4,.01],[-.02,.75,0],[0,1.05,0]];host.add(Object.assign(new THREE.Mesh(tube(T3,pts,.012,{rad:8}),st),{userData:{part:'weed'}}));
+  const cv=new THREE.CatmullRomCurve3(pts.map(p=>V(...p))),leaf=sculpt(T3,(x,y,z)=>{const t=(x+1)/2;return [t*.11,y*.003,z*.016*Math.sin(Math.PI*Math.min(1,t*1.15))]},{seg:16}),n=15*3,im=new THREE.InstancedMesh(leaf,lf,n),m=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
+  for(let i=0;i<15;i++){const p=cv.getPointAt(.04+i*.064);for(let k=0;k<3;k++){e.set(0,k*TAU/3+i*.6,.65+i*.01);q.setFromEuler(e);m.compose(p,q,V(1,1,1).multiplyScalar(1-i*.03));im.setMatrixAt(i*3+k,m)}}
+  im.instanceMatrix.needsUpdate=true;im.userData.part='weed';im.userData.pts=[[0,.2,0],[0,1,0]];host.add(im);return M};
+})();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
 const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed||5));return c};
@@ -28492,6 +28503,19 @@ P.cow=(T3,K,g,id,o)=>{const hm=M(T3,'cow',()=>pm(T3,friesian(T3),0xFFFFFF,{rough
     for(const x of [.19,-.19]){add(g,id,tube(T3,[[x,.26,s*.08],[x,.12,s*.08],[x,.03,s*.08]],u=>.032*(1-.3*u),{rad:10}),hm);add(g,id,new T3.CylinderGeometry(.03,.034,.03,12),dk,[x,.015,s*.08])}}
   add(g,id,ell(T3,.06,.045,.06),pk,[-.1,.2,0]);add(g,id,tube(T3,[[-.27,.38,0],[-.3,.25,0],[-.29,.12,0]],.008,{rad:6}),hm);add(g,id,ell(T3,.015,.03,.015),dk,[-.29,.11,0])};
 L3.lx.propX=P;
+// a pea plant in a terracotta pot: zigzag stem, compound leaves with paired leaflets, big stipules, curling tendrils and a purple pea flower
+L3.lx.peaPlant=(T3,K,id,tall,p,to)=>{const g=K.grp(id,{p,to}),h=tall?.9:.38,T=THREE,lf=M(T3,'pealeaf',()=>wet(T3,0x4A8A26,{veins:8,veinC:0x9CC878,var:.1,rough:.5,wet:.3,sheen:0,seed:381})),st=M(T3,'peastem',()=>wet(T3,0x5E9A2C,{folds:10,var:.06,rough:.45,wet:.4,sheen:0,seed:382})),
+    pot=M(T3,'pot',()=>wet(T3,0xB8643A,{lob:60,var:.1,rough:.85,wet:.05,sheen:0,seed:383})),soil=M(T3,'soil',()=>wet(T3,0x4A3424,{lob:200,var:.2,rough:.95,wet:0,sheen:0,seed:384})),fl=M(T3,'peaflower',()=>wet(T3,0xA05AD8,{veins:10,veinC:0x6A2AA0,var:.08,rough:.4,wet:.4,sheen:.3,seed:385}));
+  add(g,id,new T.LatheGeometry([[0,0],[.085,0],[.1,.08],[.115,.1],[.12,.1],[.12,.11],[.105,.11],[.1,.1]].map(([x,y])=>new T.Vector2(x,y)),32),pot);add(g,id,new T.CircleGeometry(.1,24),soil,[0,.095,0],[-Math.PI/2,0,0]);
+  const n=tall?5:2,pts=[[0,.09,0]];for(let i=1;i<=n;i++)pts.push([(i%2?.012:-.012),.09+i*(h-.09)/n,0]);add(g,id,tube(T3,pts,u=>.013*(1-.4*u)+.004,{rad:8}),st);
+  const leaflet=ell(T3,.045,.004,.025,3,.02),stip=ell(T3,.035,.003,.03,5,.02);
+  for(let i=1;i<=n;i++){const [x0,y0]=pts[i],s=i%2?1:-1,a=s*.3;
+    add(g,id,stip,lf,[x0+s*.02,y0-.01,.02],[0,a,-s*.3]);add(g,id,stip,lf,[x0+s*.02,y0-.01,-.02],[0,-a,-s*.3]);
+    const pe=[[x0,y0,0],[x0+s*.08,y0+.03,0],[x0+s*.15,y0+.05,0]];add(g,id,tube(T3,pe,.004,{rad:5,seg:10}),st);
+    [.05,.11].forEach(t=>{const px=x0+s*t,py=y0+.02+t*.2;for(const z of [1,-1])add(g,id,leaflet,lf,[px,py,z*.028],[z*.35,0,s*.1])});
+    const tw=[];for(let k=0;k<=24;k++){const a2=k/24*TAU*1.6;tw.push([x0+s*(.15+.05*k/24),y0+.05+Math.sin(a2)*.015,Math.cos(a2)*.015])}add(g,id,tube(T3,tw,.0025,{rad:4,seg:40}),st)}
+  const ft=pts[n];add(g,id,ell(T3,.018,.025,.018),st,[ft[0],h+.01,0]);add(g,id,sculpt(T3,(x,y,z)=>[x*.055,(y+.2)*.05,z*.01+Math.pow(x,2)*.015],{seg:24}),fl,[ft[0],h+.06,-.005]);
+  for(const s of [1,-1])add(g,id,ell(T3,.025,.02,.012),fl,[ft[0]+s*.02,h+.035,.015],[0,s*.4,0]);return g};
 // biology models build with the realistic props
 const bio='heart lungs digest enzyme plant mito membrane pathogen immune division genetics evolution ecosystem kidney endocrine eye muscle molbio flower dnatech lab health nervous brainscan cellx stem foodlab gameto pollute popn biodiv evox enzx sensory pgr inherit heartlab homeo cvd immx clonex gmo biolab biomath gasx membx resp micro photolab plantx diabetes tfluid conflict genetech geneexp dnacode ans'.split(' ');
 // flat green ground gets a grass texture and flat blue water gets ripples (their own colours stay, so colour changes still work)
