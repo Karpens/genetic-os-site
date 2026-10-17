@@ -28135,6 +28135,73 @@ Hl.build=function(T3,K,v,...rest){if(v!=='levels')return prev.call(this,T3,K,v,.
   return {radius:3.1,view:[.1,.1],ground:0,tick,tags:[['cell',[-3,.35,0]],['tissue',[-1.6,.5,0]],['organ',[0,.65,0]],['system',[1.6,.95,0]],['organism',[3.0,1.2,0]]],
     journeys:[{name:'Build up an organism',c:0xF08C8C,steps:[[-3,'cell','A muscle cell is specialised to contract.'],[-1.6,'tissue','Many muscle cells together make muscle tissue.'],[0,'organ','Muscle, glandular and epithelial tissues make up an organ: the stomach.'],[1.6,'system','The stomach works with other organs in the digestive system.'],[3,'organism','All the organ systems together make the organism.']].map(([x,part,text])=>({p:[x,0,0],part,text}))}]}};
 })();
+// ---------- DNA to protein and DNA packing, molecular-illustration quality: a double helix of sugar-phosphate beads and coloured base pairs that unzips for RNA polymerase while mRNA grows; a nucleus with pores; a two-part ribosome reading mRNA codons while L-shaped tRNAs bring amino acids and the polypeptide grows; nucleosomes of eight lumpy histones wrapped in DNA, the coiled chromatin fibre and a banded chromosome of two sister chromatids (replaces the 'protein' and 'chromo' views of LIB.dnacode) ----------
+(()=>{const LIB=L3.LIB,Dc=LIB.dnacode;if(!Dc)return;const {V,clamp,readout,txt,syncSliders}=L3.lx,{wet,tube,sculpt,mesh,ipts}=L3.lx.anat,TAU=Math.PI*2;
+const phys=(T3,c,o={})=>{const m=new T3.MeshPhysicalMaterial({color:c,roughness:o.rough??.45,clearcoat:o.cc??.3,clearcoatRoughness:.3,emissive:o.e?new T3.Color(o.e):new T3.Color(0),emissiveIntensity:o.ei??0,transparent:o.op!=null,opacity:o.op??1,depthWrite:o.op==null,side:o.side??T3.FrontSide});m.userData.keepLook=1;return m};
+const BC={A:0xC0221C,T:0xD08000,U:0xD08000,C:0x1858A8,G:0x1E7E2A},CP={A:'T',T:'A',C:'G',G:'C'},lumpy=(sx,sy,sz,seed,T3)=>sculpt(T3,(x,y,z)=>{const k=1+.12*L3.nz(x*2,y*2,z*2,seed)+.05*L3.nz(x*5,y*5,z*5,seed+1);return [x*sx*k,y*sy*k,z*sz*k]},{seg:32});
+// an instanced double helix along x: beads for the backbones, two-coloured rungs for the base pairs; set(xb,w) opens a bubble round xb
+const helix=(T3,K,id,seq,o={})=>{const n=seq.length,dx=o.dx??.085,R=o.R??.12,g=K.grp(id,{p:o.p,to:o.to,r:o.r}),one=V(1,1,1),mm=new T3.Matrix4(),q=new T3.Quaternion(),c=new T3.Color(),Y=V(0,1,0);
+  const bb=new T3.InstancedMesh(new T3.SphereGeometry(.034,14,10),phys(T3,0xFFFFFF,{rough:.3}),n*2),rg=new T3.InstancedMesh(new T3.CylinderGeometry(.02,.02,1,10),phys(T3,0xFFFFFF,{rough:.4,cc:.4}),n*2);
+  for(let i=0;i<n;i++){bb.setColorAt(i,c.setHex(o.ca??0x26365C));bb.setColorAt(n+i,c.setHex(o.cb??0x3B5288));rg.setColorAt(i,c.setHex(BC[seq[i]]));rg.setColorAt(n+i,c.setHex(BC[CP[seq[i]]]))}
+  [bb,rg].forEach(m=>K.put(id,m,{to:g}));const A=V(),B=V(),M=V(),d=V();
+  const set=(xb=-99,w=.4,lift=.13)=>{for(let i=0;i<n;i++){const x=i*dx,op=clamp(1-Math.abs(x-xb)/w),e=op*op*(3-2*op),a=i*TAU/10*(1-e)+e*Math.PI*.5;
+      A.set(x,R*Math.cos(a)+e*lift,R*Math.sin(a));B.set(x,R*Math.cos(a+2.4)-e*lift,R*Math.sin(a+2.4));if(e>0){A.z*=1-e;B.z*=1-e}M.copy(A).add(B).multiplyScalar(.5);
+      mm.compose(A,q.identity(),one);bb.setMatrixAt(i,mm);mm.compose(B,q,one);bb.setMatrixAt(n+i,mm);
+      for(const [P,k] of [[A,i],[B,n+i]]){d.copy(M).sub(P);const L=d.length()*(1-.55*e);d.normalize();q.setFromUnitVectors(Y,d);mm.compose(P.clone().addScaledVector(d,L/2),q,V(1,L,1));rg.setMatrixAt(k,mm)}}
+    bb.instanceMatrix.needsUpdate=rg.instanceMatrix.needsUpdate=true;return {A,B}};
+  set();ipts(bb,[...Array(Math.min(12,n))].map((_,i)=>[i*n/12*dx,0,0]));return {g,set,n,dx}};
+// a single nucleotide chain (mRNA): backbone beads and base sticks
+const chain=(T3,K,id,seq,o={})=>{const n=seq.length,g=K.grp(id,{p:o.p,to:o.to}),mm=new T3.Matrix4(),q=new T3.Quaternion(),c=new T3.Color(),one=V(1,1,1);
+  const bb=new T3.InstancedMesh(new T3.SphereGeometry(.034,14,10),phys(T3,o.cb??0x4A2496,{rough:.45}),n),st=new T3.InstancedMesh(new T3.CylinderGeometry(.02,.02,.13,10),phys(T3,0xFFFFFF,{rough:.4,cc:.4}),n);
+  for(let i=0;i<n;i++){st.setColorAt(i,c.setHex(BC[seq[i]]));mm.compose(V(i*(o.dx??.085),0,0),q,one);bb.setMatrixAt(i,mm);mm.compose(V(i*(o.dx??.085),o.up??.08,0),q,one);st.setMatrixAt(i,mm)}
+  [bb,st].forEach(m=>{m.instanceMatrix.needsUpdate=true;K.put(id,ipts(m,[[0,0,0],[n*(o.dx??.085),0,0]]),{to:g})});return {g,bb,st,n,show:k=>{bb.count=st.count=Math.max(0,Math.min(n,k))}}};
+// a nucleosome: eight lumpy histones wrapped one and two-thirds times in DNA
+const nucleosome=(T3,K,id,p,to,hm,dm)=>{const g=K.grp(id,{p,to});for(let i=0;i<8;i++){const a=(i%4)/4*TAU+(i<4?0:.4),y=i<4?.035:-.035;mesh(K,id,lumpy(.06,.045,.06,i+3,T3),hm[i%2],[Math.cos(a)*.055,y,Math.sin(a)*.055],{to:g})}
+  const w=[];for(let k=0;k<=60;k++){const a=k/60*TAU*1.65;w.push([Math.cos(a)*.13,-.06+k/60*.12,Math.sin(a)*.13])}mesh(K,id,tube(T3,w,.022,{rad:8,seg:120}),dm,null,{to:g});return g};
+const prev=Dc.build;
+Dc.build=function(T3,K,v,...rest){if(v!=='protein'&&v!=='chromo')return prev.call(this,T3,K,v,...rest);const S={z:0};let ex=null,t=0;K.lin=0;
+  if(v==='protein'){
+    // the nucleus (back half, with pores)
+    const nm=phys(T3,0xB9A4F0,{op:.28,rough:.3,cc:.8,side:T3.DoubleSide}),ng=new T3.SphereGeometry(1.05,64,40,Math.PI,Math.PI);mesh(K,null,ng,nm,[-1.75,1.15,0],{order:1});
+    const pr=new T3.InstancedMesh(new T3.TorusGeometry(.05,.016,8,18),phys(T3,0x7048E8),26),mm=new T3.Matrix4(),q=new T3.Quaternion();for(let i=0;i<26;i++){const th=.3+Math.random()*2.5,ph=Math.PI+.2+Math.random()*(Math.PI-.4),d=V(-Math.cos(ph)*Math.sin(th),Math.cos(th),Math.sin(ph)*Math.sin(th));q.setFromUnitVectors(V(0,0,1),d);mm.compose(V(-1.75,1.15,0).addScaledVector(d,1.05),q,V(1,1,1));pr.setMatrixAt(i,mm)}pr.instanceMatrix.needsUpdate=true;K.put(null,pr);
+    // the gene being transcribed, RNA polymerase and the growing mRNA
+    const gene='TACCGATCGTTCAAGCTA',H=helix(T3,K,'dna',gene,{p:[-2.55,1.2,0],dx:.1});const pol=mesh(K,'polymerase',lumpy(.19,.17,.17,5,T3),wet(T3,0x40C057,{lob:120,var:.1,rough:.4,wet:.4,sheen:0,seed:601,op:.75}),[-2.5,1.2,0],{order:3});
+    const mr=[...gene].map(b=>({A:'U',T:'A',C:'G',G:'C'})[b]).join(''),MR=chain(T3,K,'mrna',mr,{p:[-2.55,.96,0],dx:.1,up:.08});
+    // in the cytoplasm: mRNA on a ribosome, tRNAs and the polypeptide
+    const mrna='AUGGCUAGCAAGUUCGAU',M2=chain(T3,K,'mrna',mrna,{p:[-.2,.62,.6],dx:.16,up:.09});
+    const rib=K.grp('ribosome',{p:[0,.7,.6]});mesh(K,'ribosome',lumpy(.36,.24,.3,8,T3),wet(T3,0x8E9DB8,{lob:200,var:.1,rough:.45,wet:.35,sheen:0,seed:602}),[0,.3,0],{to:rib});mesh(K,'ribosome',lumpy(.3,.15,.26,11,T3),wet(T3,0xC1CCE0,{lob:200,var:.1,rough:.45,wet:.35,sheen:0,seed:603}),[0,-.13,0],{to:rib});
+    const AC=[0xE03131,0xF76707,0xFAB005,0x40C057,0x1C7ED6,0x7048E8],pp=AC.map(c=>mesh(K,'chain',lumpy(.075,.075,.075,c%17,T3),phys(T3,c,{rough:.35}),[0,0,0]));
+    const trna=K.grp('trna',{p:[0,0,0]}),tm=wet(T3,0xF06595,{lob:60,var:.08,rough:.35,wet:.6,sheen:0,seed:604});mesh(K,'trna',tube(T3,[[0,-.05,0],[0,.22,0],[-.03,.3,0]],.045,{rad:12}),tm,null,{to:trna});mesh(K,'trna',tube(T3,[[-.03,.3,0],[.18,.33,0]],.045,{rad:12}),tm,null,{to:trna});
+    const aa=mesh(K,'trna',lumpy(.075,.075,.075,7,T3),phys(T3,0xE03131,{rough:.35}),[.22,.36,0],{to:trna});
+    const lab=txt(T3,K,'',[1.5,1.95,.6],{h:.15,part:'chain'});let last=-1;const AAS={AUG:'Met',GCU:'Ala',AGC:'Ser',AAG:'Lys',UUC:'Phe',GAU:'Asp'},aas=[...Array(6)].map((_,i)=>AAS[mrna.slice(i*3,i*3+3)]);
+    const tick=dt=>{t+=dt*.12;const T=t%1,tx=clamp(T/.35);H.set(tx*1.75,.38);pol.position.x=-2.55+tx*1.75;MR.show(Math.round(tx*gene.length));
+      const tl=clamp((T-.4)/.55),k=Math.floor(tl*6);rib.position.x=-.2+.24+k*.48;pp.forEach((c,i)=>{c.visible=i<k;const j=k-1-i;c.position.set(rib.position.x-.05-j*.13*Math.cos(j*.7),1.22+j*.07+Math.sin(j*1.3)*.05,.6+Math.sin(j*.9)*.12)});
+      trna.visible=tl>0&&k<6;trna.position.set(rib.position.x+.2,.82+(1-((tl*6)%1))*.45,.6);aa.material.color.setHex(AC[Math.min(5,k)]);
+      const st=T<.35?0:T<.4?1:2;lab.userData.set(k?aas.slice(0,k).join('–'):'');if(ex&&st!==last){last=st;readout(ex,['<b>Transcription</b>: RNA polymerase unzips the gene and builds a complementary mRNA strand (U instead of T)','The mRNA leaves the nucleus through a pore','<b>Translation</b>: the ribosome reads each codon; tRNAs with matching anticodons bring amino acids, joined by peptide bonds'][st]+` · codons AUG GCU AGC AAG UUC GAU → ${aas.join('–')}`)}return true};
+    return {radius:2.8,view:[.2,.15],ground:0,tick,extra:el=>{ex=el;last=-1},
+      tags:[['dna',[-1.7,1.8,0]],['polymerase',()=>pol.position.clone().add(V(0,.35,0))],['mrna',[.6,.3,.6]],['ribosome',()=>rib.position.clone().add(V(0,.65,0))],['trna',()=>trna.position.clone().add(V(.2,.45,0))],['chain',[1.5,2.2,.6]]],
+      journeys:[{name:'Gene to protein',c:0x7048E8,steps:[{p:[-1.7,1.2,0],part:'dna',text:'In the nucleus, part of the DNA unzips. One strand is the template.'},{p:[-1.5,1.2,.15],part:'polymerase',text:'RNA polymerase joins RNA nucleotides into mRNA, complementary to the template.'},{p:[.4,.6,.6],part:'mrna',text:'The mRNA leaves the nucleus and attaches to a ribosome.'},{p:[.6,.9,.6],part:'trna',text:'tRNA molecules with matching anticodons bring amino acids, one codon at a time.'},{p:[1.2,1.25,.6],part:'chain',text:'Peptide bonds join the amino acids into a polypeptide, which folds into a protein.'}]}]}}
+  // ---- packing DNA ----
+  const hm=[wet(T3,0x9C7BE0,{lob:60,var:.08,rough:.4,wet:.5,sheen:0,seed:611}),wet(T3,0xC48ADB,{lob:60,var:.08,rough:.4,wet:.5,sheen:0,seed:612})],dm=wet(T3,0x4D8FD6,{folds:30,var:.05,rough:.3,wet:.7,sheen:0,seed:613});
+  const H=helix(T3,K,'helix','ATGCGTACGTTAGCATGCATCG',{p:[-2.3,.0,0],r:[0,0,Math.PI/2],dx:.07});const hx=H.g;
+  const ns=K.grp('nucleo',{p:[-1.0,1.1,0]});for(let i=0;i<5;i++)nucleosome(T3,K,'nucleo',[0,-.6+i*.3,0],ns,hm,dm).rotation.set(.3,i*1.1,0);mesh(K,'nucleo',tube(T3,[[.1,-.8,0],[.12,-.65,.05],[-.1,-.45,0],[.1,-.18,-.05],[-.1,.12,0],[.12,.42,.05],[-.1,.7,0],[.05,.85,0]],.02,{rad:8}),dm,null,{to:ns});
+  const fb=K.grp('fibre',{p:[.3,1.1,0]}),oc=new T3.InstancedMesh(lumpy(.1,.07,.1,21,T3),hm[0],26),wr=new T3.InstancedMesh(new T3.TorusGeometry(.115,.022,8,24),dm,26),mm=new T3.Matrix4(),q=new T3.Quaternion();
+  for(let i=0;i<26;i++){const a=i*TAU/6,p=V(Math.cos(a)*.17,-.75+i*.06,Math.sin(a)*.17);q.setFromEuler(new T3.Euler(Math.PI/2,0,-a));mm.compose(p,q,V(1,1,1));oc.setMatrixAt(i,mm);wr.setMatrixAt(i,mm)}[oc,wr].forEach(m=>{m.instanceMatrix.needsUpdate=true;K.put('fibre',ipts(m),{to:fb})});
+  // the chromosome: two sister chromatids of folded chromatin, banded, joined at the centromere
+  const ch=K.grp('chrom',{p:[1.9,1.1,0]}),band=document.createElement('canvas');band.width=64;band.height=512;{const x=band.getContext('2d');x.fillStyle='#8E6ADE';x.fillRect(0,0,64,512);const bs=[30,60,95,150,170,210,300,330,360,400,430,470];bs.forEach((y,i)=>{x.fillStyle=i%2?'#5A3AA8':'#B79CF0';x.fillRect(0,y,64,12+(i%3)*8)})}
+  const bt=new T3.CanvasTexture(band),cm=wet(T3,0x9C7BE0,{lob:240,var:.1,rough:.45,wet:.4,sheen:0,bump:.02,seed:614});cm.map=bt;cm.color.setHex(0xFFFFFF);
+  const arm=sculpt(T3,(x,y,z)=>{const k=1+.06*L3.nz(x*4,y*4,z*4,9),w=y>.92?Math.sqrt(Math.max(0,1-((y-.92)/.08)**2))*.6+.4:1;return [x*.13*k*w,y*.5,z*.13*k*w]},{seg:48,uv:1});
+  for(const s of [-1,1])for(const u of [1,-1]){mesh(K,'chrom',arm,cm,[s*.13+s*u*.0,u*.42,0],{to:ch,r:[0,0,-s*u*.22]})}
+  mesh(K,'chrom',lumpy(.1,.08,.12,31,T3),wet(T3,0xE05050,{lob:30,seed:615}),[0,0,0],{to:ch});const gn=mesh(K,'gene',new T3.CylinderGeometry(.15,.15,.07,32),phys(T3,0xFAB005,{e:0xFAB005,ei:.3}),[1.9-.15,1.1+.5,0],{r:[0,0,.22]});
+  [0,1,2].forEach(i=>K.arrow(null,[-2.0+i*1.3,1.1,0],[-1.4+i*1.3,1.1,0],0xADB5BD,{w:.02}));
+  const upd=()=>{const z=S.z;[hx,ns,fb,ch].forEach((g,i)=>{const d=Math.abs(z*3-i);g.scale.setScalar(1+Math.max(0,1-d)*.25)});if(ex)readout(ex,['Double helix: two strands of nucleotides, 2 nm wide','Nucleosomes: DNA wrapped twice round eight histone proteins','Chromatin fibre: nucleosomes coil up','Chromosome: before division, two identical sister chromatids joined at the centromere · a gene is at one locus; alleles are different versions'][Math.round(z*3)])};
+  hx.position.set(-2.3,1.1-H.n*H.dx/2,0);
+  const tick=dt=>{t+=dt;hx.rotation.y=t*.3;ns.rotation.y=t*.2;fb.rotation.y=t*.25;return true};
+  return {radius:2.8,view:[.15,.15],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'📦',label:'Packing level',v:0,set:x=>{S.z=x;upd()}}],
+    tags:[['helix',[-2.3,2.2,0]],['nucleo',[-1.0,2.0,0]],['fibre',[.3,2.0,0]],['chrom',[1.9,2.15,0]],['gene',[2.25,1.6,0]]],
+    journeys:[{name:'Packing DNA',c:0x7048E8,steps:[[0,'helix','DNA is a double helix — about 2 metres of it in every human cell.'],[1/3,'nucleo','It wraps round histone proteins, like thread on reels: nucleosomes.'],[2/3,'fibre','The nucleosomes coil into a thicker chromatin fibre.'],[1,'chrom','Before division the chromosome has two identical chromatids joined at the centromere.'],[1,'gene','A gene is one section of the DNA, at a particular locus.']].map(([z,part,text])=>({p:[0,1.1,0],part,text,on:()=>{S.z=z;syncSliders(ex,[z]);upd()}}))}]}};
+L3.lx.mol={helix,chain,nucleosome,lumpy:(T3,sx,sy,sz,seed)=>lumpy(sx,sy,sz,seed,T3)};
+})();
 // ---------- Biology 3D: realistic materials part by part for the cell-level and micro models (blood and vessels, cell division, immunity, pathogens, gametes, hormones, plant transport) ----------
 (()=>{const LIB=L3.LIB,{wet}=L3.lx.anat,TAU=Math.PI*2;
 const partOf=(o,root)=>{let p=o;while(p&&p!==root){if(p.userData&&p.userData.part)return p.userData.part;p=p.parent}return null};
