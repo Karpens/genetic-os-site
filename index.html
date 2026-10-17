@@ -17201,13 +17201,22 @@ LIB.nervous={title:['🧠','The nervous system in 3D','Follow an impulse from a 
       journeys:[{name:'Two systems',c:0xFF922B,steps:[{p:[0,2.4,0],part:'brain',text:'The brain and spinal cord form the central nervous system. Everything else is peripheral.'},{p:[-.8,1.3,0],part:'somatic',text:'Somatic nerves go to skeletal muscles — the movements you choose.'},{p:[0,1.6,-.12],part:'symp',text:'The sympathetic chain beside the spine prepares the body for fight or flight.',on:()=>{S.f=1;syncSliders(ex,[1]);upd()}},{p:[.07,1.62,.13],part:'heart',text:'The heart races, the pupils widen and the airways open up.'},{p:[.08,1.9,.05],part:'para',text:'The vagus nerve, parasympathetic, calms things down again: rest and digest.',on:()=>{S.f=0;syncSliders(ex,[0]);upd()}}]}]}}};
 
 // ===== Brain scans: CT, MRI, fMRI and PET =====
-const brainSlice=(x,W,H,mode,h,task)=>{x.fillStyle='#05070D';x.fillRect(0,0,W,H);const cx=W/2,cy=H/2,R=Math.min(W,H)*.4*Math.sqrt(Math.max(.05,1-((h-.55)/.5)**2));const wob=a=>1+.03*Math.sin(a*9)+.02*Math.sin(a*23);
-  const path=(sc)=>{x.beginPath();for(let i=0;i<=120;i++){const a=i/120*TAU,r=R*sc*wob(a);x.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r)}x.closePath()};
-  if(mode==='ct'){x.fillStyle='#EDEDED';path(1.08);x.fill();x.fillStyle='#7B7B7B';path(1);x.fill();x.fillStyle='#4A4A4A';x.beginPath();x.ellipse(cx-R*.12,cy,R*.08,R*.32,0,0,TAU);x.ellipse(cx+R*.12,cy,R*.08,R*.32,0,0,TAU);x.fill()}
-  else{x.fillStyle=mode==='pet'?'#1B1E2B':'#1F1F1F';path(1.08);x.fill();const g=x.createRadialGradient(cx,cy,R*.2,cx,cy,R);g.addColorStop(0,mode==='pet'?'#262A3F':'#9A9A9A');g.addColorStop(1,mode==='pet'?'#353A58':'#D8D8D8');x.fillStyle=g;path(1);x.fill();
-    if(mode!=='pet'){x.strokeStyle='#5C5C5C';x.lineWidth=2;for(let k=0;k<26;k++){const a=k/26*TAU,r=R*wob(a);x.beginPath();x.moveTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r);x.lineTo(cx+Math.cos(a)*r*.62,cy+Math.sin(a)*r*.75);x.stroke()}x.fillStyle='#202020';x.beginPath();x.ellipse(cx-R*.12,cy,R*.07,R*.3,0,0,TAU);x.ellipse(cx+R*.12,cy,R*.07,R*.3,0,0,TAU);x.fill();x.fillStyle='#BDBDBD';x.fillRect(cx-1.5,cy-R*.95,3,R*1.9)}
-    const spots=mode==='fmri'?[[[-.35,-.55],[.35,-.55]],[[-.6,-.1]],[[-.05,.75],[.05,.75]],[[.6,.05]]][task]||[]:mode==='pet'?[[-.45,-.4],[.45,-.4],[-.5,.3],[.5,.3],[0,.7],[-.15,-.1],[.2,0]]:[];
-    for(const [sx,sy] of spots){const gx=cx+sx*R*.85,gy=cy+sy*R,rr=R*(mode==='pet'?.28:.18),gg=x.createRadialGradient(gx,gy,0,gx,gy,rr);gg.addColorStop(0,mode==='pet'?'rgba(255,240,80,.95)':'rgba(255,60,30,.95)');gg.addColorStop(.5,mode==='pet'?'rgba(255,120,0,.6)':'rgba(255,170,0,.55)');gg.addColorStop(1,'rgba(255,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,rr,0,TAU);x.fill()}}
+const brainSlice=(x,W,H,mode,h,task)=>{x.fillStyle='#030405';x.fillRect(0,0,W,H);const cx=W/2,cy=H/2,R=Math.min(W,H)*.4*Math.sqrt(Math.max(.05,1-((h-.55)/.5)**2));const wob=a=>1+.03*Math.sin(a*9)+.02*Math.sin(a*23);
+  const path=(f)=>{x.beginPath();for(let i=0;i<=360;i++){const a=i/360*TAU,r=f(a);x.lineTo(cx+Math.cos(a)*r*.85,cy+Math.sin(a)*r)}x.closePath()};
+  // the cortex folds: gyri (fingers of white matter) reaching out into the grey matter, sulci cutting in from the surface
+  const gyr=a=>R*(.6+.2*Math.pow(Math.abs(Math.sin(a*12+1.7*Math.sin(a*3)+.6*Math.sin(a*7))),.55))*wob(a),outer=a=>R*wob(a),pet=mode==='pet',ct=mode==='ct';
+  const scalp=ct?'#F2F2F2':pet?'#0B0D1A':'#C9C9C9',bone=ct?'#FFFFFF':'#141414',gm=ct?'#6E6E6E':pet?'#2A2F55':'#7C7C7C',wm=ct?'#7E7E7E':pet?'#1C2040':'#D2D2D2',csf=ct?'#2E2E2E':pet?'#0B0D1A':'#1A1A1A';
+  x.fillStyle=scalp;path(a=>outer(a)*1.13);x.fill();x.fillStyle=bone;path(a=>outer(a)*(ct?1.1:1.08));x.fill();if(ct){x.fillStyle='#BDBDBD';path(a=>outer(a)*1.06);x.fill()}
+  x.fillStyle=csf;path(a=>outer(a)*1.02);x.fill();x.fillStyle=gm;path(outer);x.fill();
+  x.fillStyle=wm;path(gyr);x.fill();
+  x.strokeStyle=csf;x.lineWidth=Math.max(1.5,W/220);for(let k=0;k<48;k++){const a=(k+.5)/48*TAU+.07*Math.sin(k*1.7),ro=outer(a),ri=gyr(a+.06)*.98;x.beginPath();x.moveTo(cx+Math.cos(a)*ro*.85,cy+Math.sin(a)*ro);x.quadraticCurveTo(cx+Math.cos(a+.03)*(ro+ri)/2*.85,cy+Math.sin(a+.03)*(ro+ri)/2,cx+Math.cos(a+.02)*ri*.85*1.02,cy+Math.sin(a+.02)*ri*1.02);x.stroke()}
+  // ventricles (butterfly), midline fissure and basal grey matter
+  x.fillStyle=csf;x.beginPath();x.moveTo(cx,cy-R*.32);for(const s of [-1,1]){x.bezierCurveTo(cx+s*R*.06,cy-R*.36,cx+s*R*.2,cy-R*.3,cx+s*R*.15,cy-R*.1);x.bezierCurveTo(cx+s*R*.1,cy+R*.05,cx+s*R*.2,cy+R*.25,cx+s*R*.12,cy+R*.32);x.bezierCurveTo(cx+s*R*.05,cy+R*.2,cx,cy+R*.1,cx,cy-R*.32)}x.fill();
+  x.strokeStyle=csf;x.lineWidth=Math.max(2,W/160);x.beginPath();x.moveTo(cx,cy-R*1.02);x.lineTo(cx,cy-R*.35);x.moveTo(cx,cy+R*.35);x.lineTo(cx,cy+R*1.02);x.stroke();
+  if(!pet){x.fillStyle=gm;for(const s of [-1,1]){x.beginPath();x.ellipse(cx+s*R*.3,cy+R*.02,R*.08,R*.17,s*.2,0,TAU);x.fill()}}
+  const spots=mode==='fmri'?[[[-.35,-.55],[.35,-.55]],[[-.6,-.1]],[[-.05,.75],[.05,.75]],[[.6,.05]]][task]||[]:pet?[[-.45,-.4],[.45,-.4],[-.5,.3],[.5,.3],[0,.7],[-.15,-.1],[.2,0]]:[];
+  if(pet){x.globalCompositeOperation='lighter';for(let a=0;a<TAU;a+=.18){const r0=(outer(a)+gyr(a))/2,gx=cx+Math.cos(a)*r0*.85,gy=cy+Math.sin(a)*r0,gg=x.createRadialGradient(gx,gy,0,gx,gy,R*.16);gg.addColorStop(0,'rgba(40,120,255,.55)');gg.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,R*.16,0,TAU);x.fill()}x.globalCompositeOperation='source-over'}
+  for(const [sx,sy] of spots){const gx=cx+sx*R*.85,gy=cy+sy*R,rr=R*(pet?.28:.18),gg=x.createRadialGradient(gx,gy,0,gx,gy,rr);gg.addColorStop(0,pet?'rgba(255,240,80,.95)':'rgba(255,60,30,.95)');gg.addColorStop(.5,pet?'rgba(255,120,0,.6)':'rgba(255,170,0,.55)');gg.addColorStop(1,'rgba(255,0,0,0)');x.fillStyle=gg;x.beginPath();x.arc(gx,gy,rr,0,TAU);x.fill()}
   x.fillStyle='#FFFFFF';x.font=`700 ${Math.round(H*.07)}px Inter,sans-serif`;x.fillText(mode.toUpperCase(),14,H*.1)};
 LIB.brainscan={title:['🩻','Brain scans in 3D','Slide a patient into the scanner and slice through the brain with CT, MRI, fMRI and PET — see what each technique shows and what it can’t.'],
   match:{biology:/brain imaging|scanning techniques|ct.{0,4}mri|fmri|\bpet scan/i,psychology:/brain scann|scanning techniques|ways of studying the brain|fmri|\beeg\b|\berps?\b|brain imaging/i},
@@ -17226,7 +17235,7 @@ LIB.brainscan={title:['🩻','Brain scans in 3D','Slide a patient into the scann
     K.tor('scanner',[-1.05,1.0,0],.66,.04,v==='ct'?0xFAB005:v==='pet'?0xE03131:0x339AF0,{r:[0,Math.PI/2,0],mo:{emissive:v==='ct'?0xFAB005:v==='pet'?0xE03131:0x339AF0,emissiveIntensity:.6}});
     K.box(null,[.2,.55,0],[2.6,.1,.6],0xCED4DA,{gloss:1});K.box(null,[.6,.27,0],[.3,.5,.3],0xADB5BD,{});const pt=K.grp('patient',{p:[-.4,.7,0]});const f=fig(T3,K,'patient',[0,0,0],0x74C0FC,{h:1.6,to:pt});f.rotation.z=Math.PI/2;f.position.set(0,.12,0);
     const BR=V(1.25,1.9,0),brain=own(K.blob('brain',BR.toArray(),.55,0xF8C8DC,{seed:6,n:.12,sc:[1.2,.85,1],glass:.55}));K.blob('brain',[BR.x,BR.y-.45,0],.2,0xF3A0BE,{seed:2,sc:[1,.8,1],glass:.6});const sl=own(K.box('slice',[BR.x,BR.y,0],[1.6,.012,1.3],0x339AF0,{glass:.45}));
-    const scr=panel(T3,K,'screen',[2.15,.95,-.6],1.2,1.2,(x,W,H)=>brainSlice(x,W,H,v,S.h,S.task),{res:256});K.box('screen',[2.15,.95,-.66],[1.3,1.3,.06],0x212529,{});scr.rotation.y=-.35;
+    const scr=panel(T3,K,'screen',[2.15,.95,-.6],1.2,1.2,(x,W,H)=>brainSlice(x,W,H,v,S.h,S.task),{res:512});K.box('screen',[2.15,.95,-.66],[1.3,1.3,.06],0x212529,{});scr.rotation.y=-.35;
     const TK=['rest','moving the right hand','reading words','looking at pictures','speaking'],TA=[[0,0],[[-.35,-.55],[.35,-.55]]];let t=0;
     const upd=()=>{sl.position.y=BR.y-.5+S.h*1;scr.userData.redraw();const T=['','Moving: motor cortex','Reading: Broca’s and Wernicke’s areas','Seeing: visual cortex (occipital lobe)','Speaking: Broca’s area'];
       const info={ct:'X-rays from many angles → slices · shows bone, bleeding and tumours · fast and cheap · ionising radiation',mri:'Magnetic field + radio waves → detailed soft tissue · no ionising radiation · slow, loud, expensive',fmri:`Measures blood oxygen (BOLD) · task: <b>${['rest — no strong activity','moving the hand: motor cortex','reading: language areas','looking: visual cortex at the back'][S.task]}</b> · shows activity seconds after it happens`,pet:'Radioactive glucose tracer → bright where cells use the most glucose · shows metabolism · radiation, lower resolution'}[v];
@@ -28448,6 +28457,82 @@ Pl.build=function(T3,K,v,...rest){const probe=K.grp(null),root=probe.parent;root
   const cv=new THREE.CatmullRomCurve3(pts.map(p=>V(...p))),leaf=sculpt(T3,(x,y,z)=>{const t=(x+1)/2;return [t*.11,y*.003,z*.016*Math.sin(Math.PI*Math.min(1,t*1.15))]},{seg:16}),n=15*3,im=new THREE.InstancedMesh(leaf,lf,n),m=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
   for(let i=0;i<15;i++){const p=cv.getPointAt(.04+i*.064);for(let k=0;k<3;k++){e.set(0,k*TAU/3+i*.6,.65+i*.01);q.setFromEuler(e);m.compose(p,q,V(1,1,1).multiplyScalar(1-i*.03));im.setMatrixAt(i*3+k,m)}}
   im.instanceMatrix.needsUpdate=true;im.userData.part='weed';im.userData.pts=[[0,.2,0],[0,1,0]];host.add(im);return M};
+})();
+// ---------- Biological molecules, molecular-model quality: glossy ball-and-stick atoms in the usual colours (carbon grey, oxygen red, hydrogen white, nitrogen blue, phosphorus orange) — glucose rings joined into coiled starch, branched glycogen and straight, hydrogen-bonded cellulose; amino acids with a backbone and side chain that fold into a helix and a protein; triglyceride and phospholipid with zigzag fatty acids (one kinked); polar water molecules with hydrogen bonds and a sodium ion in its shell of water (replaces the 'carbs', 'protein', 'lipid' and 'water' views of LIB.molbio) ----------
+(()=>{const LIB=L3.LIB,Mb=LIB.molbio;if(!Mb)return;const {V,clamp,ease,readout,txt,syncSliders}=L3.lx,TAU=Math.PI*2;
+const EL={C:[0x24272B,.075],O:[0xC81818,.075],H:[0xD8D8D8,.048],N:[0x2440B8,.075],P:[0xD87000,.09],Na:[0x6A3FD0,.16]};
+const MATS={};const mat=(T3,c)=>MATS[c]||(MATS[c]=Object.assign(new T3.MeshPhysicalMaterial({color:c,roughness:.35,clearcoat:.5,clearcoatRoughness:.2}),{userData:{keepLook:1}}));
+// collects atoms and bonds per part, then makes one instanced mesh per element and one for the bonds
+const builder=(T3,K)=>{const parts={};const P=id=>parts[id]||(parts[id]={atoms:{},bonds:[]});
+  return {atom(id,el,p){const a=P(id).atoms;(a[el]||(a[el]=[])).push(p.clone());return p},bond(id,a,b){P(id).bonds.push([a.clone(),b.clone()])},
+    done(to){const out={};const m=new T3.Matrix4(),q=new T3.Quaternion(),Y=V(0,1,0);for(const id in parts){const {atoms,bonds}=parts[id];out[id]=[];
+      for(const el in atoms){const L=atoms[el],[c,r]=EL[el],im=new T3.InstancedMesh(new T3.SphereGeometry(r,20,14),mat(T3,c),L.length);L.forEach((p,i)=>{m.compose(p,q.identity(),V(1,1,1));im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true;im.userData.pts=L.slice(0,16).map(p=>p.toArray());K.put(id,im,{to});out[id].push(im)}
+      if(bonds.length){const im=new T3.InstancedMesh(new T3.CylinderGeometry(.022,.022,1,10),mat(T3,0xB8BDC4),bonds.length);bonds.forEach(([a,b],i)=>{const d=b.clone().sub(a),L=d.length();q.setFromUnitVectors(Y,d.normalize());m.compose(a.clone().add(b).multiplyScalar(.5),q,V(1,L,1));im.setMatrixAt(i,m)});im.instanceMatrix.needsUpdate=true;K.put(id,im,{to});out[id].push(im)}}return out}}};
+// a glucose ring (5 C and the ring O) with OH groups, its CH2OH and hydrogens; placed by a matrix (ring in the local x-y plane, radius .22)
+const glucose=(B,id,M4,beta=0)=>{const T=p=>V(...p).applyMatrix4(M4),ring=[];for(let k=0;k<6;k++){const a=k/6*TAU,p=T([Math.cos(a)*.22,Math.sin(a)*.22,(k%2?.03:-.03)]);ring.push(B.atom(id,k===5?'O':'C',p))}
+  for(let k=0;k<6;k++)B.bond(id,ring[k],ring[(k+1)%6]);
+  for(let k=0;k<5;k++){const a=k/6*TAU,up=(k===0?(beta?1:-1):(k%2?1:-1)),o=T([Math.cos(a)*.38,Math.sin(a)*.38,up*.12]),h=T([Math.cos(a)*.47,Math.sin(a)*.47,up*.2]),hr=T([Math.cos(a)*.3,Math.sin(a)*.3,-up*.16]);
+    if(k===4){const c6=B.atom(id,'C',o),o6=B.atom(id,'O',T([Math.cos(a)*.52,Math.sin(a)*.52,up*.2]));B.bond(id,ring[k],c6);B.bond(id,c6,o6)}else{const O=B.atom(id,'O',o);B.bond(id,ring[k],O);B.bond(id,O,B.atom(id,'H',h))}B.bond(id,ring[k],B.atom(id,'H',hr))}return ring};
+const prev=Mb.build;
+Mb.build=function(T3,K,v,...rest){if(!['carbs','protein','lipid','water'].includes(v))return prev.call(this,T3,K,v,...rest);const r=L3.rnd(27),rn=(a,b)=>a+(b-a)*r();K.lin=0;const M=new T3.Matrix4(),q=new T3.Quaternion(),e=new T3.Euler();
+  const place=(p,rz=0,rx=0)=>{q.setFromEuler(e.set(rx,0,rz));return M.clone().compose(V(...p),q,V(1,1,1))};
+  if(v==='carbs'){const B=builder(T3,K);
+    glucose(B,'glucose',place([-2.4,1.6,0]));txt(T3,K,'glucose',[-2.4,2.1,0],{part:'glucose',h:.2});
+    for(let i=0;i<22;i++){const a=i*.55;glucose(B,'starch',place([-1.4+Math.cos(a)*.38+i*.065,1.1+Math.sin(a)*.38,Math.sin(a*.5)*.1],a))}txt(T3,K,'starch',[-.6,1.8,0],{part:'starch',h:.2});
+    const gly=(p,d,depth)=>{let qq=V(...p);for(let i=0;i<4;i++){qq=qq.clone().add(d.clone().multiplyScalar(.42));glucose(B,'glycogen',place(qq.toArray(),Math.atan2(d.y,d.x)))}if(depth>0)[.6,-.6].forEach(t=>gly(qq.toArray(),d.clone().applyAxisAngle(V(0,0,1),t),depth-1))};gly([1.6,.55,0],V(0,1,0),2);txt(T3,K,'glycogen',[1.6,3.05,0],{part:'glycogen',h:.2});
+    for(let k=0;k<3;k++)for(let i=0;i<11;i++)glucose(B,'cellulose',place([-2.3+i*.46,-1.0-k*.48,0],i%2?Math.PI:0,0),1);
+    const hb=[];for(let k=0;k<2;k++)for(let i=0;i<11;i+=2){for(let d=0;d<4;d++)hb.push(V(-2.3+i*.46,-1.17-k*.48-d*.04,0))}const hm=new T3.InstancedMesh(new T3.SphereGeometry(.014,8,6),mat(T3,0x4DABF7),hb.length);hb.forEach((p,i)=>hm.setMatrixAt(i,new T3.Matrix4().makeTranslation(p.x,p.y,p.z)));hm.instanceMatrix.needsUpdate=true;K.put('cellulose',hm);
+    txt(T3,K,'cellulose',[2.75,-1.45,0],{part:'cellulose',h:.2});
+    B.done();const bo=new T3.Mesh(new T3.TorusGeometry(.09,.01,8,32),new T3.MeshBasicMaterial({color:0xFAB005}));K.put('bond',bo,{p:[-2.04,1.6,.05]});
+    return {radius:3,view:[.05,.1],ground:0,tags:[['glucose',[-2.4,1.9,.1]],['starch',[-.8,1.55,.1]],['glycogen',[1.6,2.25,.1]],['cellulose',[0,-.8,.1]],['bond',[-2.0,1.8,.1]]],
+      journeys:[{name:'From glucose to polymers',c:0xFAB005,steps:[{p:[-2.4,1.6,0],part:'glucose',text:'Glucose is a single sugar unit: a monomer.'},{p:[-2.0,1.6,0],part:'bond',text:'Two sugars join by a condensation reaction, removing water and forming a glycosidic bond.'},{p:[-.8,1.1,0],part:'starch',text:'Thousands of α-glucose join into starch, which coils into a compact store in plants.'},{p:[1.6,1.6,0],part:'glycogen',text:'Glycogen branches a lot, so animals can release glucose quickly.'},{p:[0,-1.4,0],part:'cellulose',text:'β-glucose makes straight cellulose chains, held side by side by hydrogen bonds: strong fibres for cell walls.'}]}]}}
+  if(v==='protein'){const S={f:0},SC=[0xE03131,0x4C6EF5,0x40C057,0xFAB005,0xBE4BDB,0x15AABF],N=36;
+    const aa=[...Array(N)].map((_,i)=>{const g=K.grp('amino');[['N',[-.07,0,0]],['C',[0,.05,0]],['C',[.07,0,0]]].forEach(([el,p])=>K.put('amino',new T3.Mesh(new T3.SphereGeometry(EL[el][1]*.9,16,12),mat(T3,EL[el][0])),{to:g,p}));
+      K.put('amino',new T3.Mesh(new T3.SphereGeometry(.05,14,10),mat(T3,EL.O[0])),{to:g,p:[.1,-.06,0]});const sc=K.put('amino',new T3.Mesh(new T3.IcosahedronGeometry(.075+(i%3)*.012,1),mat(T3,SC[i%6])),{to:g,p:[0,.14,.04]});return g});
+    const pep=[...Array(N-1)].map(()=>K.put('peptide',new T3.Mesh(new T3.CylinderGeometry(.025,.025,1,10),mat(T3,0xB8BDC4))));
+    const lin=i=>V(-3+i*.17,0,0),hel=i=>V(-1.6+i*.09,Math.cos(i*1.75)*.32,Math.sin(i*1.75)*.32),fol=i=>{const t=i/N*TAU*1.6;return V(Math.cos(t)*.9*(1+.2*Math.sin(t*3)),Math.sin(t*2.1)*.6,Math.sin(t)*.9)};
+    let ex=null;const tick=()=>{const f=S.f,a=clamp(f*2),b=clamp(f*2-1),P=[];aa.forEach((g,i)=>{const p=lin(i).lerp(hel(i),ease(a)).lerp(fol(i),ease(b));g.position.copy(p);g.rotation.set(i*.7*a,i*1.1*b,i*.4);P.push(p)});
+      pep.forEach((c,i)=>{const d=P[i+1].clone().sub(P[i]),L=d.length();c.position.copy(P[i]).add(P[i+1]).multiplyScalar(.5);c.scale.set(1,L,1);c.quaternion.setFromUnitVectors(V(0,1,0),d.normalize())});
+      if(ex&&S.k!==f){S.k=f;readout(ex,f<.3?'<b>Primary structure</b>: the order of amino acids in the chain':f<.75?'<b>Secondary structure</b>: hydrogen bonds coil the chain into an α-helix':'<b>Tertiary structure</b>: the chain folds into a precise 3D shape')}return f<1};
+    return {radius:2.6,view:[.2,.3],ground:0,tick,extra:el=>{ex=el;S.k=-1},sliders:[{icon:'🧶',label:'Fold the protein',v:0,set:x=>{S.f=x}}],
+      tags:[['amino',()=>aa[4].position.toArray()],['peptide',()=>pep[10].position.toArray()],['helix',()=>aa[18].position.toArray()],['fold',[0,.8,0]]],
+      journeys:[{name:'Fold a protein',c:0xBE4BDB,steps:[[0,'amino','Amino acids are the building blocks. Each has the same backbone (N, C, C, O) and a different side chain — here, the coloured ball.'],[0,'peptide','They join by peptide bonds into a polypeptide chain. The order is set by the gene.'],[.5,'helix','Hydrogen bonds coil the chain into an α-helix.'],[1,'fold','It folds into a specific 3D shape. For an enzyme, this shape makes the active site.']].map(([f,part,text])=>({p:[0,0,0],part,text,on:()=>{S.f=f;syncSliders(ex,[f])}}))}]}}
+  if(v==='lipid'){const B=builder(T3,K);
+    const tri=(x0,y0,phos)=>{for(let i=0;i<3;i++){const y=y0+.5-i*.5,cg=B.atom('glycerol','C',V(x0,y,0));B.atom('glycerol','H',V(x0-.13,y+.06,.08));if(i<2)B.bond('glycerol',cg,V(x0,y-.5,0));const oe=B.atom('ester','O',V(x0+.17,y,0));B.bond('ester',cg,oe);
+      if(phos&&i===0){const p=B.atom('phos','P',V(x0+.4,y+.02,0));B.bond('phos',oe,p);[[0,.17,0],[0,-.12,.12],[.17,0,-.05]].forEach(d=>{const o=B.atom('phos','O',V(x0+.4+d[0],y+.02+d[1],d[2]));B.bond('phos',p,o)});const n=B.atom('phos','N',V(x0+.75,y+.06,0));B.bond('phos',V(x0+.57,y+.02,-.05),n);continue}
+      const c1=B.atom('ester','C',V(x0+.34,y,0)),od=B.atom('ester','O',V(x0+.34,y+.17,0));B.bond('ester',oe,c1);B.bond('ester',c1,od);let prevC=c1,ang=0,px=x0+.34,py=y;
+      for(let k=1;k<=15;k++){if(i===2&&k===7)ang=-.55;const step=.135;px+=Math.cos(ang)*step;py+=Math.sin(ang)*step;const zz=(k%2?.05:-.05),c=B.atom('fatty','C',V(px,py+(k%2?.04:-.04),zz));B.bond('fatty',prevC,c);
+        if(!(i===2&&(k===7||k===8))){B.bond('fatty',c,B.atom('fatty','H',V(px,py+(k%2?.12:-.12),zz+.08)));B.bond('fatty',c,B.atom('fatty','H',V(px,py+(k%2?.08:-.08),zz-.11)))}prevC=c}}};
+    tri(-2.2,.4,false);tri(.55,.4,true);B.done();txt(T3,K,'triglyceride',[-1.0,1.4,0],{h:.22});txt(T3,K,'phospholipid',[1.7,1.4,0],{h:.22});
+    return {radius:2.7,view:[.1,.1],ground:0,tags:[['glycerol',[-2.2,1.05,.15]],['fatty',[-.6,1.0,.15]],['ester',[-1.95,.4,.15]],['phos',[1.05,1.05,.15]]],
+      journeys:[{name:'Build a fat',c:0x40C057,steps:[{p:[-2,.4,0],part:'glycerol',text:'Glycerol forms the backbone.'},{p:[-.6,.9,0],part:'fatty',text:'Three fatty acids join to it. The bottom one is unsaturated: its C=C double bond makes a kink.'},{p:[-1.75,.4,0],part:'ester',text:'Each joins by an ester bond, made in a condensation reaction.'},{p:[.9,.9,0],part:'phos',text:'In a phospholipid, one fatty acid is replaced by a water-loving phosphate group.'}]}]}}
+  // water: polar molecules, hydrogen bonds (dotted) and a sodium ion with its shell of water
+  const S={t:0},mols=[],Om=mat(T3,EL.O[0]),Hm=mat(T3,EL.H[0]),og=new T3.SphereGeometry(.16,28,20),hg=new T3.SphereGeometry(.095,22,16),hA=104.5/180*Math.PI;
+  const water=(id,p,rot)=>{const g=K.grp(id,{p,r:rot});K.put(id,new T3.Mesh(og,Om),{to:g});[1,-1].forEach(s=>K.put(id,new T3.Mesh(hg,Hm),{to:g,p:[Math.sin(hA/2)*s*.17,-Math.cos(hA/2)*.17,0]}));return g};
+  for(let i=0;i<14;i++)mols.push(water('h2o',[rn(-1.8,1.8),rn(-1,1),rn(-1,1)],[rn(0,3),rn(0,3),0]));
+  const NA=V(0,0,0),na=K.put('ion',new T3.Mesh(new T3.SphereGeometry(.17,28,20),mat(T3,EL.Na[0])));const shell=[...Array(6)].map((_,k)=>{const d=[V(1,0,0),V(-1,0,0),V(0,1,0),V(0,-1,0),V(0,0,1),V(0,0,-1)][k];const g=water('ion',[0,0,0],[0,0,0]);g.userData.d=d;return g});
+  const nd=8,dots=new T3.InstancedMesh(new T3.SphereGeometry(.018,8,6),mat(T3,0x4DABF7),16*nd),pairs=[];for(let i=0;i<14;i++)for(let j=i+1;j<14;j++)if(mols[i].position.distanceTo(mols[j].position)<1.15&&pairs.length<16)pairs.push([i,j]);K.put('hbond',dots);
+  const tmp=V(0,0,0),up=V(0,1,0),M2=new T3.Matrix4();
+  const tick=(dt,now)=>{S.t+=dt;mols.forEach((g,i)=>{g.position.x+=Math.sin(S.t+i)*.002;g.position.y+=Math.cos(S.t*1.3+i)*.002;g.rotation.y+=dt*.2});
+    NA.set(Math.sin(S.t*.4)*1.2,0,Math.cos(S.t*.4)*.8);na.position.copy(NA);shell.forEach(g=>{g.position.copy(NA).addScaledVector(g.userData.d,.42);g.quaternion.setFromUnitVectors(V(0,1,0),g.userData.d.clone().negate());g.rotateY(S.t)});
+    let k=0;pairs.forEach(([i,j])=>{const a=mols[i].position,b=mols[j].position;for(let d=0;d<nd;d++){tmp.lerpVectors(a,b,.2+.6*d/(nd-1));M2.makeTranslation(tmp.x,tmp.y,tmp.z);dots.setMatrixAt(k++,M2)}});for(;k<16*nd;k++){M2.makeScale(0,0,0);dots.setMatrixAt(k,M2)}dots.instanceMatrix.needsUpdate=true;
+    dots.userData.pts=pairs.slice(0,4).map(([i,j])=>mols[i].position.clone().add(mols[j].position).multiplyScalar(.5).toArray());return true};
+  return {radius:2.3,view:[.2,.3],ground:0,tick,tags:[['h2o',()=>mols[0].position.toArray()],['hbond',()=>pairs[0]?mols[pairs[0][0]].position.clone().add(mols[pairs[0][1]].position).multiplyScalar(.5).toArray():[0,0,0]],['ion',()=>na.position.toArray()]],
+    journeys:[{name:'Why water is special',c:0x4DABF7,steps:[{p:[0,0,0],part:'h2o',text:'Each water molecule is polar: the oxygen is slightly negative, the hydrogens slightly positive.'},{p:[0,0,0],part:'hbond',text:'Opposite charges attract, forming hydrogen bonds between molecules. They make water cohesive and slow to heat up.'},{p:[0,0,0],part:'ion',text:'Water surrounds and dissolves ions, so it carries them around organisms. Around a sodium ion the slightly negative oxygens all point inwards.'}]}]}};
+})();
+// ---------- Brain scans: a real folded brain (gyri and sulci, cerebellum, brainstem) in place of the simple blob, and a glossy white scanner with a dark bore (adds to all views of LIB.brainscan) ----------
+(()=>{const LIB=L3.LIB,Bs=LIB.brainscan;if(!Bs)return;const {wet,tube,sculpt}=L3.lx.anat;
+const prev=Bs.build;
+Bs.build=function(T3,K,v,...rest){const probe=K.grp(null),root=probe.parent;root.remove(probe);const M=prev.call(this,T3,K,v,...rest);if(!M)return M;
+  let br=null;const plastic=new T3.MeshPhysicalMaterial({color:0xF4F6F8,roughness:.25,clearcoat:1,clearcoatRoughness:.1});plastic.userData.keepLook=1;
+  root.traverse(o=>{if(!o.isMesh)return;const p=o.userData.part;if(p==='brain'){if(!br||o.position.y>br.y)br={x:o.position.x,y:o.position.y,z:o.position.z};o.visible=false}
+    if(p==='scanner'&&o.material&&o.material.color&&o.material.color.getHSL({}).l>.85)o.material=plastic});
+  if(!br)return M;const g=K.grp('brain',{p:[br.x,br.y,br.z]});
+  const brM=wet(T3,0xE2A49A,{veins:16,veinC:0xA82838,var:.12,rough:.5,wet:.45,sheen:0,seed:881,op:.62});
+  K.put('brain',new THREE.Mesh(sculpt(T3,(x,y,z)=>{let X=x*.64,Y=y*.46,Z=z*.52;if(y<0&&x>-.2)Z*=1+.12*(-y);const k=1+.065*Math.pow(1-Math.abs(Math.sin(L3.nz(x*1.9,y*1.9,z*1.9,7)*3.1)),1.6)-.03;return [X*k,Y*k,Z*k]},{seg:140,uv:3}),brM),{to:g});
+  K.put('brain',new THREE.Mesh(sculpt(T3,(x,y,z)=>{const k=1+.05*Math.sin(y*28);return [x*.24*k,y*.13*k,z*.3*k]},{seg:64,uv:2}),wet(T3,0xD99A94,{folds:30,var:.1,rough:.45,wet:.5,sheen:0,seed:882,op:.7})),{to:g,p:[-.42,-.32,0]});
+  K.put('brain',new THREE.Mesh(tube(T3,[[-.1,-.2,0],[-.18,-.45,0],[-.24,-.7,0]],u=>.1-.02*u,{rad:20}),wet(T3,0xE8C4B0,{folds:10,var:.06,rough:.4,wet:.55,sheen:0,seed:883,op:.75})),{to:g});
+  return M};
 })();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
