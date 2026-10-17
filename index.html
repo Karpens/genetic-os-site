@@ -28907,6 +28907,69 @@ Gn.build=function(T3,K,v,...rest){if(v!=='sex'&&v!=='pedigree')return prev.call(
     journeys:[{name:'Read the family tree',c:0x7048E8,steps:[{p:[-.7,1.6,0],part:'carrier',text:'Neither parent has cystic fibrosis, but they have an affected daughter. So both must be carriers (Ff).'},{p:[-1.2,.45,0],part:'affected',text:'The daughter has cystic fibrosis: she inherited the recessive allele from both parents (ff).'},
       {p:[.8,.45,0],part:'carrier',text:'Her sister is a carrier and has a child with a carrier man.'},{p:[1.3,-.55,0],part:'affected',text:'Each of their children has a 25% chance of having cystic fibrosis.'}]}]}};
 })();
+// ---------- Evolution and classification, photographic quality: a dairy herd on grass behind a wooden fence, the best cows ringed in gold, a glass measuring cylinder filling with milk and a gene-pool jar whose coloured marbles lose their variety; a class of wooden artist’s mannequins lined up by height with acrylic histogram bars and a glowing normal curve, and blood bags filled to each blood group’s share; nested frosted trays for the ranks of classification holding real animals down to a lion (replaces the 'breed', 'vary' and 'taxon' views of LIB.evox) ----------
+(()=>{const LIB=L3.LIB,Ev=LIB.evox;if(!Ev)return;const {V,readout,txt,syncSliders,prop}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const pm=(T3,o)=>{const m=new T3.MeshPhysicalMaterial(o);m.userData.keepLook=1;return m};
+const glassM=(T3,op=.2)=>pm(T3,{color:0xF2F8FF,roughness:.04,clearcoat:1,clearcoatRoughness:.03,transparent:true,opacity:op,depthWrite:false,side:T3.DoubleSide,envMapIntensity:1.5});
+const rcube=(sx,sy,sz,p=4)=>(x,y,z)=>{const n=Math.pow(Math.pow(Math.abs(x),p)+Math.pow(Math.abs(y),p)+Math.pow(Math.abs(z),p),1/p);return [x/n*sx,y/n*sy,z/n*sz]};
+const woodTex=(T3,base,seed)=>{const c=document.createElement('canvas');c.width=256;c.height=256;const x=c.getContext('2d'),r=L3.rnd(seed);x.fillStyle=base;x.fillRect(0,0,256,256);for(let i=0;i<70;i++){x.strokeStyle=`rgba(90,55,25,${.08+r()*.18})`;x.lineWidth=.6+r()*2;x.beginPath();const y=r()*256;x.moveTo(0,y);for(let k=0;k<=256;k+=16)x.lineTo(k,y+Math.sin(k*.03+i)*5);x.stroke()}const t=new T3.CanvasTexture(c);t.encoding=T3.sRGBEncoding;t.wrapS=t.wrapT=T3.RepeatWrapping;return t};
+const prev=Ev.build;
+Ev.build=function(T3,K,v,...rest){if(!['breed','vary','taxon'].includes(v))return prev.call(this,T3,K,v,...rest);const S={g:0,s:.5};let ex=null;
+  // ---------- selective breeding ----------
+  if(v==='breed'){K.lin=0;K.box(null,[0,-.05,0],[6,.1,3],0x2E6A12,{});
+    const wood=pm(T3,{color:0x9A9A9A,map:woodTex(T3,'#8A5E36',951),roughness:.8});
+    for(let i=0;i<=10;i++){const x=-2.95+i*.59;mesh(K,null,new T3.BoxGeometry(.07,.6,.07),wood,[x,.3,-1.45])}for(const z of [-1.1,-.5,.1,.7])for(const s of [-1,1])mesh(K,null,new T3.BoxGeometry(.07,.6,.07),wood,[s*2.95,.3,z]);
+    for(const y of [.22,.46]){mesh(K,null,new T3.BoxGeometry(5.95,.05,.03),wood,[0,y,-1.45]);for(const s of [-1,1])mesh(K,null,new T3.BoxGeometry(.03,.05,2.2),wood,[s*2.95,y,-.4])}
+    const cows=[...Array(12)].map((_,i)=>({g:prop(T3,K,'cow','cows',[-2.4+(i%6)*.75,.05,-.5+Math.floor(i/6)*1.0],{s:.42}),i}));
+    const gold=pm(T3,{color:0xE0A800,emissive:0xC08000,emissiveIntensity:.4,metalness:.6,roughness:.25});cows.filter(c=>c.i%4===0).forEach(c=>mesh(K,'best',new T3.TorusGeometry(.38,.025,10,48),gold,[c.g.position.x,.03,c.g.position.z],{r:[Math.PI/2,0,0]}));
+    // glass measuring cylinder of milk
+    const mc=K.grp('yield',{p:[2.55,0,-.1]});mesh(K,'yield',new T3.CylinderGeometry(.24,.24,1.5,40,1,true),glassM(T3,.22),[0,.8,0],{to:mc,order:6});mesh(K,'yield',new T3.CylinderGeometry(.34,.36,.06,40),glassM(T3,.4),[0,.03,0],{to:mc,order:6});
+    for(let k=1;k<=7;k++)mesh(K,'yield',new T3.BoxGeometry(k%2?.06:.12,.008,.01),pm(T3,{color:0x2A3A5A}),[-.2+(k%2?.03:0),.1+k*.2,.235],{to:mc});
+    const milk=mesh(K,'yield',new T3.CylinderGeometry(.225,.225,1,40),pm(T3,{color:0xF4F2EA,roughness:.25,clearcoat:.6,sheen:.4}),[0,.5,0],{to:mc});const bl=txt(T3,K,'',[2.55,1.8,-.1],{h:.15,part:'yield'});
+    // gene-pool jar: marbles in many colours that become fewer colours
+    const jar=K.grp('var',{p:[2.55,0,1.0]});mesh(K,'var',new T3.CylinderGeometry(.25,.25,.5,40,1,true),glassM(T3,.2),[0,.27,0],{to:jar,order:6});mesh(K,'var',new T3.CylinderGeometry(.26,.26,.04,40),glassM(T3,.35),[0,.02,0],{to:jar,order:6});mesh(K,'var',new T3.CylinderGeometry(.27,.27,.06,40),pm(T3,{color:0x8A9099,metalness:.85,roughness:.3}),[0,.55,0],{to:jar});
+    const NM=34,mb=new T3.InstancedMesh(new T3.SphereGeometry(.045,16,12),pm(T3,{color:0xFFFFFF,roughness:.08,clearcoat:1}),NM),mm=new T3.Matrix4(),q=new T3.Quaternion(),cc=new T3.Color(),rj=L3.rnd(4);for(let k=0;k<NM;k++){const a=k*2.4,rr=.06+(k%3)*.06;mm.compose(V(Math.cos(a)*rr,.07+Math.floor(k/8)*.085,Math.sin(a)*rr),q,V(1,1,1));mb.setMatrixAt(k,mm)}mb.instanceMatrix.needsUpdate=true;K.put('var',mb,{to:jar});
+    const PAL=[0xE03131,0x1C7ED6,0xF2C200,0x2F9E44,0xAE3EC9,0xF76707];
+    const upd=()=>{const g=S.g,y=12+g*4.5,nc=Math.max(1,6-Math.round(g*5/6));cows.forEach(c=>c.g.scale.setScalar(.42+g*.02));const f=y/40;milk.scale.y=Math.max(.01,f*1.4);milk.position.y=.07+f*.7;bl.userData.set(`${y.toFixed(0)} L/day`);
+      for(let k=0;k<NM;k++)mb.setColorAt(k,cc.setHex(PAL[(k*7+Math.floor(rj()*3))%nc]));mb.instanceColor.needsUpdate=true;
+      if(ex)readout(ex,`Generation ${g}: breed only the cows with the highest milk yield → average <b>${y.toFixed(0)} litres a day</b> · genetic variation falls (fewer colours in the gene-pool jar): risk of inbreeding and disease`)};
+    return {radius:2.8,view:[.3,.2],ground:.05,tick:()=>false,extra:el=>{ex=el;upd()},sliders:[{icon:'🐄',label:'Generations of selective breeding',v:0,set:x=>{S.g=Math.round(x*6);upd()}}],
+      tags:[['cows',[-1.5,1.0,0]],['best',[-2.4,1.0,-.5]],['yield',[2.55,2.05,-.1]],['var',[2.55,.9,1.0]]],
+      journeys:[{name:'Breeding for milk',c:0x40C057,steps:[[0,'cows','A herd varies in how much milk each cow gives.'],[0,'best','Farmers choose the best cows and bulls from high-yield families to breed.'],[3,'yield','They repeat this generation after generation: the yield rises.'],[6,'var','But the herd becomes less varied — more inbreeding and less resistance to new diseases.']].map(([g,part,text])=>({p:[0,.5,0],part,text,on:()=>{S.g=g;syncSliders(ex,[g/6]);upd()}}))}]}}
+  // ---------- variation ----------
+  if(v==='vary'){K.lin=0;mesh(K,null,new T3.BoxGeometry(6.4,.1,3),pm(T3,{color:0xF0F1F4,roughness:.35,clearcoat:.6}),[0,-.05,0]);
+    // artist's mannequins in beech wood, lined up by height
+    const bw=pm(T3,{color:0xB4B4B4,map:woodTex(T3,'#D9B27C',961),roughness:.45,clearcoat:.5}),dk=pm(T3,{color:0x9A9A9A,map:woodTex(T3,'#7A5634',962),roughness:.5,clearcoat:.4});
+    const G={head:sculpt(T3,(x,y,z)=>[x*.075,y*.095,z*.08],{seg:28}),chest:sculpt(T3,(x,y,z)=>[x*.12,y*.14*(1+.1*y),z*.075],{seg:28}),pelv:sculpt(T3,(x,y,z)=>[x*.1,y*.075,z*.068],{seg:24}),j:new T3.SphereGeometry(.03,16,12),hand:sculpt(T3,(x,y,z)=>[x*.025,y*.05,z*.018],{seg:16}),foot:sculpt(T3,(x,y,z)=>[x*.07,y*.025,z*.035],{seg:16})};
+    const limb=(a,b,r)=>tube(T3,[a,b],u=>r*(1-.2*Math.abs(u-.5)),{rad:12,seg:4});
+    const man=(p,h)=>{const g=K.grp('people',{p,s:[h,h,h]}),M=(geo,q,m=bw)=>mesh(K,'people',geo,m,q,{to:g});M(new T3.CylinderGeometry(.12,.13,.03,32),[0,.015,0],dk);M(new T3.CylinderGeometry(.008,.008,.5,8),[0,.27,-.05],dk);
+      M(G.head,[0,.9,0]);M(limb([0,.78,0],[0,.83,0],.025),null);M(G.chest,[0,.68,0]);M(G.j,[0,.55,0]);M(G.pelv,[0,.49,0]);
+      for(const s of [-1,1]){M(G.j,[s*.11,.77,0]);M(limb([s*.11,.77,0],[s*.13,.6,0],.026),null);M(G.j,[s*.13,.59,0]);M(limb([s*.13,.59,0],[s*.14,.44,.02],.022),null);M(G.hand,[s*.14,.4,.02]);
+        M(G.j,[s*.055,.44,0]);M(limb([s*.055,.44,0],[s*.06,.25,0],.034),null);M(G.j,[s*.06,.245,0]);M(limb([s*.06,.245,0],[s*.06,.06,0],.027),null);M(G.foot,[s*.06,.035,.03])}return g};
+    [...Array(11)].forEach((_,i)=>man([-2.8+i*.28,0,1.0+(i%2)*.14],1.0+i*.05));
+    const cnt=[1,3,7,12,16,12,7,3,1],acr=pm(T3,{color:0x1C6ED6,roughness:.1,clearcoat:1,transparent:true,opacity:.85}),hb=cnt.map((c,i)=>mesh(K,'hist',new T3.BoxGeometry(.28,1,.4),acr,[-2.4+i*.32,.5,-.4]));
+    const cM=pm(T3,{color:0xE03131,emissive:0xC01818,emissiveIntensity:.5,roughness:.3,clearcoat:1}),cg=K.grp('curve',{});mesh(K,'curve',tube(T3,[...Array(41)].map((_,k)=>{const x=k/40*8;return [-2.4+x*.32,.03+Math.exp(-((x-4)*(x-4))/(2*1.6*1.6))*1.5,-.16]}),.022,{rad:10}),cM,null,{to:cg});
+    // blood bags on a steel rail, filled to each group's share
+    const steel=pm(T3,{color:0xB8BEC6,metalness:.9,roughness:.25});mesh(K,'blood',tube(T3,[[.95,1.95,-.4],[2.75,1.95,-.4]],.02,{rad:10}),steel);[.95,2.75].forEach(x=>mesh(K,'blood',new T3.CylinderGeometry(.02,.02,1.95,10),steel,[x,.975,-.4]));
+    const bagG=sculpt(T3,rcube(.17,.28,.045,3),{seg:32}),bagM=pm(T3,{color:0xF4F8FF,roughness:.15,clearcoat:1,transparent:true,opacity:.3,depthWrite:false,side:T3.DoubleSide}),bloodM=pm(T3,{color:0x4A0006,roughness:.2,clearcoat:1,sheen:.3});
+    const bg=[['A',42],['B',10],['AB',4],['O',44]].map(([n,p],i)=>{const x=1.2+i*.45,g=K.grp('blood',{p:[x,1.2,-.4]});mesh(K,'blood',bagG,bagM,null,{to:g,order:6});const f=p/44,b=mesh(K,'blood',sculpt(T3,rcube(.155,.26,.035,3),{seg:32}),bloodM,[0,-.26+.26*f,0],{to:g,s:[1,Math.max(.03,f),1]});
+      mesh(K,'blood',tube(T3,[[0,.7,0],[0,.29,0]],.008,{rad:6,seg:3}),steel,[0,0,0],{to:g});mesh(K,'blood',tube(T3,[[0,-.28,0],[.03,-.5,.02],[0,-.75,.04]],.012,{rad:8}),pm(T3,{color:0x8A0010,roughness:.3,clearcoat:1,transparent:true,opacity:.85}),null,{to:g});txt(T3,K,n,[x,1.2,-.33],{h:.13,part:'blood'});return b});
+    const upd=()=>{const sc=.5+S.s*1.2;hb.forEach((b,i)=>{const h=Math.max(.01,cnt[i]/16*1.5*sc);b.scale.y=h;b.position.y=h/2});cg.scale.y=sc;
+      if(ex)readout(ex,'<b>Continuous</b> variation (height): any value in a range, a bell-shaped histogram — many genes plus environment (e.g. diet) · <b>discontinuous</b> (blood group): separate categories — one gene, little environmental effect')};
+    return {radius:2.9,view:[.2,.2],ground:0,tick:()=>false,extra:el=>{ex=el;upd()},sliders:[{icon:'📏',label:'Sample size',v:S.s,set:x=>{S.s=x;upd()}}],
+      tags:[['hist',[-2.4,1.6,-.4]],['curve',[-1.1,2.0,-.2]],['blood',[1.9,2.15,-.4]],['people',[-1.4,1.6,1.0]]],
+      journeys:[{name:'Two kinds of variation',c:0x339AF0,steps:[{p:[-1.4,.7,1],part:'people',text:'Line a class up by height: there is a smooth range from shortest to tallest.'},{p:[-1.1,.7,-.4],part:'hist',text:'Group the heights into a histogram: continuous variation gives a bell-shaped curve.'},{p:[1.9,.7,-.4],part:'blood',text:'Blood groups fall into separate categories: discontinuous variation.'}]}]}}
+  // ---------- classification ----------
+  K.lin=0;mesh(K,null,new T3.BoxGeometry(6.4,.1,3),pm(T3,{color:0xF0F1F4,roughness:.35,clearcoat:.6}),[0,-.05,0]);
+  const R=['Domain: Eukarya','Kingdom: Animalia','Phylum: Chordata','Class: Mammalia','Order: Carnivora','Family: Felidae','Genus: Panthera','Species: Panthera leo'],TC=[0xD8ECFF,0xBCDDFF,0x9CCBFF,0x7AB6FA,0x5A9FF0,0x3C86E0,0x2A6CC8,0xE8A0A0];
+  const bx=R.map((r,i)=>{const s=1-i*.11,b=mesh(K,'boxes',L3.sbox(T3,2.8*s,.02+i*.01,1.3*s,10,64),pm(T3,{color:TC[i],roughness:.35,clearcoat:1,clearcoatRoughness:.2,transparent:true,opacity:.55,depthWrite:false}),[0,.04+i*.025,0],{order:3+i});const l=txt(T3,K,r,[-2.6*s+.9,.35+i*.12,1.3*s-.1],{h:.12,part:'boxes'});return {b,l}});
+  const an=[['tree',-2.45,-.95,.32,0],['bird',2.0,.75,.5,2],['fish',2.25,-.6,.5,2],['cow',-1.5,.55,.36,3],['rabbit',-1.15,-.6,.5,3],['fox',1.05,.42,.45,4],['fox',.95,-.42,.45,4]].map(([k,x,z,s,u])=>({g:prop(T3,K,k,'animals',[x,.12,z],{s,r:[0,(x>0?Math.PI:0)+.3,0]}),u}));
+  prop(T3,K,'lion','animals',[0,.16,0],{s:.62,r:[0,.4,0]});const nm=txt(T3,K,'Panthera leo',[0,1.3,0],{h:.24,part:'name',c:'#C92A2A'});
+  const upd=()=>{const k=Math.round(S.s*7);bx.forEach((o,i)=>{o.b.visible=i<=k;o.l.visible=i<=k});an.forEach(a=>a.g.visible=k<=a.u);nm.visible=k===7;if(ex)readout(ex,`Rank ${k+1} of 8: <b>${R[k]}</b> — each rank holds fewer, more closely related organisms · binomial name: <i>Panthera leo</i> (genus + species)`)};
+  return {radius:2.9,view:[.45,.2],ground:.05,tick:()=>false,extra:el=>{ex=el;upd()},sliders:[{icon:'🔍',label:'Rank',v:1,set:x=>{S.s=x;upd()}}],
+    tags:[['boxes',[-2.2,.9,1.2]],['animals',[-1.6,.8,0]],['name',[0,1.6,0]]],
+    journeys:[{name:'Classifying the lion',c:0x1C7ED6,steps:[[0,'boxes','Domain Eukarya: every organism whose cells have a nucleus.'],[3/7,'animals','Class Mammalia: animals with fur that feed their young milk.'],[5/7,'boxes','Family Felidae: all the cats.'],[1,'name','Species: Panthera leo. The binomial name is genus plus species.']].map(([s,part,text])=>({p:[0,.5,0],part,text,on:()=>{S.s=s;syncSliders(ex,[s]);upd()}}))}]}};
+})();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
 const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed||5));return c};
@@ -28944,6 +29007,11 @@ P.fox=(T3,K,g,id,o)=>{const fm=M(T3,'fox'+(o.c||0),()=>pm(T3,fur(T3),o.c||0xD864
   add(g,id,sculpt(T3,(x,y,z)=>{const t=Math.max(0,x);return [x*.09+t*t*.08,y*.07*(1-.55*t),z*.072*(1-.5*t)]},{seg:32,uv:1}),fm,[.27,.31,0]);add(g,id,new T3.SphereGeometry(.014,10,8),eyeM(T3),[.4,.31,0]);
   for(const s of [1,-1]){add(g,id,new T3.ConeGeometry(.03,.08,12),fm,[.25,.4,s*.04],[s*.2,0,-.1]);add(g,id,new T3.SphereGeometry(.012,10,8),eyeM(T3),[.33,.34,s*.035]);for(const x of [.13,-.14])add(g,id,tube(T3,[[x,.2,s*.05],[x+.01,.1,s*.055],[x,0,s*.055]],.018,{rad:8}),dk)}
   add(g,id,tube(T3,[[-.2,.25,0],[-.33,.24,0],[-.43,.19,0],[-.5,.12,0]],u=>.03+.04*Math.sin(Math.PI*Math.min(1,u*1.2)),{rad:14}),fm);add(g,id,ell(T3,.04,.035,.035),wm,[-.5,.12,0])};
+P.lion=(T3,K,g,id,o)=>{const fm=M(T3,'lion',()=>pm(T3,fur(T3),0xC8924A,{bump:.02,rough:.85,sheen:.5})),mn=M(T3,'lionm',()=>pm(T3,fur(T3),0x6A3A18,{bump:.035,rough:.9,sheen:.4})),lt=M(T3,'lionl',()=>pm(T3,fur(T3),0xE8C890,{bump:.02,rough:.9,sheen:.5})),nz=M(T3,'lionn',()=>pm(T3,null,0x2A1A14,{rough:.5,cc:.3}));
+  add(g,id,ell(T3,.32,.13,.12),fm,[0,.36,0]);add(g,id,ell(T3,.1,.1,.1),lt,[.24,.32,0]);
+  add(g,id,ell(T3,.16,.17,.17,3,.18),mn,[.33,.44,0]);add(g,id,sculpt(T3,(x,y,z)=>{const t=Math.max(0,x);return [x*.11+t*t*.05,y*.09*(1-.35*t),z*.085*(1-.3*t)]},{seg:32,uv:1}),fm,[.42,.45,0]);add(g,id,ell(T3,.05,.035,.045),lt,[.53,.4,0]);add(g,id,ell(T3,.02,.016,.026),nz,[.58,.44,0]);
+  for(const s of [1,-1]){add(g,id,ell(T3,.025,.03,.012),fm,[.4,.56,s*.08]);add(g,id,new T3.SphereGeometry(.014,10,8),eyeM(T3),[.52,.49,s*.04]);for(const x of [.2,-.22])add(g,id,tube(T3,[[x,.3,s*.07],[x+.01,.14,s*.075],[x+.02,0,s*.075]],u=>.04-.008*u,{rad:10}),x>0?lt:fm)}
+  add(g,id,tube(T3,[[-.3,.4,0],[-.45,.36,0],[-.55,.26,0],[-.58,.16,0]],.016,{rad:8}),fm);add(g,id,ell(T3,.035,.045,.035,5,.2),mn,[-.58,.13,0])};
 P.bird=(T3,K,g,id,o)=>{const c=o.c||0x6B5B4B,fm=M(T3,'bird'+c,()=>pm(T3,feath(T3),c,{bump:.015,rough:.75,sheen:.4})),bk=M(T3,'beak',()=>pm(T3,null,0xE0A020,{rough:.4,cc:.5}));
   add(g,id,sculpt(T3,(x,y,z)=>{const k=1+.25*Math.max(0,x);return [x*.12,y*.065*k,z*.065*k]},{seg:32,uv:1}),fm,[0,0,0]);add(g,id,ell(T3,.055,.05,.05),fm,[.13,.035,0]);add(g,id,new T3.ConeGeometry(.018,.06,10),bk,[.195,.03,0],[0,0,-Math.PI/2]);
   for(const s of [1,-1])add(g,id,new T3.SphereGeometry(.009,8,6),eyeM(T3),[.165,.05,s*.032]);add(g,id,sculpt(T3,(x,y,z)=>[x*.08,y*.008,z*.035*(1+Math.max(0,-x))],{seg:16}),fm,[-.15,.01,0]);
