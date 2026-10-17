@@ -26827,6 +26827,95 @@ Kd.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
     tags:[['kid',[-.5,.4,.0],0],['rart',[.05,.95,-.13],0],['rvein',[-.12,.75,-.1],0],['ureter',[.24,-.6,-.06]],['bladder',[0,-1.3,.3],0],['urethra',[0,-1.88,.18]],['cortex',[.38,.15,-.06]]],
     journeys:[{name:'Clean the blood',c:0xFAB005,steps:[{p:[.05,.24,-.2],part:'rart',text:'The renal arteries bring blood containing urea and excess water and ions.'},{p:[.38,.2,-.1],part:'kid',text:'In the kidneys, millions of nephrons filter the blood.'},{p:[-.15,.17,-.17],part:'rvein',text:'Cleaned blood leaves in the renal veins.'},{p:[.25,-.6,-.1],part:'ureter',text:'Urine flows down the ureters…'},{p:[0,-1.42,.12],part:'bladder',text:'…to the bladder, where it is stored until it leaves through the urethra.'}]}]}};
 })();
+// ---------- The heart, atlas quality: cone-shaped ventricles and atria with auricles in wet cardiac muscle, a paler lining with chordae tendineae and papillary muscles when cut open, a full coronary network with cardiac veins and fat in the grooves, glossy great vessels (replaces the 'heart' and 'beat' views of LIB.heart) ----------
+(()=>{const LIB=L3.LIB,Hh=LIB.heart;if(!Hh)return;const {V,tween,ease,clamp,readout,lathe,txt,vtube,stream,syncSliders,panel}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const bump=(x,a,b)=>x<a||x>b?0:Math.sin((x-a)/(b-a)*Math.PI);
+const old=Hh.build;
+Hh.build=function(T3,K,v,st){if(v!=='heart'&&v!=='beat')return old.call(this,T3,K,v,st);const DS={side:T3.DoubleSide};
+    if(v==='heart'||v==='beat'){
+      const C={ra:V(-.95,.72,.05),la:V(.95,.9,-.3),rv:V(-.45,-.35,.25),lv:V(.55,-.62,-.1)},R={ra:.72,la:.66,rv:1,lv:1.08},SC={ra:[1,.92,.95],la:[1,.9,.95],rv:[1.05,1.12,.82],lv:[1,1.32,.98]};
+      const blood={ra:0x3B5BDB,rv:0x3B5BDB,la:0xE03131,lv:0xE03131};
+      // cardiac muscle: dark red, wet, with fine vessels; the lining (seen when cut open) is paler
+      const myo=k=>Object.assign(wet(T3,k[1]==='v'?0x8C2A2B:0x9A3436,{veins:12,veinC:0x4A0E14,var:.13,rough:.38,wet:.65,sheen:.25,seed:k.length*7+(k[0]==='l'?3:1)}),{side:T3.DoubleSide});
+      const endo=()=>Object.assign(wet(T3,0xC56A6E,{veins:4,veinC:0x7A2030,var:.1,rough:.4,wet:.6,seed:91}),{side:T3.BackSide});
+      // ventricles are rounded cones (base at the top, apex below); atria are rounded sacs
+      const cone=f=>(x,y,z)=>{const h=Math.sqrt(Math.max(1e-6,1-y*y)),H=y>.5?Math.sqrt(Math.max(0,1-((y-.5)/.5)**2)):Math.pow(Math.max(0,(y+1)/1.5),.6),k=H/h*(1+.02*L3.nz(x*2,y*2,z*2,f));return [x*k,y,z*k]};
+      const ch={},shells=[];for(const k of ['ra','la','rv','lv']){const vent=k[1]==='v',g2=K.grp(k,{p:C[k].toArray(),r:k==='lv'?[0,0,.3]:k==='rv'?[0,0,.16]:[0,0,0]});ch[k]=g2;const sc=SC[k],Rk=R[k];
+        const geo=vent?sculpt(T3,cone(k==='lv'?3:5),{seg:96,uv:2}):sculpt(T3,(x,y,z)=>{const q=1+.05*L3.nz(x*2,y*2,z*2,k==='ra'?7:8);return [x*q,y*q*(y<0?.86:1),z*q]},{seg:72,uv:2});
+        const m=mesh(K,k,geo,myo(k),null,{to:g2,s:[Rk*sc[0],Rk*sc[1],Rk*sc[2]],clip:1,shell:1,rank:vent?1:2});shells.push(m);
+        const t=k==='lv'?.72:k==='rv'?.86:.9;mesh(K,k,geo,endo(),null,{to:g2,s:[Rk*sc[0]*t,Rk*sc[1]*t,Rk*sc[2]*t],clip:1});
+        K.blob(k,[0,0,0],Rk*.66,blood[k],{seed:9,n:.03,seg:40,sc,to:g2,glass:.3})}
+      // auricles: the ear-shaped flaps of the atria
+      const aur=(k,p,r)=>mesh(K,k,sculpt(T3,(x,y,z)=>{const w=1+.16*Math.sin(Math.atan2(z,x)*6);return [x*.34*w,y*.12,z*.2*w]},{seg:48,uv:1}),myo(k),p,{to:ch[k],r,clip:1});
+      aur('ra',[.45,.4,.45],[.3,.5,-.5]);aur('la',[-.38,.25,.62],[.2,-.6,.5]);
+      mesh(K,'septum',sculpt(T3,(x,y,z)=>{const q=1+.04*L3.nz(x*2,y*2,z*2,4);return [x*q,y*q,z*q]},{seg:48,uv:1}),myo('septum'),[.05,-.45,.05],{s:[.16,1.15,.78],clip:1});
+      // points on the outer surface (for the coronary vessels): cast a ray onto the chamber walls
+      const rc=new T3.Raycaster();K.grp(null).parent.updateMatrixWorld(true);
+      const onSurf=(x,y)=>{rc.set(V(x,y,3),V(0,0,-1));const h=rc.intersectObjects(shells,false)[0];return h?[x,y,h.point.z+.035]:[x,y,.9]},
+        surf=path=>path.map(([x,y])=>{rc.set(V(x,y,3),V(0,0,-1));const h=rc.intersectObjects(shells,false)[0];return h?[x,y,h.point.z+.035]:null}).filter(Boolean);
+      const red=0xD7263D,blue=0x3358D4,vm={},vmat=(id,c)=>vm[id+c]||(vm[id+c]=wet(T3,c===red?0xBE3434:c===blue?0x4459C0:c,{veins:4,veinC:c===blue?0x26306E:0x6E1A1A,var:.08,rough:.33,wet:.75,seed:(c%97)+id.length}));
+      const ves=(id,pts,r,c,o={})=>K.put(id,new T3.Mesh(tube(T3,pts,r,{rad:28,uv:3}),vmat(id,c)),o);
+      ves('aorta',[[.32,.15,-.05],[.33,1.2,0],[.18,2.05,-.12],[-.4,2.28,-.45],[-.78,1.75,-.8],[-.72,.4,-.95],[-.62,-1.5,-.92]],u=>.27-.05*u,red,{clip:1});
+      for(const [a,b] of [[[.12,2.1,-.15],[.2,2.95,-.1]],[[-.12,2.22,-.3],[-.15,3.0,-.3]],[[-.38,2.24,-.45],[-.5,2.95,-.5]]])ves('aorta',[a,[(a[0]+b[0])/2,(a[1]+b[1])/2,a[2]],b],.075,red);
+      ves('pa',[[-.25,.2,.42],[-.16,1.0,.58],[.04,1.55,.36],[0,1.75,0]],.23,blue,{clip:1});ves('pa',[[0,1.75,0],[.8,1.85,-.2],[1.85,1.95,-.3]],.15,blue);ves('pa',[[0,1.75,0],[-.9,1.88,-.32],[-1.95,1.98,-.42]],.15,blue);
+      ves('vc',[[-1.05,2.65,-.15],[-1.05,1.9,-.05],[-1.0,1.25,0]],.2,blue);ves('vc',[[-.95,-1.95,-.45],[-1.0,-.9,-.32],[-1.0,.2,-.15]],.22,blue,{clip:1});
+      for(const pts of [[[2.05,1.15,-.35],[1.45,1.02,-.35],[1.15,.95,-.3]],[[2.05,.62,-.55],[1.5,.74,-.5],[1.15,.8,-.4]],[[.1,1.05,-1.45],[.45,.98,-.95],[.75,.92,-.55]]])ves('pv',pts,.1,0xE8505F);
+      // coronary arteries on the surface
+      const corA=[[[.25,.42],[.14,0],[.06,-.5],[.12,-1.1],[.3,-1.62]],[[.3,.4],[.75,.2],[1.15,-.2],[1.35,-.7]],[[.12,.3],[-.35,.12],[-.85,-.18],[-1.22,-.65],[-1.28,-1.15]],
+        [[.08,-.22],[.5,-.55],[.82,-1.0]],[[.1,-.72],[.45,-1.15]],[[-.95,-.35],[-.78,-.9],[-.52,-1.3]],[[.9,.05],[1.1,-.55],[1.05,-1.05]]];
+      for(const path of corA){const q=surf(path);if(q.length>1)ves('coronary',q,u=>.034-.012*u,0xF03E3E)}
+      const cvM=wet(T3,0x5B3F9A,{veins:2,var:.08,rough:.35,wet:.75,seed:93}),fatM=wet(T3,0xE9C66A,{lob:60,var:.08,rough:.45,wet:.55,seed:94});
+      for(const path of [[[.36,.36],[.24,-.1],[.16,-.6],[.22,-1.2]],[[-.2,.18],[-.7,-.05],[-1.12,-.45]]]){const q=surf(path);if(q.length>1)mesh(K,null,tube(T3,q,.024,{rad:12}),cvM)}
+      for(const path of [[[.2,.4],[.1,0],[.03,-.5],[.08,-1.0]],[[-1.15,-.1],[-.5,.18],[.3,.32],[1.1,.08]]]){const q=surf(path);if(q.length>1)mesh(K,null,tube(T3,q,(u,a)=>.055*(1+.22*Math.sin(u*80)*Math.sin(a*3)),{rad:16,dens:90}),fatM)}
+      // valves: a ring and three flaps that open and close
+      const valve=(id,p,dir,r,c=0xFFF3D6)=>{const g2=K.grp(id,{p});g2.quaternion.setFromUnitVectors(V(0,1,0),V(...dir).normalize());K.tor(id,[0,0,0],r,.035,0xF6E7C1,{r:[Math.PI/2,0,0],to:g2,gloss:1});const fl=[];
+        // each flap is hinged at the ring and swings open in the direction of flow
+        for(let i=0;i<3;i++){const h=K.grp(id,{to:g2,r:[0,i/3*TAU,0]}),hinge=new T3.Group(),f=new T3.Mesh(new T3.CircleGeometry(r,16,-Math.PI/3,TAU/3),K.mat(id,c,{gloss:1,mo:DS}));f.rotation.x=-Math.PI/2;f.position.x=-r;f.userData.part=id;hinge.position.x=r;hinge.add(f);h.add(hinge);fl.push(hinge)}
+        return a=>fl.forEach(h=>{h.rotation.z=a*1.25})};
+      const tri=valve('av',[-.72,.18,.15],[.25,-1,.1],.3),mit=valve('av',[.78,.24,-.18],[-.25,-1,.05],.28),aoV=valve('sl',[.32,.22,-.05],[0,1,0],.22),paV=valve('sl',[-.24,.25,.42],[.05,1,.1],.2);
+      const chM=wet(T3,0xF1EADF,{var:.04,rough:.25,wet:.85,seed:95});
+      for(const [c,tips] of [[[-.72,.18,.15],[[-.55,-.6,.35],[-.85,-.62,.05]]],[[.78,.24,-.18],[[.55,-.8,0],[.85,-.62,-.28]]]])for(const tp of tips){mesh(K,'av',new T3.ConeGeometry(.07,.32,20),myo('lv'),[tp[0],tp[1]-.14,tp[2]],{});
+        for(let i=0;i<5;i++){const a=i/5*TAU+tp[0],q=[c[0]+Math.cos(a)*.24,c[1]-.05,c[2]+Math.sin(a)*.2];mesh(K,'av',tube(T3,[q,[(q[0]+tp[0])/2,(q[1]+tp[1])/2,(q[2]+tp[2])/2],tp],.007,{rad:6,seg:10}),chM)}}
+      // blood flowing through: blue on the right side, red on the left
+      const deo=stream(T3,K,'vc',[[-1.05,2.5,-.1],[-1.0,1.4,0],[-.95,.75,.1],[-.72,.18,.15],[-.5,-.45,.25],[-.45,-.9,.3],[-.25,-.3,.4],[-.24,.3,.42],[-.15,1.0,.58],[.04,1.55,.36],[0,1.75,0],[.8,1.85,-.2],[1.8,1.95,-.3]],50,.06,0x3B5BDB,{speed:.09,jitter:.06});
+      const oxy=stream(T3,K,'pv',[[2.0,1.15,-.35],[1.3,1.0,-.33],[.95,.85,-.3],[.78,.24,-.18],[.6,-.5,-.1],[.55,-1.2,-.1],[.4,-.4,-.05],[.32,.25,-.05],[.33,1.2,0],[.18,2.05,-.12],[-.4,2.28,-.45],[-.78,1.75,-.8],[-.72,.4,-.95],[-.62,-1.4,-.92]],56,.06,0xE03131,{speed:.09,jitter:.06});
+      const S={bpm:72,sv:70,ph:0},beatOnly=v==='beat';let ex=null;
+      // conduction system (heartbeat variant)
+      let cond=null,ecg=null;
+      if(beatOnly){const glow=(id,c)=>K.mat(id,c,{gloss:1,mo:{emissive:c,emissiveIntensity:.2}});
+        const san=K.put('san',new T3.Mesh(new T3.SphereGeometry(.12,20,14),glow('san',0xFACC15)),{p:[-1.32,1.12,.32]}),avn=K.put('avn',new T3.Mesh(new T3.SphereGeometry(.1,20,14),glow('avn',0xF59E0B)),{p:[-.25,.22,.1]});
+        const his=K.put('his',new T3.Mesh(vtube(T3,[[-.25,.22,.1],[.02,-.2,.12],[.05,-.9,.1],[.15,-1.45,.05]],.045,48,10),glow('his',0xFB923C)));
+        const pk=[];for(const [s,pts] of [[1,[[.15,-1.45,.05],[.7,-1.6,.2],[1.25,-1.05,.25],[1.45,-.3,.1]]],[-1,[[.15,-1.45,.05],[-.5,-1.35,.35],[-1.15,-.8,.45],[-1.38,-.1,.3]]],[1,[[.15,-1.45,.05],[.6,-1.5,-.5],[1.2,-.9,-.6]]],[-1,[[.15,-1.45,.05],[-.4,-1.2,-.3],[-1.0,-.6,-.25]]]])
+          pk.push(K.put('purkyne',new T3.Mesh(vtube(T3,pts,u=>.035*(1-u*.5),48,8),glow('purkyne',0xF97316))));
+        cond={san,avn,his,pk};
+        ecg=panel(T3,K,'ecg',[2.9,.1,.3],2.4,1.25,(x,w,h,ph=0)=>{x.fillStyle='#0B1220';x.fillRect(0,0,w,h);x.strokeStyle='rgba(124,255,178,.14)';x.lineWidth=1;for(let i=0;i<=w;i+=w/16){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}for(let j=0;j<=h;j+=h/8){x.beginPath();x.moveTo(0,j);x.lineTo(w,j);x.stroke()}
+          const e=u=>{u=((u%1)+1)%1;return .12*bump(u,.02,.12)-.08*bump(u,.16,.18)+.95*bump(u,.18,.215)-.25*bump(u,.215,.25)+.25*bump(u,.4,.55)},beats=2;x.strokeStyle='#7CFFB2';x.lineWidth=4;x.beginPath();
+          for(let i=0;i<=w;i++){const u=i/w*beats,yv=h*.62-e(u)*h*.5;if(u>ph+(beats-1)&&u<ph+(beats-1)+.06){x.stroke();x.beginPath();x.moveTo(i,yv);continue}i?x.lineTo(i,yv):x.moveTo(i,yv)}x.stroke();
+          x.fillStyle='#7CFFB2';x.font='700 26px Inter,sans-serif';x.fillText('P',w*.035,h*.5);x.fillText('QRS',w*.085,h*.14);x.fillText('T',w*.23,h*.42);x.fillStyle='rgba(124,255,178,.8)';x.font='600 22px Inter,sans-serif';x.fillText(`${Math.round(S.bpm)} bpm`,w-130,34)},{res:640});}
+      const shellOf=k=>ch[k].children[0];
+      const tick=(dt,now)=>{S.ph=(S.ph+dt*S.bpm/60)%1;const p=S.ph,aS=bump(p,0,.13),vS=bump(p,.16,.46);
+        for(const k of ['ra','la'])ch[k].scale.setScalar(1-.07*aS);for(const k of ['rv','lv'])ch[k].scale.setScalar(1-.08*vS);
+        const avOpen=p>.5||p<.15?1:0,slOpen=p>.18&&p<.44?1:0;S.av=(S.av??1)+(avOpen-(S.av??1))*Math.min(1,dt*14);S.sl=(S.sl??0)+(slOpen-(S.sl??0))*Math.min(1,dt*14);tri(S.av);mit(S.av);aoV(S.sl);paV(S.sl);
+        const pace=.55+1.6*vS+.5*aS,sp=S.bpm/72;deo.tick(dt,pace*sp);oxy.tick(dt,pace*sp);
+        if(cond){const lit=(m,on)=>{m.material.emissiveIntensity=.2+1.6*on};lit(cond.san,bump(p,0,.06));lit(cond.avn,bump(p,.1,.17));lit(cond.his,bump(p,.15,.2));cond.pk.forEach(m=>lit(m,bump(p,.18,.27)));
+          for(const k of ['ra','la'])shellOf(k).material.emissive.setHex(0xFFB020),shellOf(k).material.emissiveIntensity=.35*bump(p,.02,.14);for(const k of ['rv','lv'])shellOf(k).material.emissive.setHex(0xFFB020),shellOf(k).material.emissiveIntensity=.3*bump(p,.19,.32);
+          if(ecg&&(!S.lastE||now-S.lastE>60)){S.lastE=now;ecg.userData.redraw(p)}}
+        if(ex&&S.key!==`${S.bpm}|${S.sv}`){S.key=`${S.bpm}|${S.sv}`;readout(ex,`<b>Heart rate</b> ${Math.round(S.bpm)} beats/min · <b>stroke volume</b> ${Math.round(S.sv)} ml · <b>cardiac output</b> = ${Math.round(S.bpm)} × ${Math.round(S.sv)} = ${(S.bpm*S.sv/1000).toFixed(1)} litres/min`)}
+        return true};
+      const j=(p,part,text,o)=>Object.assign({p,part,text},o||{});
+      const journeys=beatOnly?[{name:'One heartbeat',c:0xFACC15,steps:[j([-1.32,1.12,.32],'san','The sinoatrial node in the right atrium wall fires. It is the heart’s pacemaker.',{on:()=>{S.bpm=30}}),j([-.4,.9,.2],'ra','A wave of electrical activity spreads across both atria, and they contract.'),
+          j([-.25,.22,.1],'avn','The wave reaches the atrioventricular node, which delays it for about 0.1 seconds so the atria can finish emptying.'),j([.05,-.9,.1],'his','It travels down the bundle of His in the septum to the apex.'),j([1.25,-1.05,.25],'purkyne','Purkyne fibres carry it up the ventricle walls, so the ventricles contract from the bottom up.'),
+          j([2.9,.1,.3],'ecg','An ECG shows it: the P wave is the atria, the QRS complex is the ventricles contracting and the T wave is the ventricles relaxing.')]}]
+        :[{name:'Follow the blood',c:0x60A5FA,steps:[j([-1.05,2.2,-.1],'vc','Deoxygenated blood from the body arrives through the vena cava…'),j([-.95,.8,.1],'ra','…and fills the right atrium.'),j([-.72,.18,.15],'av','The atrium contracts and pushes the blood through the tricuspid valve…'),j([-.45,-.5,.3],'rv','…into the right ventricle.'),
+          j([-.24,.3,.42],'sl','The right ventricle contracts. The tricuspid valve shuts, and blood goes through the semilunar valve…'),j([.05,1.6,.36],'pa','…into the pulmonary artery, which takes it to the lungs to pick up oxygen.'),j([1.6,1.0,-.35],'pv',"Oxygenated blood comes back from the lungs in the pulmonary veins…",{c:0xF87171}),j([.95,.9,-.3],'la','…into the left atrium.'),
+          j([.78,.24,-.18],'av','It flows through the bicuspid (mitral) valve…'),j([.55,-.7,-.1],'lv','…into the left ventricle, which has the thickest wall of all.'),j([.32,.4,-.05],'sl','The left ventricle contracts hard and pushes the blood through the semilunar valve…'),j([-.3,2.2,-.4],'aorta','…into the aorta, which carries it to the rest of the body. Two loops: a double circulation.')]}];
+      const tags=[['ra',[-1.5,.95,.3],0],['la',[1.45,1.15,-.2],0],['rv',[-.95,-.7,.85],0],['lv',[1.25,-.9,.4],0],['aorta',[.25,1.75,.15],0],['pa',[-.2,1.15,.75],0],['vc',[-1.05,2.35,0],0],['pv',[1.75,1.12,-.3],0]];
+      if(beatOnly)tags.push(['san',[-1.32,1.12,.32]],['avn',[-.25,.22,.1]],['his',[.04,-.6,.12]],['purkyne',[1.25,-1.05,.25]],['ecg',[2.9,.82,.3],0]);else tags.push(['septum',[.05,-.6,.3]],['av',[-.72,.18,.15]],['sl',[.32,.25,-.05]],['coronary',onSurf(.75,.2)]);
+      return {radius:beatOnly?3.2:2.8,view:[.12,.3],ground:2.2,cut:{u:[[0,0,1],[0,0,1]],r:1.7,def:.82},tick,journeys,jEnd:()=>{S.bpm=72;syncSliders(ex,[null,(72-40)/140])},tags,quizSkip:['coronary'],
+        sliders:[{icon:'💓',label:'Heart rate',v:(72-40)/140,set:x=>{S.bpm=40+x*140}},...(beatOnly?[]:[{icon:'🫗',label:'Stroke volume',v:(70-40)/80,set:x=>{S.sv=40+x*80}}])],extra:el=>{ex=el;S.key=''}}}
+
+};
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
