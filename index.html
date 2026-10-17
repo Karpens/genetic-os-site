@@ -26916,6 +26916,53 @@ Hh.build=function(T3,K,v,st){if(v!=='heart'&&v!=='beat')return old.call(this,T3,
 
 };
 })();
+// ---------- The nervous system, atlas quality: a folded brain with cerebellum and brainstem, the spinal cord inside the vertebrae, and real nerves (brachial plexus, radial, median and ulnar nerves, intercostal nerves, femoral and sciatic nerves) in a see-through body (replaces the 'system' view of LIB.nervous) ----------
+(()=>{const LIB=L3.LIB,Nv=LIB.nervous;if(!Nv)return;const {V,clamp,readout}=L3.lx,{wet,tube,cap,sculpt,mesh,body}=L3.lx.anat,TAU=Math.PI*2;
+const along=(cv,u)=>cv.getPointAt(clamp(u,0,1)),curve=(T3,pts)=>new T3.CatmullRomCurve3(pts.map(p=>V(...p)),false,'centripetal');
+const old=Nv.build;
+Nv.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
+  const S={sp:.5};let ex=null;body(T3,K,{op:.13});
+  const brainM=wet(T3,0xD9A49C,{veins:16,veinC:0xA82838,var:.12,rough:.5,wet:.45,sheen:.2,seed:81}),cblM=wet(T3,0xD49C98,{veins:8,veinC:0xA02838,var:.1,rough:.45,wet:.55,seed:82}),
+    cordM=wet(T3,0xF0E0B6,{folds:10,veins:5,veinC:0xB04040,var:.06,rough:.35,wet:.7,seed:83}),nerveM=wet(T3,0xF1C84B,{folds:16,var:.06,rough:.3,wet:.75,seed:84}),
+    vert=Object.assign(wet(T3,0xD9C7A2,{var:.1,lob:100,rough:.5,wet:.25,seed:85,op:.45}),{}),musM=wet(T3,0xA8312D,{folds:46,veins:6,veinC:0x5E1218,var:.1,rough:.42,wet:.5,bump:.008,seed:86});
+  brainM.emissive.setHex(0xF06595);brainM.emissiveIntensity=.12;nerveM.emissive.setHex(0xFFC93C);nerveM.emissiveIntensity=.12;
+  // ---- brain: two hemispheres with a deep fissure between them, folded into gyri and sulci; cerebellum with fine folia; brainstem ----
+  const br=mesh(K,'brain',sculpt(T3,(x,y,z)=>{let X=x*.29,Y=y*.23,Z=z*.36;if(y<0&&z>-.2)X*=1+.18*(-y);if(y>0)Y-=.07*Math.exp(-((x/.12)**2))*y;
+      const k=1+.065*Math.pow(1-Math.abs(Math.sin(L3.nz(x*1.9,y*1.9,z*1.9,7)*3.1)),1.6)-.03;return [X*k,Y*k+(y<0?.03*y:0),Z*k]},{seg:180,uv:3}),brainM,[0,3.24,.02]);
+  mesh(K,'brain',sculpt(T3,(x,y,z)=>{const k=1+.06*Math.abs(Math.sin(y*14+.3*L3.nz(x*2,y*2,z*2,3)));return [x*.2*k,y*.1,z*.13*k]},{seg:96,uv:2}),cblM,[0,3.0,-.22]);
+  mesh(K,'brain',tube(T3,[[0,3.12,-.06],[0,2.95,-.1],[0,2.76,-.14]],u=>.075-.025*u,{rad:24}),cordM);
+  // ---- spinal cord inside the vertebral column ----
+  const spine=[[0,2.76,-.14],[0,2.4,-.2],[0,1.9,-.3],[0,1.2,-.33],[0,.5,-.32],[0,-.2,-.29]];
+  mesh(K,'cord',tube(T3,spine,u=>.046-.012*u,{rad:24,uv:4}),cordM);const spC=curve(T3,spine);
+  for(let i=0;i<24;i++){const p=along(spC,.03+i*.04);mesh(K,null,new T3.TorusGeometry(.075,.035,10,24),vert,p.toArray(),{r:[Math.PI/2,0,0],order:3});mesh(K,null,sculpt(T3,(x,y,z)=>[x*.08,y*.045,z*.07],{seg:20}),vert,[p.x,p.y,p.z+.13],{order:3})}
+  // ---- nerves: spinal nerves at every level, intercostal nerves round the chest, the brachial plexus and arm nerves, the femoral and sciatic nerves ----
+  const nerve=(pts,r)=>mesh(K,'nerves',tube(T3,pts,typeof r==='number'?u=>r*(1-.45*u):r,{rad:10,uv:8,dens:50}),nerveM);
+  for(let i=0;i<10;i++){const y=1.95-i*.16;for(const s of [-1,1])nerve([[s*.04,y,-.32],[s*.4,y-.06,-.24],[s*.62,y-.14,.05],[s*.52,y-.22,.3],[s*.15,y-.26,.42]],.012)}
+  const arm=s=>[[s*.04,2.25,-.22],[s*.3,2.12,-.1],[s*.72,1.9,0],[s*.98,1.4,.02],[s*1.08,.95,.02],[s*1.16,.4,.07],[s*1.21,-.12,.11],[s*1.25,-.5,.15]];
+  for(const s of [-1,1]){nerve(arm(s),u=>.022-.01*u);nerve([[s*.72,1.9,0],[s*.94,1.4,-.06],[s*1.06,.95,-.08],[s*1.12,.4,-.02],[s*1.18,-.12,.04],[s*1.22,-.42,.06]],u=>.016-.007*u);
+    nerve([[s*.72,1.9,0],[s*.9,1.45,.1],[s*1.0,.98,.12],[s*1.12,.42,.12],[s*1.2,-.12,.16],[s*1.27,-.45,.2]],u=>.016-.007*u);
+    for(let i=0;i<4;i++)nerve([[s*.04,2.42-i*.06,-.2],[s*.2,2.3-i*.06,-.12],[s*.3,2.12,-.1]],.012);
+    nerve([[s*.04,.1,-.3],[s*.22,-.4,-.15],[s*.3,-1.2,.12],[s*.36,-2.25,.18]],u=>.02-.008*u);nerve([[s*.04,-.15,-.3],[s*.18,-.75,-.32],[s*.3,-1.5,-.22],[s*.38,-2.28,-.12]],u=>.026-.01*u);
+    for(let i=0;i<3;i++)nerve([[s*.04,.4-i*.18,-.3],[s*.25,.3-i*.18,-.2],[s*.45,.1-i*.18,.0]],.01);
+    for(let i=0;i<5;i++)nerve([[s*1.22,-.4,.12],[s*(1.18+i*.025),-.55,.1+i*.02],[s*(1.15+i*.035),-.62,.08+i*.03]],.006)}
+  for(const s of [-1,1])for(const d of [[.12,3.12,.1],[.18,3.05,.05],[.15,2.95,0]])nerve([[s*.03,2.98,-.08],[s*d[0]*.6,(2.98+d[1])/2,(d[2]-.08)/2],[s*d[0],d[1],d[2]]],.008);
+  // ---- stimulus, receptor and effector: a candle flame under the right fingertip, the biceps of the same arm ----
+  mesh(K,null,new T3.CylinderGeometry(.06,.06,.42,32),wet(T3,0xFFF6DA,{var:.04,rough:.4,wet:.3,seed:87}),[1.29,-1.02,.2]);
+  const flameM=new T3.MeshStandardMaterial({color:0xFF922B,emissive:0xFF6B00,emissiveIntensity:1.2,roughness:.4}),flame=mesh(K,'receptor',new T3.ConeGeometry(.055,.17,24),flameM,[1.29,-.72,.2]);
+  mesh(K,'receptor',new T3.SphereGeometry(.035,20,14),new T3.MeshStandardMaterial({color:0xE03131,emissive:0xE03131,emissiveIntensity:.6}),[1.26,-.52,.17]);
+  const bic=mesh(K,'effector',tube(T3,[[0,-.5,0],[0,0,0],[0,.5,0]],u=>.5*Math.pow(Math.sin(Math.PI*u),.7)+.03,{rad:32,seg:48,uv:1.5}),musM,[1.02,1.43,.12],{s:[.13,.5,.11]});
+  bic.quaternion.setFromUnitVectors(V(0,1,0),V(.1,-.55,0).normalize());const b0=bic.scale.clone();
+  // ---- impulses up the arm to the brain, and back down to the biceps ----
+  const up=curve(T3,[...arm(1)].reverse().concat([[0,2.35,-.2],[0,2.76,-.14],[0,3.15,0]])),down=curve(T3,[[0,3.15,0],[0,2.76,-.14],[0,2.35,-.2],...arm(1).slice(0,3),[1.0,1.45,.14]]);
+  const pM=new T3.MeshStandardMaterial({color:0xFFE066,emissive:0xFFE066,emissiveIntensity:1.4,roughness:.3}),ps=[...Array(5)].map(()=>mesh(K,'impulse',new T3.SphereGeometry(.04,16,12),pM.clone(),[0,0,0]));
+  let t=0,last=-1;const ST=['Stimulus: the flame heats the fingertip','Receptor: pain receptors in the skin fire','Sensory neurones carry impulses up the arm','The spinal cord carries them to the brain (CNS)','The brain coordinates a response','Motor neurones carry impulses back down','Effector: the biceps contracts','Response: the hand moves away'];
+  const tick=dt=>{t+=dt*(.3+S.sp*1.2);const T=t%4.2;ps.forEach((p,i)=>{const u=T-i*.05;if(u<1.6){p.visible=true;p.position.copy(along(up,u/1.6));p.material.color.setHex(0xFFE066);p.material.emissive.setHex(0xFFE066)}else if(u<2.2){p.visible=i===0;p.position.set(0,3.2,.05)}else if(u<3.6){p.visible=true;p.position.copy(along(down,(u-2.2)/1.4));p.material.color.setHex(0xFF8787);p.material.emissive.setHex(0xFF6B6B)}else p.visible=false});
+    const stage=T<.15?0:T<.35?1:T<1.0?2:T<1.6?3:T<2.2?4:T<3.4?5:T<3.8?6:7;br.material.emissiveIntensity=T>1.5&&T<2.3?.7:.12;bic.scale.set(b0.x*(T>3.4?1.25:1),b0.y*(T>3.4?.85:1),b0.z*(T>3.4?1.2:1));flame.scale.setScalar(1+Math.sin(t*20)*.1);
+    if(ex&&stage!==last){last=stage;readout(ex,ST.map((s,i)=>i===stage?`<b>${s}</b>`:s).join(' → '))}return true};
+  return {radius:3.35,view:[.05,.22],ground:0,tick,extra:el=>{ex=el;last=-1},sliders:[{icon:'⏩',label:'Speed',v:S.sp,set:x=>{S.sp=x}}],
+    tags:[['brain',[0,3.5,.2]],['cord',[-.12,1.55,-.28]],['nerves',[-1.05,1.0,.05]],['receptor',[1.32,-.5,.25]],['effector',[1.15,1.5,.2]],['impulse',[.62,1.95,.05]]],
+    journeys:[{name:'Stimulus to response',c:0xFFD43B,steps:[{p:[1.27,-.6,.2],part:'receptor',text:'The flame is the stimulus. Pain receptors in the fingertip detect it.'},{p:[1.12,.6,.05],part:'nerves',text:'Sensory neurones in the nerves of the arm carry electrical impulses towards the spinal cord.'},{p:[0,1.6,-.3],part:'cord',text:'The spinal cord carries the impulses up to the brain. Together they are the central nervous system.'},{p:[0,3.2,0],part:'brain',text:'The brain coordinates a response and sends impulses back down.'},{p:[1.02,1.45,.12],part:'effector',text:'Motor neurones carry impulses to the effector — the biceps — which contracts and moves the hand away.'}]}]}};
+})();
 // ---------- Biology 3D: living-tissue look for the organ and cell models (wet sheen, fine mottling and grain on every solid part) ----------
 (()=>{const LIB=L3.LIB;let DT=null;
 // one shared near-white detail texture (multiplies the part's own colour, so colour changes in animations still work) and a matching bump map
