@@ -26963,6 +26963,85 @@ Nv.build=function(T3,K,v){if(v!=='system')return old.call(this,T3,K,v);
     tags:[['brain',[0,3.5,.2]],['cord',[-.12,1.55,-.28]],['nerves',[-1.05,1.0,.05]],['receptor',[1.32,-.5,.25]],['effector',[1.15,1.5,.2]],['impulse',[.62,1.95,.05]]],
     journeys:[{name:'Stimulus to response',c:0xFFD43B,steps:[{p:[1.27,-.6,.2],part:'receptor',text:'The flame is the stimulus. Pain receptors in the fingertip detect it.'},{p:[1.12,.6,.05],part:'nerves',text:'Sensory neurones in the nerves of the arm carry electrical impulses towards the spinal cord.'},{p:[0,1.6,-.3],part:'cord',text:'The spinal cord carries the impulses up to the brain. Together they are the central nervous system.'},{p:[0,3.2,0],part:'brain',text:'The brain coordinates a response and sends impulses back down.'},{p:[1.02,1.45,.12],part:'effector',text:'Motor neurones carry impulses to the effector — the biceps — which contracts and moves the hand away.'}]}]}};
 })();
+// ---------- The reflex arc, atlas quality: a segment of spinal cord (white matter, butterfly-shaped grey matter, central canal, meninges) inside vertebrae, dorsal and ventral roots with the dorsal root ganglion, myelinated sensory and motor neurones, a relay neurone, an arm with bones and a striated biceps, a glowing hot plate (replaces the 'reflex' view of LIB.nervous) ----------
+(()=>{const LIB=L3.LIB,Nv=LIB.nervous;if(!Nv)return;const {V,clamp,readout}=L3.lx,{live}=L3.lx.fm,{wet,tube,sculpt,mesh}=L3.lx.anat,TAU=Math.PI*2;
+const along=(cv,u)=>cv.getPointAt(clamp(u,0,1)),curve=(T3,pts)=>new T3.CatmullRomCurve3(pts.map(p=>V(...p)),false,'centripetal');
+const prev=Nv.build;
+Nv.build=function(T3,K,v){if(v!=='reflex')return prev.call(this,T3,K,v);
+  const S={sp:.5,br:0};let ex=null;K.lin=0;
+  const pulse=(id,c,r=.05)=>mesh(K,id,new T3.SphereGeometry(r,16,12),new T3.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:1.4}),[0,0,0]);
+  const bone=wet(T3,0xC9B48C,{var:.12,lob:120,rough:.5,wet:.25,op:.35,seed:211}),white=wet(T3,0xF3ECE2,{folds:30,var:.05,rough:.35,wet:.6,op:.42,seed:212}),grey=wet(T3,0x8E8A92,{lob:120,var:.1,rough:.4,wet:.5,seed:213}),
+    dura=wet(T3,0xDCE6EE,{veins:8,veinC:0xB04050,var:.05,rough:.25,wet:.85,op:.22,seed:214}),rootM=wet(T3,0xF1E2B8,{folds:16,var:.06,rough:.35,wet:.6,seed:215}),gangM=wet(T3,0xE8C766,{lob:60,var:.08,rough:.35,wet:.6,seed:216}),
+    skin=new T3.MeshPhysicalMaterial({color:0xEFC7AE,roughness:.45,transparent:true,opacity:.22,depthWrite:false,clearcoat:.3}),boneA=wet(T3,0xC2AD86,{var:.12,lob:100,rough:.5,wet:.25,seed:217}),
+    musB=wet(T3,0xA8312D,{folds:46,veins:6,veinC:0x5E1218,var:.1,rough:.42,wet:.5,bump:.008,seed:218});
+  // ---- bench ----
+  mesh(K,null,new T3.BoxGeometry(5,.08,2.6),wet(T3,0xE4E6EA,{var:.03,rough:.6,wet:.1,seed:219}),[.6,-.75,0]);
+  // ---- spinal cord: white matter (see-through), butterfly grey matter, central canal, meninges; vertebrae around it ----
+  const cx=-1.4,cy=.4;mesh(K,'cord',new T3.CylinderGeometry(.5,.5,2.2,64),white,[cx,cy,0],{order:3});mesh(K,'cord',new T3.CylinderGeometry(.56,.56,2.2,64,1,true),dura,[cx,cy,0],{order:4});
+  const bf=new T3.Shape(),P=[];for(let i=0;i<=64;i++){const a=i/64*TAU,c=Math.cos(a),s=Math.sin(a),horn=Math.pow(Math.abs(Math.sin(2*a)),3),rr=.12+.22*horn*(s<0?1.15:.85);P.push([c*rr*1.15,s*rr])}
+  P.forEach(([x,y],i)=>i?bf.lineTo(x,y):bf.moveTo(x,y));const gg=new T3.ExtrudeGeometry(bf,{depth:2.1,bevelEnabled:false,curveSegments:2});gg.translate(0,0,-1.05);gg.rotateX(Math.PI/2);
+  mesh(K,'cord',gg,grey,[cx,cy,0]);mesh(K,'cord',new T3.CylinderGeometry(.03,.03,2.2,16),wet(T3,0xD6E4EE,{rough:.2,wet:.9,seed:220}),[cx,cy,0]);
+  for(const y of [-.62,1.42]){mesh(K,null,new T3.TorusGeometry(.64,.07,16,48),bone,[cx,y,0],{r:[Math.PI/2,0,0],order:5});mesh(K,null,sculpt(T3,(x,y2,z)=>[x*.5,y2*.16,z*.36],{seg:40}),bone,[cx,y,.98],{order:5});mesh(K,null,tube(T3,[[cx,y,-.7],[cx,y-.1,-1.15]],.07,{rad:12}),bone,null,{order:5})}
+  // ---- roots: dorsal root (sensory, with its ganglion) and ventral root (motor) ----
+  const gang=mesh(K,'ganglion',sculpt(T3,(x,y,z)=>[x*.17,y*.12,z*.13],{seg:40,uv:1}),gangM,[-.6,.55,-.55]);
+  mesh(K,null,tube(T3,[[cx+.35,.47,-.3],[-.85,.53,-.48],[-.6,.55,-.55],[-.2,.55,-.52]],.07,{rad:16}),rootM,null,{order:3});mesh(K,null,tube(T3,[[cx+.35,.33,.25],[-.9,.36,.42],[-.4,.42,.5]],.065,{rad:16}),rootM,null,{order:3});
+  // ---- neurones: myelinated sensory (blue) and motor (red), short relay neurone (green); sheaths in segments with nodes between them ----
+  const sens=curve(T3,[[2.3,-.42,.25],[1.9,-.1,.1],[1.2,.3,-.2],[.2,.55,-.5],[-.6,.55,-.55],[-1.2,.5,-.25],[-1.38,.45,-.12]]),rel=curve(T3,[[-1.38,.45,-.12],[-1.42,.4,0],[-1.38,.35,.12]]),mot=curve(T3,[[-1.38,.35,.12],[-1.1,.3,.35],[-.5,.4,.5],[.3,.65,.45],[.85,.8,.35]]);
+  const neuron=(id,cv,c,myel)=>{const nm=wet(T3,c,{var:.06,rough:.3,wet:.8,seed:c%97});mesh(K,id,new T3.TubeGeometry(cv,120,.022,10),nm);if(!myel)return;const sh=wet(T3,0xF4EEDC,{folds:10,var:.04,rough:.3,wet:.8,seed:221}),L=cv.getLength(),n=Math.floor(L/.16);
+    for(let i=1;i<n;i++){const u=i/n;if(u<myel[0]||u>myel[1])continue;const p=cv.getPointAt(u),tg=cv.getTangentAt(u),m=mesh(K,id,new T3.CapsuleGeometry(.045,.08,6,14),sh,p.toArray());m.quaternion.setFromUnitVectors(V(0,1,0),tg)}};
+  neuron('sensory',sens,0x3B7DDD,[.05,.62]);neuron('relay',rel,0x2F9E44,null);neuron('motor',mot,0xD9443C,[.25,.92]);
+  mesh(K,'relay',new T3.SphereGeometry(.06,20,14),wet(T3,0x2F9E44,{lob:30,seed:222}),[-1.42,.4,0]);mesh(K,'motor',sculpt(T3,(x,y,z)=>{const k=1+.25*Math.max(0,Math.sin(Math.atan2(y,x)*5));return [x*.08*k,y*.08*k,z*.06]},{seg:32}),wet(T3,0xD9443C,{lob:30,seed:223}),[-1.36,.35,.14]);
+  // ---- arm: upper arm and forearm with bones, see-through skin, striated biceps; hand above the hot plate ----
+  mesh(K,null,tube(T3,[[.42,1.1,.25],[.9,.65,.25],[1.38,.4,.25]],.17,{rad:32}),skin,null,{order:4});mesh(K,null,tube(T3,[[.45,1.08,.25],[.95,.66,.25],[1.38,.42,.25]],.035,{rad:14}),boneA);
+  const fore=K.grp(null,{p:[1.45,.38,.25]});mesh(K,null,tube(T3,[[0,0,0],[.45,-.35,0],[.85,-.7,0]],u=>.14-.04*u,{rad:28}),skin,null,{to:fore,order:4});
+  for(const z of [-.04,.04])mesh(K,null,tube(T3,[[0,0,z],[.45,-.36,z],[.82,-.68,z]],.022,{rad:10}),boneA,null,{to:fore});
+  mesh(K,null,sculpt(T3,(x,y,z)=>[x*.2,y*.07,z*.13],{seg:32}),skin,[.98,-.8,0],{to:fore,order:4});for(let i=0;i<4;i++)mesh(K,null,tube(T3,[[1.1,-.82,-.09+i*.06],[1.24,-.86,-.09+i*.06],[1.32,-.9,-.09+i*.06]],.022,{rad:10}),skin,null,{to:fore,order:4});
+  const bic=mesh(K,'effector',tube(T3,[[0,-.5,0],[0,0,0],[0,.5,0]],u=>.5*Math.pow(Math.sin(Math.PI*u),.7)+.03,{rad:32,seg:48,uv:1.5}),musB,[.95,.85,.32],{s:[.2,.62,.18]});bic.quaternion.setFromUnitVectors(V(0,1,0),V(.62,-.45,0).normalize());const b0=bic.scale.clone();
+  // ---- hot plate with glowing coil; free nerve endings in the fingertip ----
+  mesh(K,'receptor',new T3.CylinderGeometry(.48,.5,.12,48),wet(T3,0x3A3D42,{var:.06,rough:.3,wet:.6,seed:224}),[2.45,-.62,.2]);
+  const coilM=new T3.MeshStandardMaterial({color:0xFF5A1F,emissive:0xFF6B00,emissiveIntensity:.8,roughness:.4}),glow=mesh(K,'receptor',new T3.TorusGeometry(.3,.025,10,64),coilM,[2.45,-.55,.2],{r:[Math.PI/2,0,0]});
+  mesh(K,'receptor',new T3.TorusGeometry(.18,.025,10,48),coilM,[2.45,-.55,.2],{r:[Math.PI/2,0,0]});for(let i=0;i<5;i++)mesh(K,'receptor',tube(T3,[[2.3,-.42,.25],[2.28+i*.02,-.38,.22+i*.015],[2.26+i*.03,-.36,.2+i*.03]],.006,{rad:6,seg:8}),wet(T3,0xF1C84B,{seed:225}));
+  // ---- impulses ----
+  const up=curve(T3,[[-1.38,.45,-.12],[-1.3,.9,-.25],[-1.35,1.5,-.25]]),brm=live(T3,K,'cord',0xBE4BDB,.022);const ps=[...Array(4)].map(()=>pulse('sensory',0xFFF3BF,.05)),pb=pulse('cord',0xE599F7,.045);let t=0,last=-1;
+  const ST=['Receptor in the fingertip detects the heat','Impulse travels along the sensory neurone','It crosses a synapse to a relay neurone in the spinal cord','Then a synapse to the motor neurone','The effector muscle contracts: the hand lifts away'];
+  const tick=dt=>{t+=dt*(.35+S.sp*1.1);const T=t%4;let st;ps.forEach((p,i)=>{const u=T-i*.06;p.visible=u>0&&u<2.6;if(u<1.4)p.position.copy(along(sens,u/1.4));else if(u<1.7)p.position.copy(along(rel,(u-1.4)/.3));else p.position.copy(along(mot,(u-1.7)/.9))});
+    st=T<.2?0:T<1.4?1:T<1.7?2:T<2.6?3:4;const lift=T>2.6?Math.min(1,(T-2.6)*3):0;fore.rotation.z=lift*.55;bic.scale.set(b0.x*(1+lift*.2),b0.y*(1-lift*.15),b0.z*(1+lift*.2));glow.material.emissiveIntensity=.5+Math.sin(t*9)*.3;
+    brm.userData.set(S.br?[[[-1.38,.45,-.12],[-1.3,.9,-.25],[-1.35,1.5,-.25]]]:[]);pb.visible=!!S.br&&T>1.4&&T<3.4;if(pb.visible)pb.position.copy(along(up,(T-1.4)/2));
+    if(ex&&st!==last){last=st;readout(ex,ST.map((s,i)=>i===st?`<b>${s}</b>`:s).join(' → ')+(S.br?' · a separate impulse goes up to the brain, so you feel the pain afterwards':''))}return true};
+  return {radius:2.8,view:[.25,.35],ground:.8,tick,extra:el=>{ex=el;last=-1},sliders:[{icon:'⏩',label:'Speed',v:S.sp,set:x=>{S.sp=x}},{icon:'🧠',label:'Also send an impulse to the brain',v:0,set:x=>{S.br=x>.5?1:0;last=-1}}],
+    tags:[['receptor',[2.45,-.3,.2]],['sensory',[1.2,.55,-.2]],['ganglion',[-.6,.85,-.55]],['relay',[-1.4,.75,0]],['motor',[.2,.95,.45]],['effector',[.95,1.15,.32]],['cord',[-1.4,1.65,0]]],
+    journeys:[{name:'Through the reflex arc',c:0x339AF0,steps:[{p:[2.4,-.4,.2],part:'receptor',text:'The hot plate is the stimulus. A receptor in the fingertip generates impulses.'},{p:[1.2,.3,-.2],part:'sensory',text:'The sensory neurone carries the impulse up the arm into the spinal cord.'},{p:[-.6,.55,-.55],part:'ganglion',text:'Its cell body sits in the dorsal root ganglion, just outside the cord.'},{p:[-1.4,.4,0],part:'relay',text:'Inside the grey matter it passes across a synapse to a relay neurone, then to a motor neurone.'},{p:[.95,.85,.32],part:'effector',text:'The motor neurone makes the biceps contract: the hand lifts away — all without the conscious brain.'}]}]}};
+})();
+// ---------- Somatic and autonomic, atlas quality: folded brain and spinal cord, somatic arm nerves, the sympathetic chain of ganglia beside the spine, the vagus nerve, a beating heart, breathing lungs and eyes whose pupils widen — in a see-through body (replaces the 'auto' view of LIB.nervous) ----------
+(()=>{const LIB=L3.LIB,Nv=LIB.nervous;if(!Nv)return;const {V,readout,syncSliders}=L3.lx,{wet,tube,cap,sculpt,mesh,body}=L3.lx.anat,TAU=Math.PI*2;
+const prev=Nv.build;
+Nv.build=function(T3,K,v){if(v!=='auto')return prev.call(this,T3,K,v);
+  const S={f:0};let ex=null;K.lin=0;body(T3,K,{op:.12});
+  const brainM=wet(T3,0xD9A49C,{veins:16,veinC:0xA82838,var:.12,rough:.5,wet:.45,sheen:.2,seed:81}),cordM=wet(T3,0xF0E0B6,{folds:10,veins:5,veinC:0xB04040,var:.06,rough:.35,wet:.7,seed:83}),
+    somM=wet(T3,0x4C8FE0,{folds:12,var:.06,rough:.3,wet:.8,seed:231}),symM=wet(T3,0xF08A2A,{lob:40,var:.08,rough:.35,wet:.7,seed:232}),parM=wet(T3,0x3FA34D,{folds:12,var:.06,rough:.3,wet:.8,seed:233}),
+    myo=wet(T3,0x8C2A2B,{veins:12,veinC:0x4A0E14,fat:6,var:.13,rough:.38,wet:.65,seed:234}),lungM=wet(T3,0xDE8F96,{lob:220,veins:8,veinC:0x7E3B55,var:.14,rough:.55,wet:.35,op:.7,seed:235}),
+    scl=wet(T3,0xF3F0EA,{veins:6,veinC:0xC23B3B,var:.04,rough:.3,wet:.85,seed:236});
+  symM.emissive.setHex(0xFF922B);symM.emissiveIntensity=.2;
+  mesh(K,'brain',sculpt(T3,(x,y,z)=>{let X=x*.29,Y=y*.23,Z=z*.36;if(y<0&&z>-.2)X*=1+.18*(-y);const k=1+.065*Math.pow(1-Math.abs(Math.sin(L3.nz(x*1.9,y*1.9,z*1.9,7)*3.1)),1.6)-.03;return [X*k,Y*k,Z*k]},{seg:140,uv:3}),brainM,[0,3.24,.02]);
+  mesh(K,'brain',tube(T3,[[0,3.05,-.1],[0,2.76,-.14],[0,2.4,-.2],[0,1.9,-.3],[0,1.2,-.33],[0,.5,-.32]],u=>.05-.012*u,{rad:20,uv:4}),cordM);
+  // somatic nerves to the arm muscles
+  for(const s of [1,-1])mesh(K,'somatic',tube(T3,[[s*.04,2.25,-.22],[s*.3,2.12,-.1],[s*.72,1.9,0],[s*.98,1.4,.02],[s*1.08,.95,.02],[s*1.16,.4,.07]],u=>.02-.008*u,{rad:10}),somM);
+  // sympathetic chain: a string of ganglia either side of the spine
+  const chain=[];for(const s of [1,-1]){mesh(K,'symp',tube(T3,[[s*.14,2.3,-.28],[s*.14,1.2,-.3],[s*.14,.3,-.28]],.012,{rad:8}),symM);for(let i=0;i<12;i++){const m=mesh(K,'symp',sculpt(T3,(x,y,z)=>[x*.035,y*.05,z*.035],{seg:16}),symM.clone(),[s*.14,2.2-i*.16,-.28]);chain.push(m)}}
+  // vagus nerve (parasympathetic) from the brainstem down to the heart and gut
+  mesh(K,'para',tube(T3,[[.04,2.95,-.08],[.08,2.55,.0],[.1,2.0,.04],[.1,1.65,.1],[.06,1.3,.08],[0,.9,.06],[-.05,.6,.05]],.016,{rad:10}),parM);
+  // heart, lungs and eyes
+  const heart=mesh(K,'heart',sculpt(T3,(x,y,z)=>{const t=(y+1)/2,w=.55+.45*Math.sin(Math.PI*Math.min(1,t*1.15));return [x*.16*w,y*.2,z*.14*w]},{seg:64}),myo,[.07,1.42,.16],{r:[0,0,.5]});
+  const lungs=[1,-1].map(s=>mesh(K,'lungs',sculpt(T3,(x,y,z)=>{const h=Math.sqrt(Math.max(1e-6,1-y*y)),p2=y<0?4:2,H=Math.pow(Math.max(0,1-Math.pow(Math.abs(y),p2)),1/p2),k=H/h;return [s*x*k*.26*(x>0?1:.6),y*.48,z*k*.3]},{seg:64,flip:s<0}),lungM,[s*.34,1.62,.0]));
+  const eyes=[1,-1].map(s=>{mesh(K,'pupil',new T3.SphereGeometry(.055,32,24),scl,[s*.13,3.1,.36]);mesh(K,'pupil',new T3.CircleGeometry(.03,32),new T3.MeshStandardMaterial({color:0x3E6E98,roughness:.4}),[s*.13,3.1,.413]);return mesh(K,'pupil',new T3.CircleGeometry(.014,24),new T3.MeshStandardMaterial({color:0x0B0B0D}),[s*.13,3.1,.4135])});
+  let t=0;const h0=heart.scale.clone();
+  const upd=()=>{if(ex)readout(ex,S.f>.5?'<b>Fight or flight</b> (sympathetic): heart rate ↑, pupils widen, airways widen, digestion slows, glucose released':'<b>Rest and digest</b> (parasympathetic, vagus nerve): heart rate ↓, pupils narrow, airways narrow, digestion and saliva increase')};
+  const tick=dt=>{const f=S.f,rate=1.1+f*2.2;t+=dt;const b=Math.pow(Math.max(0,Math.sin(t*rate*Math.PI)),8);heart.scale.copy(h0).multiplyScalar(1+b*.15);lungs.forEach(l=>l.scale.setScalar((1+f*.1)*(1+Math.sin(t*(1+f))*.04)));eyes.forEach(e=>e.scale.setScalar(.6+f*1.1));
+    chain.forEach((c,i)=>c.material.emissiveIntensity=.15+f*(.6+.4*Math.sin(t*6+i)));return true};
+  return {radius:3.35,view:[.05,.25],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'⚡',label:'Rest and digest ↔ fight or flight',v:0,set:x=>{S.f=x;upd()}}],
+    tags:[['brain',[0,3.5,.2]],['somatic',[-.95,1.2,.1]],['symp',[-.3,1.5,-.25]],['para',[.3,2.0,.1]],['heart',[.3,1.42,.25]],['pupil',[.35,3.15,.4]],['lungs',[-.6,1.9,.1]]],
+    journeys:[{name:'Two systems',c:0xFF922B,steps:[{p:[0,2.4,0],part:'brain',text:'The brain and spinal cord form the central nervous system. Everything else is peripheral.'},{p:[-.9,1.3,0],part:'somatic',text:'Somatic nerves go to skeletal muscles — the movements you choose.'},{p:[0,1.6,-.28],part:'symp',text:'The sympathetic chain beside the spine prepares the body for fight or flight.',on:()=>{S.f=1;syncSliders(ex,[1]);upd()}},{p:[.07,1.42,.16],part:'heart',text:'The heart races, the pupils widen and the airways open up.'},{p:[.08,1.9,.05],part:'para',text:'The vagus nerve, parasympathetic, calms things down again: rest and digest.',on:()=>{S.f=0;syncSliders(ex,[0]);upd()}}]}]}};
+})();
 // ---------- The eye, atlas quality: veined sclera, dark choroid, retina with vessels and the optic disc, a fibrous textured iris, clear cornea, ciliary body with zonules, rectus muscles and the optic nerve with its vessels (replaces both views of LIB.eye) ----------
 (()=>{const LIB=L3.LIB,Ey=LIB.eye;if(!Ey)return;const {V,readout,lathe,vtube}=L3.lx,{wet,tube}=L3.lx.anat,TAU=Math.PI*2;
 let IT=null;
