@@ -27826,13 +27826,14 @@ const protM=(T3,c,seed)=>wet(T3,c,{lob:220,var:.08,rough:.45,wet:.35,sheen:0,bum
 // a fatty-acid tail: a zigzag carbon chain; a kinked one has a cis double bond half way
 const tailGeo=(T3,kink)=>{const p=[];let x=0,y=0,a=-Math.PI/2;for(let k=0;k<=9;k++){p.push([x+(k%2?.022:-.022)*Math.cos(a+Math.PI/2),y,0]);if(kink&&k===4)a+=.55;x+=Math.cos(a)*.042;y+=Math.sin(a)*.042}return tube(T3,p,u=>.021*(u>.96?Math.sqrt((1-u)/.04):1)+.002,{rad:8,seg:40})};
 // a patch of bilayer: lumpy heads, two tails each; returns a tick that makes it shimmer
-const bilayer=(T3,K,W,D,y0,skip,r)=>{const pts=[];for(let i=0;i<W;i++)for(let k=0;k<D;k++)for(const s of [1,-1]){const x=-W*.15+i*.3+(k%2)*.15,z=-D*.15+k*.3;if(skip&&skip(x,z))continue;pts.push({x,z,s,ph:r()*TAU,ry:r()*TAU})}
+const bilayer=(T3,K,W,D,y0,skip,r,id='phos')=>{const pts=[];for(let i=0;i<W;i++)for(let k=0;k<D;k++)for(const s of [1,-1]){const x=-W*.15+i*.3+(k%2)*.15,z=-D*.15+k*.3;if(skip&&skip(x,z))continue;pts.push({x,z,s,ph:r()*TAU,ry:r()*TAU})}
   const n=pts.length,head=new T3.InstancedMesh(sculpt(T3,(x,y,z)=>{const k=1+.2*L3.nz(x*2.5,y*2.5,z*2.5,3)+.08*L3.nz(x*6,y*6,z*6,4);return [x*.13*k,y*.105*k,z*.13*k]},{seg:24}),phys(T3,0xFFFFFF,{rough:.4,cc:.45,sheen:0}),n),
     tA=new T3.InstancedMesh(tailGeo(T3,0),phys(T3,0xE9C452,{rough:.5,cc:.3,sheen:0}),n),tB=new T3.InstancedMesh(tailGeo(T3,1),phys(T3,0xE9C452,{rough:.5,cc:.3,sheen:0}),n),m=new T3.Matrix4(),q=new T3.Quaternion(),q2=new T3.Quaternion(),e=new T3.Euler(),c=new T3.Color(),one=V(1,1,1),o=V(0,0,0);
   pts.forEach((p,i)=>head.setColorAt(i,c.setHex(r()<.82?0xD9533F:r()<.5?0x3D8BD0:0xE89A2E)));
-  [head,tA,tB].forEach(im=>K.put('phos',im));ipts(head,pts.slice(0,16).map(p=>[p.x,y0+p.s*.42,p.z]));
+  [head,tA,tB].forEach(im=>K.put(id,im));ipts(head,pts.slice(0,16).map(p=>[p.x,y0+p.s*.42,p.z]));
   return t=>{pts.forEach((p,i)=>{const w=.03*Math.sin(t*1.7+p.ph),hy=y0+p.s*.42;e.set(p.s>0?0:Math.PI,p.ry+Math.sin(t*.7+p.ph)*.3,Math.sin(t*2+p.ph)*.1);q.setFromEuler(e);m.compose(o.set(p.x+w,hy,p.z),q,one);head.setMatrixAt(i,m);
       for(const [im,dx] of [[tA,-.045],[tB,.045]]){const v=V(dx,-.08,0).applyQuaternion(q);m.compose(o.set(p.x+w+v.x,hy+v.y,p.z+v.z),q,one);im.setMatrixAt(i,m)}});[head,tA,tB].forEach(im=>im.instanceMatrix.needsUpdate=true)}};
+L3.lx.bilayer=bilayer;
 // a sugar ring (hexagon) for sugar chains and sucrose
 const ring=(T3,r)=>new T3.CylinderGeometry(r,r,r*.45,6);
 const prev=Mb.build;
@@ -29426,6 +29427,35 @@ Po.build=function(T3,K,v,...rest){if(v!=='hw'&&v!=='drift')return prev.call(this
   return {radius:2.8,view:[.15,.15],ground:.05,tick:()=>false,extra:el=>{ex=el;upd()},sliders:[{icon:'🎲',label:'Run the experiment again',v:0,set:x=>{S.n=x;upd()}}],
     tags:[['big',[-2,1.1,-.5]],['small',[-2,.85,.7]],['graph',[1.2,2.45,0]],['found',[-2.0,.5,1.25]]],
     journeys:[{name:'Chance and evolution',c:0xE03131,steps:[[0,'big','In a big population, random deaths and births average out: allele frequencies barely change.'],[0,'small','In a small population chance has a huge effect.'],[.5,'graph','Run it again and again: the red line often hits 0 or 1 — an allele is lost.'],[.5,'found','Founder populations and bottlenecks are small, so they lose genetic diversity.']].map(([n,part,text])=>({p:[0,.8,0],part,text,on:()=>{S.n=n;syncSliders(ex,[n]);upd()}}))}]}}}
+})();
+// ---------- Cell signalling, molecular-illustration quality: a real phospholipid bilayer with a seven-helix receptor, a lumpy G protein and adenylyl cyclase, ball-and-stick adrenaline molecules that dock into the receptor, a glowing enzyme that showers cyclic AMP rings into the cytoplasm, and a beta-blocker that jams the receptor (replaces the 'signal' view of LIB.membx) ----------
+(()=>{const LIB=L3.LIB,Mx=LIB.membx;if(!Mx||!L3.lx.pk||!L3.lx.mol)return;const {V,clamp,readout,txt,syncSliders}=L3.lx,{wet,tube,mesh}=L3.lx.anat,{pm}=L3.lx.pk,{lumpy}=L3.lx.mol,{halo}=L3.lx.lab,TAU=Math.PI*2;
+const atom=(T3,K,id,c,r,p,to)=>mesh(K,id,new T3.SphereGeometry(r,14,10),pm(T3,{color:c,roughness:.3,clearcoat:1}),p,{to});
+const bond=(T3,K,id,a,b,to)=>mesh(K,id,tube(T3,[a,b],.01,{rad:5,seg:2}),pm(T3,{color:0xC8CDD4,roughness:.4}),null,{to});
+// adrenaline: a benzene ring with two OH groups and an amine side chain
+const adrenaline=(T3,K,id,to,c=0x404850)=>{const g=K.grp(id,{to}),R=.07,ring=[...Array(6)].map((_,k)=>[Math.cos(k/6*TAU)*R,Math.sin(k/6*TAU)*R,0]);ring.forEach((p,k)=>{atom(T3,K,id,c,.025,p,g);bond(T3,K,id,p,ring[(k+1)%6],g)});
+  [[2,[-.06,.13,0]],[3,[-.13,.03,0]]].forEach(([k,p])=>{atom(T3,K,id,0xD02020,.025,p,g);bond(T3,K,id,ring[k],p,g)});const ch=[[.12,0,0],[.18,.07,0],[.26,.06,0],[.31,.13,0]];ch.forEach((p,k)=>{atom(T3,K,id,k===2?0x2A5AD8:k===1?c:c,.025,p,g);bond(T3,K,id,k?ch[k-1]:ring[0],p,g)});atom(T3,K,id,0xD02020,.022,[.18,.15,0],g);bond(T3,K,id,ch[1],[.18,.15,0],g);return g};
+const prev=Mx.build;
+Mx.build=function(T3,K,v,...rest){if(v!=='signal')return prev.call(this,T3,K,v,...rest);const S={h:0};let ex=null;K.lin=0;let t=0;const r=L3.rnd(41);
+  const RC=V(0,1.0,0),EC=V(.95,1.0,.25),skip=(x,z)=>Math.hypot(x-RC.x,z-RC.z)<.38||Math.hypot(x-EC.x,z-EC.z)<.36;
+  const bil=L3.lx.bilayer?L3.lx.bilayer(T3,K,18,7,1.0,skip,r,'mem'):()=>{};
+  // seven-helix receptor spanning the membrane
+  const rg=K.grp('receptor',{p:RC.toArray()}),rM=pm(T3,{color:0x7A1AB8,roughness:.35,clearcoat:.6});for(let k=0;k<7;k++){const a=k/7*TAU,x=Math.cos(a)*.18,z=Math.sin(a)*.18,pts=[];for(let j=0;j<=16;j++){const u=j/16,y=-.55+u*1.1,w=u*TAU*3.5+a;pts.push([x+Math.cos(w)*.035,y,z+Math.sin(w)*.035])}mesh(K,'receptor',tube(T3,pts,.055,{rad:10,seg:64}),rM,null,{to:rg});
+    if(k<6){const b=(k+1)/7*TAU,top=k%2?.55:-.55;mesh(K,'receptor',tube(T3,[[x,top,z],[(x+Math.cos(b)*.18)/2*1.6,top+(top>0?.14:-.14),(z+Math.sin(b)*.18)/2*1.6],[Math.cos(b)*.18,top,Math.sin(b)*.18]],.03,{rad:8,seg:12}),rM,null,{to:rg})}}
+  const rcolor=c=>rM.color.setHex(c);
+  // G protein under the receptor and adenylyl cyclase in the membrane
+  const gM=wet(T3,0xE08A30,{lob:200,var:.1,rough:.4,wet:.4,sheen:0,bump:.008,seed:1501});mesh(K,'enzyme',lumpy(T3,.2,.14,.17,21),gM,[.35,.28,.12]);mesh(K,'enzyme',lumpy(T3,.12,.1,.11,22),gM,[.22,.18,-.05]);
+  const eM=wet(T3,0x2E9A4A,{lob:200,var:.1,rough:.4,wet:.4,sheen:0,bump:.008,seed:1502});mesh(K,'enzyme',lumpy(T3,.26,.55,.24,23),eM,EC.toArray());mesh(K,'enzyme',lumpy(T3,.3,.18,.26,24),eM,[EC.x,EC.y-.62,EC.z]);const glow=halo(T3,K,'enzyme','90,240,120',1.1,[EC.x,EC.y-.62,EC.z]);
+  // hormones, the blocking drug and cyclic AMP
+  const H=[...Array(5)].map((_,i)=>adrenaline(T3,K,'hormone',null,0x5A4A3A)),blk=adrenaline(T3,K,'receptor',null,0x2A6AA8);blk.position.set(0,1.62,0);blk.rotation.x=Math.PI/2;
+  const cM=pm(T3,{color:0xF2B400,emissive:0xC08000,emissiveIntensity:.4,roughness:.3}),C=[...Array(24)].map(()=>{const g=K.grp('camp',{});mesh(K,'camp',new T3.TorusGeometry(.035,.009,6,6),cM,[0,0,0],{to:g});mesh(K,'camp',new T3.TorusGeometry(.03,.009,6,5),cM,[.06,0,0],{to:g});return g});
+  txt(T3,K,'outside the cell',[-2.2,1.85,0],{h:.12,part:'mem'});txt(T3,K,'cytoplasm',[-2.2,.25,0],{h:.12,part:'mem'});
+  const tick=dt=>{t+=dt;bil(t);const u=(t*.3)%1,bound=u>.3&&S.h<.5;H.forEach((h,i)=>{if(i===0&&S.h<.5){h.position.set(0,2.3-clamp(u*3.3)*.75,0);h.rotation.set(t,t*.7,0)}else{const a=t*.4+i;h.position.set(Math.cos(a)*1.5,2.05+Math.sin(a*1.3)*.2,Math.sin(a)*.8);h.rotation.set(t*.5+i,t+i,0)}});
+    blk.visible=S.h>=.5;glow.material.opacity=bound?.8+Math.sin(t*8)*.15:0;C.forEach((c,i)=>{const q=(u*2+i/24)%1;c.visible=bound;c.position.set(EC.x+Math.cos(i*1.7)*q*1.4,EC.y-.7-q*.45,EC.z+Math.sin(i*1.7)*q*1.0);c.rotation.set(t+i,i,0)});rcolor(S.h>.5?0x4A4A58:0x7A1AB8);return true};
+  const upd=()=>{if(ex)readout(ex,S.h<.5?'<b>Adrenaline</b> binds to its receptor (complementary shape) → adenylyl cyclase is activated → it makes lots of <b>cyclic AMP</b> (second messenger) → cAMP activates enzymes, e.g. to break down glycogen · one hormone molecule → thousands of glucose molecules':'A <b>blocking drug</b> (e.g. a beta-blocker) sits in the receptor: the hormone can’t bind, so no cAMP is made and the response stops')};
+  return {radius:2.6,view:[.25,.2],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'💊',label:'Hormone or blocking drug',v:0,set:x=>{S.h=x;upd()}}],
+    tags:[['hormone',[0,2.55,0]],['receptor',[-.45,1.75,0]],['enzyme',[1.35,.45,.25]],['camp',[1.8,.2,.6]],['mem',[2.4,1.6,-.8]]],
+    journeys:[{name:'From hormone to response',c:0xBE4BDB,steps:[[0,'hormone','Adrenaline arrives in the blood; it can’t cross the phospholipid bilayer.'],[0,'receptor','It binds to a receptor with a complementary shape on the cell surface.'],[0,'enzyme','The receptor activates adenylyl cyclase on the inside of the membrane.'],[0,'camp','Adenylyl cyclase makes many cyclic AMP molecules — the second messenger amplifies the signal.'],[1,'receptor','Drugs can block receptors, so the hormone has no effect.']].map(([h,part,text])=>({p:[0,1,0],part,text,on:()=>{S.h=h;syncSliders(ex,[h]);upd()}}))}]}};
 })();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
