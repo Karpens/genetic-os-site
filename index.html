@@ -30350,6 +30350,89 @@ Bd.build=function(T3,K,v,...rest){if(!['adapt','indicator','transect'].includes(
     journeys:[{name:'Running a transect',c:0xFAB005,steps:[[0,'tape','Lay a tape from the shady woodland out into the open field.'],[0,'quad','Place a quadrat every 2 m along it and record the percentage cover of each plant.'],[.5,'light','Measure light intensity at each quadrat with a light meter.'],[1,'plants','Plot cover against light: plants that need light increase away from the trees.']].map(([d,part,text])=>({p:[0,.3,0],part,text,on:()=>{S.d=d;syncSliders(ex,[d]);upd()}}))}]};
 };
 })();
+// ---------- Gametogenesis and monoclonal antibodies, atlas quality: a seminiferous tubule cut across — a pink sheath and basement membrane, rings of spermatogonia, primary and secondary spermatocytes and spermatids (translucent cells with purple nuclei) between columnar Sertoli cells, and sperm with dark heads, midpieces and tails filling the lumen; a Graafian follicle cut open — theca, a granular layer, a fluid-filled antrum and the oocyte on its cumulus mound inside a glassy zona pellucida ringed by the corona radiata, polar bodies tucked under the zona, with small primordial follicles nearby; the hybridoma method on a lab bench — a white lab mouse and a syringe, a spleen with B lymphocytes, myeloma cells, a hybridoma dividing into clones, Y-shaped antibodies of heavy and light chains over a vial, and a pregnancy test showing two lines (replaces LIB.gameto and the 'mab' view of LIB.immx) ----------
+(()=>{const LIB=L3.LIB,Gm=LIB.gameto,Im=LIB.immx;if(!L3.lx.prac||!L3.lx.bdv)return;const {V,clamp,readout,txt,syncSliders}=L3.lx,{wet,tube,sculpt,mesh}=L3.lx.anat,{pm,glassM}=L3.lx.pk,{metal}=L3.lx.lab,{bench,lathe}=L3.lx.prac,{ctex}=L3.lx.bdv,TAU=Math.PI*2;
+const lump=(T3,a,b,c,seed,n=.08)=>sculpt(T3,(x,y,z)=>{const k=1+n*L3.nz(x*2.2,y*2.2,z*2.2,seed);return [x*a*k,y*b*k,z*c*k]},{seg:24});
+// an instanced set of cells (translucent cytoplasm + nucleus) at given positions and sizes
+const cells=(T3,K,id,to,P,cm,nm,nf=.45)=>{const g1=new T3.SphereGeometry(1,16,12),g2=lump(T3,1,1,1,3,.12),a=new T3.InstancedMesh(g1,cm,P.length),b=new T3.InstancedMesh(g2,nm,P.length),Mx=new T3.Matrix4(),Q=new T3.Quaternion(),E=new T3.Euler();
+  P.forEach(([x,y,z,r,sx=1,sy=1,rz=0],i)=>{E.set(0,0,rz);Q.setFromEuler(E);Mx.compose(V(x,y,z),Q,V(r*sx,r*sy,r));a.setMatrixAt(i,Mx);Mx.compose(V(x,y,z),Q,V(r*nf*sx,r*nf*sy,r*nf));b.setMatrixAt(i,Mx)});
+  [a,b].forEach(m=>{m.instanceMatrix.needsUpdate=true;m.frustumCulled=false;K.put(id,m,{to})});return [a,b]};
+const show=(L,on)=>L.forEach(m=>m.count=on?m.instanceMatrix.count:0);
+
+if(Gm){const prev=Gm.build;
+Gm.build=function(T3,K,v,...rest){if(v!=='both')return prev.call(this,T3,K,v,...rest);const S={st:3};let ex=null;K.lin=0;let t=0;
+  // ----- seminiferous tubule, axis towards the viewer -----
+  const tb=K.grp('tubule',{p:[-1.4,1.0,0]});mesh(K,'tubule',new T3.CylinderGeometry(1.03,1.03,.7,72,1,true),wet(T3,0xB86A78,{lob:60,var:.15,rough:.5,wet:.6,seed:1701}),[0,0,0],{to:tb,r:[Math.PI/2,0,0]});
+  mesh(K,'tubule',new T3.RingGeometry(.99,1.03,96),wet(T3,0x9A4A5A,{lob:80,var:.1,rough:.5,wet:.5,seed:1702}),[0,0,.35],{to:tb});mesh(K,'tubule',new T3.TorusGeometry(.985,.012,8,96),pm(T3,{color:0x6A2A3A,roughness:.5}),[0,0,.35],{to:tb});
+  mesh(K,'tubule',new T3.CircleGeometry(1,64),wet(T3,0xD8B0B8,{lob:40,var:.1,rough:.6,wet:.4,seed:1703}),[0,0,-.34],{to:tb});
+  const cyto=wet(T3,0xF0D0D8,{lob:30,var:.08,rough:.45,wet:.6,seed:1704,op:.6}),nuc=[0x3A1A5A,0x4A2470,0x5A3080,0x30184A].map((c,i)=>wet(T3,c,{lob:120,var:.25,rough:.5,wet:.4,seed:1710+i}));
+  const RG=[[.93,24,.055,.55,1.5],[.78,16,.085,.55,1],[.63,15,.068,.5,1],[.5,13,.05,.45,1]],ZS=[.27,.09,-.09,-.27],rings=RG.map(([r,n,s,nf,flat],k)=>{const P=[];ZS.forEach((z,j)=>{for(let i=0;i<n;i++){const a=(i+(j%2)*.5)/n*TAU+k*.2;P.push([Math.cos(a)*r,Math.sin(a)*r,z,s,1,flat>1?1/flat:1,a])}});return cells(T3,K,'stages',tb,P,cyto,nuc[k],nf)});
+  // Sertoli cells: tall pale columns from the basement membrane to the lumen
+  const sert=pm(T3,{color:0xE8D8C8,roughness:.6,transparent:true,opacity:.75,depthWrite:false});for(let i=0;i<8;i++){const a=i/8*TAU+.2;for(const z of [.2,-.15]){mesh(K,'tubule',sculpt(T3,(x,y,z2)=>[x*.05,y*.24,z2*.05],{seg:14}),sert,[Math.cos(a)*.72,Math.sin(a)*.72,z],{to:tb,r:[0,0,a-Math.PI/2]})}}
+  // sperm in the lumen: dark heads near the spermatids, tails curling into the lumen and out of the cut
+  const hd=pm(T3,{color:0x1E2050,roughness:.3,clearcoat:.6}),mp=pm(T3,{color:0x6A5A70,roughness:.5}),tl=pm(T3,{color:0xE0DCE8,roughness:.5}),sp=[...Array(16)].map((_,i)=>{const a=i/16*TAU,g=K.grp('sperm',{to:tb,p:[Math.cos(a)*.42,Math.sin(a)*.42,.05+(i%3)*.08],r:[0,0,a+Math.PI]});
+    mesh(K,'sperm',sculpt(T3,(x,y,z)=>{const k=1-.25*Math.max(0,-x);return [x*.045,y*.03*k,z*.014*k]},{seg:14}),hd,[0,0,0],{to:g});mesh(K,'sperm',new T3.CylinderGeometry(.008,.01,.06,8),mp,[.07,0,0],{to:g,r:[0,0,Math.PI/2]});
+    mesh(K,'sperm',tube(T3,[...Array(7)].map((_,k)=>[.1+k*.05,Math.sin(k*1.1+i)*.02,k*.02]),u=>.006*(1-.7*u),{rad:5,seg:24}),tl,null,{to:g});return g});
+  txt(T3,K,'testis: spermatogenesis',[-1.4,2.25,0],{h:.15,part:'tubule'});
+  // ----- Graafian follicle, cut open towards the viewer -----
+  const fo=K.grp('follicle',{p:[1.4,1.0,0]}),ph0=2.967,phL=TAU*(210/360);mesh(K,'follicle',new T3.SphereGeometry(.62,64,40,ph0,phL),wet(T3,0xB8606E,{lob:70,var:.15,rough:.5,wet:.6,seed:1720}),[0,0,0],{to:fo,r:[0,0,0]});fo.children[fo.children.length-1].material.side=T3.DoubleSide;
+  const inCut=d=>{const ph=Math.atan2(d.z,-d.x),p=((ph-ph0)%TAU+TAU)%TAU;return p>phL};
+  const gr=wet(T3,0xE8B8A0,{lob:40,var:.12,rough:.5,wet:.5,seed:1721}),grN=wet(T3,0x5A2A6A,{lob:90,var:.2,rough:.5,wet:.4,seed:1722}),rr=L3.rnd(17),GP=[],OC=V(-.16,.05,-.08);
+  for(let i=0;i<620;i++){const d=V(rr()*2-1,rr()*2-1,rr()*2-1);if(d.length()>1||d.length()<.1)continue;d.normalize();if(inCut(d))continue;const r=.5+rr()*.1;GP.push([d.x*r,d.y*r,d.z*r,.032+rr()*.012])}
+  const ON=OC.clone().normalize();for(let i=0;i<220;i++){const d=V(rr()*2-1,rr()*2-1,rr()*2-1).normalize();if(d.dot(ON)<.15||d.z>.1)continue;const q=OC.clone().addScaledVector(d,.27+rr()*.12);if(q.length()>.58)continue;GP.push([q.x,q.y,q.z,.03+rr()*.01])}
+  const gran=cells(T3,K,'follicle',fo,GP,gr,grN,.5);
+  const antM=pm(T3,{color:0xF8E8A8,roughness:.1,clearcoat:1,transparent:true,opacity:.22,depthWrite:false,side:T3.DoubleSide}),ant=mesh(K,'follicle',new T3.SphereGeometry(.49,48,32,ph0,phL),antM,[0,0,0],{to:fo,order:6});
+  const oc=K.grp('oocyte',{to:fo,p:OC.toArray()});mesh(K,'oocyte',new T3.SphereGeometry(.2,40,28),wet(T3,0xF4D8C0,{lob:150,var:.12,rough:.45,wet:.6,seed:1723,op:.85}),[0,0,0],{to:oc,order:5});
+  mesh(K,'oocyte',new T3.SphereGeometry(.07,24,16),wet(T3,0xD8C0E8,{lob:60,var:.1,rough:.4,wet:.6,seed:1724}),[.04,.03,.06],{to:oc});mesh(K,'oocyte',new T3.SphereGeometry(.022,12,10),pm(T3,{color:0x3A1A5A,roughness:.4}),[.06,.05,.1],{to:oc});
+  mesh(K,'oocyte',new T3.SphereGeometry(.24,40,28),pm(T3,{color:0xF4F8FF,roughness:.15,clearcoat:1,transparent:true,opacity:.3,depthWrite:false}),[0,0,0],{to:oc,order:7});
+  const CR=[];for(let i=0;i<60;i++){const d=V(rr()*2-1,rr()*2-1,rr()*2-1).normalize();if(d.z>.35)continue;CR.push([d.x*.265,d.y*.265,d.z*.265,.02])}cells(T3,K,'oocyte',oc,CR,gr,grN,.5);
+  const pbM=wet(T3,0xF0D0B8,{lob:60,var:.1,rough:.5,wet:.6,seed:1725}),pbs=[[.13,.15,.1],[.17,.06,.13]].map(p=>mesh(K,'polar',new T3.SphereGeometry(.035,16,12),pbM,p,{to:oc}));
+  // primordial follicles nearby
+  [[2.25,1.6,-.2],[2.3,.45,.1],[.75,1.75,-.3],[.7,.35,-.2]].forEach((p,i)=>{const g=K.grp('follicle',{p});mesh(K,'follicle',new T3.SphereGeometry(.06,20,14),wet(T3,0xF4D8C0,{lob:60,var:.1,rough:.45,wet:.6,seed:1730+i}),[0,0,0],{to:g});const P=[];for(let k=0;k<14;k++){const d=V(Math.cos(k*2.4)*Math.sin(k*.7+1),Math.cos(k*.7+1),Math.sin(k*2.4)*Math.sin(k*.7+1)).normalize();P.push([d.x*.075,d.y*.075,d.z*.075,.022,1,.5])}cells(T3,K,'follicle',g,P,gr,grN,.45)});
+  txt(T3,K,'ovary: oogenesis',[1.4,2.25,0],{h:.15,part:'follicle'});
+  const ST=['Spermatogonia and oogonia divide by mitosis (diploid)','They grow into primary spermatocytes and primary oocytes','Meiosis I: secondary spermatocytes; a secondary oocyte plus a polar body','Meiosis II: four spermatids mature into sperm; the egg finishes meiosis II only if fertilised'];
+  const upd=()=>{const s=S.st;rings.forEach((r,i)=>show(r,i<=s));sp.forEach(g=>g.visible=s>=3);fo.scale.setScalar(.6+s*.135);ant.visible=s>=2;oc.scale.setScalar(.9+s*.1);pbs.forEach((p,i)=>p.visible=s>=2+i);
+    if(ex)readout(ex,ST.map((t2,i)=>i===s?`<b>${t2}</b>`:t2).join(' → ')+' · one spermatogonium → 4 sperm; one oogonium → 1 egg + polar bodies')};
+  return {radius:2.7,view:[.15,.15],ground:0,tick:dt=>{t+=dt;sp.forEach((g,i)=>{g.rotation.x=Math.sin(t*4+i)*.25});return true},extra:el=>{ex=el;upd()},sliders:[{icon:'👣',label:'Stage',v:1,set:x=>{S.st=Math.round(x*3);upd()}}],
+    tags:[['tubule',[-1.4,2.05,0]],['sperm',[-1.4,1.0,.4]],['follicle',[1.4,1.75,0]],['oocyte',[1.25,1.1,.3]],['polar',[1.55,1.35,.3]],['stages',[-2.45,.5,.3]]],
+    journeys:[{name:'Sperm and eggs',c:0xE64980,steps:ST.map((text,i)=>({p:[0,1,0],part:['stages','tubule','polar','sperm'][i],text,on:()=>{S.st=i;syncSliders(ex,[i/3]);upd()}}))}]}}}
+
+if(Im){const prev=Im.build;
+// an IgG antibody: two heavy chains (stem and inner arm domains) and two light chains (outer arm domains)
+const antibody=(T3,K,id,p,s,mats)=>{const g=K.grp(id,{p,s:[s,s,s]}),[H,L,T]=mats,dom=(m,q,r)=>mesh(K,id,lump(T3,.05,.07,.045,7,.12),m,q,{to:g,r});
+  for(const sd of [-1,1]){dom(H,[sd*.04,-.1,0]);dom(H,[sd*.04,-.24,0]);const a=sd*.75;for(let k=0;k<2;k++){const r=.1+k*.13,c=[Math.sin(a)*r,.02+Math.cos(a)*r,0];dom(H,[c[0]-sd*.03*Math.cos(a),c[1]+.03*Math.sin(a)*sd,-.03],[0,0,-a]);dom(k?T:L,[c[0]+sd*.03*Math.cos(a),c[1]-.03*Math.sin(a)*sd,.035],[0,0,-a])}}
+  mesh(K,id,new T3.CylinderGeometry(.012,.012,.08,8),H,[0,-.01,0],{to:g});return g};
+const cell=(T3,K,id,p,r,cyto,nucl,seed,to)=>{const g=K.grp(id,{p,to});mesh(K,id,lump(T3,r,r,r,seed,.1),cyto,null,{to:g,order:5});mesh(K,id,lump(T3,r*.62,r*.62,r*.62,seed+5,.15),nucl,[r*.1,r*.05,0],{to:g});return g};
+Im.build=function(T3,K,v,...rest){if(v!=='mab')return prev.call(this,T3,K,v,...rest);const S={s:0};let ex=null;K.lin=0;let t=0;bench(T3,K,6.8,2.6);
+  const X=[-2.6,-1.5,-.4,.7,1.8,2.9],ids=['mouse','bcell','tumour','hyb','abs','use'];
+  // lab mouse with white fur, pink ears, feet and tail, and a syringe of antigen
+  const fur=ctex(T3,'mfur',256,256,(x,w,h,r)=>{x.fillStyle='#ECE8E2';x.fillRect(0,0,w,h);for(let i=0;i<5000;i++){x.strokeStyle=`rgba(${r()<.5?'255,255,255':'150,140,130'},${.1+r()*.2})`;x.beginPath();const px=r()*w,py=r()*h;x.moveTo(px,py);x.lineTo(px+(r()-.5)*3,py+3+r()*4);x.stroke()}},1801,[2,2]);
+  const fm=pm(T3,{map:fur,bumpMap:fur,bumpScale:.003,color:0xFFFFFF,roughness:.9,sheen:.8,sheenColor:new T3.Color(0xFFFFFF)}),pk=pm(T3,{color:0xD88A8A,roughness:.45,clearcoat:.3}),ey=pm(T3,{color:0x3A0408,roughness:.05,clearcoat:1});
+  const ms=K.grp('mouse',{p:[X[0]-.1,0,0]});mesh(K,'mouse',sculpt(T3,(x,y,z)=>{const k=1+.2*Math.max(0,-x);return [x*.26,y*.15*k,z*.14*k]},{seg:32}),fm,[0,.15,0],{to:ms});mesh(K,'mouse',sculpt(T3,(x,y,z)=>{const tp=Math.max(0,x);return [x*.13+tp*tp*.05,y*.09*(1-.4*tp),z*.085*(1-.45*tp)]},{seg:28}),fm,[.27,.2,0],{to:ms});
+  for(const sd of [1,-1]){mesh(K,'mouse',sculpt(T3,(x,y,z)=>[x*.012,y*.06,z*.055],{seg:14}),pk,[.24,.32,sd*.07],{to:ms,r:[sd*.4,0,.2]});mesh(K,'mouse',new T3.SphereGeometry(.016,10,8),ey,[.34,.24,sd*.05],{to:ms});for(const x of [.12,-.14])mesh(K,'mouse',sculpt(T3,(x2,y,z)=>[x2*.04,y*.012,z*.02],{seg:10}),pk,[x+.02,.012,sd*.08],{to:ms})}
+  mesh(K,'mouse',new T3.SphereGeometry(.014,10,8),pk,[.43,.19,0],{to:ms});mesh(K,'mouse',tube(T3,[[-.24,.12,0],[-.4,.08,.05],[-.55,.03,-.05],[-.68,.02,.08]],u=>.018*(1-.7*u),{rad:8,seg:24}),pk,null,{to:ms});
+  const sy=K.grp('mouse',{p:[X[0]+.05,.6,.15],r:[0,0,1.0]});mesh(K,'mouse',new T3.CylinderGeometry(.04,.04,.4,24,1,true),glassM(T3,.3),[0,0,0],{to:sy,order:6});mesh(K,'mouse',new T3.CylinderGeometry(.036,.036,.22,20),pm(T3,{color:0xA8D8F8,roughness:.1,transparent:true,opacity:.6}),[0,-.08,0],{to:sy});
+  mesh(K,'mouse',new T3.CylinderGeometry(.005,.005,.18,8),metal(T3),[0,-.29,0],{to:sy});mesh(K,'mouse',new T3.CylinderGeometry(.012,.012,.25,10),pm(T3,{color:0xF4F4F4,roughness:.4}),[0,.3,0],{to:sy});mesh(K,'mouse',new T3.CylinderGeometry(.05,.05,.015,20),pm(T3,{color:0xF4F4F4,roughness:.4}),[0,.43,0],{to:sy});
+  // spleen with B lymphocytes, myeloma cells, hybridoma and clones
+  const bcy=wet(T3,0xC8D8F0,{lob:40,var:.1,rough:.4,wet:.6,seed:1802,op:.55}),bnu=wet(T3,0x3A1A6A,{lob:120,var:.25,rough:.5,wet:.4,seed:1803}),mcy=wet(T3,0xB890C8,{lob:40,var:.12,rough:.4,wet:.6,seed:1804,op:.6}),mnu=wet(T3,0x4A1450,{lob:120,var:.25,rough:.5,wet:.4,seed:1805}),hcy=wet(T3,0xA8B0E8,{lob:40,var:.1,rough:.4,wet:.6,seed:1806,op:.6}),hnu=wet(T3,0x2A2070,{lob:120,var:.25,rough:.5,wet:.4,seed:1807});
+  const dish=(x)=>{mesh(K,null,new T3.CylinderGeometry(.42,.42,.06,48,1,true),glassM(T3,.25),[x,.03,0],{order:6});mesh(K,null,new T3.CircleGeometry(.42,48),glassM(T3,.25),[x,.003,0],{r:[-Math.PI/2,0,0],order:6});mesh(K,null,new T3.CylinderGeometry(.4,.4,.03,48),pm(T3,{color:0xF0C8C8,roughness:.1,transparent:true,opacity:.45,depthWrite:false}),[x,.02,0],{order:5})};
+  dish(X[1]);mesh(K,'bcell',sculpt(T3,(x,y,z)=>{const b=1-.35*Math.exp(-Math.pow(z+.2,2)*8)*Math.max(0,y);return [x*.22,y*.06,z*.12*b]},{seg:28}),wet(T3,0x5A1A2A,{lob:200,var:.2,rough:.35,wet:.8,seed:1808}),[X[1],.08,.12],{r:[0,.4,0]});
+  const bc=[...Array(5)].map((_,i)=>cell(T3,K,'bcell',[X[1]+Math.cos(i*1.3)*.25,.42+Math.sin(i*2)*.12,Math.sin(i*1.3)*.25],.1,bcy,bnu,i));
+  dish(X[2]);const tc=[...Array(6)].map((_,i)=>cell(T3,K,'tumour',[X[2]+Math.cos(i*1.1)*.25,.38+Math.sin(i*2)*.13,Math.sin(i*1.1)*.25],.12,mcy,mnu,i+3));
+  dish(X[3]);const hy=cell(T3,K,'hyb',[X[3],.5,0],.18,hcy,hnu,8);const clones=[...Array(8)].map((_,i)=>cell(T3,K,'hyb',[X[3]+Math.cos(i*.8)*.33,.18+Math.floor(i/4)*.36,Math.sin(i*.8)*.33],.085,hcy,hnu,i+10));
+  // antibodies over a vial of purified antibody
+  const vl=K.grp('abs',{p:[X[4],0,0]});mesh(K,'abs',lathe(T3,[[0,0],[.16,0],[.17,.02],[.17,.42],[.12,.48],[.1,.52],[0,.52]]),glassM(T3,.25),null,{to:vl,order:6});mesh(K,'abs',new T3.CylinderGeometry(.155,.155,.24,32),pm(T3,{color:0xE8EEFF,roughness:.1,transparent:true,opacity:.4,depthWrite:false}),[0,.13,0],{to:vl,order:5});mesh(K,'abs',new T3.CylinderGeometry(.11,.11,.06,24),pm(T3,{color:0x1C5ED6,roughness:.4}),[0,.55,0],{to:vl});
+  const AM=[pm(T3,{color:0x1E3A8A,roughness:.4,clearcoat:.4}),pm(T3,{color:0x3A8AC8,roughness:.4,clearcoat:.4}),pm(T3,{color:0xC86A10,roughness:.4,clearcoat:.4})],abs=[...Array(12)].map((_,i)=>antibody(T3,K,'abs',[X[4]+Math.cos(i)*.32,.75+Math.floor(i/4)*.28,Math.sin(i)*.32],.75,AM));
+  // pregnancy test: white casing, absorbent tip, window with control and test lines
+  const st=K.grp('use',{p:[X[5],.04,.1],r:[0,-.5,0]}),wc=pm(T3,{color:0xF6F6F4,roughness:.3,clearcoat:.6});mesh(K,'use',L3.sbox(T3,.6,.03,.1,6,24),wc,[0,0,0],{to:st});mesh(K,'use',L3.sbox(T3,.12,.025,.08,4,16),pm(T3,{color:0xF0E8F0,roughness:.9}),[-.68,0,0],{to:st});mesh(K,'use',L3.sbox(T3,.14,.035,.105,6,16),pm(T3,{color:0x2A6AD8,roughness:.35,clearcoat:.5}),[-.95,.005,0],{to:st});
+  mesh(K,'use',L3.sbox(T3,.2,.004,.04,4,12),pm(T3,{color:0xFBF8F0,roughness:.8}),[.1,.031,0],{to:st});[.02,.18].forEach(x=>mesh(K,'use',new T3.BoxGeometry(.02,.002,.07),pm(T3,{color:0x9A0A40,roughness:.6}),[x,.034,0],{to:st}));
+  X.forEach((x,i)=>txt(T3,K,['1 inject','2 spleen B cells','3 myeloma cells','4 fuse → hybridoma','5 clone, collect','6 use'][i],[x,1.5,0],{h:.11,part:ids[i]}));
+  const tick=dt=>{t+=dt;const u=(t*.25)%1,f=clamp(u*2);hy.scale.setScalar(.6+f*.5);clones.forEach((c,i)=>c.visible=u>.4+i*.05);bc.forEach((c,i)=>c.position.x=X[1]+Math.cos(i*1.3+t)*.25);tc.forEach((c,i)=>c.position.x=X[2]+Math.cos(i*1.1-t)*.25);abs.forEach((a,i)=>{a.rotation.y=t+i;a.visible=u>.3+i*.04});return true};
+  const D=['A mouse is injected with the antigen (e.g. hCG); its B lymphocytes start making the matching antibody.','B lymphocytes making the right antibody are taken from the mouse’s spleen — but they can’t divide outside the body.','Myeloma (tumour) cells divide again and again.','B cell + myeloma cell fuse: a hybridoma, which makes the antibody and keeps dividing.','The hybridoma is cloned: every cell makes the same — monoclonal — antibody, collected and purified.','Uses: pregnancy tests (bind hCG), finding blood clots or cancer cells, and carrying drugs straight to cancer cells.'];
+  const upd=()=>{if(ex)readout(ex,`<b>Step ${S.s+1}</b>: ${D[S.s]}`)};
+  return {radius:2.9,view:[.3,.08],ground:0,tick,extra:el=>{ex=el;upd()},sliders:[{icon:'🐭',label:'Step',v:0,set:x=>{S.s=Math.round(x*5);upd()}}],tags:ids.map((id,i)=>[id,[X[i],1.8,0]]),
+    journeys:[{name:'Making monoclonal antibodies',c:0x7048E8,steps:D.map((d,i)=>({p:[X[i],.5,0],part:ids[i],text:d,on:()=>{S.s=i;syncSliders(ex,[i/5]);upd()}}))}]}}}
+})();
 // ---------- Nature kit for biology: realistic trees, pines, bushes, grass tufts, rabbits, foxes, birds, fish and cows with bark, leaf, fur, feather and scale textures. While a biology model is being built, prop() uses these instead of the simple shapes (other subjects keep theirs) ----------
 (()=>{const LIB=L3.LIB,{wet,tube,sculpt}=L3.lx.anat,TAU=Math.PI*2,V=(...a)=>new THREE.Vector3(...a),TX={},MC=new Map();
 const cv=(w,h,f,seed)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h,L3.rnd(seed||5));return c};
