@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exchanging data: A-level Computer Science Year 13 revision notes</title>
+<meta name="description" content="Exchanging data for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. Data compression reduces file size, so…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/computer-science/exchanging-data/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Exchanging data: A-level Computer Science Year 13 revision notes">
+<meta property="og:description" content="Exchanging data for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. Data compression reduces file size, so…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/computer-science/exchanging-data/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/"},{"@type":"ListItem","position":5,"name":"Exchanging data","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/exchanging-data/"}]},{"@type":"LearningResource","name":"Exchanging data: A-level Computer Science Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/computer-science/exchanging-data/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Computer Science","Exchanging data"],"isAccessibleForFree":true,"teaches":["Data compression: lossy and lossless, run-length encoding and dictionary coding","Encryption: symmetric and asymmetric, digital signatures and certificates","Networks: LANs, WANs, topologies, client-server and peer-to-peer","Network protocols, the TCP/IP stack and DNS","Packet switching, circuit switching, routers and gateways","Network security: firewalls, proxies and threats","Web technologies: HTML, CSS, JavaScript and client-side versus server-side processing","Search engine indexing and the PageRank algorithm"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/computer-science/">Computer Science</a></li><li aria-current="page">Exchanging data</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Computer Science Year 13 · Topic 13</p>
+<h1>Exchanging data</h1>
+<p>Exchanging data covers how data is compressed, protected and sent between computers.</p><p>We will compare compression methods, symmetric and asymmetric encryption, digital signatures and certificates.</p><p>Then we revisit networks, protocols, packet switching, network security, web technologies and how search engines rank pages.</p>
+<ul class="stats"><li>8 subtopics</li><li>355 questions</li><li>Free: 13.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-13-1" class="on"><span class="n">13.1</span><span class="t"><a href="#notes">Data compression: lossy and lossless, run-length encoding and dictionary coding</a></span><span class="m"><span class="tag free">Free below</span> · 24 questions</span></li><li id="s-13-2"><span class="n">13.2</span><span class="t">Encryption: symmetric and asymmetric, digital signatures and certificates</span><span class="m"><a href="/#study/computing/A2/13.2">Open in Full Marks</a> · 31 questions</span></li><li id="s-13-3"><span class="n">13.3</span><span class="t">Networks: LANs, WANs, topologies, client-server and peer-to-peer</span><span class="m"><a href="/#study/computing/A2/13.3">Open in Full Marks</a> · 66 questions</span></li><li id="s-13-4"><span class="n">13.4</span><span class="t">Network protocols, the TCP/IP stack and DNS</span><span class="m"><a href="/#study/computing/A2/13.4">Open in Full Marks</a> · 73 questions</span></li><li id="s-13-5"><span class="n">13.5</span><span class="t">Packet switching, circuit switching, routers and gateways</span><span class="m"><a href="/#study/computing/A2/13.5">Open in Full Marks</a> · 28 questions</span></li><li id="s-13-6"><span class="n">13.6</span><span class="t">Network security: firewalls, proxies and threats</span><span class="m"><a href="/#study/computing/A2/13.6">Open in Full Marks</a> · 73 questions</span></li><li id="s-13-7"><span class="n">13.7</span><span class="t">Web technologies: HTML, CSS, JavaScript and client-side versus server-side processing</span><span class="m"><a href="/#study/computing/A2/13.7">Open in Full Marks</a> · 34 questions</span></li><li id="s-13-8"><span class="n">13.8</span><span class="t">Search engine indexing and the PageRank algorithm</span><span class="m"><a href="/#study/computing/A2/13.8">Open in Full Marks</a> · 26 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">13.1 · Free notes</p>
+<h2>Data compression: lossy and lossless, run-length encoding and dictionary coding</h2>
+<figure><img src="data-compression-lossy-and-lossless-run-length-encoding-and-dictionary-coding.svg" width="400" height="260" alt="Diagram: Data compression: lossy and lossless, run-length encoding and dictionary coding" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Data compression</strong> reduces file size, so less <strong>storage</strong> is needed and files transmit faster using less <strong>bandwidth</strong>.</li><li><strong>Lossless</strong> compression lets the original data be rebuilt exactly. It is essential for text, program code, databases and medical images. Examples: ZIP, PNG, FLAC.</li><li><strong>Lossy</strong> compression permanently discards the data humans are least likely to notice, giving much smaller files. The discarded data cannot be recovered. Examples: JPEG, MP3, MPEG-4.</li><li>Lossy methods include reducing <strong>colour depth</strong>, <strong>resolution</strong>, <strong>sample rate</strong> or <strong>bit depth</strong>, and removing inaudible frequencies (<strong>perceptual coding</strong>).</li><li><strong>Run-length encoding (RLE)</strong> replaces each run of identical consecutive values with a (count, value) pair, e.g. AAAABBBCC becomes 4A3B2C. It is lossless.</li><li>RLE works best where there are long runs: simple graphics, bitmaps with flat colour, fax. With few repeats it can make data <strong>larger</strong>, e.g. ABC becomes 1A1B1C.</li><li><strong>Dictionary coding</strong> (e.g. LZ77, LZW) replaces repeated sequences with shorter codes or references to entries in a <strong>dictionary</strong>. It is lossless and suits text with repeated words or phrases.</li><li>In dictionary methods the decoder either receives the dictionary with the data (a <strong>static</strong> dictionary, which adds overhead) or rebuilds it while decoding (<strong>adaptive</strong>, as in LZW).</li><li><strong>Huffman coding</strong> is a lossless method that gives shorter bit patterns to frequent characters and longer ones to rare characters, based on a frequency tree.</li><li><strong>Compression ratio</strong> = original size ÷ compressed size. <strong>Percentage saving</strong> = (original − compressed) ÷ original × 100.</li><li>Justify the choice in context: use lossless where exact reproduction matters, and lossy where small size matters more than perfect fidelity (e.g. streaming). Repeated lossy re-saving causes cumulative quality loss.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked bitmap RLE:</strong> the row 0000000011111000 becomes 8 × 0, 5 × 1, 3 × 0.</li><li><strong>Worked dictionary coding:</strong> with A = 1 and B = 2, &quot;ABABABA&quot; adds AB = 3, BA = 4 and ABA = 5 as it goes, and is sent as 1, 2, 3, 5: four codes for seven characters.</li><li><strong>Worked lossy audio:</strong> MP3 removes sounds masked by louder ones, often achieving about 10 : 1.</li><li><strong>Worked JPEG:</strong> the image is split into 8 × 8 blocks, and fine high-frequency detail is discarded.</li><li><strong>Worked choice:</strong> medical scan archives use lossless compression, so no diagnostic detail is lost.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Data compression: lossy and lossless, run-length encoding and dictionary coding: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="0">
+<p class="qt"><b>1.</b> Which of the following file formats uses lossless compression?</p>
+<ol class="opts"><li data-l="A">PNG</li><li data-l="B">MPEG-4 video</li><li data-l="C">JPEG</li><li data-l="D">MP3</li></ol>
+<details><summary>Show answer</summary><p><strong>A: PNG.</strong> PNG uses lossless compression, so the image is restored exactly. JPEG, MP3 and MPEG-4 all discard data permanently, which makes them lossy.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> Using run-length encoding (count then value), what is the encoding of WWWWWBBWWW?</p>
+<ol class="opts"><li data-l="A">5W2B1W</li><li data-l="B">W5B2W3</li><li data-l="C">10W2B</li><li data-l="D">5W2B3W</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 5W2B3W.</strong> There are three runs: five W, two B, then three W, giving 5W2B3W. Separate runs of the same value are not merged.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>3.</b> A run-length encoded string is 3X2Y4Z. How many characters does the decompressed data contain?</p>
+<ol class="opts"><li data-l="A">24</li><li data-l="B">9</li><li data-l="C">6</li><li data-l="D">12</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 9.</strong> Add the counts: 3 + 2 + 4 = 9 characters (XXXYYZZZZ). Multiplying the counts would be wrong.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>4.</b> A row of 200 white pixels (1 byte each) is stored as one RLE pair of 2 bytes (count, colour). What is the compression ratio for this row?</p>
+<ol class="opts"><li data-l="A">198:1</li><li data-l="B">200:1</li><li data-l="C">2:1</li><li data-l="D">100:1</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 100:1.</strong> Ratio = original ÷ compressed = 200 bytes ÷ 2 bytes = 100, written 100:1. The 198 bytes is the saving, not the ratio.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>5.</b> Why is RLE a poor choice for compressing a photograph with many slightly varying colours?</p>
+<ol class="opts"><li data-l="A">RLE needs a dictionary sent with the file</li><li data-l="B">RLE is lossy so quality would drop</li><li data-l="C">There are few long runs of identical values, so output may grow</li><li data-l="D">RLE only works on text files</li></ol>
+<details><summary>Show answer</summary><p><strong>C: There are few long runs of identical values, so output may grow.</strong> Photographs have few long runs of identical values, so each pixel becomes its own (1, value) pair and the file can get bigger. RLE is lossless and works on any data.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>6.</b> A 600-character text contains the 6-character word SYSTEM 20 times. Each is replaced by a 1-character code. How many characters remain, ignoring the dictionary?</p>
+<ol class="opts"><li data-l="A">500</li><li data-l="B">480</li><li data-l="C">580</li><li data-l="D">120</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 500.</strong> Each of 20 occurrences shrinks from 6 to 1 character, saving 5 each = 100. So 600 − 100 = 500 characters, before counting the dictionary entry itself.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>7.</b> Why is lossy compression unsuitable for a program&#39;s executable file?</p>
+<ol class="opts"><li data-l="A">Executables are too large to compress</li><li data-l="B">Executables are already stored using RLE</li><li data-l="C">Altered bytes would corrupt the program</li><li data-l="D">Lossy methods only work on audio</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Altered bytes would corrupt the program.</strong> Lossy compression discards data permanently. Even a few changed bytes in machine code could make the program crash, so executables need lossless compression.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>8.</b> What happens to the detail discarded when an image is saved as a JPEG?</p>
+<ol class="opts"><li data-l="A">It is held in a dictionary for later use</li><li data-l="B">It is restored when the image is opened</li><li data-l="C">It is moved to a separate file</li><li data-l="D">It is permanently lost and cannot be recovered</li></ol>
+<details><summary>Show answer</summary><p><strong>D: It is permanently lost and cannot be recovered.</strong> Lossy compression permanently removes data, so the original cannot be rebuilt exactly from the compressed file.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>9.</b> A 12 MB file is compressed to 3 MB. What is the percentage reduction in file size?</p>
+<ol class="opts"><li data-l="A">25%</li><li data-l="B">400%</li><li data-l="C">75%</li><li data-l="D">9%</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 75%.</strong> (12 − 3) ÷ 12 × 100 = 75%. The figure 25% is the compressed size as a fraction of the original, and 4:1 is the ratio.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>10.</b> Which statement about dictionary-based compression is correct?</p>
+<ol class="opts"><li data-l="A">It removes sounds that humans cannot hear</li><li data-l="B">It replaces repeated sequences with shorter codes</li><li data-l="C">It only works on runs of identical characters</li><li data-l="D">It always discards data permanently</li></ol>
+<details><summary>Show answer</summary><p><strong>B: It replaces repeated sequences with shorter codes.</strong> Dictionary coding replaces repeated sequences with shorter references to dictionary entries and is lossless. Removing sounds is lossy audio coding, and runs of identical values describe RLE.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 24 questions on Data compression: lossy and lossless, run-length encoding and dictionary coding (14 more than here), set out in practice levels. You also get notes and 3D models for all 8 subtopics of Exchanging data, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/A2/13.1/practice">Practise 13.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/A2/13.1/topic">Open Exchanging data</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/computer-science/aqa/#t-4">Topic 4: Fundamentals of data representation</a>, <a href="/revision/a-level-year-13/computer-science/aqa/#t-7">Topic 7: Fundamentals of communication and networking</a></span></li><li><b>OCR</b><span><a href="/revision/a-level-year-13/computer-science/ocr/#t-1-3-1">Topic 1.3.1: Compression, encryption and hashing</a>, <a href="/revision/a-level-year-13/computer-science/ocr/#t-1-3-3">Topic 1.3.3: Networks</a>, <a href="/revision/a-level-year-13/computer-science/ocr/#t-1-3-4">Topic 1.3.4: Web technologies</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/computer-science/cambridge/#t-14">Topic 14: Communication and internet technologies</a>, <a href="/revision/a-level-year-13/computer-science/cambridge/#t-17">Topic 17: Security</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/computer-science/data-representation-and-boolean-algebra/"><small>← Topic 12</small>Data representation and Boolean algebra</a><a class="next" href="/revision/a-level-year-13/computer-science/programming-project-nea/"><small>Topic 14 →</small>Programming project (NEA)</a></nav>
+<p><a href="/revision/a-level-year-13/computer-science/">All A-level Computer Science Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

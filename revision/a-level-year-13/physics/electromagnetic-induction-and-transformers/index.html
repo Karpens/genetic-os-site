@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Electromagnetic induction and transformers | A-level Physics Year 13</title>
+<meta name="description" content="Electromagnetic induction and transformers for A-level Physics Year 13: free revision notes and 10 practice questions with answers. Magnetic flux density B…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/physics/electromagnetic-induction-and-transformers/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Electromagnetic induction and transformers | A-level Physics Year 13">
+<meta property="og:description" content="Electromagnetic induction and transformers for A-level Physics Year 13: free revision notes and 10 practice questions with answers. Magnetic flux density B…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/physics/electromagnetic-induction-and-transformers/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Physics","item":"https://fullmarkss.com/revision/a-level-year-13/physics/"},{"@type":"ListItem","position":5,"name":"Electromagnetic induction and transformers","item":"https://fullmarkss.com/revision/a-level-year-13/physics/electromagnetic-induction-and-transformers/"}]},{"@type":"LearningResource","name":"Electromagnetic induction and transformers: A-level Physics Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/physics/electromagnetic-induction-and-transformers/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Physics","Electromagnetic induction and transformers"],"isAccessibleForFree":true,"teaches":["Magnetic flux and flux linkage","Faraday's law and Lenz's law","Generators and alternating voltages","Peak, mean and r.m.s. values of alternating current and voltage","Transformers and power transmission","Practical: investigating electromagnetic induction with coils and magnets"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#4361EE">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/physics/">Physics</a></li><li aria-current="page">Electromagnetic induction and transformers</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Physics Year 13 · Topic 32</p>
+<h1>Electromagnetic induction and transformers</h1>
+<p>Electromagnetic induction and transformers explains how changing magnetic fields generate electricity.</p><p>We will define magnetic flux and flux linkage, and use Faraday&#39;s law and Lenz&#39;s law.</p><p>Then we study generators and alternating current, r m s values, transformers and the National Grid, and investigate induction in the lab.</p>
+<ul class="stats"><li>6 subtopics</li><li>240 questions</li><li>Free: 32.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-32-1" class="on"><span class="n">32.1</span><span class="t"><a href="#notes">Magnetic flux and flux linkage</a></span><span class="m"><span class="tag free">Free below</span> · 17 questions</span></li><li id="s-32-2"><span class="n">32.2</span><span class="t">Faraday&#39;s law and Lenz&#39;s law</span><span class="m"><a href="/#study/physics/A2/32.2">Open in Full Marks</a> · 22 questions</span></li><li id="s-32-3"><span class="n">32.3</span><span class="t">Generators and alternating voltages</span><span class="m"><a href="/#study/physics/A2/32.3">Open in Full Marks</a> · 16 questions</span></li><li id="s-32-4"><span class="n">32.4</span><span class="t">Peak, mean and r.m.s. values of alternating current and voltage</span><span class="m"><a href="/#study/physics/A2/32.4">Open in Full Marks</a> · 63 questions</span></li><li id="s-32-5"><span class="n">32.5</span><span class="t">Transformers and power transmission</span><span class="m"><a href="/#study/physics/A2/32.5">Open in Full Marks</a> · 61 questions</span></li><li id="s-32-6"><span class="n">32.6</span><span class="t">Practical: investigating electromagnetic induction with coils and magnets</span><span class="m"><a href="/#study/physics/A2/32.6">Open in Full Marks</a> · 61 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">32.1 · Free notes</p>
+<h2>Magnetic flux and flux linkage</h2>
+<figure><img src="magnetic-flux-and-flux-linkage.svg" width="400" height="260" alt="Diagram: Magnetic flux and flux linkage" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Magnetic flux density</strong> B is the force per unit length on a conductor carrying 1 A perpendicular to the field. Its unit is the <strong>tesla</strong> (T = N A⁻¹ m⁻¹ = Wb m⁻²), and B is also the flux per unit area normal to the field.</li><li><strong>Magnetic flux</strong> through a flat area is Φ = BA cosθ. θ is the angle between B and the <strong>normal</strong> to the surface, not the angle between B and the surface.</li><li>The unit of flux is the <strong>weber</strong> (Wb). 1 Wb is the flux when a field of 1 T passes <strong>normally</strong> through an area of 1 m², so Wb = T m² = V s.</li><li>Flux is a maximum (Φ = BA) when the field is perpendicular to the plane of the coil (θ = 0). It is zero when the field lines are <strong>parallel to the plane</strong> of the coil (θ = 90°).</li><li>If the question gives the angle φ between B and the plane of the coil, use Φ = BA sinφ. Always check which angle you have been given.</li><li><strong>Flux linkage</strong> for a coil of N turns is NΦ = BAN cosθ. Its unit is the weber turn (Wb turns), often written simply as Wb.</li><li>Flux linkage counts every turn of the coil. Doubling the turns doubles the flux linkage, but the flux through each turn is unchanged.</li><li>For a coil rotating in a uniform field, NΦ varies as cosθ. It is a maximum when the plane is perpendicular to B and zero when the plane is parallel to B. A graph of NΦ against cosθ is a straight line through the origin with gradient BAN.</li><li>Flux is a useful picture of field lines passing through an area: more lines through the area means more flux. It is a scalar quantity, but its sign depends on which side of the surface is taken as positive.</li><li><strong>Practical:</strong> a search coil with an oscilloscope or data logger can compare field strengths. The induced emf is proportional to the rate of change of NΦ. A Hall probe measures B directly, and B is read from the probe&#39;s calibrated output.</li><li>In calculations convert area to m² (cm² × 10⁻⁴) and, for a circular coil, use A = πr². Give the unit Wb for flux and Wb turns for flux linkage.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked flux:</strong> B = 0.20 T through a 5.0 cm × 4.0 cm coil (A = 2.0 × 10⁻³ m²) → Φ = 4.0 × 10⁻⁴ Wb; with 100 turns, NΦ = 0.040 Wb turns.</li><li><strong>Worked angle:</strong> with the coil&#39;s normal at 60° to B, Φ = BA cos 60° = 2.0 × 10⁻⁴ Wb.</li><li><strong>Worked circular coil:</strong> radius 3.0 cm → A = π × 0.030² = 2.8 × 10⁻³ m²; in 0.050 T with 200 turns, NΦ = 0.028 Wb turns.</li><li><strong>Plane or normal:</strong> if the angle is measured to the plane of the coil use sin; if to the normal use cos. The flux is zero when the field lies in the coil&#39;s plane.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Magnetic flux and flux linkage: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> A square coil of area 4.0 × 10⁻³ m² has its plane perpendicular to a uniform field of 0.25 T. What is the magnetic flux through it?</p>
+<ol class="opts"><li data-l="A">62.5 Wb</li><li data-l="B">1.0 × 10⁻³ Wb</li><li data-l="C">0 Wb</li><li data-l="D">4.0 × 10⁻³ Wb</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 1.0 × 10⁻³ Wb.</strong> The normal is parallel to B so θ = 0. Φ = BA = 0.25 × 4.0 × 10⁻³ = 1.0 × 10⁻³ Wb.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> A coil of 200 turns and area 5.0 × 10⁻⁴ m² is in a 0.12 T field. Its normal makes 60° with the field. What is the flux linkage?</p>
+<ol class="opts"><li data-l="A">3.0 × 10⁻⁵ Wb turns</li><li data-l="B">1.2 × 10⁻² Wb turns</li><li data-l="C">1.0 × 10⁻² Wb turns</li><li data-l="D">6.0 × 10⁻³ Wb turns</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 6.0 × 10⁻³ Wb turns.</strong> NΦ = BAN cosθ = 0.12 × 5.0 × 10⁻⁴ × 200 × cos60° = 6.0 × 10⁻³ Wb turns. Using sin60° gives 1.0 × 10⁻², which is wrong.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> The plane of a coil makes an angle of 30° with a uniform field of 0.80 T. The coil area is 0.020 m². What is the flux through it?</p>
+<ol class="opts"><li data-l="A">8.0 × 10⁻³ Wb</li><li data-l="B">1.4 × 10⁻² Wb</li><li data-l="C">1.6 × 10⁻² Wb</li><li data-l="D">0 Wb</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 8.0 × 10⁻³ Wb.</strong> The angle to the normal is 60°. Φ = BA cos60° = 0.80 × 0.020 × 0.5 = 8.0 × 10⁻³ Wb. Using cos30° is the common error.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>4.</b> Which statement about magnetic flux through a flat coil is correct?</p>
+<ol class="opts"><li data-l="A">It is zero when the field is parallel to the plane of the coil</li><li data-l="B">It does not depend on the area of the coil</li><li data-l="C">It is zero when the field is perpendicular to the plane of the coil</li><li data-l="D">It is greatest when the plane of the coil is parallel to the field</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It is zero when the field is parallel to the plane of the coil.</strong> Parallel to the plane means the normal is at 90° to B, so cos90° = 0 and no field lines pass through the area.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>5.</b> A coil&#39;s turns are doubled and its area halved, in the same perpendicular field. How does the flux linkage change?</p>
+<ol class="opts"><li data-l="A">It doubles</li><li data-l="B">It halves</li><li data-l="C">It quadruples</li><li data-l="D">It is unchanged</li></ol>
+<details><summary>Show answer</summary><p><strong>D: It is unchanged.</strong> NΦ = BAN. N → 2N and A → A/2 leaves the product AN, and so the flux linkage, unchanged.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>6.</b> What is meant by a magnetic flux density of 1 T?</p>
+<ol class="opts"><li data-l="A">1 Wb of flux passes normally through each 1 m² of area</li><li data-l="B">1 Wb turn links a coil of area 1 m²</li><li data-l="C">A force of 1 N acts on any 1 m of wire in the field</li><li data-l="D">1 Wb of flux passes through a one-turn coil of any area</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 1 Wb of flux passes normally through each 1 m² of area.</strong> B = Φ/A, so 1 T is 1 Wb of flux per square metre of area normal to the field. The force definition needs a 1 A current perpendicular to B.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> A 150-turn coil has flux linkage 3.6 × 10⁻² Wb turns in a perpendicular field of 0.40 T. What is the coil&#39;s area?</p>
+<ol class="opts"><li data-l="A">6.0 × 10⁻⁴ m²</li><li data-l="B">3.6 × 10⁻² m²</li><li data-l="C">9.0 × 10⁻² m²</li><li data-l="D">2.4 × 10⁻³ m²</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 6.0 × 10⁻⁴ m².</strong> A = NΦ/(BN) = 3.6 × 10⁻² / (0.40 × 150) = 6.0 × 10⁻⁴ m². Remember to divide by the number of turns.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>8.</b> A coil is rotated from a position where its normal is parallel to B to a position 90° from B. What happens to its flux linkage?</p>
+<ol class="opts"><li data-l="A">It rises from zero to a maximum</li><li data-l="B">It falls from a maximum to a negative value</li><li data-l="C">It falls from a maximum to zero</li><li data-l="D">It stays constant</li></ol>
+<details><summary>Show answer</summary><p><strong>C: It falls from a maximum to zero.</strong> NΦ = BAN cosθ. It goes from BAN at θ = 0 to zero at θ = 90°. It only becomes negative beyond 90°.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>9.</b> A coil rotates in a uniform field. A graph of flux linkage NΦ (y-axis) against cosθ (x-axis) is…</p>
+<ol class="opts"><li data-l="A">a straight line through the origin, gradient BA</li><li data-l="B">a straight line through the origin, gradient BAN</li><li data-l="C">a straight line with gradient N/BA</li><li data-l="D">a sine curve of amplitude BAN</li></ol>
+<details><summary>Show answer</summary><p><strong>B: a straight line through the origin, gradient BAN.</strong> NΦ = (BAN) cosθ has the form y = mx. The graph is a straight line through the origin with gradient BAN.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> A single circular loop of radius 2.0 cm is perpendicular to a 0.050 T field. What is the flux through it?</p>
+<ol class="opts"><li data-l="A">2.5 × 10⁻⁴ Wb</li><li data-l="B">1.3 × 10⁻³ Wb</li><li data-l="C">3.1 × 10⁻³ Wb</li><li data-l="D">6.3 × 10⁻⁵ Wb</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 6.3 × 10⁻⁵ Wb.</strong> A = πr² = π(0.020)² = 1.26 × 10⁻³ m². Φ = BA = 0.050 × 1.26 × 10⁻³ = 6.3 × 10⁻⁵ Wb.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 17 questions on Magnetic flux and flux linkage (7 more than here), set out in practice levels. You also get notes and 3D models for all 6 subtopics of Electromagnetic induction and transformers, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/physics/A2/32.1/practice">Practise 32.1 in Full Marks</a><a class="btn ghost" href="/#study/physics/A2/32.1/topic">Open Electromagnetic induction and transformers</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/physics/aqa/#t-7-5">Topic 7.5: Magnetic fields</a></span></li><li><b>OCR A</b><span><a href="/revision/a-level-year-13/physics/ocr/#t-6-3">Topic 6.3: Electromagnetism</a></span></li><li><b>OCR B</b><span><a href="/revision/a-level-year-13/physics/ocr-b/#t-6-1">Topic 6.1: Charge and field</a></span></li><li><b>Edexcel</b><span><a href="/revision/a-level-year-13/physics/edexcel/#t-7">Topic 7: Electric and magnetic fields</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/physics/cambridge/#t-20">Topic 20: Magnetic fields</a>, <a href="/revision/a-level-year-13/physics/cambridge/#t-21">Topic 21: Alternating currents</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/physics/magnetic-forces-and-fields/"><small>← Topic 31</small>Magnetic forces and fields</a><a class="next" href="/revision/a-level-year-13/physics/nuclear-power-and-safety/"><small>Topic 33 →</small>Nuclear power and safety</a></nav>
+<p><a href="/revision/a-level-year-13/physics/">All A-level Physics Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

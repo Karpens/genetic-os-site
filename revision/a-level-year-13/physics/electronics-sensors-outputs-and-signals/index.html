@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Electronics: sensors, outputs and signals | A-level Physics Year 13</title>
+<meta name="description" content="Electronics: sensors, outputs and signals for A-level Physics Year 13: free revision notes and 10 practice questions with answers. A potential divider is…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/physics/electronics-sensors-outputs-and-signals/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Electronics: sensors, outputs and signals | A-level Physics Year 13">
+<meta property="og:description" content="Electronics: sensors, outputs and signals for A-level Physics Year 13: free revision notes and 10 practice questions with answers. A potential divider is…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/physics/electronics-sensors-outputs-and-signals/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Physics","item":"https://fullmarkss.com/revision/a-level-year-13/physics/"},{"@type":"ListItem","position":5,"name":"Electronics: sensors, outputs and signals","item":"https://fullmarkss.com/revision/a-level-year-13/physics/electronics-sensors-outputs-and-signals/"}]},{"@type":"LearningResource","name":"Electronics: sensors, outputs and signals: A-level Physics Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/physics/electronics-sensors-outputs-and-signals/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Physics","Electronics: sensors, outputs and signals"],"isAccessibleForFree":true,"teaches":["Voltage dividers and input sensors (LDR, thermistor)","Output devices: LEDs, relays, motors and protection diodes","The transistor as a switch","Analogue and digital signals","Analogue-to-digital and digital-to-analogue conversion and sampling"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#4361EE">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/physics/">Physics</a></li><li aria-current="page">Electronics: sensors, outputs and signals</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Physics Year 13 · Topic 23</p>
+<h1>Electronics: sensors, outputs and signals</h1>
+<p>Electronics, sensors, outputs and signals, is about how circuits sense the world and control things in it.</p><p>We will use potential dividers with light and temperature sensors, and drive LEDs, relays and motors safely.</p><p>Then we use transistors as switches, compare analogue and digital signals, and see how signals are converted and sampled.</p>
+<ul class="stats"><li>5 subtopics</li><li>105 questions</li><li>Free: 23.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-23-1" class="on"><span class="n">23.1</span><span class="t"><a href="#notes">Voltage dividers and input sensors (LDR, thermistor)</a></span><span class="m"><span class="tag free">Free below</span> · 19 questions</span></li><li id="s-23-2"><span class="n">23.2</span><span class="t">Output devices: LEDs, relays, motors and protection diodes</span><span class="m"><a href="/#study/physics/A2/23.2">Open in Full Marks</a> · 23 questions</span></li><li id="s-23-3"><span class="n">23.3</span><span class="t">The transistor as a switch</span><span class="m"><a href="/#study/physics/A2/23.3">Open in Full Marks</a> · 17 questions</span></li><li id="s-23-4"><span class="n">23.4</span><span class="t">Analogue and digital signals</span><span class="m"><a href="/#study/physics/A2/23.4">Open in Full Marks</a> · 25 questions</span></li><li id="s-23-5"><span class="n">23.5</span><span class="t">Analogue-to-digital and digital-to-analogue conversion and sampling</span><span class="m"><a href="/#study/physics/A2/23.5">Open in Full Marks</a> · 21 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">23.1 · Free notes</p>
+<h2>Voltage dividers and input sensors (LDR, thermistor)</h2>
+<figure><img src="voltage-dividers-and-input-sensors-ldr-thermistor.svg" width="400" height="260" alt="Diagram: Voltage dividers and input sensors (LDR, thermistor)" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>A <strong>potential divider</strong> is two resistors in series across a supply. The same current flows through both, so the supply voltage splits in proportion to resistance: <strong>V1 : V2 = R1 : R2</strong>.</li><li><strong>Vout = Vin × R2 / (R1 + R2)</strong>, where R2 is the resistor the output is measured across. Always state which resistor the output is taken across.</li><li>Current through an unloaded divider is <strong>I = Vin / (R1 + R2)</strong>. The voltage across each resistor is V = IR.</li><li>An <strong>LDR</strong> (light-dependent resistor) has <strong>resistance that decreases as light intensity increases</strong>. It is typically about 1 MΩ or more in the dark and a few hundred ohms in bright light.</li><li>An <strong>NTC thermistor</strong> has <strong>resistance that decreases as temperature increases</strong>, because more charge carriers are released. Its resistance does not fall in a straight line, so its response is non-linear.</li><li>Placing the sensor in the divider changes resistance into a <strong>voltage signal</strong>. If the sensor is the upper resistor R1, Vout across the fixed resistor rises as light or temperature rises. If the sensor is the lower resistor, Vout falls.</li><li>Swapping the sensor and the fixed resistor <strong>inverts the behaviour</strong> of the circuit. This is how the same sensor is used for &#39;on in the dark&#39; or &#39;on in the light&#39;, and &#39;on when hot&#39; or &#39;on when cold&#39;.</li><li>A <strong>potentiometer</strong> is a variable resistor used as a divider. Moving the slider changes R1 and R2 while R1 + R2 stays constant, so Vout varies smoothly from 0 to Vin.</li><li><strong>Loading effect:</strong> a load connected across the output is in parallel with R2. This lowers the effective R2 and so lowers Vout. The load resistance should be <strong>much greater</strong> than R2 to avoid this.</li><li>For the largest voltage change near a chosen switching point, choose the <strong>fixed resistor close in value to the sensor&#39;s resistance</strong> at that point.</li><li><strong>Practical:</strong> calibrate a thermistor with a stirred water bath, a thermometer and an ohmmeter. Stirring keeps the temperature uniform, so the thermistor and thermometer read the same temperature. Allow time to reach thermal equilibrium.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked divider:</strong> Vin = 9.0 V, R1 = 10 kΩ, R2 = 5.0 kΩ → Vout = 9.0 × 5.0 ÷ 15 = 3.0 V.</li><li><strong>Worked LDR:</strong> LDR as R2 (1.0 kΩ in light, 100 kΩ in the dark), R1 = 10 kΩ, Vin = 6.0 V → light: 6.0 × 1 ÷ 11 = 0.55 V; dark: 6.0 × 100 ÷ 110 = 5.5 V, so Vout rises in the dark.</li><li><strong>Worked loading:</strong> 10 kΩ + 10 kΩ on 12 V gives 6.0 V; a 10 kΩ load across R2 makes the lower part 5.0 kΩ → Vout = 12 × 5 ÷ 15 = 4.0 V.</li><li><strong>Choosing the fixed resistor:</strong> make it equal to the sensor&#39;s resistance at the switching point; Vout is then Vin/2 there and changes fastest.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Voltage dividers and input sensors (LDR, thermistor): 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> A 12 V supply is connected across a 4.0 kΩ resistor in series with a 2.0 kΩ resistor. What is the p.d. across the 2.0 kΩ resistor?</p>
+<ol class="opts"><li data-l="A">8.0 V</li><li data-l="B">4.0 V</li><li data-l="C">2.0 V</li><li data-l="D">6.0 V</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 4.0 V.</strong> Vout = 12 × 2.0/(4.0 + 2.0) = 4.0 V. The p.d. is shared in proportion to resistance, so the smaller resistor gets the smaller share.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>2.</b> An LDR is the upper resistor of a divider and a fixed resistor is the lower one. Vout is taken across the fixed resistor. What happens to Vout as light intensity increases?</p>
+<ol class="opts"><li data-l="A">It falls to zero</li><li data-l="B">It stays constant</li><li data-l="C">It increases</li><li data-l="D">It decreases</li></ol>
+<details><summary>Show answer</summary><p><strong>C: It increases.</strong> Light lowers the LDR resistance, so more of the supply p.d. is across the fixed resistor. Vout, taken across the fixed resistor, increases.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>3.</b> A fixed resistor is in series with an NTC thermistor, and a voltmeter is across the thermistor. The temperature rises. What happens to the voltmeter reading?</p>
+<ol class="opts"><li data-l="A">It increases</li><li data-l="B">It decreases</li><li data-l="C">It stays the same</li><li data-l="D">It doubles</li></ol>
+<details><summary>Show answer</summary><p><strong>B: It decreases.</strong> Thermistor resistance falls as temperature rises, so it takes a smaller share of the supply p.d. The reading across it decreases.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> Which statement about an LDR is correct?</p>
+<ol class="opts"><li data-l="A">Its resistance is zero in bright light</li><li data-l="B">Its resistance rises as light intensity rises</li><li data-l="C">Its resistance falls as light intensity rises</li><li data-l="D">Its resistance does not depend on light</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Its resistance falls as light intensity rises.</strong> In an LDR, more light releases more charge carriers, so resistance falls. It is large in the dark and small, but not zero, in bright light.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>5.</b> Why does the resistance of an NTC thermistor fall as its temperature rises?</p>
+<ol class="opts"><li data-l="A">The thermistor expands</li><li data-l="B">Electrons slow down</li><li data-l="C">Ions vibrate less, so they impede current less</li><li data-l="D">More charge carriers are released</li></ol>
+<details><summary>Show answer</summary><p><strong>D: More charge carriers are released.</strong> In a semiconductor, heating frees more charge carriers, so the number of carriers per unit volume rises and resistance falls. The effect outweighs the extra lattice vibration.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>6.</b> A 6.0 V supply is connected across a 10 kΩ fixed resistor in series with an LDR. The p.d. across the fixed resistor is 4.0 V. What is the LDR&#39;s resistance?</p>
+<ol class="opts"><li data-l="A">2.5 kΩ</li><li data-l="B">15 kΩ</li><li data-l="C">20 kΩ</li><li data-l="D">5.0 kΩ</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 5.0 kΩ.</strong> I = 4.0 V/10 kΩ = 0.40 mA. The LDR has 2.0 V across it, so R = 2.0 V/0.40 mA = 5.0 kΩ.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>7.</b> A 10 V supply is across two 10 kΩ resistors in series. A 10 kΩ load is connected across the lower resistor. What is the p.d. across the load?</p>
+<ol class="opts"><li data-l="A">2.5 V</li><li data-l="B">6.7 V</li><li data-l="C">3.3 V</li><li data-l="D">5.0 V</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 3.3 V.</strong> The lower resistor in parallel with the load is 5.0 kΩ. Vout = 10 × 5.0/(10 + 5.0) = 3.3 V, which is less than the unloaded 5.0 V.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>8.</b> A thermistor divider is to switch at about 25 °C, where the thermistor has a resistance of 4.7 kΩ. What fixed resistor gives the largest change in Vout near this temperature?</p>
+<ol class="opts"><li data-l="A">About 4.7 kΩ</li><li data-l="B">Any value works equally well</li><li data-l="C">About 47 Ω</li><li data-l="D">About 470 kΩ</li></ol>
+<details><summary>Show answer</summary><p><strong>A: About 4.7 kΩ.</strong> Vout changes most rapidly with sensor resistance when the fixed resistor is roughly equal to the sensor resistance at the switching point.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>9.</b> Why is the water bath stirred when a thermistor is being calibrated?</p>
+<ol class="opts"><li data-l="A">To stop the thermistor expanding</li><li data-l="B">To increase the thermistor&#39;s resistance</li><li data-l="C">So the thermistor and thermometer are at the same temperature</li><li data-l="D">To reduce the current in the thermistor</li></ol>
+<details><summary>Show answer</summary><p><strong>C: So the thermistor and thermometer are at the same temperature.</strong> Stirring gives uniform temperature, so the thermometer reading equals the thermistor&#39;s temperature. This makes the R against T data reliable.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>10.</b> A 5.0 V supply is across a 1.0 kΩ fixed resistor in series with an LDR. The p.d. across the fixed resistor is 4.0 V in bright light. What is the LDR resistance in bright light?</p>
+<ol class="opts"><li data-l="A">250 Ω</li><li data-l="B">4.0 kΩ</li><li data-l="C">1.0 kΩ</li><li data-l="D">4.0 Ω</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 250 Ω.</strong> I = 4.0 V/1.0 kΩ = 4.0 mA. The LDR has 1.0 V across it, so R = 1.0 V/4.0 mA = 250 Ω.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 19 questions on Voltage dividers and input sensors (LDR, thermistor) (9 more than here), set out in practice levels. You also get notes and 3D models for all 5 subtopics of Electronics: sensors, outputs and signals, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/physics/A2/23.1/practice">Practise 23.1 in Full Marks</a><a class="btn ghost" href="/#study/physics/A2/23.1/topic">Open Electronics: sensors, outputs and signals</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/physics/aqa/#t-13">Topic 13: Option: Electronics</a></span></li></ul>
+<p class="muted">Not in the OCR A, OCR B, Edexcel and Cambridge specifications.</p>
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/physics/turning-points-special-relativity/"><small>← Topic 22</small>Turning points: special relativity</a><a class="next" href="/revision/a-level-year-13/physics/electronics-operational-amplifiers/"><small>Topic 24 →</small>Electronics: operational amplifiers</a></nav>
+<p><a href="/revision/a-level-year-13/physics/">All A-level Physics Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

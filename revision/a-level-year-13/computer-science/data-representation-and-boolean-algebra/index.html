@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data representation and Boolean algebra | A-level Computer Science Year 13</title>
+<meta name="description" content="Data representation and Boolean algebra for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. Binary is base 2…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/computer-science/data-representation-and-boolean-algebra/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Data representation and Boolean algebra | A-level Computer Science Year 13">
+<meta property="og:description" content="Data representation and Boolean algebra for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. Binary is base 2…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/computer-science/data-representation-and-boolean-algebra/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/"},{"@type":"ListItem","position":5,"name":"Data representation and Boolean algebra","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/data-representation-and-boolean-algebra/"}]},{"@type":"LearningResource","name":"Data representation and Boolean algebra: A-level Computer Science Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/computer-science/data-representation-and-boolean-algebra/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Computer Science","Data representation and Boolean algebra"],"isAccessibleForFree":true,"teaches":["Number bases and signed integers: binary, hexadecimal, sign and magnitude, two's complement","Floating-point representation and normalisation","Floating-point arithmetic, rounding errors and precision","Bitwise manipulation, shifts and masks","Character sets (ASCII, Unicode) and primitive data types","Logic gates, Boolean expressions and De Morgan's laws","Boolean simplification and Karnaugh maps","Half and full adders and D-type flip-flops"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/computer-science/">Computer Science</a></li><li aria-current="page">Data representation and Boolean algebra</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Computer Science Year 13 · Topic 12</p>
+<h1>Data representation and Boolean algebra</h1>
+<p>Data representation and Boolean algebra at A2 level goes deeper into how numbers and logic are handled.</p><p>We will work with signed integers, floating point representation, normalisation and arithmetic, and bitwise operations.</p><p>Then we cover character sets and data types, logic gates and De Morgan&#39;s laws, Karnaugh maps, adders and flip-flops.</p>
+<ul class="stats"><li>8 subtopics</li><li>497 questions</li><li>Free: 12.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-12-1" class="on"><span class="n">12.1</span><span class="t"><a href="#notes">Number bases and signed integers: binary, hexadecimal, sign and magnitude, two&#39;s complement</a></span><span class="m"><span class="tag free">Free below</span> · 72 questions</span></li><li id="s-12-2"><span class="n">12.2</span><span class="t">Floating-point representation and normalisation</span><span class="m"><a href="/#study/computing/A2/12.2">Open in Full Marks</a> · 62 questions</span></li><li id="s-12-3"><span class="n">12.3</span><span class="t">Floating-point arithmetic, rounding errors and precision</span><span class="m"><a href="/#study/computing/A2/12.3">Open in Full Marks</a> · 66 questions</span></li><li id="s-12-4"><span class="n">12.4</span><span class="t">Bitwise manipulation, shifts and masks</span><span class="m"><a href="/#study/computing/A2/12.4">Open in Full Marks</a> · 60 questions</span></li><li id="s-12-5"><span class="n">12.5</span><span class="t">Character sets (ASCII, Unicode) and primitive data types</span><span class="m"><a href="/#study/computing/A2/12.5">Open in Full Marks</a> · 70 questions</span></li><li id="s-12-6"><span class="n">12.6</span><span class="t">Logic gates, Boolean expressions and De Morgan&#39;s laws</span><span class="m"><a href="/#study/computing/A2/12.6">Open in Full Marks</a> · 56 questions</span></li><li id="s-12-7"><span class="n">12.7</span><span class="t">Boolean simplification and Karnaugh maps</span><span class="m"><a href="/#study/computing/A2/12.7">Open in Full Marks</a> · 54 questions</span></li><li id="s-12-8"><span class="n">12.8</span><span class="t">Half and full adders and D-type flip-flops</span><span class="m"><a href="/#study/computing/A2/12.8">Open in Full Marks</a> · 57 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">12.1 · Free notes</p>
+<h2>Number bases and signed integers: binary, hexadecimal, sign and magnitude, two&#39;s complement</h2>
+<figure><img src="number-bases-and-signed-integers-binary-hexadecimal-sign-and-magnitude-two-s-complement.svg" width="400" height="260" alt="Diagram: Number bases and signed integers: binary, hexadecimal, sign and magnitude, two&#39;s complement" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Binary</strong> is base 2 and <strong>hexadecimal</strong> is base 16. A place-value table (128, 64, 32, 16, 8, 4, 2, 1 for 8 bits) is the standard method for converting to denary.</li><li>Denary to binary: subtract place values from the largest downwards, or use repeated division by 2 and read the remainders <strong>upwards</strong>. For example, 45 = 00101101.</li><li>One <strong>hex digit</strong> represents exactly 4 bits (a <strong>nibble</strong>): 0-9 then A=10 to F=15. Convert binary to hex by grouping in 4s from the <strong>right</strong>, e.g. 1011 0110 = B6.</li><li>Hex is used because it is <strong>compact</strong>, easier for humans to read and less error-prone than long binary strings. The computer still stores everything in binary.</li><li><strong>Unsigned</strong> n-bit integers range from 0 to 2^n - 1, so 8 bits gives 0 to 255.</li><li><strong>Sign and magnitude</strong>: the <strong>most significant bit (MSB)</strong> is the sign (0 = positive, 1 = negative) and the other bits hold the magnitude. The 8-bit range is -127 to +127, and there are <strong>two representations of zero</strong> (00000000 and 10000000).</li><li><strong>Two&#39;s complement</strong>: the MSB has a <strong>negative place value</strong> (-128 in 8 bits). The range is -2^(n-1) to +2^(n-1) - 1, so -128 to +127 in 8 bits, with <strong>one zero</strong>.</li><li>To negate in two&#39;s complement, <strong>invert all bits then add 1</strong>. For example 35 = 00100011, so -35 = 11011101. To find the value of a negative pattern, add the weights, using -128 for the MSB.</li><li><strong>Subtraction</strong> is done by adding the two&#39;s complement of the second number, <strong>discarding any carry out</strong> of the MSB. Two&#39;s complement is preferred because the same adder circuit handles addition and subtraction.</li><li><strong>Overflow</strong> occurs when the true result lies outside the range. Two positives giving a negative (or two negatives giving a positive) signals overflow.</li><li><strong>Sign extension</strong>: to widen a two&#39;s complement number, copy the sign bit into the new high-order bits. An <strong>arithmetic shift</strong> right keeps the sign bit and halves the value, while a left shift doubles it.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked conversion:</strong> 2F₁₆ = 47 = 00101111, so −47 in 8-bit two&#39;s complement is 11010001.</li><li><strong>Worked sign and magnitude:</strong> −47 = 10101111; zero has two forms, 00000000 and 10000000.</li><li><strong>Worked overflow:</strong> 01100100 (100) + 01000110 (70) = 10101010, a negative result from two positives, so overflow has occurred (170 &gt; 127).</li><li><strong>Worked subtraction:</strong> 50 − 75 = 00110010 + 10110101 = 11100111 = −25.</li><li><strong>Worked range:</strong> 12-bit two&#39;s complement covers −2048 to +2047.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Number bases and signed integers: binary, hexadecimal, sign and magnitude, two&#39;s complement: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="3">
+<p class="qt"><b>1.</b> Convert the binary number 10110110 to hexadecimal.</p>
+<ol class="opts"><li data-l="A">D6</li><li data-l="B">A6</li><li data-l="C">6B</li><li data-l="D">B6</li></ol>
+<details><summary>Show answer</summary><p><strong>D: B6.</strong> Split into nibbles 1011 and 0110. 1011 = 11 = B and 0110 = 6, so the answer is B6.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> What is the hexadecimal number 3F in denary?</p>
+<ol class="opts"><li data-l="A">15</li><li data-l="B">51</li><li data-l="C">48</li><li data-l="D">63</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 63.</strong> 3 × 16 = 48, and F = 15, so 48 + 15 = 63.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>3.</b> What is -35 in 8-bit two&#39;s complement?</p>
+<ol class="opts"><li data-l="A">11011100</li><li data-l="B">10100011</li><li data-l="C">11011101</li><li data-l="D">00100011</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 11011101.</strong> 35 = 00100011. Inverting gives 11011100, and adding 1 gives 11011101. 10100011 is the sign and magnitude form.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>4.</b> What range of integers can be stored in 8-bit two&#39;s complement?</p>
+<ol class="opts"><li data-l="A">-127 to +127</li><li data-l="B">-128 to +127</li><li data-l="C">-128 to +128</li><li data-l="D">-127 to +128</li></ol>
+<details><summary>Show answer</summary><p><strong>B: -128 to +127.</strong> The MSB has weight -128 and the other bits add at most 127. The range is therefore -128 to +127, with one zero.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>5.</b> A system stores integers in 8-bit sign and magnitude. What is the smallest value it can store?</p>
+<ol class="opts"><li data-l="A">-126</li><li data-l="B">-127</li><li data-l="C">-255</li><li data-l="D">-128</li></ol>
+<details><summary>Show answer</summary><p><strong>B: -127.</strong> One bit is the sign, leaving 7 magnitude bits that give a maximum magnitude of 127. The smallest value is -127.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>6.</b> Which statement about sign and magnitude and two&#39;s complement is correct?</p>
+<ol class="opts"><li data-l="A">Sign and magnitude can store one more negative value</li><li data-l="B">Both have exactly one zero</li><li data-l="C">Sign and magnitude has two representations of zero</li><li data-l="D">Two&#39;s complement has two representations of zero</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Sign and magnitude has two representations of zero.</strong> Sign and magnitude has +0 (00000000) and -0 (10000000). Two&#39;s complement has a single zero and one extra negative value.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> Using 8-bit two&#39;s complement, 53 - 20 is calculated as 53 + (-20). What is the 8-bit result?</p>
+<ol class="opts"><li data-l="A">00100001</li><li data-l="B">01000001</li><li data-l="C">11011111</li><li data-l="D">00110101</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 00100001.</strong> -20 = 11101100. 00110101 + 11101100 = 1 00100001. Discard the carry to leave 00100001 = 33.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>8.</b> In 8-bit two&#39;s complement, 01100100 + 01000000 (100 + 64) is calculated. What happens?</p>
+<ol class="opts"><li data-l="A">Overflow: 10100100 is read as -92</li><li data-l="B">The correct result 164 is stored as 10100100</li><li data-l="C">Underflow: the result is -164</li><li data-l="D">The carry is lost harmlessly so the answer is 36</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Overflow: 10100100 is read as -92.</strong> 164 is above +127, so the result 10100100 has the sign bit set and reads as -92. Two positives giving a negative signals overflow.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>9.</b> Why is hexadecimal often used instead of binary to display memory addresses?</p>
+<ol class="opts"><li data-l="A">Hex arithmetic is faster for the processor</li><li data-l="B">Computers store data in hexadecimal internally</li><li data-l="C">Each hex digit is exactly 4 bits, so it is shorter and less error-prone</li><li data-l="D">Hex can show negative numbers without a sign bit</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Each hex digit is exactly 4 bits, so it is shorter and less error-prone.</strong> One hex digit represents a nibble, so values are far more compact and easier for humans to read. Hardware still uses binary.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> The 8-bit two&#39;s complement value 11110110 (-10) is sign-extended to 16 bits. What is the result?</p>
+<ol class="opts"><li data-l="A">1111111100000110</li><li data-l="B">1000000001110110</li><li data-l="C">0000000011110110</li><li data-l="D">1111111111110110</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 1111111111110110.</strong> Sign extension copies the sign bit (1) into the new high bits, giving 1111111111110110, which is still -10.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 72 questions on Number bases and signed integers: binary, hexadecimal, sign and magnitude, two&#39;s complement (62 more than here), set out in practice levels. You also get notes and 3D models for all 8 subtopics of Data representation and Boolean algebra, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/A2/12.1/practice">Practise 12.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/A2/12.1/topic">Open Data representation and Boolean algebra</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/computer-science/aqa/#t-4">Topic 4: Fundamentals of data representation</a>, <a href="/revision/a-level-year-13/computer-science/aqa/#t-5">Topic 5: Fundamentals of computer systems</a></span></li><li><b>OCR</b><span><a href="/revision/a-level-year-13/computer-science/ocr/#t-1-4">Topic 1.4: Data types, data structures and algorithms</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/computer-science/cambridge/#t-13">Topic 13: Data representation</a>, <a href="/revision/a-level-year-13/computer-science/cambridge/#t-15">Topic 15: Hardware and virtual machines</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/computer-science/processors-input-output-and-storage-devices/"><small>← Topic 11</small>Processors, input, output and storage devices</a><a class="next" href="/revision/a-level-year-13/computer-science/exchanging-data/"><small>Topic 13 →</small>Exchanging data</a></nav>
+<p><a href="/revision/a-level-year-13/computer-science/">All A-level Computer Science Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

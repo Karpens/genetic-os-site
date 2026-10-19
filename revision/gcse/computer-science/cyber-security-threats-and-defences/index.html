@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyber security threats and defences: GCSE Computer Science revision notes</title>
+<meta name="description" content="Cyber security threats and defences for GCSE Computer Science: free revision notes and 10 practice questions with answers. Social engineering means…">
+<link rel="canonical" href="https://fullmarkss.com/revision/gcse/computer-science/cyber-security-threats-and-defences/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Cyber security threats and defences: GCSE Computer Science revision notes">
+<meta property="og:description" content="Cyber security threats and defences for GCSE Computer Science: free revision notes and 10 practice questions with answers. Social engineering means…">
+<meta property="og:url" content="https://fullmarkss.com/revision/gcse/computer-science/cyber-security-threats-and-defences/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"GCSE","item":"https://fullmarkss.com/revision/gcse/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/gcse/computer-science/"},{"@type":"ListItem","position":5,"name":"Cyber security threats and defences","item":"https://fullmarkss.com/revision/gcse/computer-science/cyber-security-threats-and-defences/"}]},{"@type":"LearningResource","name":"Cyber security threats and defences: GCSE Computer Science revision notes","url":"https://fullmarkss.com/revision/gcse/computer-science/cyber-security-threats-and-defences/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"GCSE","about":["Computer Science","Cyber security threats and defences"],"isAccessibleForFree":true,"teaches":["Social engineering: phishing, pharming, blagging and shouldering","Malware and network attacks: brute force, denial of service, SQL injection, data interception","Protecting systems: strong passwords, biometrics, two-factor authentication and encryption","Firewalls, anti-malware, access levels and penetration testing"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/gcse/">GCSE</a></li><li><a href="/revision/gcse/computer-science/">Computer Science</a></li><li aria-current="page">Cyber security threats and defences</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">GCSE Computer Science · Topic 11</p>
+<h1>Cyber security threats and defences</h1>
+<p>Cyber security threats and defences is about the ways attackers target people and systems, and how we stop them.</p><p>We will look at social engineering, such as phishing, pharming, blagging and shouldering.</p><p>Then we study malware and network attacks, and defences like strong passwords, two factor authentication, encryption, firewalls and penetration testing.</p>
+<ul class="stats"><li>4 subtopics</li><li>184 questions</li><li>Free: 11.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-11-1" class="on"><span class="n">11.1</span><span class="t"><a href="#notes">Social engineering: phishing, pharming, blagging and shouldering</a></span><span class="m"><span class="tag free">Free below</span> · 37 questions</span></li><li id="s-11-2"><span class="n">11.2</span><span class="t">Malware and network attacks: brute force, denial of service, SQL injection, data interception</span><span class="m"><a href="/#study/computing/GCSE/11.2">Open in Full Marks</a> · 79 questions</span></li><li id="s-11-3"><span class="n">11.3</span><span class="t">Protecting systems: strong passwords, biometrics, two-factor authentication and encryption</span><span class="m"><a href="/#study/computing/GCSE/11.3">Open in Full Marks</a> · 29 questions</span></li><li id="s-11-4"><span class="n">11.4</span><span class="t">Firewalls, anti-malware, access levels and penetration testing</span><span class="m"><a href="/#study/computing/GCSE/11.4">Open in Full Marks</a> · 39 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">11.1 · Free notes</p>
+<h2>Social engineering: phishing, pharming, blagging and shouldering</h2>
+<figure><img src="social-engineering-phishing-pharming-blagging-and-shouldering.svg" width="400" height="260" alt="Diagram: Social engineering: phishing, pharming, blagging and shouldering" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Social engineering</strong> means manipulating people into giving away confidential information or access. It targets human weakness rather than technical flaws, so software alone cannot stop it.</li><li><strong>Phishing</strong> uses fraudulent emails, texts (<strong>smishing</strong>) or calls that pretend to come from a trusted organisation. They ask the victim to click a link, open an attachment or enter <strong>personal or financial details</strong>.</li><li>Signs of phishing include a <strong>generic greeting</strong> such as &#39;Dear customer&#39;, <strong>urgent threats</strong>, spelling errors, a sender address or URL that does not match the real organisation, and unexpected attachments.</li><li><strong>Pharming</strong> redirects users to a <strong>fake website</strong> even when they type the correct address. It works through malicious code on the computer or by corrupting <strong>DNS</strong> records. The fake site looks identical and steals login or payment details.</li><li>Exam tip: phishing needs the victim to <strong>act on a message</strong> such as clicking a link. Pharming redirects the victim <strong>automatically</strong>, with no suspicious message to notice.</li><li><strong>Blagging</strong> (pretexting) is inventing a believable scenario, usually by phone, to persuade someone to hand over information. An example is pretending to be IT support, the bank or a senior manager.</li><li><strong>Shouldering</strong> (shoulder surfing) means watching someone enter a <strong>PIN or password</strong>, for example at a cash machine, on a train or in a café. Defences are covering the keypad, using a privacy screen and being aware of who is nearby.</li><li>Methods of <strong>prevention</strong> include staff training, verifying a caller&#39;s identity by another route, hovering over links to see the real URL, spam filters, anti-malware, a firewall and <strong>two-factor authentication</strong>.</li><li>A <strong>padlock/https</strong> symbol only shows the connection is encrypted. It does not prove the website is genuine, because fake sites can use https too.</li><li><strong>Consequences</strong> of successful attacks include identity theft, fraud, financial loss, data breaches and reputational damage. Organisations may also be fined by the ICO under UK GDPR and the Data Protection Act 2018.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked phishing email:</strong> &quot;Dear customer, your account will close in 24 hours. Click here&quot;, linking to bank-secure-login.xyz → generic greeting, false urgency and a fake address.</li><li><strong>Worked pharming:</strong> malware changes a computer&#39;s DNS settings, so typing the real bank address loads a fake site.</li><li><strong>Worked blagging:</strong> a caller claims to be from IT support and asks for your password to &quot;fix your account&quot;.</li><li><strong>Worked shouldering:</strong> someone watches you type your PIN at a cash machine; cover the keypad.</li><li><strong>Prevention:</strong> staff training, calling back on a known number, never sharing passwords, checking web addresses and reporting suspicious messages.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Social engineering: phishing, pharming, blagging and shouldering: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> An email claims to be from a bank and urges you to click a link and &#39;confirm your details&#39; or lose access. Which attack is this?</p>
+<ol class="opts"><li data-l="A">Pharming</li><li data-l="B">Phishing</li><li data-l="C">Shouldering</li><li data-l="D">Brute force</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Phishing.</strong> Phishing uses a fraudulent message impersonating a trusted organisation, with a link or attachment, to trick the victim into giving away details.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>2.</b> A user types the correct web address of their bank but is sent to an identical fake site. Which attack has occurred?</p>
+<ol class="opts"><li data-l="A">Blagging</li><li data-l="B">Phishing</li><li data-l="C">Pharming</li><li data-l="D">Shouldering</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Pharming.</strong> Pharming redirects users to a fake website even when the correct URL is typed, often by corrupting DNS or through malicious code.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>3.</b> A caller says they are from IT support and asks an employee to read out their password to &#39;fix a fault&#39;. This is an example of:</p>
+<ol class="opts"><li data-l="A">Denial of service</li><li data-l="B">Blagging</li><li data-l="C">Pharming</li><li data-l="D">Shouldering</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Blagging.</strong> Blagging is inventing a scenario, usually by phone, to persuade someone to reveal information.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> Someone stands close behind you at a cash machine and watches you enter your PIN. This is called:</p>
+<ol class="opts"><li data-l="A">Pharming</li><li data-l="B">Phishing</li><li data-l="C">Shouldering</li><li data-l="D">Blagging</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Shouldering.</strong> Shouldering (shoulder surfing) is observing someone enter confidential information such as a PIN or password.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>5.</b> Which feature of an email most strongly suggests it is phishing?</p>
+<ol class="opts"><li data-l="A">It was sent during working hours</li><li data-l="B">It contains the company logo</li><li data-l="C">Urgent threat and a sender address not matching the company</li><li data-l="D">It is addressed to you by your full name</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Urgent threat and a sender address not matching the company.</strong> Urgency, threats and a mismatched sender address are classic phishing signs. Logos are easily copied and do not prove an email is genuine.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>6.</b> Which statement best describes social engineering?</p>
+<ol class="opts"><li data-l="A">Using software to guess passwords</li><li data-l="B">Encrypting files to demand payment</li><li data-l="C">Flooding a server with requests</li><li data-l="D">Tricking people into revealing information or giving access</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Tricking people into revealing information or giving access.</strong> Social engineering exploits human behaviour, not technical weaknesses. The other options describe brute force, DoS and ransomware.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>7.</b> Why can pharming be harder for a user to spot than phishing?</p>
+<ol class="opts"><li data-l="A">Pharming needs the victim to phone the attacker</li><li data-l="B">The user typed the genuine address and no suspicious message was sent</li><li data-l="C">Pharming sites are always encrypted so cannot be fake</li><li data-l="D">Pharming only happens on mobile phones</li></ol>
+<details><summary>Show answer</summary><p><strong>B: The user typed the genuine address and no suspicious message was sent.</strong> In pharming the victim does everything correctly and is redirected anyway. The fake site looks identical, so there is no obvious warning sign.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>8.</b> Which is the most effective way to reduce the risk of shouldering when using a cash machine?</p>
+<ol class="opts"><li data-l="A">Use a longer PIN</li><li data-l="B">Install anti-malware</li><li data-l="C">Use a firewall</li><li data-l="D">Shield the keypad with your hand</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Shield the keypad with your hand.</strong> Shouldering is a physical observation attack. Software defences do not help, but hiding the keypad prevents the PIN being seen.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>9.</b> An accounts clerk gets a call from someone claiming to be the finance director, demanding urgent bank details. What is this and the best response?</p>
+<ol class="opts"><li data-l="A">Shouldering; use a privacy screen</li><li data-l="B">Pharming; reboot the PC</li><li data-l="C">Blagging; verify the caller&#39;s identity another way</li><li data-l="D">Phishing; install a firewall</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Blagging; verify the caller&#39;s identity another way.</strong> A made-up scenario by phone is blagging. Verifying the caller through a known number or procedure defeats it.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>10.</b> Which statement about pharming is correct?</p>
+<ol class="opts"><li data-l="A">It is a type of denial of service attack</li><li data-l="B">It can redirect users to a fake site even if they type the correct URL</li><li data-l="C">It is carried out by looking at someone&#39;s screen</li><li data-l="D">It always requires the victim to open an email attachment</li></ol>
+<details><summary>Show answer</summary><p><strong>B: It can redirect users to a fake site even if they type the correct URL.</strong> Pharming redirects traffic to a fake site, often by DNS tampering or malicious code, with no click on an emailed link needed.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 37 questions on Social engineering: phishing, pharming, blagging and shouldering (27 more than here), set out in practice levels. You also get notes and 3D models for all 4 subtopics of Cyber security threats and defences, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/GCSE/11.1/practice">Practise 11.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/GCSE/11.1/topic">Open Cyber security threats and defences</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/gcse/computer-science/aqa/#t-3-6">Topic 3.6: Cyber security</a></span></li><li><b>OCR</b><span><a href="/revision/gcse/computer-science/ocr/#t-1-4">Topic 1.4: Network security</a></span></li><li><b>Edexcel</b><span><a href="/revision/gcse/computer-science/edexcel/#t-4">Topic 4: Networks</a>, <a href="/revision/gcse/computer-science/edexcel/#t-5">Topic 5: Issues and impact</a></span></li><li><b>Cambridge</b><span><a href="/revision/gcse/computer-science/cambridge/#t-5">Topic 5: The internet and its uses</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/gcse/computer-science/network-technologies/"><small>← Topic 10</small>Network technologies</a><a class="next" href="/revision/gcse/computer-science/practical-programming-and-exam-skills/"><small>Topic 12 →</small>Practical programming and exam skills</a></nav>
+<p><a href="/revision/gcse/computer-science/">All GCSE Computer Science topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

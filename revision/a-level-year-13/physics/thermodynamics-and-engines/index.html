@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thermodynamics and engines: A-level Physics Year 13 revision notes</title>
+<meta name="description" content="Thermodynamics and engines for A-level Physics Year 13: free revision notes and 8 practice questions with answers. The first law of thermodynamics is a…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/physics/thermodynamics-and-engines/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Thermodynamics and engines: A-level Physics Year 13 revision notes">
+<meta property="og:description" content="Thermodynamics and engines for A-level Physics Year 13: free revision notes and 8 practice questions with answers. The first law of thermodynamics is a…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/physics/thermodynamics-and-engines/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Physics","item":"https://fullmarkss.com/revision/a-level-year-13/physics/"},{"@type":"ListItem","position":5,"name":"Thermodynamics and engines","item":"https://fullmarkss.com/revision/a-level-year-13/physics/thermodynamics-and-engines/"}]},{"@type":"LearningResource","name":"Thermodynamics and engines: A-level Physics Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/physics/thermodynamics-and-engines/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Physics","Thermodynamics and engines"],"isAccessibleForFree":true,"teaches":["The first law of thermodynamics","Work done by a gas and p–V diagrams","Isothermal, adiabatic, isobaric and isovolumetric changes","Engine cycles: Otto and diesel, four-stroke indicator diagrams","Engine power, efficiency and friction power","The second law of thermodynamics and maximum (Carnot) efficiency","Heat pumps and refrigerators: coefficient of performance"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#4361EE">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/physics/">Physics</a></li><li aria-current="page">Thermodynamics and engines</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Physics Year 13 · Topic 19</p>
+<h1>Thermodynamics and engines</h1>
+<p>Thermodynamics and engines is about how heat, work and internal energy are linked, and how engines turn heat into motion.</p><p>We will use the first law, p V diagrams, and the different types of gas process.</p><p>Then we analyse petrol and diesel engine cycles, engine power and efficiency, the second law, and heat pumps and refrigerators.</p>
+<ul class="stats"><li>7 subtopics</li><li>399 questions</li><li>Free: 19.1 notes and 8 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-19-1" class="on"><span class="n">19.1</span><span class="t"><a href="#notes">The first law of thermodynamics</a></span><span class="m"><span class="tag free">Free below</span> · 56 questions</span></li><li id="s-19-2"><span class="n">19.2</span><span class="t">Work done by a gas and p–V diagrams</span><span class="m"><a href="/#study/physics/A2/19.2">Open in Full Marks</a> · 65 questions</span></li><li id="s-19-3"><span class="n">19.3</span><span class="t">Isothermal, adiabatic, isobaric and isovolumetric changes</span><span class="m"><a href="/#study/physics/A2/19.3">Open in Full Marks</a> · 61 questions</span></li><li id="s-19-4"><span class="n">19.4</span><span class="t">Engine cycles: Otto and diesel, four-stroke indicator diagrams</span><span class="m"><a href="/#study/physics/A2/19.4">Open in Full Marks</a> · 23 questions</span></li><li id="s-19-5"><span class="n">19.5</span><span class="t">Engine power, efficiency and friction power</span><span class="m"><a href="/#study/physics/A2/19.5">Open in Full Marks</a> · 64 questions</span></li><li id="s-19-6"><span class="n">19.6</span><span class="t">The second law of thermodynamics and maximum (Carnot) efficiency</span><span class="m"><a href="/#study/physics/A2/19.6">Open in Full Marks</a> · 63 questions</span></li><li id="s-19-7"><span class="n">19.7</span><span class="t">Heat pumps and refrigerators: coefficient of performance</span><span class="m"><a href="/#study/physics/A2/19.7">Open in Full Marks</a> · 67 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">19.1 · Free notes</p>
+<h2>The first law of thermodynamics</h2>
+<figure><img src="the-first-law-of-thermodynamics.svg" width="400" height="260" alt="Diagram: The first law of thermodynamics" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>The <strong>first law of thermodynamics</strong> is a statement of <strong>conservation of energy</strong>: the heat supplied to a gas is shared between increasing its internal energy and the work the gas does.</li><li>AQA form: <strong>Q = ΔU + W</strong>. Q is the energy transferred to the gas by heating (J). ΔU is the increase in <strong>internal energy</strong> (J). W is the <strong>work done by the gas</strong> on its surroundings (J).</li><li><strong>Sign convention (state it in answers):</strong> Q is positive when heat flows into the gas and negative when it flows out. W is positive when the gas expands and negative when it is compressed. Some sources write ΔU = Q + W with W as work done on the gas, so always check which is meant.</li><li><strong>Internal energy</strong> is the sum of the random kinetic and potential energies of all the molecules. For an <strong>ideal gas</strong> there are no intermolecular forces, so U is just the total random kinetic energy and depends only on temperature.</li><li>For n moles of an ideal monatomic gas, <strong>U = (3/2)nRT</strong>, so <strong>ΔU = (3/2)nRΔT</strong>. This holds for any process, because U depends only on T. R = 8.31 J mol⁻¹ K⁻¹.</li><li>If the temperature rises, ΔU is positive. If it falls, ΔU is negative. If it is constant, ΔU = 0 for an ideal gas.</li><li><strong>Work done at constant pressure: W = pΔV</strong> (Pa × m³ = J). Expansion gives positive W. Compression gives negative W, meaning work is done on the gas.</li><li>Special cases: <strong>constant volume</strong> gives W = 0, so Q = ΔU. <strong>No heat transfer (adiabatic)</strong> gives Q = 0, so ΔU = −W. <strong>Constant temperature</strong> gives ΔU = 0, so Q = W.</li><li>Heating at constant pressure needs more energy than heating at constant volume for the same ΔT, because some of the energy supplied is used as work to push back the surroundings.</li><li>Common errors: mixing up the sign of W, using Celsius instead of kelvin in ΔU = (3/2)nRΔT, and forgetting that a negative Q means heat is lost. In calculations, write down Q, W and ΔU with their signs before substituting.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked first law:</strong> a gas receives 500 J of heat and does 200 J of work → ΔU = Q − W = 500 − 200 = 300 J.</li><li><strong>Worked compression:</strong> 150 J of work is done on a gas while it loses 40 J of heat → Q = −40 J, W = −150 J → ΔU = −40 + 150 = +110 J, so it gets hotter.</li><li><strong>Worked ΔU:</strong> 2.0 mol of monatomic gas heated from 300 K to 400 K → ΔU = 3/2 × 2.0 × 8.31 × 100 ≈ 2.5 kJ.</li><li><strong>Worked constant pressure:</strong> the same heating at constant pressure also needs W = nRΔT = 1.7 kJ, so Q = 2.5 + 1.7 ≈ 4.2 kJ, more than at constant volume.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>The first law of thermodynamics: 8 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="2">
+<p class="qt"><b>1.</b> On which quantity does the internal energy of a fixed mass of ideal gas depend?</p>
+<ol class="opts"><li data-l="A">Temperature and volume</li><li data-l="B">Volume only</li><li data-l="C">Temperature only</li><li data-l="D">Pressure only</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Temperature only.</strong> An ideal gas has no intermolecular forces, so no potential energy. U is the total random kinetic energy, which depends only on temperature.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>2.</b> Which statement about Q = ΔU + W is correct when W is the work done by the gas?</p>
+<ol class="opts"><li data-l="A">Q is positive when the gas loses heat</li><li data-l="B">W is positive when the gas expands</li><li data-l="C">ΔU is always equal to Q</li><li data-l="D">W is positive when the gas is compressed</li></ol>
+<details><summary>Show answer</summary><p><strong>B: W is positive when the gas expands.</strong> With W defined as work done by the gas, W &gt; 0 for expansion. Q &gt; 0 means heat is supplied to the gas, and ΔU = Q only if W = 0.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> 2.0 mol of an ideal monatomic gas in a rigid container is heated from 300 K to 350 K. How much heat is supplied? (R = 8.31 J mol⁻¹ K⁻¹)</p>
+<ol class="opts"><li data-l="A">1.25 kJ</li><li data-l="B">2.08 kJ</li><li data-l="C">0.83 kJ</li><li data-l="D">125 J</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 1.25 kJ.</strong> Constant volume so W = 0 and Q = ΔU = (3/2)nRΔT = 1.5 × 2.0 × 8.31 × 50 ≈ 1250 J. The 2.08 kJ figure wrongly uses 5/2 instead of 3/2.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> The internal energy of a gas rises by 80 J while 30 J of work is done on the gas. What is the heat transfer?</p>
+<ol class="opts"><li data-l="A">110 J out of the gas</li><li data-l="B">110 J into the gas</li><li data-l="C">50 J into the gas</li><li data-l="D">50 J out of the gas</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 50 J into the gas.</strong> Work done on gas = 30 J, so W (by gas) = −30 J. Q = ΔU + W = 80 − 30 = +50 J, which is heat supplied to the gas.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>5.</b> Gas in a thermally insulated cylinder expands and pushes out a piston. Why does its temperature fall?</p>
+<ol class="opts"><li data-l="A">It loses heat through the walls</li><li data-l="B">Its volume increase lowers the mass</li><li data-l="C">Its molecules gain potential energy</li><li data-l="D">It does work using its own internal energy</li></ol>
+<details><summary>Show answer</summary><p><strong>D: It does work using its own internal energy.</strong> Insulated means Q = 0, so ΔU = −W. The gas does positive work, so its internal energy and hence temperature fall.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>6.</b> A gas at constant pressure 1.0 × 10⁵ Pa expands from 2.0 × 10⁻³ m³ to 5.0 × 10⁻³ m³ while 600 J is supplied as heat. What is ΔU?</p>
+<ol class="opts"><li data-l="A">300 J</li><li data-l="B">900 J</li><li data-l="C">600 J</li><li data-l="D">0 J</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 300 J.</strong> W = pΔV = 1.0 × 10⁵ × 3.0 × 10⁻³ = 300 J. ΔU = Q − W = 600 − 300 = 300 J.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>7.</b> Why does heating a gas by 10 K at constant pressure need more heat than heating it by 10 K at constant volume?</p>
+<ol class="opts"><li data-l="A">Heat is lost through the cylinder walls</li><li data-l="B">Some energy is used to do work on expansion</li><li data-l="C">The molecules gain more kinetic energy</li><li data-l="D">The gas has more internal energy at the start</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Some energy is used to do work on expansion.</strong> ΔU is the same for the same ΔT, but at constant pressure the gas also does work pΔV. Q = ΔU + pΔV is therefore larger.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>8.</b> Which statement about the internal energy of an ideal gas is correct?</p>
+<ol class="opts"><li data-l="A">It is the total random kinetic energy of the molecules</li><li data-l="B">It includes the energy of intermolecular attractions</li><li data-l="C">It equals the work done by the gas</li><li data-l="D">It is zero at 273 K</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It is the total random kinetic energy of the molecules.</strong> An ideal gas has no intermolecular forces, so internal energy is only the random kinetic energy. It is zero only at 0 K, not 273 K.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 56 questions on The first law of thermodynamics (48 more than here), set out in practice levels. You also get notes and 3D models for all 7 subtopics of Thermodynamics and engines, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/physics/A2/19.1/practice">Practise 19.1 in Full Marks</a><a class="btn ghost" href="/#study/physics/A2/19.1/topic">Open Thermodynamics and engines</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/physics/aqa/#t-11">Topic 11: Option: Engineering physics</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/physics/cambridge/#t-16">Topic 16: Thermodynamics</a></span></li></ul>
+<p class="muted">Not in the OCR A, OCR B and Edexcel specifications.</p>
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/physics/rotational-dynamics/"><small>← Topic 18</small>Rotational dynamics</a><a class="next" href="/revision/a-level-year-13/physics/turning-points-electrons-and-quanta/"><small>Topic 20 →</small>Turning points: electrons and quanta</a></nav>
+<p><a href="/revision/a-level-year-13/physics/">All A-level Physics Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>
