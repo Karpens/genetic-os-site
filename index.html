@@ -490,7 +490,10 @@ body.has-full .free-only{display:none!important}
 .badge b{display:block;font:800 15px "Plus Jakarta Sans",sans-serif}
 .badge small{color:var(--muted);font-size:12px}
 .subprog{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.sp{background:var(--paper);border-radius:15px;padding:18px;text-align:center;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.sp{display:block;width:100%;border:0;color:inherit;font:inherit;cursor:pointer;background:var(--paper);border-radius:15px;padding:18px;text-align:center;box-shadow:var(--shadow),0 0 0 1px var(--line);transition:transform .2s,box-shadow .2s}
+.sp:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg),0 0 0 2px var(--c,var(--stain))}
+.sp:focus-visible{outline:3px solid var(--stain);outline-offset:2px}
+.sp .go{display:block;margin-top:6px;font-size:13px;font-weight:700;color:var(--stain)}
 .sp .r{--p:0;width:90px;height:90px;margin:0 auto 10px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--bg2) 0);display:grid;place-items:center;transition:--p 1s}
 .sp .r b{width:70px;height:70px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font:800 20px "Plus Jakarta Sans",sans-serif}
 
@@ -1053,11 +1056,24 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 .xp-hq:not([hidden])~.xp-x{margin-left:0}
 .xp-x:hover{background:rgba(255,255,255,.2)}
 .xp-ctl{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:0 2.2cqw 1.6cqh;background:linear-gradient(transparent,rgba(0,0,0,.72) 45%);transition:opacity .45s}
-.xp-bar{display:flex;gap:4px;padding:2.6cqh 0 1.2cqh}
-.xp-bar button{flex:1;height:5px;border:0;padding:0;border-radius:3px;background:rgba(255,255,255,.18);cursor:pointer;overflow:hidden;position:relative;transition:height .2s}
-.xp-bar button:hover,.xp-bar button:focus-visible{height:9px}
-.xp-bar button i{position:absolute;inset:0;transform-origin:left;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--xc,var(--brand-hi)),var(--xc2));transition:transform .3s linear}
-.xp-btns{display:flex;align-items:center;gap:8px}
+/* the timeline: one segment per part, as long as the part; a diamond for each quick question */
+.xp-seek{display:flex;align-items:center;gap:12px;padding:1.6cqh 0 .6cqh}
+.xp-bar{flex:1;min-width:0;position:relative;height:24px;cursor:pointer;touch-action:none;outline:none;-webkit-user-select:none;user-select:none}
+.xp-sgs{position:absolute;left:0;right:0;top:50%;height:5px;margin-top:-2.5px;display:flex;gap:3px;transition:height .2s,margin .2s}
+.xp-bar:hover .xp-sgs,.xp-bar:focus-visible .xp-sgs,.xp-bar.drag .xp-sgs{height:8px;margin-top:-4px}
+.xp-sgs .sg{flex:var(--d,1) 1 0;min-width:2px;height:100%;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden;position:relative}
+.xp-sgs .sg i{position:absolute;inset:0;transform-origin:left;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--xc,var(--brand-hi)),var(--xc2))}
+.xp-sgs .qm{flex:none;width:0;position:relative;z-index:1}
+.xp-sgs .qm::after{content:"";position:absolute;left:-6px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:3px;transform:rotate(45deg);background:#FFD43B;box-shadow:0 0 0 2px #121A3A}
+.xp-sgs .qm.done::after{background:var(--ok)}
+.xp-bar .th{position:absolute;top:50%;left:0;width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--xc,var(--stain)),0 2px 8px rgba(0,0,0,.5);z-index:2;transform:scale(.6);transition:transform .15s;pointer-events:none}
+.xp-bar:hover .th,.xp-bar:focus-visible .th,.xp-bar.drag .th{transform:scale(1)}
+.xp-bar:focus-visible{box-shadow:0 0 0 2px rgba(255,255,255,.5);border-radius:8px}
+.xp-bar .hv{position:absolute;bottom:26px;left:0;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;font:700 12px/1.3 "Inter",sans-serif;padding:4px 8px;border-radius:7px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;max-width:60cqw;overflow:hidden;text-overflow:ellipsis}
+.xp-bar .hv.on{opacity:1}
+.xp-time{flex:none;font:700 clamp(11px,1.15cqw,14px) "Inter",sans-serif;color:rgba(255,255,255,.88);font-variant-numeric:tabular-nums}
+.xp-btns .xp-sk svg{width:22px;height:22px}
+.xp-btns{display:flex;align-items:center;gap:6px}
 .xp-btns button{border:0;cursor:pointer;min-width:42px;height:42px;padding:0 12px;border-radius:12px;background:rgba(255,255,255,.1);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center}
 .xp-btns svg{width:20px;height:20px;display:block}
 .xp-btns button:hover{background:rgba(255,255,255,.2)}
@@ -1077,6 +1093,29 @@ textarea.lbinput{font:15px/1.5 inherit;resize:vertical}
 .xp-cc .w.said{color:#fff}
 .xp-cc .w.now{color:#fff;text-shadow:0 0 18px var(--xc,var(--brand-hi)),0 0 2px #fff}
 .xp-box.nocc .xp-cc{display:none}
+/* a small player: the part buttons and the part name give way to the seek buttons */
+@container (max-width:700px){.xp-btns .xp-wide,.xp-now{display:none}.xp-btns button{min-width:34px;height:36px;padding:0 6px;border-radius:10px}.xp-btns .xp-play{min-width:46px}.xp-btns #xpCC{margin-left:auto}.xp-seek{padding-top:1cqh}}
+/* a quick question in the middle of an explainer */
+.xp-box.qz .xp-ctl,.xp-box.qz .xp-cc{opacity:0;visibility:hidden}
+@media (max-aspect-ratio:4/5){.xp-box.qz{aspect-ratio:auto;height:min(calc(100dvh - 32px),760px)}}
+.xs-quiz{position:absolute;inset:0;overflow:auto;padding:max(58px,11cqh) 7cqw max(18px,4cqh);display:flex;flex-direction:column}
+.xq-in{margin:auto 0;display:flex;flex-direction:column;gap:max(10px,2cqh)}
+.xq-kick{align-self:flex-start;font:800 clamp(10px,1.1cqw,14px)/1 "Inter",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#FFD43B}
+.xq-stem{margin:0;font-size:clamp(17px,2.8cqw,38px);line-height:1.22;font-weight:900;letter-spacing:-.015em;color:#fff;max-width:62ch}
+.xq-opts{display:grid;grid-template-columns:1fr 1fr;gap:max(8px,1.4cqh) max(8px,1.4cqw)}
+.xq-o{display:flex;align-items:center;gap:max(8px,1cqw);text-align:left;border:0;border-radius:max(10px,1.3cqw);padding:max(10px,1.6cqh) max(12px,1.4cqw);background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.16);color:#fff;font:700 clamp(13px,1.5cqw,20px)/1.3 "Inter",sans-serif;cursor:pointer;transition:background .2s,transform .15s}
+.xq-o:hover:not(:disabled){background:rgba(255,255,255,.15);transform:translateY(-2px)}
+.xq-o:disabled{cursor:default}
+.xq-o span{flex:none;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12);font-weight:900;font-size:.82em}
+.xq-o.right{background:color-mix(in srgb,var(--ok) 32%,transparent);box-shadow:inset 0 0 0 2px var(--ok)}
+.xq-o.right span{background:var(--ok)}
+.xq-o.wrong{background:color-mix(in srgb,var(--bad) 28%,transparent);box-shadow:inset 0 0 0 2px var(--bad)}
+.xq-o.wrong span{background:var(--bad)}
+.xq-after{font-size:clamp(13px,1.45cqw,19px);line-height:1.45;color:rgba(255,255,255,.88);max-width:80ch}
+.xq-after b{color:#fff}
+.xq-acts{display:flex;gap:10px;flex-wrap:wrap}
+.xq-acts .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4)}
+@container (max-width:700px){.xq-opts{grid-template-columns:1fr}.xs-quiz{padding:max(56px,9cqh) 5cqw 16px}}
 
 /* title slide */
 .xs-title{position:absolute;inset:0;padding:10cqh 6cqw 30cqh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.4cqh;text-align:center}
@@ -3416,11 +3455,15 @@ function renderMe(){const main=$('#meMain');if(!main)return;const xp=XP.xp,l=lvl
     <div><h2>${st?`🔥 ${st}-day streak`:'Start your streak today'}</h2><p style="color:var(--stage-muted);margin:0">${fmtN(xpFor(l+1)-xp)} XP to level ${l+1}. Every right answer earns XP, streaks earn bonuses.</p>
     <div class="me-stats"><div><b>${fmtN(xp)}</b><span>total XP</span></div><div><b>${fmtN(s.answered)}</b><span>questions answered</span></div><div><b>${acc}%</b><span>accuracy</span></div><div><b>${s.daily||0}</b><span>daily challenges</span></div></div></div></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Activity</h2><p class="muted">The last 15 weeks. Darker squares mean more questions that day.</p><div class="heat">${cells.join('')}</div></div>
-    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Subjects</h2><div class="subprog">${Object.entries(SUBJECTS).map(([k,sb])=>{const v=Object.entries(P).filter(([x])=>x.startsWith(k+':')).map(([,v])=>v);const avg=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return `<div class="sp"><div class="r" style="--c:${sb.color}" data-p="${avg}"><b>${avg}%</b></div><strong>${esc(sb.name)}</strong><br><small class="muted">${v.length} tests done</small></div>`}).join('')}</div></div>
+    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Subjects</h2><div class="subprog">${Object.entries(SUBJECTS).map(([k,sb])=>{const v=Object.entries(P).filter(([x])=>x.startsWith(k+':')).map(([,v])=>v);const avg=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return `<button type="button" class="sp" data-sp="${k}" style="--c:${sb.color}" aria-label="${esc(T('Open {0}',sb.name))}"><div class="r" style="--c:${sb.color}" data-p="${avg}"><b>${avg}%</b></div><strong>${esc(sb.name)}</strong><br><small class="muted">${v.length} tests done</small><span class="go">${esc(T('Open'))} →</span></button>`}).join('')}</div></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Badges</h2><div class="badges">${BADGES.map(([e,n,t,f],i)=>{const got=f(s,st,l,xp);return `<div class="badge${got?' got':''}" style="--i:${i}"><span class="e">${e}</span><b>${n}</b><small>${t}</small></div>`}).join('')}</div></div>
     <div class="actions" style="margin-top:40px"><a class="btn" href="#games" id="meDaily">Do today's challenge</a><a class="btn ghost" href="#study">Keep revising</a></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Your account</h2>${accountCard()}</div>`;
   wireAccount();
+  // a subject opens at the level it has been studied at most (else the level in use, else its first level)
+  main.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{const k=b.dataset.sp,n={};for(const x of Object.keys(P)){const [s1,l1]=x.split(':');if(s1===k&&SUBJECTS[k][l1])n[l1]=(n[l1]||0)+1}
+    const top=Object.entries(n).sort((a,b)=>b[1]-a[1])[0];subject=k;level=top?top[0]:SUBJECTS[k][level]?level:(LEVELS.find(([l])=>SUBJECTS[k][l])||[level])[0];
+    save();resetView();renderPicker();location.hash='study';scrollTo(0,0)});
   requestAnimationFrame(()=>{$('#lvFg').style.strokeDashoffset=478-478*into/need;main.querySelectorAll('.sp .r').forEach(r=>{let v=0;const to=+r.dataset.p,step=()=>{v=Math.min(to,v+Math.max(1,to/40));r.style.setProperty('--p',v);if(v<to)requestAnimationFrame(step)};step()})})}
 
 /* result ring for finished tests */
@@ -3950,13 +3993,14 @@ const XICO={prev:'<path d="M6 5v14" stroke="currentColor" stroke-width="2.4" str
   cc:'<rect x="2.5" y="5" width="19" height="14" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.6 10.2a2.3 2.3 0 1 0 0 3.6M17 10.2a2.3 2.3 0 1 0 0 3.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
   full:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'};
 const xpIco=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${XICO[k]}</svg>`;
+const xpSkipIco=(fwd,n)=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${fwd?'M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4h-4':'M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4'}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="15.4" text-anchor="middle" font-size="${n>9?7.4:9}" font-weight="800" font-family="Inter,system-ui,sans-serif" fill="currentColor">${n}</text></svg>`;
 const Explainer=(()=>{
   const el=document.createElement('div');el.className='xp';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','xpT');
   el.innerHTML=`<div class="xp-box" id="xpBox"><div class="xp-bg"><i></i><i></i><i></i></div><div class="xp-stage" id="xpS"></div>
     <div class="xp-hud"><div class="xp-tt"><div class="xp-k" id="xpK"></div><h3 id="xpT"></h3></div><span class="xp-hq" id="xpHQ" hidden></span><button class="xp-x" id="xpX" aria-label="Close the explainer">✕</button></div>
     <div class="xp-cc" id="xpC" aria-live="polite"></div>
-    <div class="xp-ctl"><div class="xp-bar" id="xpB"></div><div class="xp-btns">
-      <button id="xpPrev" aria-label="Previous part">${xpIco('prev')}</button><button class="xp-play" id="xpPlay" aria-label="Pause">${xpIco('pause')}</button><button id="xpNext" aria-label="Next part">${xpIco('next')}</button>
+    <div class="xp-ctl"><div class="xp-seek"><div class="xp-bar" id="xpB" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0"><div class="xp-sgs"></div><span class="th"></span><span class="hv" aria-hidden="true"></span></div><span class="xp-time" id="xpTime"></span></div><div class="xp-btns">
+      <button id="xpPrev" class="xp-wide" aria-label="Previous part">${xpIco('prev')}</button><button id="xpB10" class="xp-sk" aria-label="Back 10 seconds" title="Back 10 seconds (J)">${xpSkipIco(0,10)}</button><button id="xpB1" class="xp-sk" aria-label="Back 1 second" title="Back 1 second (←)">${xpSkipIco(0,1)}</button><button class="xp-play" id="xpPlay" aria-label="Pause">${xpIco('pause')}</button><button id="xpF1" class="xp-sk" aria-label="Forward 1 second" title="Forward 1 second (→)">${xpSkipIco(1,1)}</button><button id="xpF10" class="xp-sk" aria-label="Forward 10 seconds" title="Forward 10 seconds (L)">${xpSkipIco(1,10)}</button><button id="xpNext" class="xp-wide" aria-label="Next part">${xpIco('next')}</button>
       <div class="xp-now" id="xpNow"></div>
       <button id="xpCC" aria-label="Captions" aria-pressed="true">${xpIco('cc')}</button><button id="xpMute" aria-label="Turn the voice off">${xpIco('vol')}</button><button id="xpRate" aria-label="Playback speed">1×</button><button id="xpFull" aria-label="Full screen">${xpIco('full')}</button></div>
       <div class="xp-hint" id="xpHint"></div></div></div>`;
@@ -3971,6 +4015,8 @@ const Explainer=(()=>{
   if(canSpeak){pickVoice();if(S.addEventListener)S.addEventListener('voiceschanged',pickVoice);else S.onvoiceschanged=pickVoice}
   const RATES=[.85,1,1.2];
   let deck=null,si=0,li=0,playing=false,tok=0,timer=null,guard=null,raf=0,lastFocus=null,broken=false,fast=0,idleT=null,cur=null,kw=-2;
+  // where a seek wants the recording to start (ms into the part), when a caption-only line started, how far it had got when paused
+  let pendAt=null,lineT0=0,lineEl=0,drag=false,ticker=0;
   let muted=store.get('fm-xp-mute','0')==='1',cc=store.get('fm-xp-cc','1')!=='0',rate=RATES.includes(+store.get('fm-xp-rate','1'))?+store.get('fm-xp-rate','1'):1;
 
   // ---- recorded narration ----
@@ -4003,14 +4049,54 @@ const Explainer=(()=>{
   function caption(line){const ws=line.split(/\s+/).filter(Boolean);$('#xpC').innerHTML=ws.length?`<span>${ws.map(w=>`<span class="w">${esc(w)}</span>`).join(' ')}</span>`:'';kw=-2}
   function karaoke(i){if(i===kw)return;kw=i;$('#xpC').querySelectorAll('.w').forEach((w,k)=>{w.classList.toggle('said',k<i);w.classList.toggle('now',k===i)})}
   // Lights the caption words at reading speed (until the browser voice reports real word timings).
-  function estimate(line,ms,my){const n=words(line),t0=performance.now();cancelAnimationFrame(raf);if(!n)return;
+  function estimate(line,ms,my,ago=0){const n=words(line),t0=performance.now()-ago;cancelAnimationFrame(raf);if(!n)return;
     const f=()=>{if(my!==tok)return;const k=Math.min(n-1,Math.floor((performance.now()-t0)/ms*n));karaoke(k);if(k<n-1)raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)}
   function points(){if(!cur)return;const sc=deck.scenes[si];let now=-1;
     cur.querySelectorAll('.xs-pts li').forEach(p=>{const a=+p.dataset.at;if(a<=li)now=Math.max(now,a)});
     cur.querySelectorAll('.xs-pts li').forEach(p=>{const a=+p.dataset.at;p.classList.toggle('on',a<=li);p.classList.toggle('now',a===now)});
     const said=new Set(xstems(sc.lines.slice(0,li+1).join(' ')));
     cur.querySelectorAll('.xs-kw span').forEach(c=>{const ks=(c.dataset.k||'').split(' ').filter(Boolean);c.classList.toggle('lit',!!ks.length&&ks.every(k=>said.has(k)))})}
-  function bar(){$('#xpB').innerHTML=deck.scenes.map((sc,k)=>`<button aria-label="Part ${k+1}${sc.label?': '+esc(sc.label):''}" title="${esc(sc.label||'Part '+(k+1))}" style="--p:${k<si?1:k>si?0:(li+1)/sc.lines.length}" data-k="${k}"><i></i></button>`).join('')}
+  // ---- the timeline: each part as long as it plays at normal speed (its recording, or the time to read its captions) ----
+  const est=l=>Math.max(2600,words(l)*360);
+  const useClip=sc=>!muted&&!!sc.cl&&!sc.noclip;
+  const lineAt=(sc,i)=>useClip(sc)?(sc.cl.lines[i]||0):sc.lines.slice(0,i).reduce((a,l)=>a+est(l),0);
+  const dur=sc=>sc.quiz?0:useClip(sc)&&sc.cl.dur?sc.cl.dur:sc.lines.reduce((a,l)=>a+est(l),0);
+  function times(){let t=0;const at=deck.scenes.map(sc=>{const a=t;t+=dur(sc);return a});return {at,total:t}}
+  // How far into the current part playback is (ms at normal speed).
+  function within(){const sc=deck.scenes[si];if(!sc||sc.quiz)return 0;
+    if(useClip(sc)){if(pendAt!=null)return pendAt;if(aud.dataset.src===sc.cl.src&&aud.readyState>=1)return Math.min(dur(sc),aud.currentTime*1000);return lineAt(sc,li)}
+    return lineAt(sc,li)+Math.min(est(sc.lines[li]||''),playing&&lineT0?(performance.now()-lineT0)*rate:lineEl)}
+  const now=()=>{const {at,total}=times();return Math.min(total,at[si]+within())};
+  const mmss=ms=>{const s=Math.max(0,Math.round(ms/1000));return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
+  // Jumps to T ms from the start: the part, the line and the point in its recording. Questions are passed over.
+  function seekTo(ms){if(!deck)return;const {at,total}=times();ms=Math.max(0,Math.min(Math.max(0,total-1),ms));
+    let k=deck.scenes.length-1;for(let i=0;i<deck.scenes.length;i++){const sc=deck.scenes[i];if(!sc.quiz&&ms<at[i]+dur(sc)){k=i;break}}
+    while(k>0&&deck.scenes[k].quiz)k--;
+    const sc=deck.scenes[k],w=Math.max(0,ms-at[k]);let L=0;while(L+1<sc.lines.length&&lineAt(sc,L+1)<=w)L++;
+    const same=k===si&&!sc.quiz&&!box.classList.contains('qz');si=k;li=L;lineEl=useClip(sc)?0:Math.max(0,w-lineAt(sc,L));
+    if(useClip(sc)){if(same&&playing&&aud.dataset.src===sc.cl.src&&aud.readyState>=1){pendAt=null;try{aud.currentTime=w/1000}catch(e){}showLine();return}pendAt=w}
+    else pendAt=null;
+    if(!same)return render();
+    if(playing)run();else showLine()}
+  const skip=d=>{if(deck)seekTo(now()+d*1000)};
+  function bar(){if(!deck)return;const B=$('#xpB'),G=B.querySelector('.xp-sgs'),{at,total}=times(),sig=deck.scenes.map(sc=>sc.quiz?'q':'s').join('');
+    if(G.dataset.sig!==sig){G.dataset.sig=sig;G.innerHTML=deck.scenes.map((sc,k)=>sc.quiz?`<b class="qm" data-k="${k}" title="${esc(T('Quick question'))}"></b>`:`<span class="sg" data-k="${k}"><i></i></span>`).join('')}
+    const w=within(),pos=Math.min(total,at[si]+w);
+    G.querySelectorAll('[data-k]').forEach(n=>{const k=+n.dataset.k,sc=deck.scenes[k];
+      if(sc.quiz){n.classList.toggle('done',!!sc.quiz.done);return}
+      const d=dur(sc);n.style.setProperty('--d',Math.max(d,total*.006)||1);n.style.setProperty('--p',k<si?1:k>si?0:d?Math.min(1,w/d):0)});
+    if(!drag){const sg=G.querySelector(`.sg[data-k="${si}"]`),th=B.querySelector('.th');
+      if(sg)th.style.left=`${sg.offsetLeft+sg.offsetWidth*Math.min(1,dur(deck.scenes[si])?w/dur(deck.scenes[si]):0)}px`;else{const q=G.querySelector(`.qm[data-k="${si}"]`);if(q)th.style.left=`${q.offsetLeft}px`}}
+    $('#xpTime').textContent=`${mmss(pos)} / ${mmss(total)}`;
+    B.setAttribute('aria-valuemax',String(Math.round(total/1000)));B.setAttribute('aria-valuenow',String(Math.round(pos/1000)));
+    const sc=deck.scenes[si];B.setAttribute('aria-valuetext',`${mmss(pos)} of ${mmss(total)}${sc&&sc.label?', '+sc.label:''}`)}
+  // The time and part under the pointer, along the timeline.
+  function timeAt(x){const G=$('#xpB .xp-sgs'),segs=[...G.querySelectorAll('.sg')],{at}=times();if(!segs.length)return {ms:0,k:0};
+    let s0=segs[0];for(const sg of segs)if(x>=sg.getBoundingClientRect().left-1.5)s0=sg;
+    const r=s0.getBoundingClientRect(),k=+s0.dataset.k,f=Math.max(0,Math.min(1,(x-r.left)/(r.width||1)));return {ms:at[k]+f*dur(deck.scenes[k]),k}}
+  function hover(x,on){const B=$('#xpB'),hv=B.querySelector('.hv');if(!on||!deck){hv.classList.remove('on');return}
+    const {ms,k}=timeAt(x),r=B.getBoundingClientRect(),sc=deck.scenes[k];hv.textContent=`${mmss(ms)}${sc&&sc.label?' · '+sc.label:''}`;
+    hv.style.left=`${Math.max(30,Math.min(r.width-30,x-r.left))}px`;hv.classList.add('on');if(drag)B.querySelector('.th').style.left=`${Math.max(0,Math.min(r.width,x-r.left))}px`}
   function ctl(){$('#xpPlay').innerHTML=xpIco(playing?'pause':atEnd()?'replay':'play');$('#xpPlay').setAttribute('aria-label',playing?'Pause':'Play');
     $('#xpMute').innerHTML=xpIco(muted?'mute':'vol');$('#xpMute').setAttribute('aria-label',muted?'Turn the voice on':'Turn the voice off');$('#xpRate').textContent=rate+'×';
     $('#xpCC').setAttribute('aria-pressed',String(cc));box.classList.toggle('nocc',!cc);
@@ -4020,6 +4106,19 @@ const Explainer=(()=>{
   const atEnd=()=>deck&&si===deck.scenes.length-1&&li>=deck.scenes[si].lines.length-1;
   function showLine(){const sc=deck.scenes[si],line=sc.lines[li]||'';caption(line);highlight(line);points();bar();ctl();if(!playing)karaoke(1e9)}
 
+  // ---- a quick question about what the explainer has just covered ----
+  function quiz(w,sc){const Q=sc.quiz,q=Q.q,opts=[...w.querySelectorAll('.xq-o')],after=w.querySelector('.xq-after'),goOn=w.querySelector('[data-xqgo]'),sk=w.querySelector('[data-xqskip]');
+    const show=i=>{const ok=i===q[2];opts.forEach((b,k)=>{b.disabled=true;if(k===q[2])b.classList.add('right');else if(k===i)b.classList.add('wrong')});
+      after.hidden=false;after.innerHTML=`<b>${ok?'✓ '+esc(T('Correct!')):'✗ '+esc(T('Not quite.'))}</b> ${ok?'':`${esc(T('The answer is {0}.',(q[1][q[2]]!=null?'ABCD'[q[2]]:'')))} `}${esc(String(q[3]||'').replace(/\*\*/g,''))}`;
+      goOn.hidden=false;sk.hidden=true;goOn.focus()};
+    if(Q.done&&Q.pick!=null)show(Q.pick);
+    opts.forEach((b,i)=>b.onclick=()=>{if(Q.done)return;Q.done=true;Q.pick=i;const ok=i===q[2];
+      Mist.track(q,ok);XP.answer(ok);if(ok){XP.add(5);const r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,36,.6)}show(i);bar()});
+    goOn.onclick=sk.onclick=()=>{Q.done=true;cont()};
+    if(!Q.done)(opts[0]||sk).focus()}
+  // On from a question: playback carries on with the next part.
+  function cont(){if(!deck)return;playing=true;idle();nextScene()}
+
   // ---- playing ----
   function stopAll(){tok++;clearTimeout(timer);clearTimeout(guard);cancelAnimationFrame(raf);if(canSpeak)S.cancel();try{aud.pause()}catch(e){}}
   async function run(){stopAll();const my=tok,sc=deck.scenes[si];showLine();
@@ -4028,10 +4127,13 @@ const Explainer=(()=>{
     // When the recorded narration is there, a part without a recording plays its captions quietly instead of using a robot voice.
     if(!muted&&!deck.quiet){if(deck.hq)deck.quiet=1;else{const info=await voiceInfo('');if(my!==tok)return;if(info&&info.voice&&info.ready)deck.quiet=1}}
     speakLine(my)}
-  function playClip(sc,c,my){hq(c);
-    if(aud.dataset.src!==c.src){aud.src=c.src;aud.dataset.src=c.src}
+  function playClip(sc,c,my){hq(c);sc.cl=c;
+    const same=aud.dataset.src===c.src;if(!same){aud.src=c.src;aud.dataset.src=c.src}
     aud.playbackRate=rate;
-    const at=(c.lines[li]||0)/1000,seek=()=>{try{if(Math.abs(aud.currentTime-at)>.3)aud.currentTime=at}catch(e){}};
+    // from a seek; else from where the recording was paused, if that is in this line; else from the line's start
+    const here=same&&aud.readyState>=1?aud.currentTime*1000:-1,ls=c.lines[li]||0,le=c.lines[li+1]??c.dur??Infinity;
+    const atMs=pendAt!=null?pendAt:here>=ls-80&&here<le?here:ls;pendAt=atMs;
+    const at=atMs/1000,seek=()=>{try{if(Math.abs(aud.currentTime-at)>.3)aud.currentTime=at}catch(e){}if(my===tok)pendAt=null};
     if(aud.readyState>=1)seek();else aud.addEventListener('loadedmetadata',seek,{once:true});
     aud.onended=()=>{if(my!==tok)return;karaoke(1e9);timer=setTimeout(()=>{if(my===tok&&playing)nextScene()},650)};
     aud.onerror=()=>{if(my!==tok)return;sc.noclip=1;clips.delete(c.q);aud.dataset.src='';run()};
@@ -4041,12 +4143,13 @@ const Explainer=(()=>{
     cancelAnimationFrame(raf);
     const f=()=>{if(my!==tok)return;const t=aud.currentTime*1000+60;let L=0;while(L+1<c.lines.length&&c.lines[L+1]<=t)L++;
       if(L!==li){li=L;showLine()}const ws=c.words[li]||[];let k=-1;while(k+1<ws.length&&ws[k+1]<=t)k++;karaoke(k);
-      const b=$('#xpB').querySelector(`[data-k="${si}"]`);if(b&&c.dur)b.style.setProperty('--p',Math.min(1,t/c.dur));
       raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)}
   function speakLine(my){const sc=deck.scenes[si],line=sc.lines[li]||'',t0=Date.now(),full=readMs(line);
     const after=ms=>{timer=setTimeout(()=>{if(my===tok&&playing)advance()},ms)};
     // After a recorded part, parts without a recording stay quiet rather than switch to a robot voice.
-    if(muted||broken||!canSpeak||deck.quiet||(deck.hq&&!sc.clip)){estimate(line,full*.85,my);return after(full)}
+    // Captions on their own can carry on from the middle of a line (after a seek or a pause); a voice starts the line again.
+    const quiet=muted||broken||!canSpeak||deck.quiet||(deck.hq&&!sc.clip),ago=quiet?Math.min(lineEl,est(line)*.9)/rate:0;lineT0=performance.now()-ago;lineEl=0;
+    if(quiet){estimate(line,full*.85,my,ago);return after(full-ago)}
     estimate(line,full,my);
     const say=spoken(line),parts=say.match(/[^.!?]+[.!?]*/g)||[say],total=words(say)||1,shown=words(line)||1;let k=0,off=0,bnd=false;
     // If the voice "finishes" far too fast it isn't really speaking (no voices installed, blocked
@@ -4063,45 +4166,64 @@ const Explainer=(()=>{
     // Some browsers never report the end of speech: move on anyway once the line has had plenty of time.
     guard=setTimeout(()=>{if(my===tok&&playing){S.cancel();done()}},full*1.8+4000)}
   function advance(){const sc=deck.scenes[si];if(li<sc.lines.length-1){li++;showLine();clearTimeout(guard);return speakLine(tok)}nextScene()}
-  function nextScene(){const sc=deck.scenes[si];if(si<deck.scenes.length-1&&!sc.stop){si++;li=0;return render()}
+  function nextScene(){const sc=deck.scenes[si];if(si<deck.scenes.length-1&&!sc.stop){si++;li=0;pendAt=null;lineEl=0;
+      while(si<deck.scenes.length-1&&deck.scenes[si].quiz&&deck.scenes[si].quiz.done)si++;return render()}
     playing=false;stopAll();karaoke(1e9);if(sc.end)burst(innerWidth/2,innerHeight/2,70,1);ctl();idle(false)}
   function render(){stopAll();const sc=deck.scenes[si],stage=$('#xpS');
     stage.querySelectorAll('.xs:not(.out)').forEach(o=>{o.classList.remove('in');o.classList.add('out');setTimeout(()=>o.remove(),460)});
     const w=document.createElement('div');w.className='xs in';w.innerHTML=sc.html;stage.appendChild(w);cur=w;
+    box.classList.toggle('qz',!!sc.quiz);
+    if(sc.quiz){playing=false;$('#xpC').innerHTML='';quiz(w,sc);bar();ctl();idle(false);return}
     animateDiagrams(w);
     if(playing)run();else showLine()}
-  function go(k){if(!deck)return;si=Math.max(0,Math.min(deck.scenes.length-1,k));li=0;render()}
+  function go(k){if(!deck)return;si=Math.max(0,Math.min(deck.scenes.length-1,k));li=0;pendAt=null;lineEl=0;render()}
   function line(d){const sc=deck.scenes[si],n=li+d;if(n<0)return go(si-1);if(n>=sc.lines.length)return go(si+1);li=n;if(playing)run();else showLine()}
-  function play(){if(atEnd()&&!playing){si=0;li=0;playing=true;idle();return render()}playing=true;idle();run()}
-  function pause(){playing=false;stopAll();ctl();idle(false)}
+  function play(){if(deck&&deck.scenes[si].quiz){deck.scenes[si].quiz.done=true;return cont()}
+    if(atEnd()&&!playing){si=0;li=0;pendAt=null;playing=true;idle();return render()}playing=true;idle();run()}
+  function pause(){if(playing&&deck&&!useClip(deck.scenes[si])&&lineT0)lineEl=(performance.now()-lineT0)*rate;playing=false;stopAll();ctl();idle(false)}
   function idle(on){clearTimeout(idleT);box.classList.remove('idle');if(on!==false&&playing)idleT=setTimeout(()=>{if(playing)box.classList.add('idle')},2800)}
   const fsOk=!!(box.requestFullscreen||box.webkitRequestFullscreen);
   function full(){const fe=document.fullscreenElement||document.webkitFullscreenElement;
     if(fe)(document.exitFullscreen||document.webkitExitFullscreen).call(document);else (box.requestFullscreen||box.webkitRequestFullscreen).call(box)}
   function close(){if(!el.classList.contains('on'))return;pause();Track.videoEnd();if(document.fullscreenElement||document.webkitFullscreenElement)full();
-    el.classList.remove('on');document.body.style.overflow='';deck=null;cur=null;$('#xpS').innerHTML='';$('#xpC').innerHTML='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+    el.classList.remove('on');document.body.style.overflow='';deck=null;cur=null;$('#xpS').innerHTML='';$('#xpC').innerHTML='';box.classList.remove('qz');clearInterval(ticker);if(lastFocus&&lastFocus.focus)lastFocus.focus()}
   function open(d){Stats.event('video');deck=d;d.hq=null;si=d.start||0;li=0;playing=true;broken=false;fast=0;lastFocus=document.activeElement;
     $('#xpK').textContent=d.kicker;$('#xpT').textContent=d.title;el.style.setProperty('--xc',d.color||'#0E9F5D');$('#xpHQ').hidden=true;$('#xpFull').hidden=!fsOk;
     el.classList.add('on');document.body.style.overflow='hidden';$('#xpS').innerHTML='';
     if(!muted&&d.scenes.some(sc=>sc.clip)){voiceInfo();try{aud.src=SILENT;aud.dataset.src='';const p=aud.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
-    render();$('#xpPlay').focus();idle()}
+    if(!muted)for(const sc of d.scenes)if(sc.clip&&!sc.cl)getClip(sc.clip,sc.lines).then(c=>{if(deck===d&&c&&Array.isArray(c.lines)&&c.lines.length===sc.lines.length){sc.cl=c;bar()}});
+    pendAt=null;lineEl=0;$('#xpB .xp-sgs').dataset.sig='';render();$('#xpPlay').focus();idle();
+    clearInterval(ticker);ticker=setInterval(()=>{if(deck&&!drag&&playing)bar()},200)}
   $('#xpX').onclick=close;
   el.addEventListener('click',e=>{if(e.target===el)return close();const a=e.target.closest('[data-xpact]');if(a&&deck&&deck.act){const f=deck.act;close();f(a.dataset.xpact)}if(e.target.closest('[data-xpclose]'))close()});
   el.addEventListener('pointermove',()=>idle());el.addEventListener('pointerdown',()=>idle());
   $('#xpPlay').onclick=()=>playing?pause():play();
   $('#xpPrev').onclick=()=>go(li>0?si:si-1);
   $('#xpNext').onclick=()=>go(si+1);
-  $('#xpB').onclick=e=>{const b=e.target.closest('[data-k]');if(b)go(+b.dataset.k)};
-  $('#xpMute').onclick=()=>{muted=!muted;store.set('fm-xp-mute',muted?'1':'0');if(playing)run();else ctl()};
+  $('#xpB10').onclick=()=>skip(-10);$('#xpB1').onclick=()=>skip(-1);$('#xpF1').onclick=()=>skip(1);$('#xpF10').onclick=()=>skip(10);
+  // The timeline: press or drag anywhere on it; a question's diamond opens that question.
+  {const B=$('#xpB');
+    B.onpointerdown=e=>{if(!deck)return;const q=e.target.closest('.qm');if(q){go(+q.dataset.k);return}
+      e.preventDefault();drag=true;B.classList.add('drag');try{B.setPointerCapture(e.pointerId)}catch(x){}hover(e.clientX,true)};
+    B.onpointermove=e=>{if(deck&&(drag||e.pointerType==='mouse'))hover(e.clientX,true)};
+    B.onpointerup=e=>{if(!drag)return;drag=false;B.classList.remove('drag');hover(0,false);seekTo(timeAt(e.clientX).ms);idle()};
+    B.onpointercancel=()=>{drag=false;B.classList.remove('drag');hover(0,false);bar()};
+    B.onpointerleave=()=>{if(!drag)hover(0,false)};
+    B.onkeydown=e=>{if(!deck)return;const k=e.key;
+      if(k==='PageUp'||k==='PageDown'){e.preventDefault();e.stopPropagation();skip(k==='PageUp'?10:-10)}
+      else if(k==='Home'||k==='End'){e.preventDefault();e.stopPropagation();seekTo(k==='Home'?0:times().total)}}}
+  $('#xpMute').onclick=()=>{muted=!muted;store.set('fm-xp-mute',muted?'1':'0');pendAt=null;lineEl=0;if(playing)run();else{ctl();bar()}};
   $('#xpRate').onclick=()=>{rate=RATES[(RATES.indexOf(rate)+1)%RATES.length];store.set('fm-xp-rate',String(rate));aud.playbackRate=rate;if(playing&&aud.paused)run();else ctl()};
   $('#xpCC').onclick=()=>{cc=!cc;store.set('fm-xp-cc',cc?'1':'0');ctl()};
   $('#xpFull').onclick=full;
   box.addEventListener('dblclick',e=>{if(fsOk&&!e.target.closest('button,a'))full()});
   document.addEventListener('keydown',e=>{if(!el.classList.contains('on'))return;idle();
     if(e.key==='Escape'){if(document.fullscreenElement)return;e.preventDefault();close()}
+    else if(deck&&deck.scenes[si].quiz&&!deck.scenes[si].quiz.done&&/^[1-4a-dA-D]$/.test(e.key)&&!e.ctrlKey&&!e.metaKey){const b=cur&&cur.querySelectorAll('.xq-o')['1234'.includes(e.key)?+e.key-1:'abcd'.indexOf(e.key.toLowerCase())];if(b){e.preventDefault();b.click()}}
     else if(e.key===' '&&!e.target.closest('button,a')){e.preventDefault();playing?pause():play()}
-    else if(e.key==='ArrowRight'){e.preventDefault();line(1)}
-    else if(e.key==='ArrowLeft'){e.preventDefault();line(-1)}
+    else if(/^[kK]$/.test(e.key)){e.preventDefault();playing?pause():play()}
+    else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();skip((e.key==='ArrowRight'?1:-1)*(e.shiftKey?10:1))}
+    else if(/^[jJlL]$/.test(e.key)){e.preventDefault();skip(/^[lL]$/.test(e.key)?10:-10)}
     else if(/^[fF]$/.test(e.key)&&fsOk){e.preventDefault();full()}
     else if(/^[cC]$/.test(e.key)){cc=!cc;store.set('fm-xp-cc',cc?'1':'0');ctl()}
     else if(/^[mM]$/.test(e.key))$('#xpMute').click();
@@ -4131,6 +4253,16 @@ function chipTitle(t){const m=t.match(/^(?:Required\/core practical|Required pra
 // One topic as an explainer: a title slide, a slide for each subtopic you can open, and an ending.
 // Lines every explainer shares, recorded once (the backend's voice/clips.js COMMON: keep the two the same).
 const XP_COMMON={intro:"Let's go through this topic one part at a time, with a quick summary of each.",end:"That's the end of this topic! Now test yourself with the topic questions, or save the cheat sheet to revise on the go.",lock:'The rest of this explainer comes with full access, together with every note, question and game.'};
+// A question about what an explainer has just covered: from those subtopics' questions, one of the three that share the
+// most key words with what was said (so watching again can ask something else). Very long ones don't fit on a slide.
+function xpQuiz(xs,lines){const said=new Set(xstems(lines.join(' ')));
+  const pool=xs.flatMap(x=>(x.q||[]).filter(q=>Array.isArray(q)&&Array.isArray(q[1])&&q[1].length>=2&&q[1].length<=4&&q[1][q[2]]!=null&&String(q[0]).length<=220&&q[1].every(o=>String(o).length<=110)));
+  if(!pool.length)return null;
+  const scored=pool.map(q=>({q,n:xstems(q[0]+' '+q[1][q[2]]).filter(w=>said.has(w)).length})).sort((a,b)=>b.n-a.n),top=scored.slice(0,3).filter(x=>x.n>=scored[0].n*.6);
+  return top[Math.floor(Math.random()*top.length)].q}
+function xpQuizHtml(q){return `<div class="xs-quiz" translate="no"><div class="xq-in"><div class="xq-kick">⏸ ${esc(T('Quick question'))}</div><h2 class="xq-stem">${esc(String(q[0]).replace(/\*\*/g,''))}</h2>
+  <div class="xq-opts">${q[1].map((o,i)=>`<button type="button" class="xq-o" data-i="${i}"><span>${'ABCD'[i]}</span>${esc(String(o))}</button>`).join('')}</div>
+  <div class="xq-after" hidden></div><div class="xq-acts"><button type="button" class="btn" data-xqgo hidden>${esc(T('Continue'))} ▶</button><button type="button" class="btn ghost" data-xqskip>${esc(T('Skip question'))}</button></div></div></div>`}
 function topicDeck(t,startSub){const s=SUBJECTS[subject],ld=levelData(),scenes=[];
   const mins=Math.max(1,Math.round(t.subs.reduce((a,x)=>a+(x.v||[]).join(' ').split(/\s+/).length,0)/140));
   const chips=t.subs.slice(0,6).map((x,i)=>`<span style="--i:${i}"><b>${esc(x.n)}</b>${esc(chipTitle(x.title))}</span>`).join('')+(t.subs.length>6?`<span style="--i:6">+${t.subs.length-6} more</span>`:'');
@@ -4144,6 +4276,10 @@ function topicDeck(t,startSub){const s=SUBJECTS[subject],ld=levelData(),scenes=[
     const lines=x.v&&x.v.length?x.v:x.notes.map(n=>n.replace(/\*\*/g,''));
     const u=/^(AS|A2):(.+)$/.exec(x.key||'');
     scenes.push({sub:i,label:`${x.n} ${x.title}`,lines,clip:x.v&&x.v.length?(u?{s:subject,l:u[1],sub:u[2]}:{s:subject,l:level,sub:x.key||x.n}):null,html:subSlide(x,lines)})});
+  // Quick questions: one halfway through, and one after the last part when there are four parts or more.
+  const parts=scenes.filter(sc=>sc.sub!=null),ask=[...new Set([Math.floor((parts.length-1)/2),parts.length>=4?parts.length-1:-1])].filter(k=>k>=0);
+  let from=0;for(const k of ask){const seen=parts.slice(from,k+1),q=xpQuiz(seen.map(sc=>t.subs[sc.sub]),seen.flatMap(sc=>sc.lines));from=k+1;
+    if(q)scenes.splice(scenes.indexOf(parts[k])+1,0,{quiz:{q},label:T('Quick question'),lines:[],html:xpQuizHtml(q)})}
   if(locked)scenes.push({stop:1,label:'More with full access',lines:[XP_COMMON.lock],clip:{c:'lock'},
     html:`<div class="xp-scene xp-lock"><div class="xp-art"><span>🔒</span></div><h2>Watch the whole topic</h2><p>${locked} more part${locked>1?'s':''} of this explainer, plus every note, question and game, come with full access.</p><div class="actions"><a class="btn gold" href="#pricing" data-xpclose>See plans</a></div></div>`});
   else scenes.push({stop:1,end:1,label:'The end',lines:[XP_COMMON.end],clip:{c:'end'},
