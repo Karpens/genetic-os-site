@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algorithms and programming: GCSE Computer Science revision notes</title>
+<meta name="description" content="Algorithms and programming for GCSE Computer Science: free revision notes and 10 practice questions with answers. Abstraction removes unnecessary detail…">
+<link rel="canonical" href="https://fullmarkss.com/revision/gcse/computer-science/algorithms-and-programming/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Algorithms and programming: GCSE Computer Science revision notes">
+<meta property="og:description" content="Algorithms and programming for GCSE Computer Science: free revision notes and 10 practice questions with answers. Abstraction removes unnecessary detail…">
+<meta property="og:url" content="https://fullmarkss.com/revision/gcse/computer-science/algorithms-and-programming/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"GCSE","item":"https://fullmarkss.com/revision/gcse/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/gcse/computer-science/"},{"@type":"ListItem","position":5,"name":"Algorithms and programming","item":"https://fullmarkss.com/revision/gcse/computer-science/algorithms-and-programming/"}]},{"@type":"LearningResource","name":"Algorithms and programming: GCSE Computer Science revision notes","url":"https://fullmarkss.com/revision/gcse/computer-science/algorithms-and-programming/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"GCSE","about":["Computer Science","Algorithms and programming"],"isAccessibleForFree":true,"teaches":["Computational thinking and algorithms","Programming fundamentals"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/gcse/">GCSE</a></li><li><a href="/revision/gcse/computer-science/">Computer Science</a></li><li aria-current="page">Algorithms and programming</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">GCSE Computer Science · Topic 1</p>
+<h1>Algorithms and programming</h1>
+<p>Algorithms and programming is about thinking like a computer scientist and turning ideas into working code.</p><p>We will use abstraction and decomposition, and represent algorithms in pseudocode and flowcharts.</p><p>Then we cover the programming basics: variables, data types, selection, iteration, arrays and subroutines.</p>
+<ul class="stats"><li>2 subtopics</li><li>58 questions</li><li>Free: 1.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-1-1" class="on"><span class="n">1.1</span><span class="t"><a href="#notes">Computational thinking and algorithms</a></span><span class="m"><span class="tag free">Free below</span> · 31 questions</span></li><li id="s-1-2"><span class="n">1.2</span><span class="t">Programming fundamentals</span><span class="m"><a href="/#study/computing/GCSE/1.2">Open in Full Marks</a> · 27 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">1.1 · Free notes</p>
+<h2>Computational thinking and algorithms</h2>
+<figure><img src="computational-thinking-and-algorithms.svg" width="480" height="296" alt="Diagram: Computational thinking and algorithms" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Abstraction</strong> removes unnecessary detail; <strong>decomposition</strong> breaks a problem into smaller sub-problems; <strong>algorithmic thinking</strong> sets out the steps to solve it.</li><li>Algorithms can be expressed as <strong>pseudocode</strong>, <strong>flowcharts</strong> or program code. Flowchart symbols: oval (start/stop), parallelogram (input/output), rectangle (process), diamond (decision).</li><li><strong>Linear search</strong> checks each item in turn and works on unsorted data. <strong>Binary search</strong> repeatedly halves a sorted list, so it is much faster on large sorted data.</li><li><strong>Bubble sort</strong> repeatedly compares and swaps adjacent items — simple but slow. <strong>Merge sort</strong> splits the list, sorts the parts and merges them — more efficient on large lists. <strong>Insertion sort</strong> builds a sorted section one item at a time.</li><li>Algorithms can be tested with <strong>trace tables</strong>, following the value of each variable step by step.</li><li>A <strong>structure diagram</strong> shows a problem decomposed into smaller sub-problems as a top-down tree: the whole problem at the top, with each level below breaking it into more manageable parts.</li><li>Before coding, identify the <strong>inputs</strong>, <strong>processes</strong> and <strong>outputs</strong> of a problem. For a ticket machine: inputs are the destination and coins, the process works out the fare and change, and the outputs are the ticket and change.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked abstraction:</strong> the London Tube map keeps stations and connections but removes real distances and street layouts, because travellers don&#39;t need them.</li><li><strong>Worked decomposition:</strong> a quiz app splits into a question bank, displaying a question, checking the answer, keeping score and showing the results.</li><li><strong>Worked trace:</strong> total ← 0, then FOR i ← 1 TO 4: total ← total + i gives total = 1, 3, 6, 10 after each pass.</li><li><strong>Worked search comparison:</strong> 1000 sorted items need at most 10 binary search comparisons (2¹⁰ = 1024), but linear search could need 1000.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Computational thinking and algorithms: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> Which search algorithm works on an unsorted list?</p>
+<ol class="opts"><li data-l="A">Binary search</li><li data-l="B">Linear search</li><li data-l="C">Merge search</li><li data-l="D">Both work equally</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Linear search.</strong> Binary search requires the data to be sorted first.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>2.</b> What is abstraction?</p>
+<ol class="opts"><li data-l="A">Breaking a problem into smaller parts</li><li data-l="B">Removing unnecessary detail to focus on what matters</li><li data-l="C">Writing code in binary</li><li data-l="D">Testing a program</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Removing unnecessary detail to focus on what matters.</strong> Abstraction simplifies a problem so it can be modelled.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>3.</b> Which sort repeatedly compares and swaps adjacent values?</p>
+<ol class="opts"><li data-l="A">Merge sort</li><li data-l="B">Insertion sort</li><li data-l="C">Bubble sort</li><li data-l="D">Binary sort</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Bubble sort.</strong> Bubble sort is simple to code but inefficient on large lists.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> Which flowchart symbol represents a decision?</p>
+<ol class="opts"><li data-l="A">Oval</li><li data-l="B">Rectangle</li><li data-l="C">Diamond</li><li data-l="D">Parallelogram</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Diamond.</strong> A diamond has branches for true and false.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>5.</b> What is a trace table used for?</p>
+<ol class="opts"><li data-l="A">Storing data permanently</li><li data-l="B">Recording variable values step by step to test an algorithm</li><li data-l="C">Compiling code</li><li data-l="D">Encrypting data</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Recording variable values step by step to test an algorithm.</strong> It helps find logic errors by hand.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>6.</b> What is decomposition?</p>
+<ol class="opts"><li data-l="A">Removing detail</li><li data-l="B">Breaking a problem into smaller sub-problems</li><li data-l="C">Testing code</li><li data-l="D">Sorting data</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Breaking a problem into smaller sub-problems.</strong> Each smaller part is easier to solve.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>7.</b> How many comparisons does binary search need at most on a sorted list of 8 items?</p>
+<ol class="opts"><li data-l="A">2</li><li data-l="B">3</li><li data-l="C">4</li><li data-l="D">8</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 3.</strong> Each step halves the list: 8 → 4 → 2 → 1.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>8.</b> Which flowchart symbol shows input or output?</p>
+<ol class="opts"><li data-l="A">Oval</li><li data-l="B">Rectangle</li><li data-l="C">Diamond</li><li data-l="D">Parallelogram</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Parallelogram.</strong> Rectangles show processes.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>9.</b> A list of 1,000 sorted names is searched with binary search. Roughly how many comparisons are needed at most?</p>
+<ol class="opts"><li data-l="A">100</li><li data-l="B">500</li><li data-l="C">10</li><li data-l="D">1,000</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 10.</strong> Each comparison halves the list: 1,000 → 500 → ... → 1 takes about 10 steps (2^10 = 1,024). Linear search could need 1,000.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>10.</b> Which statement about merge sort is correct?</p>
+<ol class="opts"><li data-l="A">It splits the list, sorts the parts and merges them</li><li data-l="B">It only swaps adjacent items repeatedly</li><li data-l="C">It needs the data to be already sorted</li><li data-l="D">It builds the list by checking each item in turn</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It splits the list, sorts the parts and merges them.</strong> Merge sort uses divide and conquer: split, sort the halves, then merge. Swapping adjacent items describes bubble sort.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 31 questions on Computational thinking and algorithms (21 more than here), set out in practice levels. You also get notes and 3D models for all 2 subtopics of Algorithms and programming, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/GCSE/1.1/practice">Practise 1.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/GCSE/1.1/topic">Open Algorithms and programming</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/gcse/computer-science/aqa/#t-3-1">Topic 3.1: Fundamentals of algorithms</a>, <a href="/revision/gcse/computer-science/aqa/#t-3-2">Topic 3.2: Programming</a></span></li><li><b>OCR</b><span><a href="/revision/gcse/computer-science/ocr/#t-2-1">Topic 2.1: Algorithms</a>, <a href="/revision/gcse/computer-science/ocr/#t-2-2">Topic 2.2: Programming fundamentals</a></span></li><li><b>Edexcel</b><span><a href="/revision/gcse/computer-science/edexcel/#t-1">Topic 1: Computational thinking</a>, <a href="/revision/gcse/computer-science/edexcel/#t-6">Topic 6: Problem solving with programming</a></span></li><li><b>Cambridge</b><span><a href="/revision/gcse/computer-science/cambridge/#t-7">Topic 7: Algorithm design and problem-solving</a>, <a href="/revision/gcse/computer-science/cambridge/#t-8">Topic 8: Programming</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a class="next" href="/revision/gcse/computer-science/data-representation/"><small>Topic 2 →</small>Data representation</a></nav>
+<p><a href="/revision/gcse/computer-science/">All GCSE Computer Science topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

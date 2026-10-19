@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internet protocols and security | A-level Computer Science Year 12</title>
+<meta name="description" content="Internet protocols and security for A-level Computer Science Year 12: free revision notes and 10 practice questions with answers. The TCP/IP stack is a…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-12/computer-science/internet-protocols-and-security/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Internet protocols and security | A-level Computer Science Year 12">
+<meta property="og:description" content="Internet protocols and security for A-level Computer Science Year 12: free revision notes and 10 practice questions with answers. The TCP/IP stack is a…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-12/computer-science/internet-protocols-and-security/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 12","item":"https://fullmarkss.com/revision/a-level-year-12/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/a-level-year-12/computer-science/"},{"@type":"ListItem","position":5,"name":"Internet protocols and security","item":"https://fullmarkss.com/revision/a-level-year-12/computer-science/internet-protocols-and-security/"}]},{"@type":"LearningResource","name":"Internet protocols and security: A-level Computer Science Year 12 revision notes","url":"https://fullmarkss.com/revision/a-level-year-12/computer-science/internet-protocols-and-security/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 12","about":["Computer Science","Internet protocols and security"],"isAccessibleForFree":true,"teaches":["The TCP/IP protocol stack","IP addressing, IPv4 and IPv6, subnetting, NAT and DHCP","Ports, sockets, MAC addresses and application protocols: HTTP, HTTPS, FTP, SMTP, POP3, IMAP and SSH","Packet switching, routing and circuit switching","DNS, URLs and the structure of the Internet","Network security: malware, threats, firewalls and proxy servers","Public and private keys, digital signatures and digital certificates"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-12/">A-level Year 12</a></li><li><a href="/revision/a-level-year-12/computer-science/">Computer Science</a></li><li aria-current="page">Internet protocols and security</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Computer Science Year 12 · Topic 7</p>
+<h1>Internet protocols and security</h1>
+<p>Internet protocols and security explains how data finds its way across the internet, and how it is kept safe.</p><p>We will study the T C P I P stack, I P addressing, subnetting, N A T and D H C P, ports, sockets and application protocols.</p><p>Then we look at packet and circuit switching, D N S and U R Ls, network threats and firewalls, and public key cryptography with digital signatures and certificates.</p>
+<ul class="stats"><li>7 subtopics</li><li>303 questions</li><li>Free: 7.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-7-1" class="on"><span class="n">7.1</span><span class="t"><a href="#notes">The TCP/IP protocol stack</a></span><span class="m"><span class="tag free">Free below</span> · 33 questions</span></li><li id="s-7-2"><span class="n">7.2</span><span class="t">IP addressing, IPv4 and IPv6, subnetting, NAT and DHCP</span><span class="m"><a href="/#study/computing/AS/7.2">Open in Full Marks</a> · 29 questions</span></li><li id="s-7-3"><span class="n">7.3</span><span class="t">Ports, sockets, MAC addresses and application protocols: HTTP, HTTPS, FTP, SMTP, POP3, IMAP and SSH</span><span class="m"><a href="/#study/computing/AS/7.3">Open in Full Marks</a> · 44 questions</span></li><li id="s-7-4"><span class="n">7.4</span><span class="t">Packet switching, routing and circuit switching</span><span class="m"><a href="/#study/computing/AS/7.4">Open in Full Marks</a> · 27 questions</span></li><li id="s-7-5"><span class="n">7.5</span><span class="t">DNS, URLs and the structure of the Internet</span><span class="m"><a href="/#study/computing/AS/7.5">Open in Full Marks</a> · 71 questions</span></li><li id="s-7-6"><span class="n">7.6</span><span class="t">Network security: malware, threats, firewalls and proxy servers</span><span class="m"><a href="/#study/computing/AS/7.6">Open in Full Marks</a> · 75 questions</span></li><li id="s-7-7"><span class="n">7.7</span><span class="t">Public and private keys, digital signatures and digital certificates</span><span class="m"><a href="/#study/computing/AS/7.7">Open in Full Marks</a> · 24 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">7.1 · Free notes</p>
+<h2>The TCP/IP protocol stack</h2>
+<figure><img src="the-tcp-ip-protocol-stack.svg" width="400" height="260" alt="Diagram: The TCP/IP protocol stack" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>The <strong>TCP/IP stack</strong> is a four-layer model: <strong>Application</strong>, <strong>Transport</strong>, <strong>Internet</strong> and <strong>Link</strong> (network access). Each layer has one job and only talks to the layers directly above and below it.</li><li><strong>Application layer</strong>: gives network services to software using protocols such as <strong>HTTP</strong>, <strong>HTTPS</strong>, <strong>FTP</strong>, <strong>SMTP</strong>, <strong>POP3</strong>, <strong>IMAP</strong> and <strong>SSH</strong>. A browser or email client hands its data to this layer.</li><li><strong>Transport layer</strong>: splits data into <strong>segments</strong> (TCP) or <strong>datagrams</strong> (UDP) and adds <strong>source and destination port numbers</strong>. These identify the application process on each host.</li><li><strong>TCP</strong> is connection-oriented and reliable. It uses a <strong>three-way handshake</strong> (SYN, SYN-ACK, ACK), <strong>sequence numbers</strong>, <strong>acknowledgements</strong> and <strong>retransmission</strong> of lost segments, and it reorders data at the destination.</li><li><strong>UDP</strong> is connectionless: no handshake, acknowledgements or retransmission. It has lower overhead and latency, so it suits <strong>live streaming, VoIP, online gaming and DNS</strong> queries, where a late packet is worse than a lost one.</li><li><strong>Internet layer</strong>: adds source and destination <strong>IP addresses</strong> to form a <strong>packet</strong>, and <strong>routers</strong> forward it between networks. IP is best-effort and unreliable. Each router reduces the <strong>TTL</strong> (hop limit) by 1, and the packet is discarded at 0, which stops endless loops.</li><li><strong>Link layer</strong>: puts the packet in a <strong>frame</strong> with source and destination <strong>MAC addresses</strong> for delivery across one local link (Ethernet or Wi-Fi). <strong>Switches</strong> forward frames using MAC addresses.</li><li><strong>Encapsulation</strong>: going down the stack at the sender, each layer adds a <strong>header</strong> (the link layer also adds a trailer). The receiver removes them in reverse order (<strong>decapsulation</strong>).</li><li>A router works up to the Internet layer. It forwards by <strong>destination IP address</strong> and builds a new frame with new MAC addresses at each hop. The IP addresses stay the same (ignoring NAT).</li><li><strong>Packet switching</strong>: data is split into packets, each with a header. Packets may take different routes and arrive out of order. TCP uses sequence numbers to reassemble them.</li><li><strong>Advantages of layering</strong>: standard protocols let different vendors&#39; systems <strong>interoperate</strong>. A layer can change (e.g. Ethernet to Wi-Fi) without altering the others. It also makes development and fault-finding easier.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked layers:</strong> sending an email: Application (SMTP) → Transport (TCP adds port numbers and sequence numbers) → Internet (IP adds source and destination IP addresses) → Link (adds MAC addresses in a frame).</li><li><strong>Worked encapsulation:</strong> each layer wraps the data from the layer above in its own header; the receiver removes them in reverse order.</li><li><strong>Worked TCP handshake:</strong> SYN → SYN-ACK → ACK sets up a connection before data is sent.</li><li><strong>TCP vs UDP:</strong> TCP guarantees delivery and order (web, email); UDP is faster with no guarantees (video calls, online games, DNS lookups).</li><li><strong>Why layers help:</strong> upgrading Wi-Fi only changes the link layer, so applications keep working unchanged.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>The TCP/IP protocol stack: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="2">
+<p class="qt"><b>1.</b> Which TCP/IP layer adds source and destination port numbers to the data?</p>
+<ol class="opts"><li data-l="A">Application</li><li data-l="B">Link</li><li data-l="C">Transport</li><li data-l="D">Internet</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Transport.</strong> The transport layer (TCP or UDP) adds port numbers so the data reaches the correct process on the destination host.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> Which layer of the TCP/IP stack is responsible for routing packets between networks using IP addresses?</p>
+<ol class="opts"><li data-l="A">Transport</li><li data-l="B">Application</li><li data-l="C">Link</li><li data-l="D">Internet</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Internet.</strong> The Internet layer adds IP addresses and routers use them to forward packets between networks.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> A browser sends a web request. What is the correct order of data units as it passes down the stack?</p>
+<ol class="opts"><li data-l="A">Data → segment → packet → frame</li><li data-l="B">Data → packet → segment → frame</li><li data-l="C">Data → segment → frame → packet</li><li data-l="D">Data → frame → packet → segment</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Data → segment → packet → frame.</strong> Transport makes a segment, Internet wraps it in a packet, and Link wraps that in a frame for transmission.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>4.</b> What does a router mainly use to decide where to forward a packet?</p>
+<ol class="opts"><li data-l="A">Source MAC address</li><li data-l="B">Destination IP address</li><li data-l="C">Destination port number</li><li data-l="D">Source port number</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Destination IP address.</strong> Routers work at the Internet layer and look up the destination IP address in their routing table.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>5.</b> Why is UDP often chosen for live video calls rather than TCP?</p>
+<ol class="opts"><li data-l="A">It avoids retransmission delays, so lost packets are simply skipped</li><li data-l="B">It encrypts the video stream</li><li data-l="C">It guarantees all packets arrive in order</li><li data-l="D">It uses fewer IP addresses</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It avoids retransmission delays, so lost packets are simply skipped.</strong> UDP has no acknowledgements or retransmission, so there is lower latency. A late packet is useless in a live call.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>6.</b> A TCP sender gets no acknowledgement for a segment before its timer expires. What does it do?</p>
+<ol class="opts"><li data-l="A">Asks the router to resend it</li><li data-l="B">Retransmits the segment</li><li data-l="C">Closes the connection permanently</li><li data-l="D">Switches to UDP</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Retransmits the segment.</strong> TCP provides reliability by retransmitting segments that are not acknowledged in time.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> Which is a benefit of using a layered protocol stack?</p>
+<ol class="opts"><li data-l="A">One layer can be replaced, e.g. Wi-Fi for Ethernet, without changing the others</li><li data-l="B">Each layer can read all the data from the others</li><li data-l="C">Data is sent without headers, making it faster</li><li data-l="D">All layers must be changed together when upgrading</li></ol>
+<details><summary>Show answer</summary><p><strong>A: One layer can be replaced, e.g. Wi-Fi for Ethernet, without changing the others.</strong> Layers have defined interfaces, so one can be changed independently. This also supports interoperability between vendors.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>8.</b> A packet is sent with a TTL of 64 and passes through 7 routers. What is the TTL when it reaches the destination?</p>
+<ol class="opts"><li data-l="A">64</li><li data-l="B">56</li><li data-l="C">57</li><li data-l="D">71</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 57.</strong> Each router reduces the TTL by 1, so 64 − 7 = 57. The packet is discarded if it reaches 0.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>9.</b> At which layer of the TCP/IP stack are MAC addresses used?</p>
+<ol class="opts"><li data-l="A">Transport</li><li data-l="B">Link</li><li data-l="C">Application</li><li data-l="D">Internet</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Link.</strong> The link layer frames data with source and destination MAC addresses for delivery across one local network.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>10.</b> Packets of one file arrive at the destination out of order. What puts the data back in order?</p>
+<ol class="opts"><li data-l="A">IP TTL values</li><li data-l="B">TCP sequence numbers</li><li data-l="C">MAC addresses</li><li data-l="D">DHCP leases</li></ol>
+<details><summary>Show answer</summary><p><strong>B: TCP sequence numbers.</strong> TCP numbers each segment, so the receiver can reorder them and request any that are missing.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 33 questions on The TCP/IP protocol stack (23 more than here), set out in practice levels. You also get notes and 3D models for all 7 subtopics of Internet protocols and security, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/AS/7.1/practice">Practise 7.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/AS/7.1/topic">Open Internet protocols and security</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-12/computer-science/aqa/#t-9">Topic 9: Fundamentals of communication and networking</a></span></li><li><b>OCR</b><span><a href="/revision/a-level-year-12/computer-science/ocr/#t-1-3-3">Topic 1.3.3: Networks</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-12/computer-science/cambridge/#t-2">Topic 2: Communication</a>, <a href="/revision/a-level-year-12/computer-science/cambridge/#t-6">Topic 6: Security, privacy and data integrity</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-12/computer-science/theory-of-computation/"><small>← Topic 6</small>Theory of computation</a><a class="next" href="/revision/a-level-year-12/computer-science/legal-moral-cultural-and-ethical-issues/"><small>Topic 8 →</small>Legal, moral, cultural and ethical issues</a></nav>
+<p><a href="/revision/a-level-year-12/computer-science/">All A-level Computer Science Year 12 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

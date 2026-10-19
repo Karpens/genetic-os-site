@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computational thinking: A-level Computer Science Year 12 revision notes</title>
+<meta name="description" content="Computational thinking for A-level Computer Science Year 12: free revision notes and 10 practice questions with answers. Abstraction means removing…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-12/computer-science/computational-thinking/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Computational thinking: A-level Computer Science Year 12 revision notes">
+<meta property="og:description" content="Computational thinking for A-level Computer Science Year 12: free revision notes and 10 practice questions with answers. Abstraction means removing…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-12/computer-science/computational-thinking/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 12","item":"https://fullmarkss.com/revision/a-level-year-12/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/a-level-year-12/computer-science/"},{"@type":"ListItem","position":5,"name":"Computational thinking","item":"https://fullmarkss.com/revision/a-level-year-12/computer-science/computational-thinking/"}]},{"@type":"LearningResource","name":"Computational thinking: A-level Computer Science Year 12 revision notes","url":"https://fullmarkss.com/revision/a-level-year-12/computer-science/computational-thinking/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 12","about":["Computer Science","Computational thinking"],"isAccessibleForFree":true,"teaches":["Abstraction and automation","Thinking ahead: inputs, outputs, preconditions, caching and reusable components","Thinking procedurally and logically: decomposition, sequencing and decision points","Thinking concurrently and parallel processing","Problem recognition and solving techniques: divide and conquer, backtracking and heuristics","Data mining, performance modelling, pipelining and visualisation"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-12/">A-level Year 12</a></li><li><a href="/revision/a-level-year-12/computer-science/">Computer Science</a></li><li aria-current="page">Computational thinking</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Computer Science Year 12 · Topic 9</p>
+<h1>Computational thinking</h1>
+<p>Computational thinking is the set of mental tools computer scientists use to tackle problems.</p><p>We will use abstraction and automation, think ahead about inputs, outputs and preconditions, and think procedurally and logically.</p><p>Then we think concurrently, use divide and conquer, backtracking and heuristics, and explore data mining, performance modelling and visualisation.</p>
+<ul class="stats"><li>6 subtopics</li><li>166 questions</li><li>Free: 9.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-9-1" class="on"><span class="n">9.1</span><span class="t"><a href="#notes">Abstraction and automation</a></span><span class="m"><span class="tag free">Free below</span> · 28 questions</span></li><li id="s-9-2"><span class="n">9.2</span><span class="t">Thinking ahead: inputs, outputs, preconditions, caching and reusable components</span><span class="m"><a href="/#study/computing/AS/9.2">Open in Full Marks</a> · 25 questions</span></li><li id="s-9-3"><span class="n">9.3</span><span class="t">Thinking procedurally and logically: decomposition, sequencing and decision points</span><span class="m"><a href="/#study/computing/AS/9.3">Open in Full Marks</a> · 30 questions</span></li><li id="s-9-4"><span class="n">9.4</span><span class="t">Thinking concurrently and parallel processing</span><span class="m"><a href="/#study/computing/AS/9.4">Open in Full Marks</a> · 30 questions</span></li><li id="s-9-5"><span class="n">9.5</span><span class="t">Problem recognition and solving techniques: divide and conquer, backtracking and heuristics</span><span class="m"><a href="/#study/computing/AS/9.5">Open in Full Marks</a> · 30 questions</span></li><li id="s-9-6"><span class="n">9.6</span><span class="t">Data mining, performance modelling, pipelining and visualisation</span><span class="m"><a href="/#study/computing/AS/9.6">Open in Full Marks</a> · 23 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">9.1 · Free notes</p>
+<h2>Abstraction and automation</h2>
+<figure><img src="abstraction-and-automation.svg" width="400" height="260" alt="Diagram: Abstraction and automation" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Abstraction</strong> means removing unnecessary detail (or hiding complexity) so that you focus only on the <strong>essential features</strong> of a problem. It makes a problem easier to understand, solve and model.</li><li><strong>Representational abstraction</strong> is a simplified representation of reality with irrelevant detail removed, e.g. the London Underground map shows stations and connections but not true distances or geography.</li><li><strong>Abstraction by generalisation (categorisation)</strong> groups items with common characteristics into a hierarchy, e.g. Car, Lorry and Motorbike generalised to Vehicle with shared attributes such as wheels and speed.</li><li><strong>Procedural (functional) abstraction</strong> hides how a computation is carried out and replaces specific values with <strong>parameters</strong>. The programmer only needs to know what the subroutine does, not how, e.g. calling sort(list).</li><li><strong>Data abstraction</strong> hides how data is represented or stored. A stack or queue is used through operations such as push and pop, whether it is built from an array or a linked list (<strong>information hiding</strong>).</li><li><strong>Problem abstraction (problem reduction)</strong> removes details until the problem is one that has already been solved, so a known algorithm can be reused, e.g. scheduling reduced to graph colouring.</li><li><strong>Layers of abstraction</strong> let each layer hide the detail of those below it, e.g. a high-level language hides machine code, and the application layer in a network hides how bits are signalled.</li><li><strong>Automation</strong> means putting an abstracted model into action: designing <strong>algorithms</strong>, choosing <strong>data structures</strong>, writing <strong>code</strong>, and having a computer <strong>execute</strong> it to solve the problem.</li><li>Abstraction comes first (decide what the model contains) and automation follows (implement and run the model). Computer simulations such as weather forecasting automate abstracted models of the real world.</li><li>Benefits of abstraction: it reduces complexity, speeds up development, allows reuse and makes maintenance easier. Always say which detail is removed and why it is not needed.</li><li>Do not confuse abstraction (hiding or removing detail) with <strong>decomposition</strong> (splitting a problem into smaller parts). Both are tools of computational thinking but they are different.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked abstraction:</strong> a weather app shows &quot;70% chance of rain&quot;, hiding the huge atmospheric model behind it.</li><li><strong>Worked representational abstraction:</strong> a chess program stores the board as an 8 × 8 array and ignores what the pieces are made of.</li><li><strong>Worked generalisation:</strong> one sortList routine works for names, scores or dates, because it only needs to compare items.</li><li><strong>Worked procedural abstraction:</strong> you call area(r) without needing to know how it is calculated; a stack is a data abstraction with push and pop.</li><li><strong>Worked automation:</strong> an airline turns its seating rules into an algorithm, so seats are allocated automatically.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Abstraction and automation: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="3">
+<p class="qt"><b>1.</b> Which statement best defines abstraction in computational thinking?</p>
+<ol class="opts"><li data-l="A">Storing data so it can be accessed more quickly</li><li data-l="B">Splitting a problem into smaller sub-problems</li><li data-l="C">Converting a flowchart directly into machine code</li><li data-l="D">Removing unnecessary detail to focus on the essential features</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Removing unnecessary detail to focus on the essential features.</strong> Abstraction hides or removes detail that is not needed so the essential features remain. Splitting a problem is decomposition; storing data for speed is caching.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> The London Underground map shows stations and lines but not true distances. Why is it a good abstraction?</p>
+<ol class="opts"><li data-l="A">It automatically plans journeys for passengers</li><li data-l="B">It is drawn to an exact scale</li><li data-l="C">It shows every street above each station</li><li data-l="D">It keeps the detail a traveller needs and omits the rest</li></ol>
+<details><summary>Show answer</summary><p><strong>D: It keeps the detail a traveller needs and omits the rest.</strong> The map removes irrelevant detail such as geography and distance and keeps stations and connections, which is what journey planning needs.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>3.</b> A programmer calls sort(names) without knowing which sorting algorithm is used. Which type of abstraction is this?</p>
+<ol class="opts"><li data-l="A">Data abstraction</li><li data-l="B">Caching</li><li data-l="C">Procedural abstraction</li><li data-l="D">Automation</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Procedural abstraction.</strong> Procedural (functional) abstraction hides how a computation is carried out. The programmer only needs to know what the subroutine does and what parameters it takes.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>4.</b> A stack is used through push and pop, and the user does not know whether it is stored as an array or a linked list. This is an example of:</p>
+<ol class="opts"><li data-l="A">Data abstraction</li><li data-l="B">Automation</li><li data-l="C">Iteration</li><li data-l="D">Problem reduction</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Data abstraction.</strong> Data abstraction hides how a data structure is represented. Users interact only through the defined operations, so the implementation can change without affecting them.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>5.</b> Which description best matches automation in computational thinking?</p>
+<ol class="opts"><li data-l="A">Checking that user input is valid</li><li data-l="B">Implementing a model as an algorithm in code that a computer executes</li><li data-l="C">Removing irrelevant detail from a problem</li><li data-l="D">Breaking a problem into modules</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Implementing a model as an algorithm in code that a computer executes.</strong> Automation puts an abstracted model into action: algorithms and data structures are coded and run on a computer to solve the problem.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>6.</b> Why is abstraction normally carried out before automation?</p>
+<ol class="opts"><li data-l="A">Abstraction is only needed after testing</li><li data-l="B">Computers cannot run programs until they are abstracted</li><li data-l="C">Automation removes the need for algorithms</li><li data-l="D">The model must be defined before it can be coded and run</li></ol>
+<details><summary>Show answer</summary><p><strong>D: The model must be defined before it can be coded and run.</strong> You must first decide what the model contains (abstraction). Only then can you design algorithms and code to execute it (automation).</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> Car, Lorry and Motorbike are grouped as Vehicle, with common attributes such as wheels and speed. This is abstraction by:</p>
+<ol class="opts"><li data-l="A">Generalisation</li><li data-l="B">Data hiding</li><li data-l="C">Caching</li><li data-l="D">Sequencing</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Generalisation.</strong> Grouping items by shared characteristics into a more general category is abstraction by generalisation (categorisation).</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>8.</b> A programmer replaces the expression 5 * 3 with the subroutine rectangle_area(w, h). What principle is being applied?</p>
+<ol class="opts"><li data-l="A">Reducing the problem to a known one</li><li data-l="B">Replacing specific values with parameters</li><li data-l="C">Hiding the data structure used</li><li data-l="D">Storing results for reuse</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Replacing specific values with parameters.</strong> Procedural abstraction generalises a calculation by replacing fixed values with parameters, so the same subroutine works for any width and height.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>9.</b> Which statement about abstraction is correct?</p>
+<ol class="opts"><li data-l="A">It reduces complexity by hiding detail that is not needed</li><li data-l="B">It makes a model contain more detail than reality</li><li data-l="C">It is only used when designing hardware</li><li data-l="D">It removes the need to write any algorithm</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It reduces complexity by hiding detail that is not needed.</strong> Abstraction reduces complexity by hiding or removing irrelevant detail. It applies to software and models, and algorithms are still needed for automation.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>10.</b> A web developer uses HTTP without knowing how bits are sent as electrical signals. Which idea does this show?</p>
+<ol class="opts"><li data-l="A">Caching of repeated requests</li><li data-l="B">Validation of user input</li><li data-l="C">Layers of abstraction hide lower-level detail</li><li data-l="D">Decomposition into parallel tasks</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Layers of abstraction hide lower-level detail.</strong> Each network layer provides a service to the layer above and hides how it is done, so the developer need not know the lower-level detail.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 28 questions on Abstraction and automation (18 more than here), set out in practice levels. You also get notes and 3D models for all 6 subtopics of Computational thinking, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/AS/9.1/practice">Practise 9.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/AS/9.1/topic">Open Computational thinking</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-12/computer-science/aqa/#t-4">Topic 4: Theory of computation</a></span></li><li><b>OCR</b><span><a href="/revision/a-level-year-12/computer-science/ocr/#t-2-1">Topic 2.1: Elements of computational thinking</a>, <a href="/revision/a-level-year-12/computer-science/ocr/#t-2-2">Topic 2.2: Problem solving and programming</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-12/computer-science/cambridge/#t-9">Topic 9: Algorithm design and problem-solving</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-12/computer-science/legal-moral-cultural-and-ethical-issues/"><small>← Topic 8</small>Legal, moral, cultural and ethical issues</a><a class="next" href="/revision/a-level-year-12/computer-science/boolean-algebra-and-logic-circuits/"><small>Topic 10 →</small>Boolean algebra and logic circuits</a></nav>
+<p><a href="/revision/a-level-year-12/computer-science/">All A-level Computer Science Year 12 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

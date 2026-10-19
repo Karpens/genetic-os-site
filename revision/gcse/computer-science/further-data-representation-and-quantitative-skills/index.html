@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Further data representation and quantitative skills | GCSE Computer Science</title>
+<meta name="description" content="Further data representation and quantitative skills for GCSE Computer Science: free revision notes and 10 practice questions with answers. Binary addition…">
+<link rel="canonical" href="https://fullmarkss.com/revision/gcse/computer-science/further-data-representation-and-quantitative-skills/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Further data representation and quantitative skills | GCSE Computer Science">
+<meta property="og:description" content="Further data representation and quantitative skills for GCSE Computer Science: free revision notes and 10 practice questions with answers. Binary addition…">
+<meta property="og:url" content="https://fullmarkss.com/revision/gcse/computer-science/further-data-representation-and-quantitative-skills/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"GCSE","item":"https://fullmarkss.com/revision/gcse/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/gcse/computer-science/"},{"@type":"ListItem","position":5,"name":"Further data representation and quantitative skills","item":"https://fullmarkss.com/revision/gcse/computer-science/further-data-representation-and-quantitative-skills/"}]},{"@type":"LearningResource","name":"Further data representation and quantitative skills: GCSE Computer Science revision notes","url":"https://fullmarkss.com/revision/gcse/computer-science/further-data-representation-and-quantitative-skills/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"GCSE","about":["Computer Science","Further data representation and quantitative skills"],"isAccessibleForFree":true,"teaches":["Binary addition and binary shifts","Representing negative numbers: sign and magnitude, two's complement","Calculating file sizes for text, images and sound, and converting units","Compression in practice: run-length encoding and Huffman coding"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/gcse/">GCSE</a></li><li><a href="/revision/gcse/computer-science/">Computer Science</a></li><li aria-current="page">Further data representation and quantitative skills</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">GCSE Computer Science · Topic 8</p>
+<h1>Further data representation and quantitative skills</h1>
+<p>Further data representation and quantitative skills builds the calculations that often appear in exams.</p><p>We will add binary numbers, use binary shifts, and represent negative numbers with two&#39;s complement.</p><p>Then we calculate file sizes for text, images and sound, and compress data with run-length encoding and Huffman coding.</p>
+<ul class="stats"><li>4 subtopics</li><li>264 questions</li><li>Free: 8.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-8-1" class="on"><span class="n">8.1</span><span class="t"><a href="#notes">Binary addition and binary shifts</a></span><span class="m"><span class="tag free">Free below</span> · 69 questions</span></li><li id="s-8-2"><span class="n">8.2</span><span class="t">Representing negative numbers: sign and magnitude, two&#39;s complement</span><span class="m"><a href="/#study/computing/GCSE/8.2">Open in Full Marks</a> · 61 questions</span></li><li id="s-8-3"><span class="n">8.3</span><span class="t">Calculating file sizes for text, images and sound, and converting units</span><span class="m"><a href="/#study/computing/GCSE/8.3">Open in Full Marks</a> · 66 questions</span></li><li id="s-8-4"><span class="n">8.4</span><span class="t">Compression in practice: run-length encoding and Huffman coding</span><span class="m"><a href="/#study/computing/GCSE/8.4">Open in Full Marks</a> · 68 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">8.1 · Free notes</p>
+<h2>Binary addition and binary shifts</h2>
+<figure><img src="binary-addition-and-binary-shifts.svg" width="400" height="260" alt="Diagram: Binary addition and binary shifts" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Binary addition</strong> is done column by column from the right, as in denary. The four rules are 0+0=0, 0+1=1, 1+1=10 (write <strong>0, carry 1</strong>) and 1+1+1=11 (write <strong>1, carry 1</strong>).</li><li>Always write the <strong>carry</strong> above the next column on the left, and add it in when you reach that column. A column can contain up to three 1s (two digits plus a carry).</li><li>Worked example: 00101101 (45) + 00011011 (27) = 01001000 (72). Check by converting back to denary, which is a quick way to catch slips.</li><li><strong>Overflow</strong> happens when the result needs more bits than the register can hold. For example, in 8 bits, 11001000 (200) + 01100100 (100) = 300, which needs 9 bits. The extra carry is lost and the stored answer, 00101100 (44), is wrong.</li><li>In 8-bit unsigned binary the largest value is 255 (11111111) and the smallest is 0. Any sum above 255 causes overflow.</li><li>A <strong>binary shift</strong> moves every bit a number of places left or right. In a <strong>logical shift</strong> the empty places are filled with <strong>0s</strong>.</li><li>A <strong>left shift</strong> by n places <strong>multiplies</strong> by 2ⁿ. Example: 00001101 (13) shifted left 2 places gives 00110100 (52), which is 13 × 4.</li><li>A <strong>right shift</strong> by n places performs integer <strong>division</strong> by 2ⁿ. Example: 01101000 (104) shifted right 3 places gives 00001101 (13). Any remainder is lost, so 00001101 (13) shifted right 1 place gives 00000110 (6), not 6.5.</li><li>Bits shifted off the end are <strong>lost</strong>. A left shift can give a wrong answer if a 1 is pushed out of the most significant bit, which is a form of overflow. A right shift loses precision.</li><li>Shifts are very fast for a processor to carry out, so they are an efficient way of multiplying or dividing by powers of 2. Exam answers should state the direction, the number of places and the effect on the value.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked overflow:</strong> 11001000 (200) + 01100100 (100) = 1 00101100; the 9th bit is lost, so 8 bits store 00101100 (44) instead of 300.</li><li><strong>Worked carries:</strong> 1 + 1 + 1 = 11 in binary: write 1 and carry 1.</li><li><strong>Worked shifts:</strong> 00110101 (53) shifted left 1 → 01101010 (106); shifted right 2 → 00001101 (13, the remainder is lost).</li><li><strong>Worked lost bits:</strong> 11000000 (192) shifted left 1 → 10000000 (128), wrong because the leftmost 1 fell off.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Binary addition and binary shifts: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="3">
+<p class="qt"><b>1.</b> When adding three 1s in one column (two digits plus a carry), what is written and carried?</p>
+<ol class="opts"><li data-l="A">Write 1, carry 0</li><li data-l="B">Write 0, carry 1</li><li data-l="C">Write 0, carry 0</li><li data-l="D">Write 1, carry 1</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Write 1, carry 1.</strong> 1+1+1 = 3, which is 11 in binary. The right-hand digit 1 is written in the column and the left-hand 1 is carried to the next column.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> What is 00110101 + 00001110 in binary?</p>
+<ol class="opts"><li data-l="A">00111111</li><li data-l="B">01000111</li><li data-l="C">01000001</li><li data-l="D">01000011</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 01000011.</strong> 53 + 14 = 67, which is 01000011. The column working with carries gives this result.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> An 8-bit register adds 11001000 (200) and 01100100 (100). What happens?</p>
+<ol class="opts"><li data-l="A">Overflow; the stored result 00101100 (44) is wrong</li><li data-l="B">The result 300 is stored correctly</li><li data-l="C">The result is rounded down to 255</li><li data-l="D">The result is stored as 00000000</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Overflow; the stored result 00101100 (44) is wrong.</strong> The true answer, 300, needs 9 bits. The ninth bit is lost, leaving 00101100 (44). This is an overflow error.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>4.</b> What is the denary value of 00000101 after a left shift of 3 places?</p>
+<ol class="opts"><li data-l="A">40</li><li data-l="B">20</li><li data-l="C">15</li><li data-l="D">10</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 40.</strong> A left shift of 3 multiplies by 2³ = 8. 5 × 8 = 40, which is 00101000.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>5.</b> 01100100 (100) is shifted right by 2 places. What is the result in denary?</p>
+<ol class="opts"><li data-l="A">50</li><li data-l="B">200</li><li data-l="C">400</li><li data-l="D">25</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 25.</strong> A right shift of 2 divides by 2² = 4. 100 ÷ 4 = 25, which is 00011001.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>6.</b> 00001111 (15) is shifted 1 place to the right. What is the denary result?</p>
+<ol class="opts"><li data-l="A">30</li><li data-l="B">7.5</li><li data-l="C">7</li><li data-l="D">8</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 7.</strong> Right shifts give integer division. 00001111 becomes 00000111, which is 7. The remainder bit is lost.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> Why is 10010011 shifted left 1 place in an 8-bit register not double the original value?</p>
+<ol class="opts"><li data-l="A">The leading 1 is shifted out and lost</li><li data-l="B">Zeros are added on the left</li><li data-l="C">A left shift only adds 1</li><li data-l="D">The carry is added back on the right</li></ol>
+<details><summary>Show answer</summary><p><strong>A: The leading 1 is shifted out and lost.</strong> The original is 147, and doubling gives 294, which is over 255. The most significant 1 is shifted out, leaving 00100110 (38).</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>8.</b> Which shift multiplies an unsigned binary number by 16?</p>
+<ol class="opts"><li data-l="A">Right shift of 4 places</li><li data-l="B">Right shift of 16 places</li><li data-l="C">Left shift of 4 places</li><li data-l="D">Left shift of 2 places</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Left shift of 4 places.</strong> Each place of left shift multiplies by 2. 2⁴ = 16, so 4 places are needed, shifting left.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>9.</b> What is 1 + 1 in a single binary column with no incoming carry?</p>
+<ol class="opts"><li data-l="A">Write 0 and carry 1</li><li data-l="B">Write 1 and carry 1</li><li data-l="C">Write 0 and carry nothing</li><li data-l="D">Write 2</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Write 0 and carry 1.</strong> 1 + 1 = 2, which is 10 in binary. Write 0 in the column and carry 1 to the next column.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> Add the 5-bit numbers 01101 and 00111. What is the result?</p>
+<ol class="opts"><li data-l="A">01100</li><li data-l="B">10010</li><li data-l="C">10110</li><li data-l="D">10100</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 10100.</strong> 13 + 7 = 20, which is 10100 in 5 bits. The carries ripple across three columns.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 69 questions on Binary addition and binary shifts (59 more than here), set out in practice levels. You also get notes and 3D models for all 4 subtopics of Further data representation and quantitative skills, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/GCSE/8.1/practice">Practise 8.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/GCSE/8.1/topic">Open Further data representation and quantitative skills</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/gcse/computer-science/aqa/#t-3-3">Topic 3.3: Fundamentals of data representation</a></span></li><li><b>OCR</b><span><a href="/revision/gcse/computer-science/ocr/#t-1-2">Topic 1.2: Memory and storage</a></span></li><li><b>Edexcel</b><span><a href="/revision/gcse/computer-science/edexcel/#t-2">Topic 2: Data</a></span></li><li><b>Cambridge</b><span><a href="/revision/gcse/computer-science/cambridge/#t-1">Topic 1: Data representation</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/gcse/computer-science/data-structures-subroutines-and-robust-programs/"><small>← Topic 7</small>Data structures, subroutines and robust programs</a><a class="next" href="/revision/gcse/computer-science/computer-systems-in-detail/"><small>Topic 9 →</small>Computer systems in detail</a></nav>
+<p><a href="/revision/gcse/computer-science/">All GCSE Computer Science topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topic 3 Computer systems: GCSE Computer Science revision notes</title>
+<meta name="description" content="Topic 3 Computer systems for GCSE Computer Science: free revision notes and 10 practice questions with answers. An embedded system is a computer system…">
+<link rel="canonical" href="https://fullmarkss.com/revision/gcse/computer-science/topic-3-computer-systems/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Topic 3 Computer systems: GCSE Computer Science revision notes">
+<meta property="og:description" content="Topic 3 Computer systems for GCSE Computer Science: free revision notes and 10 practice questions with answers. An embedded system is a computer system…">
+<meta property="og:url" content="https://fullmarkss.com/revision/gcse/computer-science/topic-3-computer-systems/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"GCSE","item":"https://fullmarkss.com/revision/gcse/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/gcse/computer-science/"},{"@type":"ListItem","position":5,"name":"Topic 3 Computer systems","item":"https://fullmarkss.com/revision/gcse/computer-science/topic-3-computer-systems/"}]},{"@type":"LearningResource","name":"Topic 3 Computer systems: GCSE Computer Science revision notes","url":"https://fullmarkss.com/revision/gcse/computer-science/topic-3-computer-systems/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"GCSE","about":["Computer Science","Topic 3 Computer systems"],"isAccessibleForFree":true,"teaches":["Embedded systems and input/output devices","Automated systems, robotics and artificial intelligence"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/gcse/">GCSE</a></li><li><a href="/revision/gcse/computer-science/">Computer Science</a></li><li aria-current="page">Topic 3 Computer systems</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">GCSE Computer Science · Topic 13</p>
+<h1>Topic 3 Computer systems</h1>
+<p>Embedded systems and input and output devices are about the hidden computers inside everyday objects.</p><p>We will see how sensors, processors and actuators work together, and how to choose the right devices.</p>
+<ul class="stats"><li>2 subtopics</li><li>47 questions</li><li>Free: 13.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-13-1" class="on"><span class="n">13.1</span><span class="t"><a href="#notes">Embedded systems and input/output devices</a></span><span class="m"><span class="tag free">Free below</span> · 27 questions</span></li><li id="s-13-2"><span class="n">13.2</span><span class="t">Automated systems, robotics and artificial intelligence</span><span class="m"><a href="/#study/computing/GCSE/13.2">Open in Full Marks</a> · 20 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">13.1 · Free notes</p>
+<h2>Embedded systems and input/output devices</h2>
+<figure><img src="embedded-systems-and-input-output-devices.svg" width="400" height="260" alt="Diagram: Embedded systems and input/output devices" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>An <strong>embedded system</strong> is a computer system built into a larger device to perform one <strong>dedicated function</strong> (or a small set of them), for example in a washing machine, microwave, car engine management unit or digital watch.</li><li>Most embedded systems are built around a <strong>microcontroller</strong>: a single chip containing a <strong>CPU</strong>, <strong>ROM</strong>/flash, <strong>RAM</strong> and <strong>input/output</strong> interfaces.</li><li>The program, called <strong>firmware</strong>, is stored in <strong>ROM</strong> or flash memory, which is <strong>non-volatile</strong>. It is not lost when the power is switched off, and the user usually cannot change it.</li><li>Typical features: small size, low cost, <strong>low power consumption</strong>, reliable, and often <strong>real-time</strong> (it must respond within a fixed short time, e.g. a car airbag controller).</li><li>Compared with a <strong>general-purpose computer</strong> (PC, laptop), an embedded system cannot run many different programs, has limited memory and processing power, and is hard to upgrade. In return it is cheap, efficient and dependable.</li><li>Examples examiners accept: traffic lights, central heating thermostat, smart meter, fitness tracker, car ABS and engine management, alarm systems, digital cameras, <strong>Internet of Things (IoT)</strong> devices.</li><li>The basic cycle is <strong>input → process → output</strong>. Sensors send data to the microcontroller, which runs the firmware and then controls outputs such as motors, heaters, lights or displays.</li><li><strong>Input devices</strong> send data into a computer: keyboard, mouse, touchscreen, microphone, scanner, barcode reader, webcam and <strong>sensors</strong> (temperature, light, pressure, motion/infrared, ultrasonic, moisture).</li><li>Sensors usually produce <strong>analogue</strong> signals, so an <strong>analogue-to-digital converter (ADC)</strong> is needed before the CPU can process them. A <strong>digital-to-analogue converter (DAC)</strong> is used for analogue outputs such as a speaker.</li><li><strong>Output devices</strong> present or act on processed data: monitor/LCD, LED, speaker, buzzer, printer (laser, inkjet), <strong>3D printer</strong>, and <strong>actuators</strong> such as motors, heaters and valves that cause physical movement or change.</li><li>A <strong>capacitive</strong> touchscreen senses the electrical charge of a finger and supports multi-touch. A <strong>resistive</strong> screen senses pressure on layers and works with a gloved hand or stylus.</li><li>Choose devices to fit the context in exam answers, e.g. a light sensor for automatic street lights, or a pressure sensor in a burglar alarm mat.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked washing machine:</strong> inputs: water level sensor, temperature sensor and buttons; processing: a microcontroller runs the chosen cycle; outputs: motor, heater, pump and display.</li><li><strong>Worked sensor choice:</strong> greenhouse → temperature and humidity sensors; parking aid → ultrasonic sensor; burglar alarm → passive infrared (PIR) motion sensor.</li><li><strong>Worked ADC:</strong> a temperature sensor gives 0–5 V, and an 8-bit ADC turns this into a number from 0 to 255.</li><li><strong>Embedded vs general purpose:</strong> a microwave&#39;s controller runs one program stored in firmware; a laptop runs many programs and you can install new ones.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Embedded systems and input/output devices: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="2">
+<p class="qt"><b>1.</b> Which of these is an example of an embedded system?</p>
+<ol class="opts"><li data-l="A">A file server in a school</li><li data-l="B">A laptop running a word processor</li><li data-l="C">A microcontroller controlling a microwave oven</li><li data-l="D">A desktop PC used for gaming</li></ol>
+<details><summary>Show answer</summary><p><strong>C: A microcontroller controlling a microwave oven.</strong> An embedded system is built into a larger device to do a dedicated job. The microwave&#39;s controller does only that, unlike general-purpose PCs, laptops and servers.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>2.</b> Where is the firmware of an embedded system normally stored?</p>
+<ol class="opts"><li data-l="A">In the CPU cache</li><li data-l="B">In RAM, so it can be changed quickly</li><li data-l="C">In virtual memory on a hard disk</li><li data-l="D">In ROM or flash memory, so it stays when power is off</li></ol>
+<details><summary>Show answer</summary><p><strong>D: In ROM or flash memory, so it stays when power is off.</strong> Firmware must survive power loss, so it is held in non-volatile ROM or flash. RAM and cache are volatile and would lose the program.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> Which is a typical characteristic of an embedded system compared with a general-purpose computer?</p>
+<ol class="opts"><li data-l="A">It performs a dedicated task using limited resources</li><li data-l="B">It can run many different applications at once</li><li data-l="C">It always has a keyboard and monitor</li><li data-l="D">It needs a large hard disk</li></ol>
+<details><summary>Show answer</summary><p><strong>A: It performs a dedicated task using limited resources.</strong> Embedded systems are designed for one specific function, with small memory, low power and low cost. They are not built to run varied software.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>4.</b> A washing machine uses a thermistor to measure water temperature. The thermistor is a…</p>
+<ol class="opts"><li data-l="A">sensor, which is an input device</li><li data-l="B">storage device</li><li data-l="C">output device</li><li data-l="D">processor</li></ol>
+<details><summary>Show answer</summary><p><strong>A: sensor, which is an input device.</strong> A thermistor is a temperature sensor. It sends data into the controller, so it is an input device.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>5.</b> Which component in a car is an actuator?</p>
+<ol class="opts"><li data-l="A">A motor that locks the doors</li><li data-l="B">A parking distance sensor</li><li data-l="C">A light sensor for the headlights</li><li data-l="D">A microphone for hands-free calls</li></ol>
+<details><summary>Show answer</summary><p><strong>A: A motor that locks the doors.</strong> An actuator is an output device that causes physical movement. The door-lock motor is controlled by the system, whereas the others are inputs.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>6.</b> Which statement about touchscreens is correct?</p>
+<ol class="opts"><li data-l="A">Resistive screens cannot detect pressure</li><li data-l="B">Capacitive screens work with any plastic stylus</li><li data-l="C">Resistive screens need a conductive finger</li><li data-l="D">Capacitive screens detect a finger&#39;s electrical charge and allow multi-touch</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Capacitive screens detect a finger&#39;s electrical charge and allow multi-touch.</strong> Capacitive screens sense the charge from a conductive finger and handle multi-touch. Resistive screens respond to pressure, so stylus or gloves work.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>7.</b> A sensor in a data logger takes 4 readings per second. Each reading uses 2 bytes. How many bytes are stored in 1 hour?</p>
+<ol class="opts"><li data-l="A">28 800 bytes</li><li data-l="B">7 200 bytes</li><li data-l="C">57 600 bytes</li><li data-l="D">14 400 bytes</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 28 800 bytes.</strong> 1 hour = 3600 s. 4 × 3600 = 14 400 readings. 14 400 × 2 bytes = 28 800 bytes.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>8.</b> Which sensor is most suitable for switching street lights on automatically at dusk?</p>
+<ol class="opts"><li data-l="A">Pressure sensor</li><li data-l="B">Moisture sensor</li><li data-l="C">Light sensor</li><li data-l="D">Sound sensor</li></ol>
+<details><summary>Show answer</summary><p><strong>C: Light sensor.</strong> A light sensor measures ambient brightness. The controller switches the lamps on when the reading falls below a set level.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>9.</b> Why is an analogue-to-digital converter (ADC) often needed in an embedded system?</p>
+<ol class="opts"><li data-l="A">To increase the screen resolution</li><li data-l="B">To convert the analogue signals from sensors into digital data</li><li data-l="C">To make the CPU run faster</li><li data-l="D">To store firmware in ROM</li></ol>
+<details><summary>Show answer</summary><p><strong>B: To convert the analogue signals from sensors into digital data.</strong> Sensors measure real-world quantities as analogue signals. The microcontroller only processes digital binary data, so an ADC converts them.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>10.</b> Which is a disadvantage of an embedded system?</p>
+<ol class="opts"><li data-l="A">It uses far more power than a PC</li><li data-l="B">It is usually expensive to mass-produce</li><li data-l="C">It is hard to upgrade or change because the firmware is fixed</li><li data-l="D">It cannot be programmed at all</li></ol>
+<details><summary>Show answer</summary><p><strong>C: It is hard to upgrade or change because the firmware is fixed.</strong> Firmware in ROM and the fixed hardware make upgrades difficult. Embedded systems are usually cheap and low-power, which are advantages.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 27 questions on Embedded systems and input/output devices (17 more than here), set out in practice levels. You also get notes and 3D models for all 2 subtopics of Topic 3 Computer systems, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/GCSE/13.1/practice">Practise 13.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/GCSE/13.1/topic">Open Topic 3 Computer systems</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/gcse/computer-science/aqa/#t-3-4">Topic 3.4: Computer systems</a></span></li><li><b>OCR</b><span><a href="/revision/gcse/computer-science/ocr/#t-1-1">Topic 1.1: Systems architecture</a></span></li><li><b>Edexcel</b><span><a href="/revision/gcse/computer-science/edexcel/#t-3">Topic 3: Computers</a></span></li><li><b>Cambridge</b><span><a href="/revision/gcse/computer-science/cambridge/#t-3">Topic 3: Hardware</a>, <a href="/revision/gcse/computer-science/cambridge/#t-6">Topic 6: Automated and emerging technologies</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/gcse/computer-science/practical-programming-and-exam-skills/"><small>← Topic 12</small>Practical programming and exam skills</a><a class="next" href="/revision/gcse/computer-science/topic-5-databases-and-impacts-of-technology/"><small>Topic 14 →</small>Topic 5 Databases and impacts of technology</a></nav>
+<p><a href="/revision/gcse/computer-science/">All GCSE Computer Science topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maths skills for Year 13 physics: A-level Physics Year 13 revision notes</title>
+<meta name="description" content="Maths skills for Year 13 physics for A-level Physics Year 13: free revision notes and 10 practice questions with answers. An exponential decay has the form…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/physics/maths-skills-for-year-13-physics/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Maths skills for Year 13 physics: A-level Physics Year 13 revision notes">
+<meta property="og:description" content="Maths skills for Year 13 physics for A-level Physics Year 13: free revision notes and 10 practice questions with answers. An exponential decay has the form…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/physics/maths-skills-for-year-13-physics/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Physics","item":"https://fullmarkss.com/revision/a-level-year-13/physics/"},{"@type":"ListItem","position":5,"name":"Maths skills for Year 13 physics","item":"https://fullmarkss.com/revision/a-level-year-13/physics/maths-skills-for-year-13-physics/"}]},{"@type":"LearningResource","name":"Maths skills for Year 13 physics: A-level Physics Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/physics/maths-skills-for-year-13-physics/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Physics","Maths skills for Year 13 physics"],"isAccessibleForFree":true,"teaches":["Exponential and logarithmic functions (e^x, ln, decay and discharge)","Logarithmic graphs: linearising exponential and power laws","Radians, trigonometric functions and the small-angle approximation","Gradients, tangents and areas under graphs as rates of change and totals","Introductory calculus in physics: SHM, induction and field–potential relations"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#4361EE">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/physics/">Physics</a></li><li aria-current="page">Maths skills for Year 13 physics</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Physics Year 13 · Topic 26</p>
+<h1>Maths skills for Year 13 physics</h1>
+<p>Maths skills for year thirteen physics brings together the tools you need for the hardest calculations and graphs.</p><p>We will use exponentials and logarithms, and turn curved graphs into straight lines.</p><p>Then we use radians and the small-angle approximation, find gradients and areas under graphs, and meet simple calculus in physics.</p>
+<ul class="stats"><li>5 subtopics</li><li>171 questions</li><li>Free: 26.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-26-1" class="on"><span class="n">26.1</span><span class="t"><a href="#notes">Exponential and logarithmic functions (e^x, ln, decay and discharge)</a></span><span class="m"><span class="tag free">Free below</span> · 57 questions</span></li><li id="s-26-2"><span class="n">26.2</span><span class="t">Logarithmic graphs: linearising exponential and power laws</span><span class="m"><a href="/#study/physics/A2/26.2">Open in Full Marks</a> · 59 questions</span></li><li id="s-26-3"><span class="n">26.3</span><span class="t">Radians, trigonometric functions and the small-angle approximation</span><span class="m"><a href="/#study/physics/A2/26.3">Open in Full Marks</a> · 14 questions</span></li><li id="s-26-4"><span class="n">26.4</span><span class="t">Gradients, tangents and areas under graphs as rates of change and totals</span><span class="m"><a href="/#study/physics/A2/26.4">Open in Full Marks</a> · 26 questions</span></li><li id="s-26-5"><span class="n">26.5</span><span class="t">Introductory calculus in physics: SHM, induction and field–potential relations</span><span class="m"><a href="/#study/physics/A2/26.5">Open in Full Marks</a> · 15 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">26.1 · Free notes</p>
+<h2>Exponential and logarithmic functions (e^x, ln, decay and discharge)</h2>
+<figure><img src="exponential-and-logarithmic-functions-e-x-ln-decay-and-discharge.svg" width="400" height="260" alt="Diagram: Exponential and logarithmic functions (e^x, ln, decay and discharge)" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>An <strong>exponential decay</strong> has the form x = x₀e^(−kt). The rate of change is proportional to the amount present (dx/dt = −kx), so equal time intervals give equal <strong>fractional (constant-ratio) changes</strong>.</li><li><strong>Capacitor discharge</strong>: Q = Q₀e^(−t/RC), V = V₀e^(−t/RC) and I = I₀e^(−t/RC). All three fall by the same factor in the same time.</li><li>The <strong>time constant</strong> τ = RC (units: Ω × F = s) is the time for Q, V or I to fall to 1/e ≈ <strong>37%</strong> of its initial value. The tangent at t = 0 meets the time axis at t = RC.</li><li><strong>Charging</strong>: Q = Q₀(1 − e^(−t/RC)) and V = V₀(1 − e^(−t/RC)), while I = I₀e^(−t/RC). After one time constant the charge has reached about <strong>63%</strong> of its final value.</li><li><strong>Radioactive decay</strong>: N = N₀e^(−λt) and A = A₀e^(−λt), where λ is the <strong>decay constant</strong> (s⁻¹, h⁻¹ or year⁻¹) and activity A = λN.</li><li><strong>Half-life</strong> and decay constant are linked by T½ = ln 2/λ ≈ 0.693/λ. The same idea gives the time to halve a discharging capacitor&#39;s charge, t½ = 0.693RC.</li><li><strong>ln</strong> is the inverse of e^x: ln(e^x) = x and e^(ln x) = x. Use ln, not log₁₀, to rearrange e-based equations, e.g. t = −RC ln(Q/Q₀).</li><li>Log rules: ln(ab) = ln a + ln b; ln(a/b) = ln a − ln b; ln(aⁿ) = n ln a; ln 1 = 0. ln(a + b) cannot be split into separate logs.</li><li>The <strong>gradient</strong> of a decay curve at any time is −λ × (the value at that time), e.g. I = −dQ/dt = Q/RC. It decreases with time and is not constant.</li><li><strong>Absorption</strong> of radiation follows the same form: I = I₀e^(−μx), where μ is the attenuation coefficient (m⁻¹). The half-value thickness is x½ = ln 2/μ.</li><li>Exam traps: use consistent units for t and RC (or λ), remember one time constant leaves 1/e (37%) not 1/2 (50%), and give units and sensible significant figures.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked discharge:</strong> RC = 2.0 s and V₀ = 12 V → after 3.0 s, V = 12e^(−1.5) = 2.7 V.</li><li><strong>Worked time to fall:</strong> to fall to 25%, t = RC ln 4 = 2.0 × 1.39 = 2.8 s, which is two half-lives (T½ = 0.693RC = 1.39 s).</li><li><strong>Worked decay:</strong> T½ = 5.0 min → λ = 0.693 ÷ 300 = 2.31 × 10⁻³ s⁻¹; after 12 min, N/N₀ = e^(−2.31 × 10⁻³ × 720) = 0.19.</li><li><strong>Worked rearranging:</strong> 0.20 = e^(−t/RC) → −t/RC = ln 0.20 → t = RC ln 5 = 1.61RC.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Exponential and logarithmic functions (e^x, ln, decay and discharge): 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="2">
+<p class="qt"><b>1.</b> A 470 µF capacitor discharges through a 22 kΩ resistor. What is the time constant?</p>
+<ol class="opts"><li data-l="A">103 s</li><li data-l="B">48 s</li><li data-l="C">10.3 s</li><li data-l="D">0.103 s</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 10.3 s.</strong> τ = RC = 470×10⁻⁶ F × 22×10³ Ω = 10.3 s. Check the powers of ten: µ is 10⁻⁶ and k is 10³.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>2.</b> A capacitor discharges from 12 V with RC = 5.0 s. What is the p.d. after 8.0 s?</p>
+<ol class="opts"><li data-l="A">5.4 V</li><li data-l="B">7.5 V</li><li data-l="C">2.4 V</li><li data-l="D">9.6 V</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 2.4 V.</strong> V = 12e^(−8.0/5.0) = 12e^(−1.6) = 12 × 0.202 = 2.4 V. 9.6 V is the charging value 12(1 − e^(−1.6)).</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> A radioactive nuclide has decay constant λ = 0.020 s⁻¹. What is its half-life?</p>
+<ol class="opts"><li data-l="A">35 s</li><li data-l="B">50 s</li><li data-l="C">69 s</li><li data-l="D">0.014 s</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 35 s.</strong> T½ = ln 2/λ = 0.693/0.020 = 34.7 s ≈ 35 s. 50 s is just 1/λ, which is the mean life, not the half-life.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> Which statement about the time constant of a discharging capacitor is correct?</p>
+<ol class="opts"><li data-l="A">After RC the charge has fallen to 50% of its initial value</li><li data-l="B">After RC the charge is 63% of its initial value</li><li data-l="C">After RC the charge is about 37% of its initial value</li><li data-l="D">After RC the capacitor is fully discharged</li></ol>
+<details><summary>Show answer</summary><p><strong>C: After RC the charge is about 37% of its initial value.</strong> Q = Q₀e^(−1) = 0.37Q₀ after t = RC. 63% is the fraction gained in charging, 50% applies after 0.69RC, and it never reaches exactly zero.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>5.</b> What is ln 8 + ln 0.5 equal to?</p>
+<ol class="opts"><li data-l="A">ln 4</li><li data-l="B">ln 8.5</li><li data-l="C">ln 16</li><li data-l="D">ln 7.5</li></ol>
+<details><summary>Show answer</summary><p><strong>A: ln 4.</strong> ln a + ln b = ln(ab), so ln 8 + ln 0.5 = ln 4 (= 1.39). Adding the logs does not add the numbers.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>6.</b> A quantity obeys N = N₀e^(−0.40t) with t in s. How long until N = 0.25N₀?</p>
+<ol class="opts"><li data-l="A">0.35 s</li><li data-l="B">0.63 s</li><li data-l="C">1.7 s</li><li data-l="D">3.5 s</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 3.5 s.</strong> 0.25 = e^(−0.40t), so t = ln 4/0.40 = 1.386/0.40 = 3.5 s. Dividing 0.25 by 0.40 forgets to take the natural log.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>7.</b> A sample&#39;s activity falls from 800 Bq to 100 Bq in 36 minutes. What is the decay constant?</p>
+<ol class="opts"><li data-l="A">5.8×10⁻² s⁻¹</li><li data-l="B">3.2×10⁻⁴ s⁻¹</li><li data-l="C">1.9×10⁻³ s⁻¹</li><li data-l="D">9.6×10⁻⁴ s⁻¹</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 9.6×10⁻⁴ s⁻¹.</strong> 800 to 100 is three half-lives, so T½ = 12 min = 720 s and λ = 0.693/720 = 9.6×10⁻⁴ s⁻¹. 5.8×10⁻² is per minute.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>8.</b> A discharging capacitor has initial current 2.0 mA and RC = 0.50 s. What is the current after 1.0 s?</p>
+<ol class="opts"><li data-l="A">0.74 mA</li><li data-l="B">0.27 mA</li><li data-l="C">0.54 mA</li><li data-l="D">1.0 mA</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 0.27 mA.</strong> I = 2.0e^(−1.0/0.50) = 2.0e^(−2) = 0.27 mA. 0.74 mA would be the value after one time constant (0.50 s).</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>9.</b> A capacitor&#39;s p.d. falls from 6.0 V to 2.2 V in 10 s while discharging. What is RC?</p>
+<ol class="opts"><li data-l="A">27 s</li><li data-l="B">6.9 s</li><li data-l="C">3.8 s</li><li data-l="D">10 s</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 10 s.</strong> ln(6.0/2.2) = 1.00, so RC = t/ln(V₀/V) = 10/1.00 = 10 s. 6.9 s would be 0.693 × 10 s, which is not the time constant.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> Gamma rays pass through lead with I = I₀e^(−μx) and μ = 25 m⁻¹. What thickness halves the intensity?</p>
+<ol class="opts"><li data-l="A">2.0 cm</li><li data-l="B">4.0 cm</li><li data-l="C">1.7 m</li><li data-l="D">2.8 cm</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 2.8 cm.</strong> x½ = ln 2/μ = 0.693/25 = 0.0277 m ≈ 2.8 cm. 4.0 cm is 1/μ (the thickness giving 1/e), not the half-value thickness.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 57 questions on Exponential and logarithmic functions (e^x, ln, decay and discharge) (47 more than here), set out in practice levels. You also get notes and 3D models for all 5 subtopics of Maths skills for Year 13 physics, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/physics/A2/26.1/practice">Practise 26.1 in Full Marks</a><a class="btn ghost" href="/#study/physics/A2/26.1/topic">Open Maths skills for Year 13 physics</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/physics/aqa/#t-ps">Topic PS: Maths skills</a></span></li><li><b>OCR A</b><span><a href="/revision/a-level-year-13/physics/ocr/#t-ps">Topic PS: Maths skills</a></span></li><li><b>OCR B</b><span><a href="/revision/a-level-year-13/physics/ocr-b/#t-ps">Topic PS: Maths skills</a></span></li><li><b>Edexcel</b><span><a href="/revision/a-level-year-13/physics/edexcel/#t-ps">Topic PS: Maths skills</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/physics/cambridge/#t-p">Topic P: Planning, analysis and evaluation (Paper 5)</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/physics/electronics-digital-systems-and-communication/"><small>← Topic 25</small>Electronics: digital systems and communication</a><a class="next" href="/revision/a-level-year-13/physics/gases-and-kinetic-theory/"><small>Topic 27 →</small>Gases and kinetic theory</a></nav>
+<p><a href="/revision/a-level-year-13/physics/">All A-level Physics Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

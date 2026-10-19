@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pure: trigonometry: A-level Maths Year 13 revision notes</title>
+<meta name="description" content="Pure: trigonometry for A-level Maths Year 13: free revision notes and 10 practice questions with answers. Radians: 180° = π radians. Arc length s = rθ; area…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/maths/pure-trigonometry/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Pure: trigonometry: A-level Maths Year 13 revision notes">
+<meta property="og:description" content="Pure: trigonometry for A-level Maths Year 13: free revision notes and 10 practice questions with answers. Radians: 180° = π radians. Arc length s = rθ; area…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/maths/pure-trigonometry/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Maths","item":"https://fullmarkss.com/revision/a-level-year-13/maths/"},{"@type":"ListItem","position":5,"name":"Pure: trigonometry","item":"https://fullmarkss.com/revision/a-level-year-13/maths/pure-trigonometry/"}]},{"@type":"LearningResource","name":"Pure: trigonometry: A-level Maths Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/maths/pure-trigonometry/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Maths","Pure: trigonometry"],"isAccessibleForFree":true,"teaches":["Radians, trigonometry and parametric equations","Small-angle approximations for sin, cos and tan","Reciprocal trigonometric functions (sec, cosec, cot) and inverse trigonometric functions","Addition and double-angle formulae, and the R sin(x+α) form","Parametric equations: converting to Cartesian form and sketching curves"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#7C3AED">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/maths/">Maths</a></li><li aria-current="page">Pure: trigonometry</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Maths Year 13 · Topic 3</p>
+<h1>Pure: trigonometry</h1>
+<p>Trigonometry at A2 level adds new functions, identities and techniques for solving equations.</p><p>We will use radians, small angle approximations, and the reciprocal and inverse trigonometric functions.</p><p>Then we use the addition and double angle formulae, write expressions in the R sine form, and convert parametric equations.</p>
+<ul class="stats"><li>5 subtopics</li><li>201 questions</li><li>Free: 3.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-3-1" class="on"><span class="n">3.1</span><span class="t"><a href="#notes">Radians, trigonometry and parametric equations</a></span><span class="m"><span class="tag free">Free below</span> · 52 questions</span></li><li id="s-3-2"><span class="n">3.2</span><span class="t">Small-angle approximations for sin, cos and tan</span><span class="m"><a href="/#study/maths/A2/3.2">Open in Full Marks</a> · 35 questions</span></li><li id="s-3-3"><span class="n">3.3</span><span class="t">Reciprocal trigonometric functions (sec, cosec, cot) and inverse trigonometric functions</span><span class="m"><a href="/#study/maths/A2/3.3">Open in Full Marks</a> · 57 questions</span></li><li id="s-3-4"><span class="n">3.4</span><span class="t">Addition and double-angle formulae, and the R sin(x+α) form</span><span class="m"><a href="/#study/maths/A2/3.4">Open in Full Marks</a> · 31 questions</span></li><li id="s-3-5"><span class="n">3.5</span><span class="t">Parametric equations: converting to Cartesian form and sketching curves</span><span class="m"><a href="/#study/maths/A2/3.5">Open in Full Marks</a> · 26 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">3.1 · Free notes</p>
+<h2>Radians, trigonometry and parametric equations</h2>
+<figure><img src="radians-trigonometry-and-parametric-equations.svg" width="400" height="260" alt="Diagram: Radians, trigonometry and parametric equations" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li><strong>Radians</strong>: 180° = π radians. Arc length s = rθ; area of a sector = ½r²θ, with θ in radians.</li><li><strong>Identities</strong>: sin²θ + cos²θ = 1; 1 + tan²θ = sec²θ; 1 + cot²θ = cosec²θ.</li><li><strong>Double angle formulae</strong>: sin2θ = 2sinθcosθ; cos2θ = cos²θ − sin²θ; and the compound angle formulae for sin(A ± B) and cos(A ± B).</li><li>The form <strong>R sin(θ ± α)</strong> or R cos(θ ± α) is used to solve equations like a sinθ + b cosθ = c and to find maxima and minima.</li><li><strong>Parametric equations</strong> define x and y in terms of a parameter t; converting to Cartesian form means eliminating t.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked identity equation:</strong> sec²θ = 3 tan θ − 1 → tan²θ − 3 tan θ + 2 = 0 → tan θ = 1 or 2 → θ = 45°, 63.4°, 225°, 243.4°.</li><li><strong>Worked double angle:</strong> sin 2θ = sin θ → sin θ(2 cos θ − 1) = 0 → θ = 0°, 60°, 180°, 300°.</li><li><strong>Worked R form:</strong> 3 sin x + 4 cos x = 5 sin(x + 53.1°), so its maximum is 5, when x = 36.9°.</li><li><strong>Worked parametric:</strong> x = 2t, y = t² → y = x²/4; x = 3 cos t, y = 3 sin t → x² + y² = 9.</li><li><strong>Worked sector:</strong> an arc of 5 cm with r = 4 cm → θ = 1.25 rad and area = ½ × 16 × 1.25 = 10 cm².</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Radians, trigonometry and parametric equations: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> How many radians are in 180°?</p>
+<ol class="opts"><li data-l="A">π/2</li><li data-l="B">π</li><li data-l="C">2π</li><li data-l="D">360</li></ol>
+<details><summary>Show answer</summary><p><strong>B: π.</strong> π radians equals 180°.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>2.</b> What is the arc length of a sector with radius 6 cm and angle 0.5 radians?</p>
+<ol class="opts"><li data-l="A">3 cm</li><li data-l="B">6 cm</li><li data-l="C">12 cm</li><li data-l="D">9 cm</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 3 cm.</strong> s = rθ = 6 × 0.5 = 3 cm.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>3.</b> Which identity is correct?</p>
+<ol class="opts"><li data-l="A">1 + tan²θ = sec²θ</li><li data-l="B">1 + sin²θ = cos²θ</li><li data-l="C">tan²θ = 1 − sec²θ</li><li data-l="D">sec²θ = 1 − tan²θ</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 1 + tan²θ = sec²θ.</strong> This follows from dividing sin²θ + cos²θ = 1 by cos²θ.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>4.</b> What is sin 2θ equal to?</p>
+<ol class="opts"><li data-l="A">2 sinθ</li><li data-l="B">sinθ cosθ</li><li data-l="C">2 sinθ cosθ</li><li data-l="D">sin²θ − cos²θ</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 2 sinθ cosθ.</strong> This is the double angle formula for sine.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>5.</b> What are parametric equations?</p>
+<ol class="opts"><li data-l="A">Equations relating x and y directly</li><li data-l="B">Equations giving x and y each in terms of a parameter</li><li data-l="C">Equations with no variables</li><li data-l="D">Only used for circles</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Equations giving x and y each in terms of a parameter.</strong> Eliminating the parameter gives the Cartesian equation.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>6.</b> Convert 90° to radians</p>
+<ol class="opts"><li data-l="A">π/4</li><li data-l="B">π/3</li><li data-l="C">π/2</li><li data-l="D">π</li></ol>
+<details><summary>Show answer</summary><p><strong>C: π/2.</strong> 180° = π radians, so 90° = π/2.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>7.</b> What is the area of a sector with radius 4 cm and angle 1.5 radians?</p>
+<ol class="opts"><li data-l="A">6 cm²</li><li data-l="B">12 cm²</li><li data-l="C">24 cm²</li><li data-l="D">3 cm²</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 12 cm².</strong> ½r²θ = ½ × 16 × 1.5 = 12 cm².</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>8.</b> What is cos 2θ in terms of sin θ?</p>
+<ol class="opts"><li data-l="A">1 − 2sin²θ</li><li data-l="B">2sin²θ − 1</li><li data-l="C">2sinθcosθ</li><li data-l="D">1 + 2sin²θ</li></ol>
+<details><summary>Show answer</summary><p><strong>A: 1 − 2sin²θ.</strong> cos2θ = 1 − 2sin²θ is one standard form.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>9.</b> Convert 225° to radians.</p>
+<ol class="opts"><li data-l="A">3π/4</li><li data-l="B">5π/4</li><li data-l="C">7π/4</li><li data-l="D">5π/6</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 5π/4.</strong> 225 × π/180 = 5π/4. The value 3π/4 is 135°, and 7π/4 is 315°.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> Convert 2π/3 radians to degrees.</p>
+<ol class="opts"><li data-l="A">240°</li><li data-l="B">150°</li><li data-l="C">60°</li><li data-l="D">120°</li></ol>
+<details><summary>Show answer</summary><p><strong>D: 120°.</strong> 2π/3 × 180/π = 120°. Multiply radians by 180/π to get degrees. The value 60° would be π/3.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 52 questions on Radians, trigonometry and parametric equations (42 more than here), set out in practice levels. You also get notes and 3D models for all 5 subtopics of Pure: trigonometry, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/maths/A2/3.1/practice">Practise 3.1 in Full Marks</a><a class="btn ghost" href="/#study/maths/A2/3.1/topic">Open Pure: trigonometry</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/maths/aqa/#t-3">Topic 3: Parametric equations</a>, <a href="/revision/a-level-year-13/maths/aqa/#t-5">Topic 5: Radians and further trigonometry</a></span></li><li><b>OCR A</b><span><a href="/revision/a-level-year-13/maths/ocr/#t-3">Topic 3: Parametric equations</a>, <a href="/revision/a-level-year-13/maths/ocr/#t-5">Topic 5: Radians and further trigonometry</a></span></li><li><b>OCR B</b><span><a href="/revision/a-level-year-13/maths/ocr-b/#t-3">Topic 3: Parametric equations</a>, <a href="/revision/a-level-year-13/maths/ocr-b/#t-5">Topic 5: Radians and further trigonometry</a></span></li><li><b>Edexcel</b><span><a href="/revision/a-level-year-13/maths/edexcel/#t-3">Topic 3: Parametric equations</a>, <a href="/revision/a-level-year-13/maths/edexcel/#t-5">Topic 5: Radians and further trigonometry</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/maths/cambridge/#t-3-3">Topic 3.3: Trigonometry</a>, <a href="/revision/a-level-year-13/maths/cambridge/#t-3-4">Topic 3.4: Differentiation</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/maths/pure-sequences-series-and-binomial-expansion/"><small>← Topic 2</small>Pure: sequences, series and binomial expansion</a><a class="next" href="/revision/a-level-year-13/maths/pure-differentiation/"><small>Topic 4 →</small>Pure: differentiation</a></nav>
+<p><a href="/revision/a-level-year-13/maths/">All A-level Maths Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

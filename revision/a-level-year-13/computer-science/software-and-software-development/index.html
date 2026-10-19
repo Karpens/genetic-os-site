@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software and software development | A-level Computer Science Year 13</title>
+<meta name="description" content="Software and software development for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. The OS memory management…">
+<link rel="canonical" href="https://fullmarkss.com/revision/a-level-year-13/computer-science/software-and-software-development/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Full Marks">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Software and software development | A-level Computer Science Year 13">
+<meta property="og:description" content="Software and software development for A-level Computer Science Year 13: free revision notes and 10 practice questions with answers. The OS memory management…">
+<meta property="og:url" content="https://fullmarkss.com/revision/a-level-year-13/computer-science/software-and-software-development/">
+<meta property="og:image" content="https://fullmarkss.com/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Full Marks: GCSE and A-level revision">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#4361EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F8FC;--bg2:#EEF1F8;--paper:#fff;--ink:#1B2236;--muted:#5D667A;--line:#E3E7F0;--stain:#4361EE;--stain-soft:#EDF1FF;--ok:#15803D;--ok-soft:#E7F7ED;--bad:#DC2626;--bad-soft:#FFECEC;--stage:linear-gradient(135deg,#4361EE 0%,#7C3AED 100%);--shadow:0 1px 2px rgba(27,34,54,.04),0 8px 24px -14px rgba(27,34,54,.14);--r:16px;--sc:#4361EE;--sct:var(--sc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--bg:#141A2C;--bg2:#1B2337;--paper:#1C2439;--ink:#E9EDF6;--muted:#A3ACC0;--line:#2B3550;--stain:#7B93FF;--stain-soft:#232F5C;--ok:#4ADE80;--ok-soft:#14321F;--bad:#F87171;--bad-soft:#3A1C1C;--stage:linear-gradient(135deg,#3D55D6 0%,#6D3FD6 100%);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 40px -18px rgba(0,0,0,.6)}
+@supports (color:color-mix(in srgb,red,blue)){:root{--sct:color-mix(in srgb,var(--sc) 72%,var(--ink))}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--stain);text-underline-offset:2px}
+h1,h2,h3{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;line-height:1.2;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,46px);margin:0 0 14px}
+h2{font-size:clamp(21px,3.6vw,26px);margin:0 0 14px}
+h3{font-size:18px;margin:0 0 8px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:9px;font:800 18px "Plus Jakarta Sans",Inter,sans-serif;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.top nav{display:flex;align-items:center;gap:16px;font-weight:600;font-size:15px}
+.top nav a:not(.btn){color:var(--muted);text-decoration:none}
+.top nav a:not(.btn):hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 20px;border-radius:999px;background:var(--stain);color:#fff;font-weight:700;text-decoration:none;line-height:1.25;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--stain);box-shadow:inset 0 0 0 1.5px currentColor}
+.crumbs ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 8px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.crumbs li+li::before{content:"›";margin-right:8px}
+.crumbs a{color:var(--muted)}
+.hero{padding:20px 0 4px}
+.eyebrow{font-weight:700;font-size:13px;color:var(--sct);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+.lead{font-size:18px;color:var(--muted);margin:0 0 12px}
+.hero p{max-width:68ch}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.stats li{background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0}
+main section{margin:44px 0 0}
+.muted{color:var(--muted)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(18px,4vw,28px);box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+a.tile{display:flex;flex-direction:column;gap:4px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--sc);border-radius:14px;padding:16px 18px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .15s ease}
+a.tile:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(27,34,54,.35)}
+.tile small{color:var(--sct);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tile b{font:700 18px/1.3 "Plus Jakarta Sans",Inter,sans-serif}
+.tile span{color:var(--muted);font-size:15px}
+.tile em{font-style:normal;color:var(--muted);font-size:14px;font-weight:600;margin-top:auto;padding-top:6px}
+.subs{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.subs li{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.subs .n{font-weight:700;color:var(--sct);min-width:2.6em}
+.subs .t{flex:1 1 14em;font-weight:600}
+.subs .t a{color:inherit;text-decoration-color:var(--line);text-decoration-thickness:2px}
+.subs .t a:hover{color:var(--stain);text-decoration-color:currentColor}
+.subs .m{color:var(--muted);font-size:14px}
+.subs li.on{border-color:var(--ok)}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 9px;border-radius:999px;vertical-align:middle}
+.tag.free{background:var(--ok-soft);color:var(--ok)}
+.tag.app{background:var(--stain-soft);color:var(--stain)}
+.notes h2{margin-bottom:6px}
+.notes h3{margin-top:26px}
+.notes ul{padding-left:22px;margin:8px 0 0}
+.notes li{margin:8px 0}
+figure{margin:20px 0 6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
+figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.q{border-top:1px solid var(--line);padding:18px 0 4px}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .qt{font-weight:600;margin:0}
+.q .qt b{color:var(--sct);margin-right:4px}
+.opts{list-style:none;padding:0;margin:12px 0;display:grid;gap:8px}
+.opts li{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+.opts li::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.js .q:not(.done) .opts li{cursor:pointer}
+.js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
+.opts li.right{border-color:var(--ok);background:var(--ok-soft)}
+.opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+details{margin:0 0 10px}
+summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
+details p{margin:8px 0 0}
+.tally{font-weight:700;color:var(--sct);min-height:1.6em;margin:0}
+.cta{background:var(--stage);color:#fff;border-radius:20px;padding:clamp(20px,5vw,32px);box-shadow:var(--shadow)}
+.cta h2{color:#fff;margin-bottom:8px}
+.cta p{color:rgba(255,255,255,.9);margin:0;max-width:62ch}
+.cta .btn{background:#fff;color:#2F3FB8}
+.cta .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.boards{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.boards li{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pager a{display:block;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);font-weight:600}
+.pager a small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.pager .next{text-align:right;grid-column:2}
+.foot{border-top:1px solid var(--line);margin-top:64px;padding:26px 0 44px;color:var(--muted);font-size:14px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.foot a{color:var(--muted)}
+[id]{scroll-margin-top:76px}
+@media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Full Marks","item":"https://fullmarkss.com/"},{"@type":"ListItem","position":2,"name":"Revision","item":"https://fullmarkss.com/revision/"},{"@type":"ListItem","position":3,"name":"A-level Year 13","item":"https://fullmarkss.com/revision/a-level-year-13/"},{"@type":"ListItem","position":4,"name":"Computer Science","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/"},{"@type":"ListItem","position":5,"name":"Software and software development","item":"https://fullmarkss.com/revision/a-level-year-13/computer-science/software-and-software-development/"}]},{"@type":"LearningResource","name":"Software and software development: A-level Computer Science Year 13 revision notes","url":"https://fullmarkss.com/revision/a-level-year-13/computer-science/software-and-software-development/","inLanguage":"en-GB","learningResourceType":["Revision notes","Practice questions"],"educationalLevel":"A-level Year 13","about":["Computer Science","Software and software development"],"isAccessibleForFree":true,"teaches":["Operating systems: memory management, paging, segmentation and virtual memory","Interrupts and scheduling algorithms","Types of operating system, BIOS, device drivers and virtual machines","Applications, utility software, open source and closed source licensing","Translators: compilers, interpreters and assemblers","Stages of compilation, linkers, loaders and libraries","Software development methodologies: waterfall, agile, extreme programming, spiral and RAD"],"publisher":{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/"}}]}</script>
+</head>
+<body style="--sc:#0891B2">
+<header class="top"><div class="wrap"><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#4361EE"/><path d="M9 16.5l4.5 4.5L23 11.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full Marks</span></a><nav aria-label="Main"><a class="hide-s" href="/revision/">Revision notes</a><a class="hide-s" href="/#pricing">Pricing</a><a class="btn sm" href="/#study">Open Full Marks</a></nav></div></header>
+<main class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Full Marks</a></li><li><a href="/revision/">Revision</a></li><li><a href="/revision/a-level-year-13/">A-level Year 13</a></li><li><a href="/revision/a-level-year-13/computer-science/">Computer Science</a></li><li aria-current="page">Software and software development</li></ol></nav>
+<header class="hero">
+<p class="eyebrow">A-level Computer Science Year 13 · Topic 10</p>
+<h1>Software and software development</h1>
+<p>Software and software development covers the software that controls computers, and how large programs are built.</p><p>We will study operating systems, memory management, interrupts and scheduling.</p><p>Then we look at types of operating system, licensing, translators and compilation, and development methodologies.</p>
+<ul class="stats"><li>7 subtopics</li><li>224 questions</li><li>Free: 10.1 notes and 10 questions</li></ul>
+</header>
+<section>
+<h2>In this topic</h2>
+<ol class="subs"><li id="s-10-1" class="on"><span class="n">10.1</span><span class="t"><a href="#notes">Operating systems: memory management, paging, segmentation and virtual memory</a></span><span class="m"><span class="tag free">Free below</span> · 48 questions</span></li><li id="s-10-2"><span class="n">10.2</span><span class="t">Interrupts and scheduling algorithms</span><span class="m"><a href="/#study/computing/A2/10.2">Open in Full Marks</a> · 30 questions</span></li><li id="s-10-3"><span class="n">10.3</span><span class="t">Types of operating system, BIOS, device drivers and virtual machines</span><span class="m"><a href="/#study/computing/A2/10.3">Open in Full Marks</a> · 32 questions</span></li><li id="s-10-4"><span class="n">10.4</span><span class="t">Applications, utility software, open source and closed source licensing</span><span class="m"><a href="/#study/computing/A2/10.4">Open in Full Marks</a> · 32 questions</span></li><li id="s-10-5"><span class="n">10.5</span><span class="t">Translators: compilers, interpreters and assemblers</span><span class="m"><a href="/#study/computing/A2/10.5">Open in Full Marks</a> · 26 questions</span></li><li id="s-10-6"><span class="n">10.6</span><span class="t">Stages of compilation, linkers, loaders and libraries</span><span class="m"><a href="/#study/computing/A2/10.6">Open in Full Marks</a> · 33 questions</span></li><li id="s-10-7"><span class="n">10.7</span><span class="t">Software development methodologies: waterfall, agile, extreme programming, spiral and RAD</span><span class="m"><a href="/#study/computing/A2/10.7">Open in Full Marks</a> · 23 questions</span></li></ol>
+</section>
+
+<section id="notes" class="card notes">
+<p class="eyebrow">10.1 · Free notes</p>
+<h2>Operating systems: memory management, paging, segmentation and virtual memory</h2>
+<figure><img src="operating-systems-memory-management-paging-segmentation-and-virtual-memory.svg" width="400" height="260" alt="Diagram: Operating systems: memory management, paging, segmentation and virtual memory" loading="lazy" decoding="async"></figure>
+<h3>Key points</h3>
+<ul><li>The OS <strong>memory management</strong> function allocates RAM to processes, keeps each process&#39;s memory <strong>protected</strong> from the others, and lets several programs be loaded at once (<strong>multitasking</strong>).</li><li><strong>Paging</strong> divides physical memory into fixed-size <strong>frames</strong> and logical memory into <strong>pages</strong> of the same size. A <strong>page table</strong> maps each page number to a frame number.</li><li>A logical address is <strong>page number + offset</strong>. The physical address is <strong>frame number × frame size + offset</strong>, because the offset is unchanged. Pages do not need to sit contiguously in RAM.</li><li>Paging removes <strong>external fragmentation</strong>, but the last page of a process is rarely full, which leaves <strong>internal fragmentation</strong> (wasted space inside a page).</li><li><strong>Segmentation</strong> divides a program into <strong>variable-sized logical units</strong> such as code, data, stack and procedures. Each segment has an entry in a <strong>segment table</strong> holding its <strong>base</strong> address and <strong>limit</strong> (length).</li><li>Pages are fixed-size and invisible to the programmer. Segments are variable-size and match the program&#39;s logical structure, so segmentation can suffer <strong>external fragmentation</strong>.</li><li><strong>Virtual memory</strong> uses a <strong>swap file/partition</strong> on secondary storage as an extension of RAM. Programs larger than RAM can run, and only the pages currently needed are loaded (<strong>demand paging</strong>).</li><li>A <strong>page fault</strong> occurs when a referenced page is not in RAM. The OS loads it from disk. If RAM is full, a <strong>page replacement algorithm</strong> (e.g. FIFO, <strong>least recently used</strong>) chooses a page to swap out.</li><li><strong>Disk thrashing</strong> happens when RAM is too small for the active pages, so the system spends more time swapping pages than executing instructions. Fixes are adding RAM or running fewer processes.</li><li>Virtual memory is much <strong>slower</strong> than RAM because secondary storage has far higher access times. SSDs reduce this penalty but do not remove it.</li><li>Memory protection: a request beyond a segment&#39;s <strong>limit</strong>, or to a page not belonging to the process, is refused (a <strong>segmentation fault</strong>/protection error). Number of pages = program size ÷ page size, rounded up.</li></ul>
+<h3>In more detail</h3>
+<ul><li><strong>Worked paging address:</strong> with 4 KB pages, logical address 9000 is page 2 (9000 DIV 4096) offset 808; if page 2 is in frame 5, the physical address is 5 × 4096 + 808 = 21 288.</li><li><strong>Worked segmentation:</strong> code, data and stack segments each have a base and a limit; accessing beyond the limit causes a segmentation fault.</li><li><strong>Worked LRU:</strong> with 3 frames and references 1, 2, 3, 1, 4, page 4 replaces page 2, the least recently used.</li><li><strong>Worked thrashing fix:</strong> add more RAM, or run fewer programs at once.</li></ul>
+</section>
+
+<section id="questions" class="card">
+<p class="eyebrow">Practice</p>
+<h2>Operating systems: memory management, paging, segmentation and virtual memory: 10 questions</h2>
+<p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
+<p class="tally" aria-live="polite"></p>
+<div class="q" data-a="1">
+<p class="qt"><b>1.</b> In paging, what name is given to the fixed-size blocks into which physical memory is divided?</p>
+<ol class="opts"><li data-l="A">Segments</li><li data-l="B">Frames</li><li data-l="C">Pages</li><li data-l="D">Sectors</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Frames.</strong> Physical memory is divided into frames; logical memory is divided into pages of the same size. Segments are variable-sized logical units.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>2.</b> A system uses 4096-byte pages. A process uses logical address 10 000. Which page number and offset does this give?</p>
+<ol class="opts"><li data-l="A">Page 2, offset 1808</li><li data-l="B">Page 3, offset 1808</li><li data-l="C">Page 1, offset 5904</li><li data-l="D">Page 2, offset 1904</li></ol>
+<details><summary>Show answer</summary><p><strong>A: Page 2, offset 1808.</strong> 10 000 ÷ 4096 = 2 remainder 1808 (2 × 4096 = 8192; 10 000 − 8192 = 1808). Offset 5904 would exceed the page size.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>3.</b> An 18 KiB program is loaded using 4 KiB pages. How many pages are needed and how much internal fragmentation results?</p>
+<ol class="opts"><li data-l="A">4 pages, 2 KiB</li><li data-l="B">5 pages, 4 KiB</li><li data-l="C">5 pages, 2 KiB</li><li data-l="D">5 pages, 0 KiB</li></ol>
+<details><summary>Show answer</summary><p><strong>C: 5 pages, 2 KiB.</strong> 18 ÷ 4 = 4.5, rounded up to 5 pages (20 KiB). The unused part of the last page is 20 − 18 = 2 KiB of internal fragmentation.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>4.</b> Which statement about segmentation is correct?</p>
+<ol class="opts"><li data-l="A">Segmentation removes any need for address translation</li><li data-l="B">Segments are variable-sized logical units such as code, data or stack</li><li data-l="C">Segments cannot be placed in virtual memory</li><li data-l="D">Segments are all the same fixed size</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Segments are variable-sized logical units such as code, data or stack.</strong> Segments reflect the logical structure of a program and vary in size. Each has a base and limit in a segment table, so translation is still needed.</p></details>
+</div>
+<div class="q" data-a="0">
+<p class="qt"><b>5.</b> What is a page fault?</p>
+<ol class="opts"><li data-l="A">The page being accessed is not in RAM and must be loaded from disk</li><li data-l="B">A page table with every entry marked valid</li><li data-l="C">A program writing outside its segment limit</li><li data-l="D">A faulty RAM chip causing corrupted data</li></ol>
+<details><summary>Show answer</summary><p><strong>A: The page being accessed is not in RAM and must be loaded from disk.</strong> A page fault occurs when a referenced page is not in a frame. The OS fetches it from secondary storage, possibly replacing another page.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>6.</b> Page 5 maps to frame 12 and pages are 1024 bytes. What is the physical address of offset 100 in page 5?</p>
+<ol class="opts"><li data-l="A">1324</li><li data-l="B">12 388</li><li data-l="C">12 288</li><li data-l="D">5220</li></ol>
+<details><summary>Show answer</summary><p><strong>B: 12 388.</strong> Physical address = 12 × 1024 + 100 = 12 288 + 100 = 12 388. 5220 wrongly uses the page number instead of the frame number.</p></details>
+</div>
+<div class="q" data-a="2">
+<p class="qt"><b>7.</b> Which type of fragmentation is eliminated by paging?</p>
+<ol class="opts"><li data-l="A">Neither internal nor external</li><li data-l="B">Internal fragmentation</li><li data-l="C">External fragmentation</li><li data-l="D">Both internal and external</li></ol>
+<details><summary>Show answer</summary><p><strong>C: External fragmentation.</strong> Fixed-size frames mean any free frame can be used, so no external fragmentation. Internal fragmentation remains in a process&#39;s last page.</p></details>
+</div>
+<div class="q" data-a="1">
+<p class="qt"><b>8.</b> What is the main benefit of virtual memory?</p>
+<ol class="opts"><li data-l="A">It makes disk access faster than RAM access</li><li data-l="B">Programs larger than the physical RAM can still be run</li><li data-l="C">It removes the need for page tables</li><li data-l="D">It permanently increases the amount of installed RAM</li></ol>
+<details><summary>Show answer</summary><p><strong>B: Programs larger than the physical RAM can still be run.</strong> Virtual memory uses secondary storage as an extension of RAM, so only the needed pages are in RAM and large programs can run. It does not add physical RAM.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>9.</b> Why does heavy use of virtual memory slow a computer down?</p>
+<ol class="opts"><li data-l="A">Virtual memory disables the processor cache</li><li data-l="B">Page tables can only be stored on disk</li><li data-l="C">The CPU clock speed is reduced when swap is used</li><li data-l="D">Secondary storage has much higher access times than RAM</li></ol>
+<details><summary>Show answer</summary><p><strong>D: Secondary storage has much higher access times than RAM.</strong> Swapping pages to and from secondary storage is orders of magnitude slower than accessing RAM, so frequent page faults cause delays.</p></details>
+</div>
+<div class="q" data-a="3">
+<p class="qt"><b>10.</b> A segment has base 5000 and limit 800. A process requests offset 900 in that segment. What happens?</p>
+<ol class="opts"><li data-l="A">The segment is moved to a larger free area</li><li data-l="B">Physical address 4100 is accessed</li><li data-l="C">Physical address 5900 is accessed</li><li data-l="D">The access is refused because 900 exceeds the limit of 800</li></ol>
+<details><summary>Show answer</summary><p><strong>D: The access is refused because 900 exceeds the limit of 800.</strong> The offset must be less than the limit. 900 &gt; 800, so the OS raises a segmentation fault instead of reading 5900, protecting other memory.</p></details>
+</div>
+</section>
+<section class="cta">
+<h2>Keep going in Full Marks</h2>
+<p>Full Marks has 48 questions on Operating systems: memory management, paging, segmentation and virtual memory (38 more than here), set out in practice levels. You also get notes and 3D models for all 7 subtopics of Software and software development, plus games, timed exams and past papers.</p>
+<div class="actions"><a class="btn" href="/#study/computing/A2/10.1/practice">Practise 10.1 in Full Marks</a><a class="btn ghost" href="/#study/computing/A2/10.1/topic">Open Software and software development</a></div>
+</section>
+<section>
+<h2>On your exam board</h2>
+<ul class="boards"><li><b>AQA</b><span><a href="/revision/a-level-year-13/computer-science/aqa/#t-5">Topic 5: Fundamentals of computer systems</a>, <a href="/revision/a-level-year-13/computer-science/aqa/#t-6">Topic 6: Fundamentals of computer organisation and architecture</a></span></li><li><b>OCR</b><span><a href="/revision/a-level-year-13/computer-science/ocr/#t-1-2">Topic 1.2: Software and software development</a></span></li><li><b>Cambridge</b><span><a href="/revision/a-level-year-13/computer-science/cambridge/#t-15">Topic 15: Hardware and virtual machines</a>, <a href="/revision/a-level-year-13/computer-science/cambridge/#t-16">Topic 16: System software</a></span></li></ul>
+
+</section>
+<section>
+<nav class="pager" aria-label="Topics"><a href="/revision/a-level-year-13/computer-science/programming-techniques-and-paradigms/"><small>← Topic 9</small>Programming techniques and paradigms</a><a class="next" href="/revision/a-level-year-13/computer-science/processors-input-output-and-storage-devices/"><small>Topic 11 →</small>Processors, input, output and storage devices</a></nav>
+<p><a href="/revision/a-level-year-13/computer-science/">All A-level Computer Science Year 13 topics</a></p>
+</section>
+</main>
+<footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
+<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+</body>
+</html>

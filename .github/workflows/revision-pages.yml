@@ -1,0 +1,41 @@
+# Keeps the static revision pages (/revision/, sitemap.xml, robots.txt) in step with the content in index.html,
+# so every topic added or changed in the app gets its page for search engines.
+name: Revision pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['index.html', 'tools/seo/**']
+  workflow_dispatch:
+
+concurrency:
+  group: revision-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the pages
+        run: node tools/seo/build.mjs
+      - name: Commit and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add -A revision sitemap.xml robots.txt
+          if git diff --cached --quiet; then echo "The pages are already up to date"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Revision pages: update from index.html"
+          git push || { git pull -q --rebase origin main && git push; }
+          # a push made with the workflow token doesn't start a Pages build by itself
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" > /dev/null || echo "::warning::Could not request a Pages build; the pages go live with the next push"
