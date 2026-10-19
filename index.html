@@ -1439,7 +1439,7 @@ html.i18n .board-ui{display:none!important}
 .lvl-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.lvl-head h3{margin:0 0 4px}.lvl-sum{text-align:center;padding:10px 16px;border-radius:14px;background:var(--paper);box-shadow:0 0 0 1px var(--line);flex:none}.lvl-sum b{display:block;font:800 24px/1 "Plus Jakarta Sans",sans-serif}.lvl-sum small{color:var(--muted);font-weight:700}
 .lvl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:16px 0 4px}
 .lvl-card{display:flex;align-items:center;gap:12px;text-align:left;padding:14px;border-radius:16px;border:0;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);cursor:pointer;font:inherit;color:inherit;transition:transform .2s,box-shadow .2s;animation:popIn .4s calc(var(--i)*40ms) both}
-.lvl-card:hover{transform:translateY(-2px)}.lvl-card.next{box-shadow:var(--shadow),0 0 0 2px var(--brand,#4361EE)}.lvl-card.cleared .lvl-n{background:var(--ok,#2F9E44);color:#fff}
+.lvl-card:hover{transform:translateY(-2px)}.lvl-card.locked{opacity:.62}.lvl-card.locked .lvl-n{font-size:15px;background:var(--line,#E2E8F0)}#lvlLock:not(:empty){margin-top:14px}.lvl-card.next{box-shadow:var(--shadow),0 0 0 2px var(--brand,#4361EE)}.lvl-card.cleared .lvl-n{background:var(--ok,#2F9E44);color:#fff}
 .lvl-n{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font:800 17px "Plus Jakarta Sans",sans-serif;background:var(--stain-soft,#EDF2FF);color:var(--stain,#4361EE);flex:none}.lvl-t{flex:1;min-width:0}.lvl-t b{display:block;font-size:15px}.lvl-t small{color:var(--muted);font-weight:600}.lvl-s{font-size:14px;white-space:nowrap}
 .hw-item{border-radius:14px;padding:14px 16px;margin:10px 0;background:var(--bg,#F8F9FC);box-shadow:0 0 0 1px var(--line)}
 .hw-item.done{opacity:.72}.hw-top{display:flex;gap:12px;align-items:flex-start}.hw-top>div:nth-child(2){flex:1;min-width:0}.hw-top b{display:block}.hw-top small{color:var(--muted);font-weight:600}
@@ -2645,12 +2645,14 @@ function topicLinks(t){const out={from:[],to:[]},s=SUBJECTS[subject],b=boardOf(s
 function tlinksHtml(t){const k=topicLinks(t);if(!k.from.length&&!k.to.length)return '';return `<div class="tlinks">${k.from.map(x=>`<button class="tlink" data-l="${x.l}" data-n="${esc(x.n)}"><i>⤴</i><span><small>Builds on ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}${k.to.map(x=>`<button class="tlink next" data-l="${x.l}" data-n="${esc(x.n)}"><i>→</i><span><small>Next at ${x.l}</small>Topic ${esc(x.n)} · ${esc(x.title)}</span></button>`).join('')}</div>`}
 function wireTlinks(root){root.querySelectorAll('.tlink').forEach(a=>a.onclick=()=>{level=a.dataset.l;save();const T=levelData().topics,i=T.findIndex(x=>x.n===a.dataset.n);view={topic:i<0?null:i,sub:null,tab:'notes',check:false};renderStudy();scrollTo(0,0)})}
 const nq=x=>x.nq??(x.q.length+(x.q._gx?0:(x.ng||0))),nn=x=>x.nn??x.notes.length;
-// Practice in levels: a subtopic's questions, easiest first, split into levels of at most 20.
-const PL={max:20,names:['Warm-up','Getting there','Solid','Stretch','Challenge','Expert','Master','Legend','Champion','Full Marks'],
-  count:x=>Math.max(1,Math.ceil(nq(x)/20)),
+// Practice in levels: a subtopic's questions, easiest first, split into at least 4 levels of at most 20.
+// Without full access only the free sample can be played: it is Level 1, and the other levels show locked.
+const PL={max:20,min:4,names:['Warm-up','Getting there','Solid','Stretch','Challenge','Expert','Master','Legend','Champion','Full Marks'],
+  count:x=>Math.max(PL.min,Math.ceil(nq(x)/PL.max)),
   diff(q){const t=String(q[0]||''),o=(q[1]||[]).join(' ');let d=t.length*.5+o.length*.2;if(/\d/.test(t+o)&&/calculat|work out|how many|how much|what is the (value|mass|volume|speed|energy|number)|find/i.test(t))d+=55;if(/\bNOT\b|EXCEPT|incorrect|false\b/.test(t))d+=40;if(/explain|evaluate|suggest|why|compare/i.test(t))d+=30;let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))%997;return d+h%9},
-  levels(x){const qs=x.q||[],n=qs.length;if(x._lv&&x._lv.n===n)return x._lv.l;const k=Math.max(1,Math.ceil(n/this.max)),sz=Math.ceil(n/k),ord=qs.map((q,i)=>[this.diff(q),i]).sort((a,b)=>a[0]-b[0]).map(p=>qs[p[1]]);
-    const l=[];for(let i=0;i<k;i++){const part=ord.slice(i*sz,(i+1)*sz);if(part.length)l.push(part)}x._lv={n,l};return l},
+  levels(x){const qs=x.q||[],n=qs.length;if(x._lv&&x._lv.n===n&&x._lv.p===premium)return x._lv.l;
+    const ord=qs.map((q,i)=>[this.diff(q),i]).sort((a,b)=>a[0]-b[0]).map(p=>qs[p[1]]),k=premium?Math.min(n,Math.max(this.min,Math.ceil(n/this.max))):Math.min(n,1);
+    const l=[];for(let i=0;i<k;i++)l.push(ord.slice(Math.floor(i*n/k),Math.floor((i+1)*n/k)));x._lv={n,p:premium,l};return l},
   key:(x,i)=>`${pkey(x.key||x.n)}:L${i+1}`,
   name(i){return this.names[i]||`Level ${i+1}`},
   stars:p=>p==null?'':p>=90?'⭐⭐⭐':p>=70?'⭐⭐':p>=50?'⭐':'',
@@ -2781,11 +2783,12 @@ function renderStudy(){Extra.ensure(subject,level);L3.ensure();
     $('#goPractice').onclick=()=>{view.tab='practice';renderStudy();scrollTo(0,0)};$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3){Lab.mount($('#heroHost'),m3,x,{hero:1});$('#heroHost').addEventListener('pointerdown',()=>Track.used3d(),{once:true})}
   }else if(view.tab==='explore'){Lab.render(body,x,t);body.addEventListener('pointerdown',()=>Track.used3d(),{once:true})
   }else{
-    const L=PL.levels(x),nx=PL.next(x),done=L.filter((_,k)=>(P[PL.key(x,k)]??-1)>=70).length;
-    body.innerHTML=`<div class="lvl-head"><div><h3>${esc(T('Practice in {0} levels',L.length))}</h3><p class="muted">${esc(T('Up to {0} questions per level, from easier to harder. Each answer comes with an explanation. Score 70% or more to clear a level.',PL.max))}</p></div><div class="lvl-sum"><b>${done}/${L.length}</b><small>${esc(T('cleared'))}</small></div></div>
-      <div class="lvl-grid">${L.map((qs,k)=>{const b=P[PL.key(x,k)],cl=b!=null&&b>=70;return `<button class="lvl-card${cl?' cleared':''}${k===nx?' next':''}" data-lvl="${k}" style="--i:${k}"><span class="lvl-n">${k+1}</span><span class="lvl-t"><b>${esc(T('Level {0}',k+1))} · ${esc(T(PL.name(k)))}</b><small>${esc(T('{0} questions',qs.length))}${b!=null?' · '+esc(T('best {0}%',b)):''}</small></span><span class="lvl-s">${cl?PL.stars(b):k===nx?'▶':''}</span></button>`}).join('')}</div>
+    const L=PL.levels(x),K=premium?L.length:Math.max(L.length,PL.count(x)),nx=PL.next(x),done=L.filter((_,k)=>(P[PL.key(x,k)]??-1)>=70).length;
+    body.innerHTML=`<div class="lvl-head"><div><h3>${esc(T('Practice in {0} levels',K))}</h3><p class="muted">${esc(T('Up to {0} questions per level, from easier to harder. Each answer comes with an explanation. Score 70% or more to clear a level.',PL.max))}</p></div><div class="lvl-sum"><b>${done}/${K}</b><small>${esc(T('cleared'))}</small></div></div>
+      <div class="lvl-grid">${L.map((qs,k)=>{const b=P[PL.key(x,k)],cl=b!=null&&b>=70;return `<button class="lvl-card${cl?' cleared':''}${k===nx?' next':''}" data-lvl="${k}" style="--i:${k}"><span class="lvl-n">${k+1}</span><span class="lvl-t"><b>${esc(T('Level {0}',k+1))} · ${esc(T(PL.name(k)))}</b><small>${esc(T('{0} questions',qs.length))}${b!=null?' · '+esc(T('best {0}%',b)):''}</small></span><span class="lvl-s">${cl?PL.stars(b):k===nx?'▶':''}</span></button>`}).join('')}${Array.from({length:K-L.length},(_,j)=>{const k=L.length+j;return `<button class="lvl-card locked" data-lock style="--i:${k}"><span class="lvl-n">🔒</span><span class="lvl-t"><b>${esc(T('Level {0}',k+1))} · ${esc(T(PL.name(k)))}</b><small>${esc(T('Full access'))}</small></span></button>`}).join('')}</div><div id="lvlLock"></div>
       <div class="actions"><button class="btn" id="goPractice">${esc(T('Start Level {0}',nx+1))} →</button></div>`;
     body.querySelectorAll('[data-lvl]').forEach(b=>b.onclick=()=>PL.start(x,+b.dataset.lvl));
+    body.querySelectorAll('[data-lock]').forEach(b=>b.onclick=()=>{const h=$('#lvlLock');h.innerHTML=lockCard(`Unlock all ${K} levels and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);h.scrollIntoView({behavior:'smooth',block:'center'})});
     $('#goPractice').onclick=()=>PL.start(x,nx);
   }
 }
