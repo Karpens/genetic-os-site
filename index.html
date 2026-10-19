@@ -1444,6 +1444,23 @@ html.i18n .board-ui{display:none!important}
 .sc-card h4{margin:0 0 10px;font:800 17px/1.25 "Plus Jakarta Sans",sans-serif}
 .sc-card>p:first-of-type{margin-top:0}
 .sc-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:16px}
+/* predicted grades */
+.gr{--c:var(--stain);display:flex;align-items:center;gap:14px;background:var(--paper);border-radius:16px;padding:12px 14px;box-shadow:0 0 0 1px var(--line)}
+.gr+.gr{margin-top:10px}
+.gr.card{padding:16px 18px;margin:0 0 6px;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.gr-b{flex:none;width:60px;height:60px;border-radius:16px;display:grid;place-items:center;align-content:center;background:color-mix(in srgb,var(--c) 14%,var(--paper));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 45%,transparent)}
+.gr-b b{font:800 25px/1 "Plus Jakarta Sans",sans-serif;color:var(--ink)}
+.gr-b small{font-size:11.5px;font-weight:700;color:var(--muted);margin-top:3px}
+.gr-b.none b{color:var(--muted)}
+.gr-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.gr-t b{font-size:15.5px}
+.gr-t small{color:var(--muted);font-size:13px;line-height:1.4}
+.gr .btn{flex:none}
+@media (max-width:560px){.gr{flex-wrap:wrap}.gr .btn{width:100%}}
+.gr-note{font-size:12.5px;color:var(--muted);margin:8px 0 18px}
+.gr-res{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0 4px}
+.gr-res span{background:var(--bg2);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
+.gr-res b{font:800 17px "Plus Jakarta Sans",sans-serif;margin-left:4px}
 /* invite a friend */
 .inv-ban{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;width:min(660px,calc(100% - 24px));background:var(--paper);color:var(--ink);border-radius:18px;padding:12px 12px 12px 16px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line);animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both}
 .inv-ban p{margin:0;font-size:14.5px;line-height:1.4;flex:1}
@@ -2684,7 +2701,7 @@ function renderStudy(){Extra.ensure(subject,level);L3.ensure();
     $('#csBtn').onclick=()=>{const T=levelData().topics||[];showModal('Download a cheat sheet',`<p style="margin-top:0">Pick a topic and we’ll save a PDF with every key point and diagram, ready to print or keep on your phone.</p><div class="cs-list">${T.map((t,i)=>`<button class="cs-item" data-cs="${i}"><span>${esc(t.n)}</span>${esc(t.title)}<em>⬇️</em></button>`).join('')}</div>`);
       $$('#modal [data-cs]').forEach(b=>b.onclick=()=>{$('#modal').classList.remove('on');printCheat(T[+b.dataset.cs])})};
     $('#mixBtn').onclick=()=>premium?startSession({title:'Mixed practice',qs:shuffle(allQs(d)).slice(0,10)}):startSession({title:'Mixed practice (free)',qs:shuffle(freeQs(d)).slice(0,5),lockAfter:'Mixed practice across every topic is included in full access.'});
-    $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(allQs(d)).slice(0,25),timed:30*60,exam:true}):($('#rootLock').innerHTML=lockCard('Timed exams draw 25 questions from every topic, with a 30-minute timer and a full review at the end.'));
+    $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(allQs(d)).slice(0,25),timed:30*60,exam:true,mock:'exam'}):($('#rootLock').innerHTML=lockCard('Timed exams draw 25 questions from every topic, with a 30-minute timer and a full review at the end.'));
     return;
   }
 
@@ -2896,6 +2913,7 @@ function finish(){if(!session||session.done)return;session.done=true;clearInterv
   const pct=Math.round(session.score/session.qs.length*100);if(session.key)saveProg(session.key,pct);if(session.lvl)PL.overall(session.lvl.x);
   if(session.mockKey){const pb=+store.get(session.mockKey,'0');if(pct>pb)store.set(session.mockKey,String(pct))}
   Stats.event(session.exam?'exam':'practice');
+  if(session.exam&&(session.answers.length>=session.qs.length*.6||(session.end&&Date.now()>=session.end)))session.mockId=Mocks.add({k:session.mock||'exam',p:session.paper||'',n:session.qs.length,pct});
   if(pct===100)XP.bump('perfect');if(session.exam)XP.bump('exams');if(pct>=80)setTimeout(rain,700);XP.add(Math.round(pct/5)+10);const lv=session.lvl;StuAct.log({subject,level,topic:lv?`${lv.x.n} ${lv.x.title}`:session.title,pct,n:session.qs.length,kind:lv?'level':session.exam?'exam':'quiz',sub:lv?pkey(lv.x.key||lv.x.n):session.key,lvl:lv?lv.i+1:null,mins:session.t0?Track.mins(Date.now()-session.t0):null});StuAct.push(true);renderStudy();LB.pushXp()}
 
 function renderSession(){
@@ -2903,16 +2921,16 @@ function renderSession(){
   if(S.done){
     const total=S.qs.length,pct=Math.round(S.score/total*100),wrong=S.answers.filter(a=>!a.ok);
     const msg=pct>=80?'Excellent. You\u2019re exam-ready on this material.':pct>=60?'Good. Review the questions below to close the gaps.':'Keep going. Read the explanations, revisit the notes, then try again.';
-    main.innerHTML=`<div class="quiz result">${resultRing(pct)}<div class="xpgain">⚡ +${Math.round(pct/5)+10} XP bonus</div><h3>${S.score} out of ${total} correct${S.exam&&S.answers.length<total?` · ${total-S.answers.length} unanswered`:''}</h3><p class="muted">${msg}</p>
+    main.innerHTML=`<div class="quiz result">${resultRing(pct)}<div class="xpgain">⚡ +${Math.round(pct/5)+10} XP bonus</div><h3>${S.score} out of ${total} correct${S.exam&&S.answers.length<total?` · ${total-S.answers.length} unanswered`:''}</h3>${S.exam?(()=>{const b=boardOf(subject),pr=Grade.predict(subject,level,b);return `<div class="gr-res"><span>Grade on this paper<b>${esc(Grade.of(pct,level,b))}</b></span>${pr.none?'':`<span>Predicted grade<b>${esc(pr.grade)}</b></span>`}</div>`})():''}<p class="muted">${msg}</p>
       <div class="actions">${S.lvl&&S.lvl.i+1<S.lvl.of?`<button class="btn" id="nextLvl">${esc(T('Next: Level {0}',S.lvl.i+2))} →</button><button class="btn ghost" id="again">Try again</button>`:'<button class="btn" id="again">Try again</button>'}<button class="btn ghost" id="exit">${S.lvl?esc(T('All levels')):'Back'}</button></div></div>
       ${S.lockAfter&&!premium?lockCard(S.lockAfter):''}
       ${wrong.length?`<h3 style="margin-top:28px">Review your mistakes</h3>${wrong.map(a=>`<div class="review"><strong>${esc(a.q[0])}</strong><div>Your answer: <span class="badans">${esc(a.written?a.typed:a.q[1][a.pick])}</span>${a.written?' <small class="muted">(written)</small>':''}</div><div>Correct answer: <span class="goodans">${esc(a.q[1][a.q[2]])}</span></div><p class="muted">${esc(a.q[3])}</p>${a.written?`<button class="btn ghost sm" data-wok="${S.answers.indexOf(a)}">I was right, count it</button>`:''}</div>`).join('')}`:''}`;
-    $('#again').onclick=()=>startSession({title:S.title,qs:S.exam||S.title.startsWith('Mixed')?shuffle(S.qs):S.qs,key:S.key,timed:S.timed,exam:S.exam,lockAfter:S.lockAfter,mockKey:S.mockKey,lvl:S.lvl});
+    $('#again').onclick=()=>startSession({title:S.title,qs:S.exam||S.title.startsWith('Mixed')?shuffle(S.qs):S.qs,key:S.key,timed:S.timed,exam:S.exam,mock:S.mock,paper:S.paper,lockAfter:S.lockAfter,mockKey:S.mockKey,lvl:S.lvl});
     if($('#nextLvl'))$('#nextLvl').onclick=()=>PL.start(S.lvl.x,S.lvl.i+1);
     $('#exit').onclick=()=>{endSession();renderStudy()};
     main.querySelectorAll('.review').forEach((r,i)=>r.style.setProperty('--i',i));animateRing(pct);
     main.querySelectorAll('[data-wok]').forEach(b=>b.onclick=()=>{const a=S.answers[+b.dataset.wok];if(!a||a.ok)return;a.ok=true;S.score++;Mist.track(a.q,true);
-      const p2=Math.round(S.score/S.qs.length*100);if(S.key)saveProg(S.key,p2);if(S.lvl)PL.overall(S.lvl.x);if(S.mockKey&&p2>+store.get(S.mockKey,'0'))store.set(S.mockKey,String(p2));renderSession()});
+      const p2=Math.round(S.score/S.qs.length*100);if(S.key)saveProg(S.key,p2);if(S.lvl)PL.overall(S.lvl.x);if(S.mockKey&&p2>+store.get(S.mockKey,'0'))store.set(S.mockKey,String(p2));if(S.mockId)Mocks.fix(S.mockId,p2);renderSession()});
     return;
   }
   const q=S.qs[S.qi],total=S.qs.length,W=WR.asWritten(q);
@@ -2980,7 +2998,7 @@ function renderSpecView(main,spec){
   if($('#backCourse'))$('#backCourse').onclick=()=>{view.check=false;renderStudy();scrollTo(0,0)};
   main.querySelectorAll('.rg').forEach(b=>b.onclick=()=>{const r=getRag(),k=base+b.dataset.i;r[k]=r[k]===b.dataset.c?undefined:b.dataset.c;store.set('go-rag',JSON.stringify(r));renderStudy()});
   $('#pracBtn').onclick=()=>premium?startSession({title:'Practice',qs:shuffle(pool).slice(0,10),key:pkey('practice')}):startSession({title:'Practice (free)',qs:freePool(),lockAfter:`Unlock all ${qCount(levelData())} questions for ${SUBJECTS[subject].name} ${LV(level)}, plus timed exams in every subject.`});
-  $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(pool).slice(0,25),timed:Math.min(25,pool.length)*72,exam:true}):($('#rootLock').innerHTML=lockCard('Timed exams mix questions from the whole level, with a timer and a full review at the end.'));
+  $('#examBtn').onclick=()=>premium?startSession({title:'Timed exam',qs:shuffle(pool).slice(0,25),timed:Math.min(25,pool.length)*72,exam:true,mock:'exam'}):($('#rootLock').innerHTML=lockCard('Timed exams mix questions from the whole level, with a timer and a full review at the end.'));
 }
 
 /* ---------- games ---------- */
@@ -3536,6 +3554,45 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
 loadPrices();
 $('#invAskp')?.addEventListener('click',()=>Invite.open());
 
+/* ---------- mock results and predicted grades ---------- */
+// Every finished exam-style paper, oldest first: kept on this device, and in the account with the study plan.
+const Mocks={
+  all(){const a=jget('fm-mocks',[]),m=new Map();for(const x of [...(Array.isArray(a)?a:[]),...(PLAN&&Array.isArray(PLAN.mocks)?PLAN.mocks:[])])if(x&&x.id)m.set(x.id,x);
+    return [...m.values()].sort((x,y)=>x.at-y.at)},
+  save(list){store.set('fm-mocks',JSON.stringify(list.slice(-300)));if(PLAN){PLAN.mocks=list.slice(-150);planChanged()}},
+  add(r){const x={id:uid(),s:subject,l:level,b:boardOf(subject),at:Date.now(),...r};this.save([...this.all(),x]);return x.id},
+  fix(id,pct){const a=this.all(),x=a.find(m=>m.id===id);if(x){x.pct=pct;this.save(a)}}};
+const Grade={
+  // The share of the marks each grade needs on Full Marks' exam-style papers. An estimate: real boundaries change
+  // from paper to paper and year to year. GCSE is graded 9–1 (Cambridge IGCSE A*–G), and AS has no A*.
+  scale(l,b){if(l==='GCSE')return b==='cie'?[['A*',85],['A',75],['B',65],['C',55],['D',45],['E',36],['F',27],['G',18]]:[['9',85],['8',77],['7',69],['6',61],['5',53],['4',45],['3',36],['2',27],['1',18]];
+    return l==='AS'?[['A',80],['B',70],['C',60],['D',50],['E',40]]:[['A*',88],['A',80],['B',70],['C',60],['D',50],['E',40]]},
+  of(pct,l,b){for(const [g,min] of this.scale(l,b))if(pct>=min)return g;return 'U'},
+  up(pct,l,b){let n=null;for(const [g,min] of this.scale(l,b)){if(pct>=min)break;n=[g,min]}return n},
+  an:g=>/^(A|E|F|8)/.test(g)?'an':'a',
+  // Mock papers count by length and newer ones count more; a topic paper or the mini mock covers less of the course,
+  // so counts less, and best scores kept from before mocks were recorded count a little. A real past paper the
+  // student logged counts like a full paper. Practice across the topics fills in the rest.
+  predict(s,l,b){const W={paper:1,exam:1,topic:.5,mini:.5};let w=0,sw=0,q=0,n=0;
+    const ms=Mocks.all().filter(m=>m.s===s&&m.l===l&&m.b===b).reverse().slice(0,8);
+    ms.forEach((m,i)=>{const x=m.n*(W[m.k]??.5)*Math.pow(.85,i);w+=x;sw+=x*m.pct;q+=m.n;n++});
+    if(!ms.length)try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(`fm-mock-${s}:${l}:${b}:`)){const v=+localStorage.getItem(k);if(v>=0&&v<=100){w+=18;sw+=18*v;q+=30;n++}}}}catch(e){}
+    for(const v of Object.values(jget(`fm-pp-${s}:${l}:${b}`,{})))if(typeof v==='number'&&v>=0&&v<=100){w+=40;sw+=40*v;q+=40;n++}
+    const raw=SUBJECTS[s]&&SUBJECTS[s][l],d=raw&&ldFor(raw,b),P=getProg(),subs=d&&d.full?d.topics.flatMap(t=>t.subs):[];
+    const tried=subs.map(x=>P[`${s}:${l}:${x.key||x.n}`]).filter(v=>v!=null),cov=subs.length?tried.length/subs.length:0;
+    const prac=tried.length?tried.reduce((a,v)=>a+v,0)/tried.length:null,mock=w?sw/w:null;
+    let pct=mock!=null?(prac!=null&&cov>=.3?.7*mock+.3*prac:mock):prac!=null&&cov>=.15?prac:null;
+    if(pct==null)return {none:true,papers:n,cov};
+    pct=Math.round(pct);
+    return {pct,grade:this.of(pct,l,b),up:this.up(pct,l,b),conf:q>=60&&cov>=.5?'high':q>=25||cov>=.4?'medium':'low',papers:n,q,cov}},
+  why(p){const a=[];if(p.papers)a.push(`${p.papers} mock paper${p.papers===1?'':'s'}`);if(p.cov)a.push(`${Math.round(p.cov*100)}% of the topics practised`);return a.length?'Based on '+a.join(' and '):''},
+  // One subject: a row on My Plan, or a card at the top of its past papers.
+  html(s,l,b,o={}){const p=this.predict(s,l,b),S=SUBJECTS[s];
+    if(p.none)return `<div class="gr${o.card?' card':''}" style="--c:${S.color}"><div class="gr-b none" aria-hidden="true"><b>?</b></div><div class="gr-t"><b>${o.card?'Your predicted grade':esc(S.name)}</b><small>Sit a timed mock paper, or practise a few more topics, and a predicted grade appears here.</small></div>${o.btn||''}</div>`;
+    return `<div class="gr${o.card?' card':''}" style="--c:${S.color}"><div class="gr-b" role="img" aria-label="Predicted grade ${esc(p.grade)}, ${p.pct}%"><b>${esc(p.grade)}</b><small>${p.pct}%</small></div>
+      <div class="gr-t"><b>${o.card?`Your predicted grade: ${esc(p.grade)}`:`${esc(S.name)}: ${esc(p.grade)}`}</b><small>${esc(this.why(p))} · ${p.conf} confidence</small><small>${p.up?`${p.up[1]-p.pct}% more on your papers for ${this.an(p.up[0])} ${esc(p.up[0])}.`:'That’s the top grade. Keep it there!'}</small></div>${o.btn||''}</div>`},
+  note:'An estimate from your work on Full Marks, not an official prediction: real grade boundaries change every year.'};
+
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
 const OFFICIAL={aqa:['AQA','https://www.aqa.org.uk/find-past-papers-and-mark-schemes','Search for your specification code. Recent papers are released to students after a year; older ones are always available.'],
   ocr:['OCR','https://www.ocr.org.uk/qualifications/past-paper-finder/','Choose your qualification, then the subject. Each paper has its mark scheme and examiner report.'],
@@ -3558,6 +3615,7 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
   const nMocks=papers.reduce((a,x)=>a+x.sets.length,0);
   main.innerHTML=`<div class="specname">${esc(spec[0])}</div>
     <div class="actions"><button class="btn ghost" id="ppBack">← Back to topics</button></div>
+    ${Grade.html(subject,level,b,{card:true})}<p class="gr-note">${esc(Grade.note)}</p>
     <div class="pp-count"><span><b>${nMocks}</b> full mock papers</span><span><b>${T.length}</b> topic papers</span><span><b>1</b> free mini mock</span><span><b>${PP_YEARS.length*np}</b> official papers to track</span></div>
     <div class="papers">
       <div class="pcard official rv in"><div class="pc-ic">🏛️</div><h3>Official ${esc(bn)} past papers</h3><p>${esc(tip)}</p><p class="muted">Your specification: <strong>${esc(spec[0])}</strong></p><a class="btn" href="${url}" target="_blank" rel="noopener">Open ${esc(bn)} past papers ↗</a></div>
@@ -3575,16 +3633,16 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
     <div class="tracker"><table><tr><th>Series</th>${Array.from({length:np},(_,k)=>`<th>Paper ${k+1}</th>`).join('')}</tr>${PP_YEARS.map(y=>`<tr><th>June ${y}</th>${Array.from({length:np},(_,k)=>{const v=trk[`${y}-${k+1}`];return `<td><button data-trk="${y}-${k+1}" class="${v==null?'':v>=70?'g':v>=50?'a':'r'}" aria-label="June ${y} paper ${k+1}">${v==null?'+':v+'%'}</button></td>`}).join('')}</tr>`).join('')}</table></div>
     <h3 style="margin-top:34px">How to use past papers</h3>
     <ol class="notes"><li style="--i:0">Do papers <strong>under exam conditions</strong>: timed, no notes, phone away.</li><li style="--i:1">Mark with the <strong>mark scheme</strong> straight after, in a different colour.</li><li style="--i:2">Read the <strong>examiner report</strong>: it lists the mistakes most students make.</li><li style="--i:3">Turn every lost mark into a topic to revise here, then retest it with the topic paper.</li></ol>`;
-  $('#ppBack').onclick=()=>{view.papers=false;renderStudy();scrollTo(0,0)};
-  $('#miniMock').onclick=()=>startSession({title:'Mini mock',qs:shuffle(freePool()).slice(0,10),timed:600,exam:true,lockAfter:'Every mock paper set and topic paper is part of full access.'});
+  $('#ppBack').onclick=()=>{view.papers=false;renderStudy();scrollTo(0,0)};Stats.event('grade_open');
+  $('#miniMock').onclick=()=>startSession({title:'Mini mock',qs:shuffle(freePool()).slice(0,10),timed:600,exam:true,mock:'mini',lockAfter:'Every mock paper set and topic paper is part of full access.'});
   main.querySelectorAll('.pcard.mock[data-pi]').forEach(card=>{const x=papers[+card.dataset.pi],go=card.querySelector('[data-mock]'),sheet=card.querySelector('.paper-sheet');let set=0;
     card.querySelectorAll('[data-set]').forEach(sb=>sb.onclick=()=>{set=+sb.dataset.set;card.querySelectorAll('[data-set]').forEach(z=>z.classList.toggle('on',z===sb));if(premium)go.textContent=`Sit Set ${'ABCD'[set]}`;
       if(!RM)sheet.animate([{transform:'rotate(-1.5deg)'},{transform:'rotate(3deg) translateY(-8px)'},{transform:'rotate(-1.5deg)'}],{duration:450,easing:'cubic-bezier(.2,1.4,.3,1)'})});
     go.onclick=()=>{if(!premium){location.hash='pricing';return}const qs=x.sets[set];
       if(!RM)sheet.animate([{transform:'none'},{transform:'translateY(-30px) rotate(-4deg) scale(1.08)'},{transform:'translateY(40px) scale(.9)',opacity:0}],{duration:650,easing:'cubic-bezier(.4,0,.2,1)'});
-      setTimeout(()=>startSession({title:`${SUBJECTS[subject].name} ${LV(level)} · ${x.name} · Set ${'ABCD'[set]}`,qs:shuffle(qs),timed:x.mins*60,exam:true,key:pkey('mock-'+x.id+(set||'')),mockKey:mk(x.id,set)}),RM?0:550)}});
+      setTimeout(()=>startSession({title:`${SUBJECTS[subject].name} ${LV(level)} · ${x.name} · Set ${'ABCD'[set]}`,qs:shuffle(qs),timed:x.mins*60,exam:true,mock:'paper',paper:x.id+'ABCD'[set],key:pkey('mock-'+x.id+(set||'')),mockKey:mk(x.id,set)}),RM?0:550)}});
   main.querySelectorAll('[data-tp]').forEach(btn=>btn.onclick=()=>{const x=topicPapers[+btn.dataset.tp];if(x.locked){location.hash='pricing';return}
-    startSession({title:`Topic ${x.t.n} paper · ${x.t.title}`,qs:shuffle(x.qs).slice(0,15),timed:1200,exam:true,mockKey:mk('t'+x.t.n),lockAfter:premium?null:'Every topic paper and full mock set is part of full access.'})});
+    startSession({title:`Topic ${x.t.n} paper · ${x.t.title}`,qs:shuffle(x.qs).slice(0,15),timed:1200,exam:true,mock:'topic',paper:'t'+x.t.n,mockKey:mk('t'+x.t.n),lockAfter:premium?null:'Every topic paper and full mock set is part of full access.'})});
   main.querySelectorAll('[data-trk]').forEach(btn=>btn.onclick=()=>{const k=btn.dataset.trk,[y,pn]=k.split('-');
     showModal(`June ${y} · Paper ${pn}`,`<p>What percentage did you get? Mark it with the official mark scheme.</p><input type="number" min="0" max="100" inputmode="numeric" class="lbinput" id="trkIn" value="${trk[k]??''}" placeholder="e.g. 72"><div class="actions"><button class="btn" id="trkSave">Save</button>${trk[k]!=null?'<button class="btn ghost" id="trkDel">Remove</button>':''}<a class="btn ghost" href="${url}" target="_blank" rel="noopener">Find this paper ↗</a></div>`);
     const inp=$('#trkIn');inp.focus();
@@ -4164,9 +4222,10 @@ function planChanged(){planSaveLocal();PlanSync.push()}
 // Two copies (this device and the account) merge: the newer plan settings win, notes merge one by one
 // (the newer edit of each note wins, and deleted notes stay deleted).
 function mergePlan(a,b){if(!b||typeof b!=='object')return a;if(!a)return b;
-  const base=(b.pAt||0)>(a.pAt||0)?b:a,m=new Map();
+  const base=(b.pAt||0)>(a.pAt||0)?b:a,m=new Map(),mk=new Map();
   for(const n of [...(a.notes||[]),...(b.notes||[])]){if(!n||!n.id)continue;const o=m.get(n.id);if(!o||(n.at||0)>(o.at||0))m.set(n.id,n)}
-  return {...base,notes:[...m.values()]}}
+  for(const x of [...(a.mocks||[]),...(b.mocks||[])])if(x&&x.id)mk.set(x.id,x);
+  return {...base,notes:[...m.values()],...(mk.size?{mocks:[...mk.values()].sort((x,y)=>x.at-y.at).slice(-150)}:{})}}
 
 const PlanSync={t:null,busy:false,again:false,state:'',msg:'',
   on(){return !!(API_BASE&&authToken())},
@@ -4315,6 +4374,9 @@ function renderPlanBoard(main){main.dataset.step='';
         <div class="pl-strip" aria-hidden="true">${x.topics.map(o=>`<i style="--f:${o.f}" title="Topic ${esc(o.t.n)} · ${esc(o.t.title)}"></i>`).join('')}</div>
         ${x.next?`<button class="btn ghost sm" data-popen="${ref({p:x.p,ti:x.next.ti,si:x.next.si})}|notes"><span>Next: ${esc(x.next.x.n)} ${esc(x.next.x.title)}</span><span>→</span></button>`:`<button class="btn ghost sm" data-psubj-go="${x.p.s}"><span>${x.locked?'Unlock the rest with full access':'All done · revise any topic'}</span><span>→</span></button>`}</div>`).join('')}</div>
       <p class="muted pl-free">Want to try another subject? Everything stays open in <a href="#home">Subjects</a>.</p></div>
+    <div class="pl-sec"><h3 class="pl-h">Predicted grades</h3><p class="muted">From your timed mock papers and practice. Every mock you sit makes them sharper.</p>
+      <div>${S.map(x=>Grade.html(x.p.s,PLAN.level,x.p.b,{btn:`<button class="btn ghost sm" data-pmock="${x.p.s}">Sit a mock paper</button>`})).join('')}</div>
+      <p class="gr-note">${esc(Grade.note)}</p></div>
     ${weak.length?`<div class="pl-sec"><h3 class="pl-h">Needs another look</h3><p class="muted">Your lowest scores. A second try is the fastest way to lock them in.</p>
       <div>${weak.map(u=>`<div class="pl-wk" style="--c:${u.s.color}"><b class="sc">${u.sc}%</b><span><small>${esc(u.s.name)}</small><b>${esc(u.x.n)} ${esc(u.x.title)}</b></span><button class="btn sm" data-popen="${ref(u)}|practice">Try again</button></div>`).join('')}</div></div>`:''}
     <div class="pl-sec" id="plNotes"><div class="pl-nhead"><div><h3 class="pl-h">Your notes</h3><p class="muted" style="margin:0">Formulas, mnemonics, what your teacher said: anything you want to remember.</p></div><button class="btn" id="nNew">+ New note</button></div>
@@ -4337,6 +4399,7 @@ function wirePlanBoard(main,picks){
     const w=t.closest('[data-pwatch]');if(w){const [k,ti,si]=w.dataset.pwatch.split('|');planWatch(k,ti,si);return}
     const o=t.closest('[data-popen]');if(o){const [k,ti,si,tab]=o.dataset.popen.split('|');planOpen(k,ti,si,tab);return}
     const sg=t.closest('[data-psubj-go]');if(sg){planOpen(sg.dataset.psubjGo,null,null);return}
+    const pm=t.closest('[data-pmock]');if(pm){planUse(pm.dataset.pmock);view={topic:null,sub:null,tab:'notes',check:false,papers:true};endSession();renderPicker();location.hash='study';return}
     if(t.closest('[data-plsign]')){planSignIn();return}
     if(t.closest('[data-plretry]')){PlanSync.send();return}
     if(t.closest('[data-plout]')){planSignOut();return}
