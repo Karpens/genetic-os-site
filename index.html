@@ -6352,9 +6352,9 @@ L3.LIB={};
 let L3ready=null;
 const L3run=L3$code=>eval(L3$code);
 L3.done=false;
-L3.load=()=>L3ready||(L3ready=fetch('js/models.js',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('models '+r.status);return r.text()}).then(t=>{L3run(t);L3.done=true}).catch(e=>{L3ready=null;throw e}));
+L3.lib=()=>L3ready||(L3ready=fetch('js/models.js',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('models '+r.status);return r.text()}).then(t=>{L3run(t);L3.done=true}).catch(e=>{L3ready=null;throw e}));
 L3.ensure=()=>{if(L3.done)return;const at=()=>[subject,level,view.topic,view.sub,view.tab].join('|'),was=at();
-  L3.load().then(()=>{if(!session&&view.sub!=null&&(view.tab==='notes'||view.tab==='explore')&&at()===was)renderStudy()},()=>{})};
+  L3.lib().then(()=>{if(!session&&view.sub!=null&&(view.tab==='notes'||view.tab==='explore')&&at()===was)renderStudy()},()=>{})};
 
 /*L3LIB:END*/
 
@@ -6446,7 +6446,7 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();Invite.boot();PlanSync.pull();{const pre=()=>L3.load().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
+renderPicker();route();Invite.boot();PlanSync.pull();{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
