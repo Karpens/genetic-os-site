@@ -1444,6 +1444,16 @@ html.i18n .board-ui{display:none!important}
 .sc-card h4{margin:0 0 10px;font:800 17px/1.25 "Plus Jakarta Sans",sans-serif}
 .sc-card>p:first-of-type{margin-top:0}
 .sc-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:16px}
+/* invite a friend */
+.inv-ban{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;width:min(660px,calc(100% - 24px));background:var(--paper);color:var(--ink);border-radius:18px;padding:12px 12px 12px 16px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line);animation:popIn .45s cubic-bezier(.2,1.2,.3,1) both}
+.inv-ban p{margin:0;font-size:14.5px;line-height:1.4;flex:1}
+.inv-ban .inv-gift{font-size:28px;line-height:1}
+.inv-ban .inv-x{border:0;background:transparent;color:var(--muted);font-size:24px;line-height:1;padding:4px 8px;cursor:pointer;border-radius:8px}
+@media (max-width:560px){.inv-ban{flex-wrap:wrap;align-items:flex-start}.inv-ban p{flex:1 1 0}.inv-ban .inv-x{order:2}.inv-ban .btn{order:3;flex:1 1 100%}}
+.inv-link{display:flex;gap:8px;align-items:center;margin:4px 0 10px}
+.inv-link .lbinput{margin:0;flex:1;min-width:0;font-size:15px}
+.inv-stats{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+.inv-stats span{background:var(--bg2);border-radius:999px;padding:6px 12px;font-size:13.5px;font-weight:600}
 /* owner: visitor numbers (#stats). One series, so one colour; text stays in the ink colours. */
 .st-root{--viz:#4361EE;transition:opacity .2s}
 :root[data-theme="dark"] .st-root{--viz:#6E87FA}
@@ -2220,6 +2230,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <p class="muted">Every plan includes all subjects at GCSE, AS and A2. Cancel any time. Already subscribed on another device? <a href="#" id="restoreLink">Restore access</a>.</p>
     <div class="owned" id="ownedBox" hidden></div>
     <label class="consent"><input type="checkbox" id="agreeTerms"> <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms</a>. I understand that access starts straight away, so I give up my 14-day cancellation right once I start using the content, and that already-paid periods aren't refunded. If my plan starts with a free trial, I can cancel before it ends and pay nothing.</span></label>
+    <div class="trialban" id="bonusBan" hidden><span>🎁</span><div><b>Your free week from an invite is on</b><small></small></div></div>
     <div class="trialban" id="trialBan" hidden><span>🎁</span><div><b>Every plan starts with a free trial</b><small>Full access straight away. Cancel before it ends and you pay nothing.</small></div></div>
     <div class="plans">
       <div class="plan" data-p="monthly">
@@ -2248,11 +2259,13 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <p class="fine" id="taxNote" style="text-align:center;margin-top:12px"></p>
     <div class="askp"><div><b>🏫 Teacher or school?</b><span>Full Marks is free for teachers, and for every student in their classes. Ask for a teacher account, create a class and share the code.</span></div><a class="btn ghost" href="#teacher">Teacher portal</a></div>
     <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link, price and how to cancel.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
+    <div class="askp"><div><b>🎁 Try it free with a friend</b><span>Send a friend your invite link. When they make a free account, you both get a week of full access.</span></div><button class="btn ghost" type="button" id="invAskp">Invite a friend</button></div>
     <p class="fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
     <h2 style="margin-top:48px;font-size:28px">Questions</h2>
     <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR and Edexcel. New subjects are added at no extra cost.</p></details>
     <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR and Edexcel. Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
     <details><summary>Is it free for schools?</summary><p style="margin-top:8px">Yes. Teachers get a free account in the <a href="#teacher">teacher portal</a>. Students who join a teacher’s class with its code get full access for free too, for as long as they are in the class.</p></details>
+    <details><summary>How does Invite a friend work?</summary><p style="margin-top:8px">Open <strong>Invite a friend</strong> in your account menu and send your link. When a friend opens it and makes their first Full Marks account, you each get 7 days of full access on the website, with no card needed. You can earn up to 5 free weeks. If you already have full access, your free week is saved and starts when that ends. Free weeks don’t include the AI tutor.</p></details>
     <details><summary>Can I cancel?</summary><p style="margin-top:8px">Yes, any time, from your account. Cancelling stops future payments, and you keep access until the end of the period you've already paid for.</p></details>
     <details><summary>What is your refund policy?</summary><p style="margin-top:8px">Because you get full access to every subject the moment you pay, we don't offer refunds for time already paid for, including if you cancel partway through a period. By subscribing, you agree to this and to waiving the standard 14-day cooling-off period once you've started using the content. If something went wrong with your payment or you were charged in error, contact us and we'll look into it.</p></details>
     <details><summary>Can I use it for more than one exam board?</summary><p style="margin-top:8px">Yes — full access includes every board for every subject, so if a school moves you from one board to another, or you want to compare specifications, it's already there. Nothing extra to buy.</p></details>
@@ -3521,6 +3534,7 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
       let t=card.querySelector('.trial');if(!t){t=document.createElement('div');t.className='trial';b.before(t)}t.textContent=`Free for ${TRIAL} days, then ${amt} / ${per[card.dataset.p]}. Cancel before then and pay nothing.`});
     const ban=$('#trialBan');if(ban){ban.hidden=false;ban.querySelector('b').textContent=`Every plan starts with a ${TRIAL}-day free trial`}}}catch(e){}}
 loadPrices();
+$('#invAskp')?.addEventListener('click',()=>Invite.open());
 
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
 const OFFICIAL={aqa:['AQA','https://www.aqa.org.uk/find-past-papers-and-mark-schemes','Search for your specification code. Recent papers are released to students after a year; older ones are always available.'],
@@ -3582,11 +3596,13 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
 var TRIAL=0;
 function accountCard(){const em=store.get('go-auth-email','');
   if(premium&&viaSchool())return `<div class="acct on"><div><b>✓ Full access is active</b><span>${esc(subLine())}</span><span>${em?`Signed in as ${esc(em)}. `:''}Free through your school, nothing to pay.</span></div><a class="btn" href="#${ACCOUNT.schoolRole==='teacher'?'teacher':'school'}">${ACCOUNT.schoolRole==='teacher'?'Teacher portal':'My classes'}</a></div>`;
+  if(viaBonus())return `<div class="acct on"><div><b>✓ Full access is active</b><span>${esc(subLine())}</span><span>${em?`Signed in as ${esc(em)}. `:''}Choose a plan before it ends to keep everything open.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="meInvite">🎁 Invite a friend</button></div>`;
   if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${subLine()}</span><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
-  if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="manageSub">Billing history</button></div>`;
+  if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled. Invite a friend and you both get a free week.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="meInvite">🎁 Invite a friend</button><button class="btn ghost" id="manageSub">Billing history</button></div>`;
   return `<div class="acct"><div><b>Using Full Marks for free</b><span>Already subscribed on another device? Restore access with the email you paid with.</span></div><button class="btn ghost" id="meRestore">Restore access</button><a class="btn" href="#pricing">See plans</a></div>`}
 function wireAccount(){
   const r=$('#meRestore');if(r)r.onclick=()=>$('#restoreLink')?.click();
+  const iv=$('#meInvite');if(iv)iv.onclick=()=>Invite.open();
   const m=$('#manageSub');if(m)m.onclick=()=>openPortal(m)}
 async function openPortal(m){{if(!API_BASE)return;m.disabled=true;const old=m.textContent;m.textContent='Opening…';
     try{const res=await fetch(`${API_BASE}/portal`,{method:'POST',headers:{Authorization:'Bearer '+authToken()}});const j=await res.json();
@@ -3627,20 +3643,23 @@ var ACCOUNT=null,_acctLoading=false;
 const fmtD=t=>t?new Date(t*1000).toLocaleDateString(I18N.L.html,{day:'numeric',month:'short',year:'numeric'}):'';
 const PLAN_NAME={monthly:'Monthly plan',quarterly:'3-month plan',annual:'Annual plan'};
 const viaSchool=()=>!!(ACCOUNT&&ACCOUNT.plan==='school');
+const viaBonus=()=>!!(premium&&ACCOUNT&&ACCOUNT.plan==='bonus'); // a free week from an invite
 function subLine(){const a=ACCOUNT||{},pn=PLAN_NAME[a.plan]||'Full access',from=fmtD(a.since||a.periodStart);
+  if(a.plan==='bonus')return `Free week from an invite · until ${fmtD(Math.floor(a.bonusUntil/1000))}`;
   if(a.plan==='school')return `Free school access${a.school?' · '+a.school:''} · ${a.schoolRole==='teacher'?'with your teacher account':'while you’re in your teacher’s class'}`;
   if(a.status==='trialing'&&a.trialEnd)return `Free trial · ${from?from+' – ':''}${fmtD(a.trialEnd)} · ${a.cancelAtPeriodEnd?'won’t continue after the trial':`then your ${pn.toLowerCase()} starts`}`;
   const end=fmtD(a.periodEnd);if(!end)return pn;
   return `${pn} · ${from?from+' – ':'until '}${end} · ${a.cancelAtPeriodEnd?'cancelled, won’t renew':'renews automatically'}`}
 async function ensureAccount(){if(ACCOUNT||_acctLoading||!API_BASE||!authToken())return;_acctLoading=true;
   try{const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});ACCOUNT=await r.json();renderOwned();if(location.hash==='#me')renderMe()}catch(e){}_acctLoading=false}
-function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navCta');
+function renderOwned(){const sec=$('#p-pricing'),box=$('#ownedBox'),cta=$('#navCta'),owned=premium&&!viaBonus(),bb=$('#bonusBan');
+  if(bb){bb.hidden=!viaBonus();if(viaBonus())bb.querySelector('small').textContent=`Everything is open until ${Invite.day(ACCOUNT.bonusUntil)}. Choose a plan to keep it after that.`}
   // with full access the "start free" and payment lines on the home page are just noise
   document.body.classList.toggle('has-full',!!premium);const hs=$('#heroStart');if(hs)hs.textContent=premium?T('Start revising →'):T('Start revising free →');
   if(!sec||!box)return;
-  sec.classList.toggle('owned-on',!!premium);box.hidden=!premium;
-  if(cta)cta.hidden=!!premium;
-  if(!premium)return;if(!ACCOUNT)ensureAccount();
+  sec.classList.toggle('owned-on',owned);box.hidden=!owned;
+  if(cta)cta.hidden=owned;
+  if(!premium)return;if(!ACCOUNT)ensureAccount();if(!owned)return;
   box.innerHTML=`<div class="owned-badge" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><path d="M15 27l7 7 15-16"/></svg></div>
     <div class="owned-txt"><span class="eyebrow">Your plan</span><h3>You already have full access 🎉</h3><p>Every subject, level and exam board is unlocked. There’s nothing else to buy.</p><small>${esc(subLine())}</small></div>
     <div class="owned-btns"><a class="btn" href="#study">Start revising →</a>${viaSchool()?`<a class="btn ghost" href="#${ACCOUNT.schoolRole==='teacher'?'teacher':'school'}">${ACCOUNT.schoolRole==='teacher'?'Teacher portal':'My classes'}</a>`:'<button class="btn ghost" id="ownedManage">Manage subscription</button>'}</div>`;
@@ -4196,7 +4215,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
         v.disabled=true;v.textContent='Signing in…';
         try{const r2=await fetch(`${API_BASE}/auth/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code:code.value})});
           const j2=await r2.json().catch(()=>({}));if(!r2.ok||!j2.token)throw new Error(j2.error||'That code didn’t work. Try again.');
-          setAuthToken(j2.token,j2.email||email);Stats.signin();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
+          setAuthToken(j2.token,j2.email||email);Stats.signin();Invite.claim();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
           PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done();
         }catch(e){$('#siMsg').textContent=e.message;v.disabled=false;v.textContent='Sign in'}};
     }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
@@ -4425,9 +4444,9 @@ const WHO={
   badge(){const [ic,l]=WHO.label();return `<div class="who-badge"><span aria-hidden="true">${ic}</span><span>${esc(T('You use Full Marks as:'))} <b>${esc(l)}</b></span><button type="button" class="btn ghost sm" data-who-change>${esc(SCH.who()?T('Change'):T('Choose'))}</button></div>`},
   bindBadge(root){root.querySelectorAll('[data-who-change]').forEach(b=>b.onclick=()=>WHO.open(true))},
   // after signing in, ask once the sign-in window has closed
-  afterSignIn(){if(SCH.who())return;let n=0;const t=setInterval(()=>{n++;if(SCH.who()||n>90){clearInterval(t);return}if(!$('#modal').classList.contains('on')&&!$('.who')){clearInterval(t);WHO.open(true)}},400)},
+  afterSignIn(){if(SCH.who())return;let n=0;const t=setInterval(()=>{n++;if(SCH.who()||n>90){clearInterval(t);return}if(!$('#modal').classList.contains('on')&&!$('.who')&&!Invite.busy){clearInterval(t);WHO.open(true)}},400)},
   boot(){SCH.nav();const f=$('#whoFoot');if(f)f.onclick=e=>{e.preventDefault();WHO.open(true)};
-    const h=location.hash.slice(1);if(!SCH.who()&&(!h||h==='home'))setTimeout(()=>{if(!SCH.who()&&!$('#modal').classList.contains('on'))WHO.open(false)},900)}};
+    const h=location.hash.slice(1);if(!SCH.who()&&!Invite.code()&&(!h||h==='home'))setTimeout(()=>{if(!SCH.who()&&!Invite.code()&&!$('#modal').classList.contains('on'))WHO.open(false)},900)}};
 
 /* What a student is doing on the site (notes, 3D models, levels, videos, games) and for how long.
    It is kept on the device and shared only with the teachers of the classes they are in. */
@@ -5040,6 +5059,7 @@ const AIT={ctx:new Map(),n:0,imgs:new Map(),st:null,stAt:0,
       body.querySelector('[data-si]').onclick=()=>planSignIn('Sign in to use the AI tutor',()=>{this.st=null;box.remove();this.open(btn)});return}
     let s;try{s=await this.status()}catch(e){body.innerHTML='<div class="ai-gate"><p>The AI tutor can’t be reached right now. Check your connection and try again.</p></div>';return}
     if(!s.on){body.innerHTML='<div class="ai-gate"><p><b>The AI tutor is almost here.</b> It’s being switched on. Check back soon!</p></div>';return}
+    if(!s.allowed&&viaBonus()){body.innerHTML='<div class="ai-gate"><p><b>The AI tutor comes with a Full Marks plan.</b> Your free week opens everything else.</p><div><a class="btn sm" href="#pricing">See plans</a></div></div>';return}
     if(!s.allowed){body.innerHTML='<div class="ai-gate"><p><b>The AI tutor comes with Full Marks full access.</b> It’s also free for students whose teacher uses Full Marks.</p><div><a class="btn sm" href="#pricing">Get full access</a><a class="btn ghost sm" href="#school">Join your class</a></div></div>';return}
     this.left(box,s.left);
     body.innerHTML=`<div class="ai-chips">${this.chips(c).map(t=>`<button type="button">${esc(t)}</button>`).join('')}</div><div class="ai-prev"></div>
@@ -6277,6 +6297,42 @@ L3.ensure=()=>{if(L3.done)return;const at=()=>[subject,level,view.topic,view.sub
 
 
 /* ---------- account: sign in and sign out from the top bar ---------- */
+/* ---------- invite a friend: a free week of full access for both (invites.js in the backend) ---------- */
+const Invite={
+  code(){return store.get('fm-invite','')},
+  day(t){return new Date(t).toLocaleDateString(I18N.on?I18N.L.html:'en-GB',{weekday:'long',day:'numeric',month:'long'})},
+  // A link with ?invite=CODE: keep the code until the visitor has an account, and tell them what it gives.
+  boot(){const qs=new URLSearchParams(location.search),c=(qs.get('invite')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+    if(c){store.set('fm-invite',c);qs.delete('invite');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
+    if(!this.code()||!API_BASE)return;
+    if(authToken())this.claim();else this.banner()},
+  banner(){if($('#invBan'))return;const b=document.createElement('div');b.id='invBan';b.className='inv-ban';b.setAttribute('role','region');b.setAttribute('aria-label',T('Invite'));
+    b.innerHTML=`<span class="inv-gift" aria-hidden="true">🎁</span><p><b>${esc(T('A friend invited you to Full Marks.'))}</b> ${esc(T('Make a free account and you both get a week of full access.'))}</p><button class="btn sm" type="button">${esc(T('Get my free week'))}</button><button class="inv-x" type="button" aria-label="${esc(T('Close'))}">×</button>`;
+    b.querySelector('.btn').onclick=()=>planSignIn(T('Get your free week'),()=>{Acct.render();route()});
+    b.querySelector('.inv-x').onclick=()=>b.remove();document.body.appendChild(b)},
+  // After a sign-in: the backend checks the account is new and starts both free weeks.
+  async claim(){const code=this.code();if(!code||!API_BASE||!authToken()||this.busy)return;this.busy=true; // other windows wait for this one
+    try{const r=await SCH.api('POST','/invite/claim',{code});store.set('fm-invite','');$('#invBan')?.remove();
+      await refreshPremiumFromServer();
+      showModal('🎉 '+T('Your free week has started'),`<p>${T('Everything on Full Marks is open until <b>{0}</b>: every note, question, mock paper and game. Your friend gets a free week too.',esc(this.day(r.until)))}</p><div class="actions"><a class="btn" href="#study" id="invGo">${esc(T('Start revising →'))}</a></div>`);
+      $('#invGo').onclick=()=>$('#modal').classList.remove('on')}
+    catch(e){if(!e.status)return; // offline: try again on the next visit
+      store.set('fm-invite','');$('#invBan')?.remove();toast('🎁',esc(e.message))}
+    finally{this.busy=false}},
+  async open(){if(!API_BASE)return;Stats.event('invite_open');
+    if(!authToken()){planSignIn(T('Invite a friend'),()=>{Acct.render();Invite.open()});return}
+    showModal(T('Give a friend a free week'),SCH.loading());
+    try{const d=await SCH.api('GET','/invite'),msg=T('Revise with me on Full Marks: notes, exam-style questions and mock papers for GCSE and A-level. Open my link and we both get a free week of full access:');
+      $('#mBody').innerHTML=`<p style="margin-top:0">${T('When a friend opens your link and makes a free account, <b>you both get {0} days of full access</b>: every note, question, mock paper and game. You can earn up to {1} free weeks.',d.days,d.max)}</p>
+        <div class="inv-link"><input class="lbinput" id="invLink" readonly value="${esc(d.link)}" aria-label="${esc(T('Your invite link'))}"><button class="btn" id="invCopy">${esc(T('Copy'))}</button></div>
+        ${navigator.share?`<button class="btn ghost" id="invShare">${esc(T('Share…'))}</button>`:''}
+        <div class="inv-stats"><span><b>${d.joined}</b> ${esc(d.joined===1?T('friend has joined'):T('friends have joined'))}</span><span><b>${d.rewarded} / ${d.max}</b> ${esc(T('free weeks earned'))}</span></div>
+        ${d.until?`<p class="muted">${esc(T('Your free week runs until {0}.',this.day(d.until)))}</p>`:''}${d.banked?`<p class="muted">${esc(T('You have {0} free days saved. They start when your current full access ends.',d.banked))}</p>`:''}`;
+      $('#invLink').onfocus=e=>e.target.select();
+      $('#invCopy').onclick=()=>{Stats.event('invite_share');SCH.copy(`${msg} ${d.link}`)};
+      const sh=$('#invShare');if(sh)sh.onclick=()=>{Stats.event('invite_share');navigator.share({title:'Full Marks',text:msg,url:d.link}).catch(()=>{})}}
+    catch(e){$('#mBody').innerHTML=`<p>${esc(e.message)}</p>`}}};
+
 const Acct={
   render(){const b=$('#acctBtn');if(!b)return;const em=store.get('go-auth-email',''),on=!!(API_BASE&&authToken()&&em);b.classList.toggle('in',on);
     b.innerHTML=on?`<span class="acct-av" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><span class="acct-em">${esc(em.split('@')[0])}</span><span class="acct-car" aria-hidden="true">▾</span>`:`<span class="acct-ic" aria-hidden="true">👤</span>${esc(T('Sign in'))}`;
@@ -6286,11 +6342,12 @@ const Acct={
   async menu(){const b=$('#acctBtn'),em=store.get('go-auth-email',''),m=document.createElement('div');m.className='acct-menu';m.setAttribute('role','menu');m.setAttribute('aria-label',T('Your account'));
     const item=(href,ic,label)=>`<a role="menuitem" href="${href}"><i aria-hidden="true">${ic}</i>${esc(label)}</a>`;
     const draw=role=>{const t=role&&role.teacher&&role.teacher.status==='teacher',admin=role&&role.admin,joined=role?role.joined:0;
-      m.innerHTML=`<div class="acct-head"><span class="acct-av lg" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><div><b>${esc(em)}</b><small class="${premium?'ok':''}">${premium?'✓ '+esc(T('Full access')):esc(T('Free account'))}${t?' · '+esc(T('Teacher')):joined?' · '+esc(T('In a class')):''}</small></div></div>
-        ${admin?item('#stats','📈',T('Visitors and sales'))+item('#admin','🛡️',T('Teacher approvals')):''}${premium?viaSchool()?'':item('#pricing','💳',T('My subscription')):item('#pricing','⭐',T('Get full access'))}
+      m.innerHTML=`<div class="acct-head"><span class="acct-av lg" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><div><b>${esc(em)}</b><small class="${premium?'ok':''}">${premium?'✓ '+esc(viaBonus()?T('Free week until {0}',Invite.day(ACCOUNT.bonusUntil)):T('Full access')):esc(T('Free account'))}${t?' · '+esc(T('Teacher')):joined?' · '+esc(T('In a class')):''}</small></div></div>
+        ${admin?item('#stats','📈',T('Visitors and sales'))+item('#admin','🛡️',T('Teacher approvals')):''}${premium&&!viaBonus()?viaSchool()?'':item('#pricing','💳',T('My subscription')):item('#pricing','⭐',T(viaBonus()?'Keep full access':'Get full access'))}
+        <button type="button" role="menuitem" class="acct-inv"><i aria-hidden="true">🎁</i>${esc(T('Invite a friend: a free week each'))}</button>
         <button type="button" role="menuitem" class="acct-who"><i aria-hidden="true">${WHO.label()[0]}</i>${esc(T('I use Full Marks as: {0}',WHO.label()[1]))}</button>
         <button type="button" role="menuitem" class="acct-out"><i aria-hidden="true">↪</i>${esc(T('Sign out'))}</button>`;
-      m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut();m.querySelector('.acct-who').onclick=()=>{Acct.close();WHO.open(true)}};
+      m.querySelectorAll('a').forEach(a=>a.onclick=()=>Acct.close());m.querySelector('.acct-out').onclick=()=>Acct.signOut();m.querySelector('.acct-who').onclick=()=>{Acct.close();WHO.open(true)};m.querySelector('.acct-inv').onclick=()=>{Acct.close();Invite.open()}};
     draw(SCH.role);document.body.appendChild(m);
     const r=b.getBoundingClientRect();m.style.top=Math.round(r.bottom+8)+'px';m.style.left=Math.round(Math.max(10,Math.min(innerWidth-m.offsetWidth-10,r.right-m.offsetWidth)))+'px';
     b.setAttribute('aria-expanded','true');(m.querySelector('a')||m).focus();
@@ -6326,7 +6383,7 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeck());
-renderPicker();route();PlanSync.pull();{const pre=()=>L3.load().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
+renderPicker();route();Invite.boot();PlanSync.pull();{const pre=()=>L3.load().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
