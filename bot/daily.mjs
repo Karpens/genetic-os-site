@@ -70,4 +70,5 @@ const m = memo()
 m.daily = [...(m.daily ?? []), { date, kind }]
 writeFileSync(MEMORY, JSON.stringify(m, null, 1))
 rmSync(join(FM_INSTAGRAM, 'stories'), { recursive: true, force: true })
-console.log(JSON.stringify({ plan: `ig/${date}/plan.json`, kind, items: plan.items.map((x) => ({ type: x.type, files: x.files, cover: x.cover })) }, null, 1))
+// This run's items, in publishing order, with their captions.
+console.log(JSON.stringify({ dir: `ig/${date}`, kind, items: plan.items }, null, 1))
