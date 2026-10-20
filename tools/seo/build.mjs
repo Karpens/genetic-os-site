@@ -37,6 +37,8 @@ function load() {
   return C;
 }
 const C = load();
+// The backend the app talks to, for counting visits to these pages (stats.js in the backend).
+const API = (fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').match(/const API_BASE = "([^"]*)"/) || [])[1] || '';
 const contentBoard = b => b === 'ocrb' ? 'ocr' : b;
 // a level's topics in one board's own order (the app's ldFor)
 function ldFor(raw, b) {
@@ -210,7 +212,14 @@ details p{margin:8px 0 0}
 const SCRIPT = `<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
 qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \\u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>`;
 
-function page({ url, title, desc, crumbs, body, color, type = 'website', ld = [] }) {
+// A visit counted the way the app counts it (Stats in index.html): no cookie and nothing that identifies anyone.
+// An arrival from outside the site is a visit; every page is a page view. Off for robots and in the owner's browser.
+const beacon = subj => API ? `<script>(function(){try{var d=document,N=navigator;if(N.webdriver||!N.sendBeacon||localStorage.getItem('fm-nostats')==='1')return;var r='',x=0;try{var u=d.referrer?new URL(d.referrer):null;if(u&&u.host!==location.host){x=1;r=u.hostname}}catch(e){}
+var n=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]||{}).type||'navigate',q=new URLSearchParams(location.search),b={views:[['revision',${JSON.stringify(subj || '')}]]};
+if(n==='navigate'&&(x||!d.referrer)){var s=Math.min(screen.width,screen.height);b.visit=1;b.ref=r;b.utm=q.get('utm_source')||'';b.dev=matchMedia('(pointer:coarse)').matches?(s<600?'phone':'tablet'):'desktop';b.lang=(N.language||'').slice(0,2).toLowerCase();b.land='revision'}
+N.sendBeacon(${JSON.stringify(API + '/t')},JSON.stringify(b))}catch(e){}})();</script>` : '';
+
+function page({ url, title, desc, crumbs, body, color, subj = '', type = 'website', ld = [] }) {
   const canon = SITE + url;
   const graph = [{ '@type': 'BreadcrumbList', itemListElement: crumbs.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: SITE + u })) }, ...ld];
   return `<!doctype html>
@@ -250,7 +259,8 @@ ${CSS}
 ${body.trim()}
 </main>
 <footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/${DIR}/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
-${body.includes('class="q"') ? SCRIPT + '\n' : ''}</body>
+${body.includes('class="q"') ? SCRIPT + '\n' : ''}${beacon(subj)}
+</body>
 </html>
 `;
 }
@@ -339,7 +349,7 @@ ${others.length ? `<section>
 <div class="grid">${others.map(x => tile(x.url, x.lv.years, x.name, `${plural(x.topics.length, 'topic')} · ${plural(x.q, 'question')}`)).join('')}</div>
 </section>` : ''}`;
   add(c.url, page({
-    url: c.url, color: c.color, title: `${c.name} revision notes and practice questions | Full Marks`,
+    url: c.url, color: c.color, subj: c.k, title: `${c.name} revision notes and practice questions | Full Marks`,
     desc: clip(`Free ${c.name} revision notes and exam-style questions with answers: ${list(c.topics.map(t => t.title))}.`),
     crumbs: crumbsOf(c), body,
     ld: [{ '@type': 'CollectionPage', name: `${c.name} revision`, url: SITE + c.url, inLanguage: 'en-GB', about: c.s.name, educationalLevel: c.lv.name, publisher: ORG }],
@@ -370,7 +380,7 @@ ${others.length ? `<section>
 <div class="grid">${others.map(y => tile(y.url, y.label, y.spec, y.note)).join('')}</div>
 </section>` : ''}`;
   add(x.url, page({
-    url: x.url, color: c.color, title: fit(...[' revision notes and questions | Full Marks', ' revision notes', ' revision'].map(e => x.spec + (/^Year/.test(x.note) ? ' ' + x.note : '') + e)),
+    url: x.url, color: c.color, subj: c.k, title: fit(...[' revision notes and questions | Full Marks', ' revision notes', ' revision'].map(e => x.spec + (/^Year/.test(x.note) ? ' ' + x.note : '') + e)),
     desc: clip(`${x.label} ${c.name} revision for ${x.spec}: notes and exam-style questions for ${list(x.topics.map(t => t.title))}.`),
     crumbs: [...crumbsOf(c), [x.label, x.url]], body,
     ld: [{ '@type': 'CollectionPage', name: `${x.label} ${c.name} revision`, url: SITE + x.url, inLanguage: 'en-GB', about: x.spec, educationalLevel: c.lv.name, publisher: ORG }],
@@ -441,7 +451,7 @@ ${missing.length ? `<p class="muted">Not in the ${esc(list(missing))} specificat
 </section>`;
   const lead = x ? plain(x.notes.slice(0, 2).join(' ')) : plain(intro(t).join(' '));
   add(t.url, page({
-    url: t.url, color: c.color, type: 'article',
+    url: t.url, color: c.color, subj: c.k, type: 'article',
     title: fit(`${t.title}: ${c.name} revision notes and questions | Full Marks`, `${t.title}: ${c.name} revision notes`, `${t.title} | ${c.name}`),
     desc: clip(x ? `${t.title} for ${c.name}: free revision notes and ${plural(x.q.length, 'practice question')} with answers. ${lead}` : `${t.title} for ${c.name}: ${lead}`),
     crumbs: [...crumbsOf(c), [t.title, t.url]], body,

@@ -199,5 +199,9 @@ details p{margin:8px 0 0}
 <footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
 <script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
 qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+<script>(function(){try{var d=document,N=navigator;if(N.webdriver||!N.sendBeacon||localStorage.getItem('fm-nostats')==='1')return;var r='',x=0;try{var u=d.referrer?new URL(d.referrer):null;if(u&&u.host!==location.host){x=1;r=u.hostname}}catch(e){}
+var n=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]||{}).type||'navigate',q=new URLSearchParams(location.search),b={views:[['revision',"geography"]]};
+if(n==='navigate'&&(x||!d.referrer)){var s=Math.min(screen.width,screen.height);b.visit=1;b.ref=r;b.utm=q.get('utm_source')||'';b.dev=matchMedia('(pointer:coarse)').matches?(s<600?'phone':'tablet'):'desktop';b.lang=(N.language||'').slice(0,2).toLowerCase();b.land='revision'}
+N.sendBeacon("https://genetic-os-backend-nvdn.onrender.com/t",JSON.stringify(b))}catch(e){}})();</script>
 </body>
 </html>
