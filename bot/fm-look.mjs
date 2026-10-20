@@ -42,7 +42,7 @@ export function fontCss() {
 
 // ---------- the mascot (the app icon's green character) ----------
 // expr: happy | think | wow | cheer
-export function mascot(expr = 'happy', size = 300, id = 'm') {
+export function mascot(expr = 'happy', size = 300, id = 'm', hat = 'cap') {
   const dark = '#1C1A17'
   const pupil = { happy: [10, 12], think: [18, -16], wow: [0, 2], cheer: [0, 0] }[expr] ?? [10, 12]
   const eyes = expr === 'cheer'
@@ -68,8 +68,10 @@ export function mascot(expr = 'happy', size = 300, id = 'm') {
 <ellipse cx="512" cy="545" rx="225" ry="220" fill="url(#${id}b)"/>
 <ellipse cx="430" cy="412" rx="52" ry="24" transform="rotate(-28 430 412)" fill="#fff" opacity=".24"/>
 ${eyes}<ellipse cx="374" cy="581" rx="33" ry="20" fill="#EC93A8"/><ellipse cx="650" cy="581" rx="33" ry="20" fill="#EC93A8"/>${mouth}
-<path d="M410 335H614V380A102 22 0 0 1 410 380Z" fill="#2A2620"/><path d="M313 305L512 244L711 305L512 366Z" fill="${dark}"/>
-<path d="M512 305L665 328V405" fill="none" stroke="#F4C04E" stroke-width="10" stroke-linejoin="round"/><circle cx="512" cy="305" r="14" fill="#F4C04E"/><path d="M650 403H680L690 448H640Z" fill="#F4C04E"/>
+${hat === 'witch'
+    ? `<ellipse cx="512" cy="352" rx="236" ry="36" fill="#1E1033"/><path d="M392 348C424 262 466 192 500 150C522 122 566 112 610 134C576 142 556 164 552 196C562 252 592 304 628 348Z" fill="#2E1065"/><path d="M402 326C470 312 560 312 622 326L630 352C560 340 470 340 394 352Z" fill="#F97316"/><rect x="494" y="322" width="36" height="30" rx="5" fill="none" stroke="#FBBF24" stroke-width="7"/>`
+    : `<path d="M410 335H614V380A102 22 0 0 1 410 380Z" fill="#2A2620"/><path d="M313 305L512 244L711 305L512 366Z" fill="${dark}"/>
+<path d="M512 305L665 328V405" fill="none" stroke="#F4C04E" stroke-width="10" stroke-linejoin="round"/><circle cx="512" cy="305" r="14" fill="#F4C04E"/><path d="M650 403H680L690 448H640Z" fill="#F4C04E"/>`}
 ${extra}</svg>`
 }
 
