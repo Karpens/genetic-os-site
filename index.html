@@ -5912,7 +5912,7 @@ const L3={
   // The info card for one part: name, what it does (word by word), an exam tip, a picture and a fact.
   card(host,st,id,o={}){const el=host.querySelector('.l3-card'),meta=this.metaOf(st);host.querySelectorAll('.l3-parts [data-part]').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
     if(!id){el.hidden=true;el.classList.remove('in');return null}
-    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(st.map&&st.map.more[id])||(this.LIB[st.k]&&this.LIB[st.k].more&&this.LIB[st.k].more[id])||(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
+    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(st.map&&st.map.more[id])||(m=>m&&!Array.isArray(m)?m[st.v]:m)(this.LIB[st.k]&&this.LIB[st.k].more&&this.LIB[st.k].more[id])||(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
     el.style.setProperty('--c',this.hex(st,id));
     el.innerHTML=`<div class="l3-ch"><i aria-hidden="true"></i><div><small>${esc(T('Part {0} of {1}',i+1,ord.length))}${lv==='A'?' · '+esc(T('A-level')):''}</small><h4>${esc(name)}</h4></div><button type="button" class="l3-x" aria-label="${esc(T('Close'))}">×</button></div>
       <p class="l3-cd">${txt.split(/\s+/).map((w,j)=>`<span style="--w:${j}">${esc(w)} </span>`).join('')}</p>${more?`<ul class="l3-facts">${(st.k==='map'?[['📝','Also in the notes',more[0]],['🧠','Picture it',more[1]],['🔗','Linked terms',more[2]]]:[['💡','Exam tip',more[0]],['🧠','Picture it',more[1]],['✨','Did you know?',more[2]]]).filter(z=>z[2]).map((z,j)=>`<li style="--d:${j}"><b>${z[0]} ${esc(T(z[1]))}</b>${esc(z[2])}</li>`).join('')}</ul>`:''}
@@ -5922,7 +5922,7 @@ const L3={
     el.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>{const j=(i+Number(b.dataset.nav)+ord.length)%ord.length;(o.go||(n=>this.card(host,st,n,o)))(ord[j],'nav')});
     return {name,txt,more}},
 
-  start(host,st,T3){const root=host.querySelector('.l3'),stage=host.querySelector('.l3-stage'),cv=stage.querySelector('canvas'),tagsEl=stage.querySelector('.l3-tags'),msg=stage.querySelector('.l3-msg'),
+  start(host,st,T3){const root=host.querySelector('.l3'),stage=host.querySelector('.l3-stage'),cv=stage.querySelector('canvas'),tagsEl=stage.querySelector('.l3-tags'),tools=stage.querySelector('.lab-tools'),msg=stage.querySelector('.l3-msg'),
       hud=stage.querySelector('.l3-hud'),hov=stage.querySelector('.l3-hov'),lead=stage.querySelector('.l3-lead'),coach=stage.querySelector('.l3-coach'),cardEl=host.querySelector('.l3-card'),dock=host.querySelector('.l3-dock');
     let R;try{R=new T3.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return this.flat(host,st)}
     const touch=matchMedia('(pointer:coarse)').matches;
@@ -5931,7 +5931,7 @@ const L3={
     scene.add(new T3.HemisphereLight(0xffffff,0xb8b2d8,.42));const key=new T3.DirectionalLight(0xffffff,1.0);key.position.set(4,7,5);scene.add(key);const rim=new T3.DirectionalLight(0xd6e4ff,.4);rim.position.set(-6,2,-5);scene.add(rim);
     const shadow=new T3.Mesh(new T3.PlaneGeometry(1,1),new T3.MeshBasicMaterial({map:this.tex(T3,'shadow'),transparent:true,depthWrite:false,opacity:.5,toneMapped:false}));shadow.rotation.x=-Math.PI/2;scene.add(shadow);
     const halo=new T3.Sprite(new T3.SpriteMaterial({map:this.tex(T3,'glow'),transparent:true,depthWrite:false,opacity:0,toneMapped:false}));scene.add(halo);
-    const planes=[new T3.Plane(),new T3.Plane()],ray=new T3.Raycaster(),v2=new T3.Vector2(),v3=new T3.Vector3(),tmp=new T3.Vector3(),camL=new T3.Vector3();
+    const planes=[new T3.Plane(),new T3.Plane()],ray=new T3.Raycaster(),oRay=new T3.Raycaster(),v2=new T3.Vector2(),v3=new T3.Vector3(),tmp=new T3.Vector3(),camL=new T3.Vector3();
     const V={yaw:0,pitch:0,dist:6,off:0,t:new T3.Vector3()},G={yaw:0,pitch:0,dist:6,off:0,t:new T3.Vector3()};
     let M=null,meta=null,mats=[],home=6,sel=null,gsel=null,hover=null,fade=0,cut=0,cutGoal=0,spin=true,vel=0,drag=false,need=true,clock=performance.now(),tagsOn=true,flash=null,tour=null,quiz=null,speak=false,seen=false,wide=false,raf=0,intro=0;
     const partOf=o=>{while(o&&!o.userData.part&&!o.userData.parts)o=o.parent;return o?o.userData.part:null};
@@ -6111,12 +6111,14 @@ const L3={
       if(V.off>.5)cam.setViewOffset(w,h,V.off,0,w,h);else if(cam.view&&cam.view.enabled)cam.clearViewOffset();
       fN++;if(rdt>.05)fS++;if(fN>=60){if(fS>30&&R.getPixelRatio()>1.01){R.setPixelRatio(Math.max(1,R.getPixelRatio()-.5));R.setSize(w,h,false)}fN=fS=0}
       R.render(scene,cam);
-      // labels that follow the model
-      if(tagsOn&&M.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const els=tagsEl.children,pos=[];
-        for(let i=0;i<els.length;i++){const el=els[i],tg=M.tags[i],p=typeof tg.p==='function'?tg.p():tg.p;v3.set(tg.mirror&&camL.x<0?-p[0]:p[0],p[1],p[2]);
-          const facing=tg.inner?1:tmp.copy(v3).sub(M.group.worldToLocal(M.c.clone())).normalize().dot(camL.clone().sub(v3).normalize());M.group.localToWorld(v3);v3.project(cam);
-          const sx=(v3.x*.5+.5)*w,sy=(-v3.y*.5+.5)*h;el.style.transform=`translate(${sx}px,${sy}px)`;el.classList.toggle('lf',sx>w*.62);el.classList.toggle('back',facing<-.3);
-          el.classList.toggle('on',tg.id===sel);el.classList.toggle('dim',!!sel&&tg.id!==sel);el.style.display=v3.z>1||sx<-40||sx>w+40||(tg.minor&&tg.id!==sel&&tg.id!==hover&&V.dist>home*.8)?'none':'';pos.push([el,sx,sy,tg.id])}
+      // labels that follow the model; a model can list solid meshes (M.occ, such as a monitor) that hide the labels behind them, unless they are faded out
+      if(tagsOn&&M.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const els=tagsEl.children,pos=[],tb=tools&&tools.offsetWidth?[tools.offsetLeft-4,tools.offsetTop-4,tools.offsetLeft+tools.offsetWidth+4,tools.offsetTop+tools.offsetHeight+4]:null,occ=M.occ?M.occ.filter(o=>o.visible&&!(gsel&&!quiz&&fade>.5&&!own(o,gsel))):[];
+        for(let i=0;i<els.length;i++){const el=els[i],tg=M.tags[i],p=(q=>q&&q.isVector3?q.toArray():q)(typeof tg.p==='function'?tg.p():tg.p);v3.set(tg.mirror&&camL.x<0?-p[0]:p[0],p[1],p[2]);
+          const facing=tg.inner?1:tmp.copy(v3).sub(M.group.worldToLocal(M.c.clone())).normalize().dot(camL.clone().sub(v3).normalize());M.group.localToWorld(v3);
+          const hid=occ.length&&tg.id!==sel&&tg.id!==hover&&(oRay.set(cam.position,tmp.copy(v3).sub(cam.position).normalize()),oRay.far=cam.position.distanceTo(v3),oRay.intersectObjects(occ,false).length>0);v3.project(cam);
+          const sx=(v3.x*.5+.5)*w,lw=el._w||90,lx=sx>w*.62?sx-lw-10:sx+10,mine=tg.id===sel||tg.id===hover;let sy=(-v3.y*.5+.5)*h;const under=tb&&lx<tb[2]&&lx+lw>tb[0]&&sy-12<tb[3]&&sy+10>tb[1];if(under&&mine)sy=tb[3]+14;
+          el.style.transform=`translate(${sx}px,${sy}px)`;el.classList.toggle('lf',sx>w*.62);el.classList.toggle('back',facing<-.3);
+          el.classList.toggle('on',tg.id===sel);el.classList.toggle('dim',!!sel&&tg.id!==sel);el.style.display=(under&&!mine)||hid||v3.z>1||sx<-40||sx>w+40||(tg.minor&&tg.id!==sel&&tg.id!==hover&&V.dist>home*.8)?'none':'';pos.push([el,sx,sy,tg.id])}
         // labels that would overlap one already shown shrink to their dot (hover or tap shows them)
         const placed=[];pos.sort((a,b)=>(b[3]===sel)-(a[3]===sel));for(const [el,sx,sy,id] of pos){if(el.style.display==='none')continue;if(!el._w&&!el.classList.contains('dot')){el._w=el.offsetWidth;el._h=el.offsetHeight}const W=el._w||80,H=el._h||20,x0=sx>w*.62?sx-W-10:sx+10,r=[x0,sy-12,x0+W,sy-12+H],hit=id!==sel&&id!==hover&&placed.some(q=>r[0]<q[2]&&r[2]>q[0]&&r[1]<q[3]&&r[3]>q[1]);el.classList.toggle('dot',hit);if(!hit)placed.push(r)}}
       // the leader line from the part to its card
