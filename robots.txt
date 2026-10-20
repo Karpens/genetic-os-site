@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /social/
 
 Sitemap: https://fullmarkss.com/sitemap.xml
