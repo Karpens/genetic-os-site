@@ -1,0 +1,110 @@
+{
+ "posts": [
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20",
+   "subject": "physics",
+   "level": "A2",
+   "format": "flashcards",
+   "look": "paper",
+   "hook": "f1",
+   "created": 1792504686611
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-2",
+   "subject": "maths",
+   "level": "A2",
+   "format": "quiz",
+   "look": "night",
+   "hook": "q0",
+   "created": 1792504689048
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-3",
+   "subject": "geography",
+   "level": "AS",
+   "format": "notes",
+   "look": "brand",
+   "hook": "n0",
+   "created": 1792504691813
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-4",
+   "subject": "further",
+   "level": "GCSE",
+   "format": "challenge",
+   "look": "paper",
+   "hook": "c2",
+   "created": 1792504702053
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-5",
+   "subject": "chemistry",
+   "level": "AS",
+   "format": "flashcards",
+   "look": "night",
+   "hook": "f0",
+   "created": 1792504704910
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-6",
+   "subject": "computing",
+   "level": "AS",
+   "format": "quiz",
+   "look": "brand",
+   "hook": "q4",
+   "created": 1792504707337
+  },
+  {
+   "date": "2026-10-20",
+   "dir": "2026-10-20-reel",
+   "subject": "further",
+   "level": "GCSE",
+   "format": "reel",
+   "look": "brand",
+   "created": 1792528450629
+  }
+ ],
+ "used": [
+  "A flame test on a solution gives a lilac flame. Which metal ion is present?",
+  "A geometric series has first term 7 and common ratio 0.5. What is the sum of the first 7 terms?",
+  "A river channel is 6.5 m wide and 1.7 m deep on average, and the water flows at 2.1 m/s. What is its discharge?",
+  "After a 30% reduction, a coat costs £476. What was the original price?",
+  "Events A and B are independent, with P(A) = 0.25 and P(B) = 0.5. What is P(A and B)?",
+  "Find the gradient function of six times the square root of x.",
+  "For f(x) = x², x ≥ 0, find f⁻¹(x).",
+  "For the data 21, 28, 25, 4, 24, 23, 12, 28, what is the mean?",
+  "Masses are N(μ, 1.5²) kg. H0: μ = 8, H1: μ ≠ 8, n = 25, 5% level. Which sample mean leads to rejecting H0?",
+  "What is 5% of 250?",
+  "What is a record?",
+  "Why must PET tracers be made close to the hospital?",
+  "Fixed costs are £24,000. Output rises from 4,000 to 8,000 units. What happens to fixed cost per unit?"
+ ],
+ "subs": [
+  "chemistry.AS.6.7",
+  "chemistry.GCSE.8.4",
+  "geography.AS.4.6",
+  "physics.A2.27.5"
+ ],
+ "grid": 7,
+ "daily": [
+  {
+   "date": "2026-10-20",
+   "kind": "reel"
+  }
+ ],
+ "tips": [],
+ "stories": [
+  {
+   "date": "2026-10-20",
+   "mode": "quiz",
+   "subject": "business",
+   "level": "AS"
+  }
+ ]
+}

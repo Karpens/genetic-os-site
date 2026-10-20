@@ -1,0 +1,9 @@
+{
+  "name": "fullmarks-instagram-bot",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "1.56.1",
+    "@ffmpeg-installer/linux-x64": "4.1.0"
+  }
+}
