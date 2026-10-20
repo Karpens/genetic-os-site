@@ -5912,7 +5912,7 @@ const L3={
   // The info card for one part: name, what it does (word by word), an exam tip, a picture and a fact.
   card(host,st,id,o={}){const el=host.querySelector('.l3-card'),meta=this.metaOf(st);host.querySelectorAll('.l3-parts [data-part]').forEach(b=>b.classList.toggle('on',b.dataset.part===id));
     if(!id){el.hidden=true;el.classList.remove('in');return null}
-    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(st.map&&st.map.more[id])||(this.LIB[st.k]&&this.LIB[st.k].more&&this.LIB[st.k].more[id])||(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
+    const it=meta.parts.find(z=>z[0]===id);if(!it)return null;const [,name,txt,lv]=it,more=(st.map&&st.map.more[id])||(m=>m&&!Array.isArray(m)?m[st.v]:m)(this.LIB[st.k]&&this.LIB[st.k].more&&this.LIB[st.k].more[id])||(this.MORE[this.vk(st)]||{})[id],ord=this.order(meta),i=ord.indexOf(id);
     el.style.setProperty('--c',this.hex(st,id));
     el.innerHTML=`<div class="l3-ch"><i aria-hidden="true"></i><div><small>${esc(T('Part {0} of {1}',i+1,ord.length))}${lv==='A'?' · '+esc(T('A-level')):''}</small><h4>${esc(name)}</h4></div><button type="button" class="l3-x" aria-label="${esc(T('Close'))}">×</button></div>
       <p class="l3-cd">${txt.split(/\s+/).map((w,j)=>`<span style="--w:${j}">${esc(w)} </span>`).join('')}</p>${more?`<ul class="l3-facts">${(st.k==='map'?[['📝','Also in the notes',more[0]],['🧠','Picture it',more[1]],['🔗','Linked terms',more[2]]]:[['💡','Exam tip',more[0]],['🧠','Picture it',more[1]],['✨','Did you know?',more[2]]]).filter(z=>z[2]).map((z,j)=>`<li style="--d:${j}"><b>${z[0]} ${esc(T(z[1]))}</b>${esc(z[2])}</li>`).join('')}</ul>`:''}
@@ -6113,7 +6113,7 @@ const L3={
       R.render(scene,cam);
       // labels that follow the model
       if(tagsOn&&M.tags){camL.copy(cam.position);M.group.worldToLocal(camL);const els=tagsEl.children,pos=[];
-        for(let i=0;i<els.length;i++){const el=els[i],tg=M.tags[i],p=typeof tg.p==='function'?tg.p():tg.p;v3.set(tg.mirror&&camL.x<0?-p[0]:p[0],p[1],p[2]);
+        for(let i=0;i<els.length;i++){const el=els[i],tg=M.tags[i],p=(q=>q&&q.isVector3?q.toArray():q)(typeof tg.p==='function'?tg.p():tg.p);v3.set(tg.mirror&&camL.x<0?-p[0]:p[0],p[1],p[2]);
           const facing=tg.inner?1:tmp.copy(v3).sub(M.group.worldToLocal(M.c.clone())).normalize().dot(camL.clone().sub(v3).normalize());M.group.localToWorld(v3);v3.project(cam);
           const sx=(v3.x*.5+.5)*w,sy=(-v3.y*.5+.5)*h;el.style.transform=`translate(${sx}px,${sy}px)`;el.classList.toggle('lf',sx>w*.62);el.classList.toggle('back',facing<-.3);
           el.classList.toggle('on',tg.id===sel);el.classList.toggle('dim',!!sel&&tg.id!==sel);el.style.display=v3.z>1||sx<-40||sx>w+40||(tg.minor&&tg.id!==sel&&tg.id!==hover&&V.dist>home*.8)?'none':'';pos.push([el,sx,sy,tg.id])}
