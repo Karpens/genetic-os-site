@@ -31,4 +31,4 @@ def mux(slug,dur,starts):
     out=f"/mnt/files/b4/{slug}_final.mp4"
     p=subprocess.run([ff,"-y","-loglevel","error"]+inputs+["-filter_complex",";".join(fc),"-map","0:v","-map","[aout]","-c:v","copy","-c:a","aac","-b:a","192k","-t",str(dur),"-movflags","+faststart",out],capture_output=True,text=True,timeout=150)
     return p.returncode,p.stderr[-200:],os.path.getsize(out) if os.path.exists(out) else None
-J=requests.get(RAW+"J4.json",timeout=30).json()
+J=requests.get(RAW+"J_all.json",timeout=30).json()
