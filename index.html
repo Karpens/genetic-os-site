@@ -296,6 +296,23 @@ body.has-full .free-only{display:none!important}
 .board-card .meter{height:8px;border-radius:4px;background:var(--bg2);overflow:hidden;margin:4px 0 12px}
 .board-card .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--stain),var(--brand-2));border-radius:4px;transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
 .board-card span.muted{font-size:13px;line-height:1.5}
+.hero-acct{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:-8px 0 22px;font-size:14px;color:var(--muted);opacity:0;animation:fadeUp .9s .7s cubic-bezier(.2,.8,.2,1) forwards}
+.hero-acct .btn{padding:10px 18px;font-size:14px}.trustbar #examCount b{font-weight:700;color:var(--ink)}
+.who3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.w3c{position:relative;display:flex;flex-direction:column;gap:12px;border-radius:19px;padding:28px 26px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);overflow:hidden}
+.w3c::before{content:'';position:absolute;inset:0 0 auto;height:5px;background:var(--wc)}.w3c h3{margin:0;font-size:22px}.w3c p{margin:0;color:var(--muted);flex:1;line-height:1.55}.w3c .btn{align-self:flex-start}
+.w3i{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:color-mix(in srgb,var(--wc) 14%,transparent)}
+.fromprice{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:18px;padding:22px 26px;border-radius:18px;background:color-mix(in srgb,var(--stain) 8%,var(--paper));box-shadow:0 0 0 1px color-mix(in srgb,var(--stain) 25%,transparent)}
+.fromprice b{display:block;font-size:20px}.fromprice>div>span{color:var(--muted);font-size:15px}
+.faq{display:grid;gap:10px;max-width:860px}.faq details{border-radius:16px;background:var(--paper);box-shadow:0 0 0 1px var(--line);padding:0 22px}
+.faq summary{cursor:pointer;list-style:none;padding:18px 30px 18px 0;font-weight:700;font-size:17px;position:relative}.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';position:absolute;right:0;top:14px;font-size:24px;color:var(--stain);transition:transform .2s}.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;color:var(--muted);line-height:1.6}
+.fin-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.finale .fin-join{color:var(--stage-ink);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.mstick{display:none}
+@media (max-width:860px){.who3{grid-template-columns:1fr}
+  .mstick{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-radius:18px;background:var(--paper);box-shadow:0 18px 40px -12px rgba(15,23,42,.35),0 0 0 1px var(--line);transform:translateY(140%);transition:transform .35s cubic-bezier(.2,1.2,.3,1)}
+  .mstick.on{transform:none}.mstick b{display:block;font-size:15px}.mstick span{font-size:13px;color:var(--muted)}.mstick .btn{padding:11px 16px}}
 .compare{width:100%;border-collapse:separate;border-spacing:0;background:var(--paper);border-radius:18px;overflow:hidden;box-shadow:var(--shadow),0 0 0 1px var(--line)}
 .compare th,.compare td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--line)}
 .compare tr:last-child td{border-bottom:0}
@@ -2140,10 +2157,12 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
           <a class="btn lg" href="#home" data-scroll="build" id="heroStart">Start revising free →</a>
           <button class="btn ghost lg" type="button" id="tourBtn">▶ How it works</button>
         </div>
+        <div class="hero-acct" id="heroAcct" hidden><button class="btn ghost" type="button" id="heroJoin"><span aria-hidden="true">👤</span>Create a free account</button><span>With your email, no password · saves your progress on every device</span></div>
         <div class="trustbar free-only">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure payment</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>Cancel any time</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>First topic in every subject is free</span>
+          <span id="examCount" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2h12M6 22h12M7 2c0 5 10 5 10 10S7 17 7 22M17 2c0 5-10 5-10 10s10 5 10 10"/></svg><b></b></span>
         </div>
       </div>
       <div class="demo3d" id="demo3d" aria-hidden="true">
@@ -2200,6 +2219,15 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     </div>
 
     <div class="sec">
+      <div class="sec-head rv"><span class="eyebrow">Made for</span><h2>Students, parents <span class="grad">and teachers.</span></h2></div>
+      <div class="who3">
+        <div class="w3c rv" style="--d:0;--wc:var(--stain)"><div class="w3i">🎒</div><h3>Students</h3><p>Your exact spec, notes for every subtopic, <span data-total-q>5,000+</span> explained questions, games and timed mocks. Start with the first topic of any subject, free.</p><a class="btn" href="#home" data-scroll="build">Start revising free →</a></div>
+        <div class="w3c rv" style="--d:1;--wc:var(--orange)"><div class="w3i">🏡</div><h3>Parents</h3><p>One plan covers every subject and level. <b data-trial-line>Every plan starts with a free trial</b>, and you can cancel any time in two clicks.</p><a class="btn ghost" href="#pricing">See plans and prices</a></div>
+        <div class="w3c rv" style="--d:2;--wc:var(--teal)"><div class="w3i">🍎</div><h3>Teachers</h3><p>Free for teachers and for every student in their classes. Share a class code, set homework and see who has done it.</p><a class="btn ghost" href="#teacher">Get a free teacher account</a></div>
+      </div>
+    </div>
+
+    <div class="sec">
       <div class="sec-head rv"><span class="eyebrow">Everything in one place</span><h2>Not just notes. <span class="grad">A whole revision engine.</span></h2></div>
       <div class="bento">
         <div class="bx w3 rv tilt" style="--d:0;--bc:var(--stain)"><div class="ic">📘</div><h3>Notes for every subtopic</h3><p>Short, exam-focused key points with the words examiners look for in bold.</p><div class="mini-notes"><i></i><i></i><i></i><i></i></div></div>
@@ -2250,6 +2278,19 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <tr><td>Topic cheat sheets (PDF)</td><td>Free topics</td><td class="yes">Every topic</td></tr>
         <tr><td>Progress tracking</td><td>On this device</td><td class="yes">Every subject and topic</td></tr>
       </table>
+      <div class="fromprice rv"><div><b>Full access from <span id="fromPrice">£4.17</span> a month</b><span data-trial-line>Every plan starts with a free trial. Cancel before it ends and you pay nothing.</span></div><a class="btn lg" href="#pricing">See plans →</a></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head rv"><span class="eyebrow">Questions</span><h2>Good to <span class="grad">know.</span></h2></div>
+      <div class="faq rv">
+        <details><summary>Is Full Marks free?</summary><p>Yes, to start. The first topic of every subject, the daily challenge, flashcards, Match Up and the weekly leaderboards are free, with no card needed. Full access unlocks every topic, all the questions, topic tests, timed exams and every mock paper.</p></details>
+        <details><summary>Which exam boards and levels are covered?</summary><p>AQA, OCR A, OCR B, Edexcel and Cambridge (CIE), for GCSE, AS, A-level and the University Foundation Programme. Pick your board and the topic list follows its own specification.</p></details>
+        <details><summary>How does the free trial work?</summary><p data-trial-line>Every plan starts with a free trial: full access straight away. Cancel before it ends and you pay nothing.</p></details>
+        <details><summary>Can I cancel any time?</summary><p>Yes. Open the Progress page and choose Manage subscription. Cancel before the next payment date and you won’t be charged again.</p></details>
+        <details><summary>I’m a teacher. Is it really free?</summary><p>Yes. Once your teacher account is approved, Full Marks is free for you and for every student in your classes. Create a class, share the code, set homework and follow your students’ progress.</p></details>
+        <details><summary>Does it work on my phone?</summary><p>Yes. Full Marks works in the browser on any phone, tablet or computer, and your progress follows your account.</p></details>
+      </div>
     </div>
 
     <div class="finale rv zoom">
@@ -2257,11 +2298,13 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <span class="eyebrow">Your exams are coming</span>
       <h2>Make every mark <span class="grad">count.</span></h2>
       <p class="free-only">Start with the first topic of any subject — free, no card needed.</p>
-      <a class="btn gold lg" href="#home" data-scroll="build">Start revising now →</a>
+      <div class="fin-cta"><a class="btn gold lg" href="#home" data-scroll="build">Start revising now →</a><button class="btn ghost lg fin-join" type="button" id="finJoin" hidden>Create a free account</button></div>
     </div>
   </div>
 </section>
 
+
+<div class="mstick free-only" id="mStick" aria-hidden="true"><div><b>First topic free</b><span>No card needed</span></div><a class="btn" href="#home" data-scroll="build" tabindex="-1">Start revising →</a></div>
 
 <section class="page" id="p-study">
   <div class="wrap">
@@ -3605,6 +3648,17 @@ function lbAfterGame(id,score){const el=$('#lbRes');if(!el||!API_BASE||!['speed'
   if(LB.name)send();else{el.innerHTML='<div class="lbres"><span>🏆 Race other students on the weekly leaderboard</span><button class="btn gold sm" id="lbJoin2">Put my score on it</button></div>';$('#lbJoin2').onclick=()=>askName(send)}}
 
 /* ---------- live prices from Stripe ---------- */
+// Home page helpers: the free-account buttons (hidden once signed in), the weeks left to the summer exams,
+// and the phone start bar that slides up once the hero is out of view.
+const HomeJoin={
+  render(){const on=!!(API_BASE&&!authToken());['heroAcct','finJoin'].forEach(id=>{const e=$('#'+id);if(e)e.hidden=!on})},
+  boot(){['heroJoin','finJoin'].forEach(id=>{const e=$('#'+id);if(e)e.onclick=()=>planSignIn(T('Create your free account'),()=>{Acct.render();HomeJoin.render();route()})});this.render();
+    const ways=[GOOGLE_WEB_CLIENT_ID&&'Google',APPLE_WEB_SERVICE_ID&&'Apple'].filter(Boolean),hint=$('#heroAcct span:last-child');
+    if(hint)hint.textContent=ways.length?T('{0} or email · saves your progress on every device',ways.join(', ')):T('With your email, no password · saves your progress on every device');
+    // the summer exam series starts in the second week of May
+    const now=new Date(),y=now.getMonth()>5||(now.getMonth()===5&&now.getDate()>20)?now.getFullYear()+1:now.getFullYear(),may=new Date(y,4,11),w=Math.ceil((may-now)/6048e5),ec=$('#examCount');
+    if(ec&&w>0&&w<=40){ec.querySelector('b').textContent=w===1?T('About a week to the summer exams'):T('About {0} weeks to the summer exams',w);ec.hidden=false}
+    const bar=$('#mStick'),hero=$('#stage');if(bar&&hero&&'IntersectionObserver' in window)new IntersectionObserver(([e])=>{const on=!e.isIntersecting&&location.hash.slice(1).split('/')[0]in{'':1,home:1};bar.classList.toggle('on',on);bar.setAttribute('aria-hidden',on?'false':'true');const a=bar.querySelector('a');if(a)a.tabIndex=on?0:-1}).observe(hero)}};
 async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_BASE}/prices`);if(!r.ok)return;const j=await r.json(),P=j.plans||{},m=P.monthly;
   const money=(a,c)=>new Intl.NumberFormat(I18N.L.html,{style:'currency',currency:c.toUpperCase(),minimumFractionDigits:a%100?2:0,maximumFractionDigits:2}).format(a/100);
   for(const [plan,pr] of Object.entries(P)){const card=document.querySelector(`.plan[data-p="${plan}"]`);if(!card||!pr.amount)continue;
@@ -3615,8 +3669,11 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
   TRIAL=+j.trialDays||0;if(TRIAL){const per={monthly:'month',quarterly:'3 months',annual:'year'};
     $$('.plan[data-p]').forEach(card=>{const b=card.querySelector('[data-plan]'),amt=card.querySelector('.amt').textContent;b.textContent=`Start ${TRIAL}-day free trial`;
       let t=card.querySelector('.trial');if(!t){t=document.createElement('div');t.className='trial';b.before(t)}t.textContent=`Free for ${TRIAL} days, then ${amt} / ${per[card.dataset.p]}. Cancel before then and pay nothing.`});
-    const ban=$('#trialBan');if(ban){ban.hidden=false;ban.querySelector('b').textContent=`Every plan starts with a ${TRIAL}-day free trial`}}}catch(e){}}
+    const ban=$('#trialBan');if(ban){ban.hidden=false;ban.querySelector('b').textContent=`Every plan starts with a ${TRIAL}-day free trial`}
+    $$('[data-trial-line]').forEach(e=>{e.textContent=e.tagName==='B'?`Every plan starts with a ${TRIAL}-day free trial`:`Every plan starts with a ${TRIAL}-day free trial: full access straight away. Cancel before it ends and you pay nothing.`})}
+    const a=P.annual,fp=$('#fromPrice');if(fp&&a&&a.amount){const months=a.interval==='year'?12*a.count:a.count||12;fp.textContent=money(Math.round(a.amount/months),a.currency)}}catch(e){}}
 loadPrices();
+HomeJoin.boot();
 $('#invAskp')?.addEventListener('click',()=>Invite.open());
 
 /* ---------- mock results and predicted grades ---------- */
@@ -6577,7 +6634,7 @@ const Invite={
     catch(e){$('#mBody').innerHTML=`<p>${esc(e.message)}</p>`}}};
 
 const Acct={
-  render(){const b=$('#acctBtn');if(!b)return;const em=store.get('go-auth-email',''),on=!!(API_BASE&&authToken()&&em);b.classList.toggle('in',on);
+  render(){HomeJoin.render();const b=$('#acctBtn');if(!b)return;const em=store.get('go-auth-email',''),on=!!(API_BASE&&authToken()&&em);b.classList.toggle('in',on);
     b.innerHTML=on?`<span class="acct-av" aria-hidden="true">${esc((em[0]||'?').toUpperCase())}</span><span class="acct-em">${esc(em.split('@')[0])}</span><span class="acct-car" aria-hidden="true">▾</span>`:`<span class="acct-ic" aria-hidden="true">👤</span>${esc(T('Sign in'))}`;
     b.setAttribute('aria-label',on?T('Your account: {0}',em):T('Sign in'));b.setAttribute('aria-haspopup',on?'menu':'dialog');b.setAttribute('aria-expanded','false');b.hidden=!API_BASE},
   open(){if(!authToken()){planSignIn('Sign in to Full Marks',()=>{Acct.render();route()});return}const m=$('.acct-menu');if(m){Acct.close();return}Acct.menu()},
