@@ -2119,11 +2119,11 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 .plans2{display:grid;grid-template-columns:1fr 1.12fr;gap:24px;max-width:1020px;margin:0 auto;align-items:stretch}
 .p2{position:relative;display:flex;flex-direction:column;gap:18px;border-radius:32px;padding:36px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line)}
 .p2 h3{margin:0;font-size:24px}.p2price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}.p2price b{font:800 60px/1 "Plus Jakarta Sans",sans-serif;letter-spacing:-.04em}.p2price span,.p2price small{color:var(--muted);font-size:16px}
-.p2 ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;flex:1}.p2 li{display:flex;gap:11px;align-items:flex-start;line-height:1.45}
-.p2 li::before{content:'✓';flex:none;width:23px;height:23px;margin-top:1px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--ok-soft);color:var(--ok)}
+.p2 ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;flex:1}.p2 li{position:relative;padding-left:34px;line-height:1.45}
+.p2 li::before{content:'✓';position:absolute;left:0;top:0;width:23px;height:23px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--ok-soft);color:var(--ok)}
 .p2.full{color:#fff;background:radial-gradient(80% 60% at 90% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(150deg,#3B4FE0,#7C3AED);box-shadow:0 50px 100px -45px rgba(76,29,149,.75)}
 .p2.full .p2price span,.p2.full .p2price small,.p2.full .p2trial{color:rgba(255,255,255,.86)}.p2.full li::before{background:rgba(255,255,255,.2);color:#fff}
-.p2trial{margin:-6px 0 0;font-size:15px}.p2 .btn{align-self:stretch}
+.p2trial{margin:-6px 0 0;font-size:15px}.p2alt{margin:-10px 0 0;font-size:15px;font-weight:600;color:rgba(255,255,255,.92)}.p2 .btn{align-self:stretch}
 .faqwrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
 #p-home .faqwrap .sec-head{text-align:left;margin:0;position:sticky;top:110px}#p-home .faqwrap .sec-head p{margin-left:0}.faqwrap .faq{max-width:none}
 .finale{border-radius:38px;padding:110px 30px;background:radial-gradient(60% 90% at 12% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,#3B4FE0,#7C3AED 60%,#C026D3)}
@@ -2353,7 +2353,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <div class="p2 rv" style="--d:0"><h3>Free</h3><div class="p2price"><b>£0</b><span>no card needed</span></div>
           <ul><li>The first topic of every subject</li><li>Sample exam-style questions</li><li>Daily challenge, XP and streaks</li><li>Match Up, Flashcards and Swipe</li><li>Weekly leaderboards</li><li>A free mini mock and free cheat sheets</li><li>Progress saved on this device</li></ul>
           <a class="btn ghost lg" href="#home" data-scroll="build">Start free</a></div>
-        <div class="p2 full rv" style="--d:1"><h3>Full access</h3><div class="p2price"><small>from</small><b id="fromPrice">£4.17</b><span>a month</span></div><p class="p2trial" data-trial-line>Every plan starts with a free trial. Cancel before it ends and you pay nothing.</p>
+        <div class="p2 full rv" style="--d:1"><h3>Full access</h3><div class="p2price"><b id="fromPrice">£10</b><span>a month</span></div><p class="p2alt" id="priceAlt">or £25 for 3 months, or £50 a year (just £4.17 a month)</p><p class="p2trial" data-trial-line>Every plan starts with a free trial. Cancel before it ends and you pay nothing.</p>
           <ul><li>Every subject and every level</li><li>All <span data-total-q>5,000+</span> questions, each explained</li><li>Topic tests and timed exams</li><li>Every mock paper and topic paper</li><li>Boss Battle, The Ladder, Speed Round, Survival and Fix your mistakes</li><li>A cheat sheet for every topic</li><li>Progress for every subject and topic</li></ul>
           <a class="btn gold lg" href="#pricing">See plans →</a></div>
       </div>
@@ -3752,7 +3752,10 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
       let t=card.querySelector('.trial');if(!t){t=document.createElement('div');t.className='trial';b.before(t)}t.textContent=`Free for ${TRIAL} days, then ${amt} / ${per[card.dataset.p]}. Cancel before then and pay nothing.`});
     const ban=$('#trialBan');if(ban){ban.hidden=false;ban.querySelector('b').textContent=`Every plan starts with a ${TRIAL}-day free trial`}
     $$('[data-trial-line]').forEach(e=>{e.textContent=e.tagName==='B'?`Every plan starts with a ${TRIAL}-day free trial`:`Every plan starts with a ${TRIAL}-day free trial: full access straight away. Cancel before it ends and you pay nothing.`})}
-    const a=P.annual,fp=$('#fromPrice');if(fp&&a&&a.amount){const months=a.interval==='year'?12*a.count:a.count||12;fp.textContent=money(Math.round(a.amount/months),a.currency)}}catch(e){}}
+    // the home page's plan card: the monthly price, then the longer plans and what they come to a month
+    const fp=$('#fromPrice'),alt=$('#priceAlt'),q=P.quarterly,a=P.annual;if(fp&&m&&m.amount)fp.textContent=money(m.amount,m.currency);
+    if(alt){const parts=[];if(q&&q.amount)parts.push(`${money(q.amount,q.currency)} for 3 months`);if(a&&a.amount){const months=a.interval==='year'?12*a.count:a.count||12;parts.push(`${money(a.amount,a.currency)} a year (just ${money(Math.round(a.amount/months),a.currency)} a month)`)}
+      if(parts.length)alt.textContent='or '+parts.join(', or ')}}catch(e){}}
 loadPrices();
 HomeJoin.boot();
 $('#invAskp')?.addEventListener('click',()=>Invite.open());
