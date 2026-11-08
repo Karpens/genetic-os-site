@@ -2555,7 +2555,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 <script>
 (function(){
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}if(store.onset)store.onset(k)}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 /* Visitor numbers without cookies (stats.js in the backend). A visit is an arrival from outside the site; nothing
    that identifies anyone is sent: no cookie, no ID. Off for robots and in the owner's own browser (fm-nostats). */
@@ -4577,6 +4577,61 @@ const PlanSync={t:null,busy:false,again:false,state:'',msg:'',
     catch(e){/* offline: the copy on this device still works */}},
   set(s,msg=''){this.state=s;this.msg=msg;const el=$('#plSync');if(el)el.outerHTML=syncCard()}};
 
+// The website's progress (topics, checklist, mistakes, mocks, XP, streak days, minutes, recent pages, stats and the chosen
+// subject, level and boards) lives in this browser and, when signed in, in the account (/me/progress), so it follows the
+// student to every device. Signing in merges the two copies; signing out saves it, then clears this browser.
+const ProgSync={
+  // key → how it is stored (j JSON, n number, s text) and how two copies combine: grow (numbers keep the larger, lists
+  // keep both: progress only ever adds up) or own (the device that changed it last wins, e.g. a mistake fixed or a
+  // checklist colour changed). [kind, how, ends where the newest items go, how many to keep]
+  KEYS:{'go-prog':['j','grow'],'go-rag':['j','own'],'fm-mist':['j','own'],'fm-mocks':['j','grow','end',300],'fm-recent':['j','own'],'fm-xp':['n','grow'],
+    'fm-xpw':['j','grow'],'fm-days':['j','grow'],'fm-mins':['j','grow'],'fm-stats':['j','grow'],'go-sub':['s','own'],'go-lvl':['s','own'],'go-boards':['j','own']},
+  PERSONAL:['fm-plan','fm-ai','fm-lbname','fm-school','fm-school-name','fm-in-class','fm-seen-grades','fm-seen-hw','fm-join'],
+  t:null,busy:false,again:false,ready:false,dirty:new Set(),
+  on(){return !!(API_BASE&&authToken())},
+  read(){const o={};for(const [k,[t]] of Object.entries(this.KEYS)){let v=null;try{v=localStorage.getItem(k)}catch(e){}if(v==null)continue;
+    if(t==='s')o[k]=v;else if(t==='n'){if(v!==''&&!isNaN(+v))o[k]=+v}else try{o[k]=JSON.parse(v)}catch(e){}}return o},
+  write(o){for(const [k,v] of Object.entries(o)){const d=this.KEYS[k];if(!d||v==null)continue;try{localStorage.setItem(k,d[0]==='j'?JSON.stringify(v):String(v))}catch(e){}}},
+  same(a,b){return JSON.stringify(a)===JSON.stringify(b)},
+  // numbers: the larger; lists: both, without repeats; objects: key by key; anything else: this device first
+  merge(a,b,d){if(a==null)return b;if(b==null)return a;
+    if(typeof a==='number'&&typeof b==='number')return Math.max(a,b);
+    if(Array.isArray(a)&&Array.isArray(b)){const seen=new Set(),out=[],add=x=>{const k=JSON.stringify(x);if(!seen.has(k)){seen.add(k);out.push(x)}};b.forEach(add);a.forEach(add);
+      return d&&d[3]?out.slice(-d[3]):out}
+    if(a&&b&&typeof a==='object'&&typeof b==='object'&&!Array.isArray(a)&&!Array.isArray(b)){const o={};for(const k of new Set([...Object.keys(b),...Object.keys(a)]))o[k]=this.merge(a[k],b[k]);return o}
+    return a},
+  touch(k){if(!this.KEYS[k])return;this.dirty.add(k);if(!this.ready||!this.on())return;clearTimeout(this.t);this.t=setTimeout(()=>this.send(),12000)},
+  async get(){const r=await fetch(`${API_BASE}/me/progress`,{headers:{Authorization:'Bearer '+authToken()}});if(!r.ok)throw new Error(String(r.status));return ((await r.json())||{}).data||{}},
+  // Saves what changed on this device on top of the account's copy, and brings here what other devices saved since.
+  async send(){if(!this.on())return false;if(this.busy){this.again=true;return true}this.busy=true;const dirty=this.dirty;this.dirty=new Set();let ok=false;
+    try{const srv=await this.get(),loc=this.read(),out={...srv},fresh={};
+      for(const [k,d] of Object.entries(this.KEYS)){
+        if(dirty.has(k))out[k]=d[1]==='grow'?this.merge(loc[k],srv[k],d):loc[k];
+        else if(srv[k]!=null&&!this.same(srv[k],loc[k]))fresh[k]=srv[k];
+        else if(srv[k]==null&&loc[k]!=null)out[k]=loc[k];
+        if(out[k]==null)delete out[k]}
+      this.write(fresh);
+      const r=await fetch(`${API_BASE}/me/progress`,{method:'PUT',headers:{'Content-Type':'application/json',Authorization:'Bearer '+authToken()},body:JSON.stringify({data:out})});ok=r.ok}catch(e){}
+    if(!ok)dirty.forEach(k=>this.dirty.add(k));
+    this.busy=false;if(this.again){this.again=false;return this.send()}return ok},
+  // On page load and on sign-in: this browser's copy (perhaps from before signing in) and the account's become one.
+  async pull(){if(!this.on())return;
+    try{const srv=await this.get(),loc=this.read(),out={};
+      for(const [k,d] of Object.entries(this.KEYS)){const m=this.merge(loc[k],srv[k],d);if(m!=null)out[k]=m;if(m!=null&&!this.same(m,srv[k]))this.dirty.add(k)}
+      this.write(out);this.ready=true;
+      if(!this.same(out,loc)){subject=store.get('go-sub',subject);level=store.get('go-lvl',level);try{boards=JSON.parse(store.get('go-boards','{}'))||{}}catch(e){}renderPicker();route()}
+      if(this.dirty.size)this.send()}catch(e){/* offline: this device's copy still works */}},
+  // Before signing out: save the plan and the progress, then leave nothing personal in this browser.
+  // If they can't be saved, ask first and keep this device's copy.
+  async leave(){clearTimeout(this.t);let ok=this.ready?await this.send():false;
+    if(ok&&PLAN&&PlanSync.on()){await PlanSync.send();ok=PlanSync.state==='saved'}
+    if(!ok){if(this.ready&&!confirm(T('Your latest progress couldn’t be saved to your account just now. Sign out anyway? It stays on this device.')))return false;return true}
+    for(const k of [...Object.keys(this.KEYS),...this.PERSONAL])try{localStorage.removeItem(k)}catch(e){}
+    return true}};
+store.onset=k=>ProgSync.touch(k);
+// leaving the page or switching away: save what is waiting
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&ProgSync.ready&&ProgSync.dirty.size){clearTimeout(ProgSync.t);ProgSync.send()}});
+
 function syncCard(){const em=store.get('go-auth-email',''),s=PlanSync.state;
   if(!PlanSync.on())return `<div class="pl-sync" id="plSync"><i class="dot"></i><span><b>Saved on this device.</b> Sign in to keep your plan, notes and progress on your phone and every other device.</span><button class="btn sm" data-plsign>Save to my account</button></div>`;
   if(s==='signin')return `<div class="pl-sync err" id="plSync"><i class="dot"></i><span><b>You’ve been signed out.</b> Sign in again to keep saving to your account.</span><button class="btn sm" data-plsign>Sign in</button></div>`;
@@ -4594,7 +4649,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
     <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
   // whichever way they sign in, the same things happen afterwards
   const finish=async(j,email)=>{setAuthToken(j.token,j.email||email);Stats.signin();Invite.claim();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
-    PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done()};
+    PlanSync.state='saving';await PlanSync.pull();await ProgSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done()};
   const viaProvider=async(path,body)=>{$('#siMsg').textContent=T('Signing in…');store.set('fm-keep',$('#siKeep').checked?'1':'0');
     try{const r=await fetch(`${API_BASE}${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const j=await r.json().catch(()=>({}));if(!r.ok||!j.token)throw new Error(j.error||T('Something went wrong, please try again.'));await finish(j,j.email)}
@@ -4628,7 +4683,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
         }catch(e){$('#siMsg').textContent=e.message;v.disabled=false;v.textContent='Sign in'}};
     }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
 }
-function planSignOut(){if(!confirm(T('Sign out on this device? Your plan and notes stay saved in your account.')))return;
+async function planSignOut(){if(!confirm(T('Sign out on this device? Your plan, notes and progress stay saved in your account.')))return;if(!await ProgSync.leave())return;
   try{localStorage.removeItem('go-auth-token');localStorage.removeItem('go-auth-email');sessionStorage.removeItem('go-auth-token')}catch(e){}
   location.hash='plan';location.reload()}
 
@@ -6772,7 +6827,7 @@ const Acct={
       if(e.key==='ArrowDown'||e.key==='ArrowUp'){const its=[...m.querySelectorAll('[role=menuitem]')],i=its.indexOf(document.activeElement);its[(i+(e.key==='ArrowDown'?1:-1)+its.length)%its.length].focus();e.preventDefault()}};
     document.addEventListener('pointerdown',Acct._out,true);document.addEventListener('keydown',Acct._key);
     try{const role=await SCH.getRole();if(m.isConnected)draw(role)}catch(e){/* offline: the menu still works */}},
-  signOut(){if(!confirm(T('Sign out on this device? Everything stays saved in your account, and you can sign in again any time.')))return;Acct.close();
+  async signOut(){if(!confirm(T('Sign out on this device? Everything stays saved in your account, and you can sign in again any time.')))return;Acct.close();if(!await ProgSync.leave())return;
     try{for(const k of ['go-auth-token','go-auth-email','fm-in-class'])localStorage.removeItem(k);sessionStorage.removeItem('go-auth-token')}catch(e){}
     location.hash='home';location.reload()}};
 document.addEventListener('fm-auth',()=>{SCH.role=null;Acct.render();if(authToken())WHO.afterSignIn()});
@@ -6800,7 +6855,7 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeckSpoken());
-renderPicker();route();Invite.boot();PlanSync.pull();{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
+renderPicker();route();Invite.boot();PlanSync.pull();ProgSync.pull();{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
