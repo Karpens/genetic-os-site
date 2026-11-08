@@ -778,6 +778,9 @@ footer .social svg{width:15px;height:15px}
 .lbrk{font:800 34px "Plus Jakarta Sans",sans-serif;color:color-mix(in srgb,var(--gold) 70%,var(--ink))}
 .spin{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:glSpin .8s linear infinite}
 .lbinput{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:16px;margin:10px 0 4px}
+.si-social{display:flex;flex-direction:column;align-items:center;gap:10px;margin:4px 0 2px}.si-g{width:100%;max-width:320px;min-height:44px;display:flex;justify-content:center}
+.si-apple{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:320px;height:44px;border-radius:999px;border:0;background:#000;color:#fff;font:600 16px/1 inherit;cursor:pointer}
+.si-apple:hover{background:#1d1d1f}.si-or{display:flex;align-items:center;gap:12px;margin:14px 0 10px;color:var(--muted);font-size:14px}.si-or::before,.si-or::after{content:'';flex:1;height:1px;background:var(--line)}
 .lberr{color:var(--bad);font-size:13px;min-height:1.2em;margin:0 0 8px}
 /* past papers */
 .pp-count{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
@@ -2097,6 +2100,10 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 -->
 <script>
 const API_BASE = "https://api.fullmarkss.com"; // Live backend on Render, through our own domain (some Wi-Fi and school networks block onrender.com).
+// Sign in with Google and with Apple: the public IDs of the Google Cloud web OAuth client and of the Apple Services ID.
+// Each button appears once its ID is filled in; the backend must accept the same ID (GOOGLE_CLIENT_IDS / APPLE_AUDIENCES on Render).
+const GOOGLE_WEB_CLIENT_ID = "";
+const APPLE_WEB_SERVICE_ID = "";
 const STRIPE_LINKS = { monthly: "", quarterly: "", annual: "" }; // Fallback: paste Stripe Payment Links here if you are not running the backend. Real payments, but content will not auto-unlock.
 const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </script>
@@ -4405,10 +4412,28 @@ function syncCard(){const em=store.get('go-auth-email',''),s=PlanSync.state;
 // Sign in with a 6-digit code from email (anyone can have an account; it keeps their plan and notes).
 function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof done!=='function')done=null;
   if(!API_BASE){toast('⚠️','Accounts aren’t connected on this copy of the site.');return}
-  showModal(title||'Keep your plan everywhere',`<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
+  const social=!!(GOOGLE_WEB_CLIENT_ID||APPLE_WEB_SERVICE_ID);
+  showModal(title||'Keep your plan everywhere',`${social?`<div class="si-social">${GOOGLE_WEB_CLIENT_ID?'<div id="siGoogle" class="si-g"></div>':''}${APPLE_WEB_SERVICE_ID?`<button type="button" class="si-apple" id="siApple"><svg viewBox="0 0 17 20" width="17" height="20" aria-hidden="true"><path fill="currentColor" d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.6 4.8 2 5.8 1.1 7.3c-1.8 3.1-.5 7.8 1.3 10.4.9 1.3 1.9 2.7 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.7-1-2.7-4.1zM11.6 3c.7-.9 1.2-2 1.1-3.1-1 0-2.3.7-3 1.5-.7.8-1.2 1.9-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>${esc(T('Continue with Apple'))}</button>`:''}</div>
+    <div class="si-or"><span>${esc(T('or use your email'))}</span></div>`:''}<p style="margin-top:0">Enter your email and we’ll send you a 6-digit code. No password needed.</p>
     <input type="email" id="siEmail" class="lbinput" placeholder="you@example.com" autocomplete="email" value="${esc(store.get('go-auth-email',''))}">
     <label style="display:flex;gap:8px;align-items:center;margin:2px 0 12px;font-size:15px;cursor:pointer"><input type="checkbox" id="siKeep" style="width:18px;height:18px"${store.get('fm-keep','1')!=='0'?' checked':''}> ${esc(T('Keep me signed in on this device'))}</label>
     <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
+  // whichever way they sign in, the same things happen afterwards
+  const finish=async(j,email)=>{setAuthToken(j.token,j.email||email);Stats.signin();Invite.claim();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
+    PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done()};
+  const viaProvider=async(path,body)=>{$('#siMsg').textContent=T('Signing in…');store.set('fm-keep',$('#siKeep').checked?'1':'0');
+    try{const r=await fetch(`${API_BASE}${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const j=await r.json().catch(()=>({}));if(!r.ok||!j.token)throw new Error(j.error||T('Something went wrong, please try again.'));await finish(j,j.email)}
+    catch(e){if($('#siMsg'))$('#siMsg').textContent=e.message}};
+  const script=(src,ready)=>ready()?Promise.resolve():new Promise((ok,no)=>{const el=document.createElement('script');el.src=src;el.async=true;el.onload=ok;el.onerror=()=>no(new Error(T('Can’t reach Full Marks right now. Check your connection and try again.')));document.head.appendChild(el)});
+  if(GOOGLE_WEB_CLIENT_ID)script('https://accounts.google.com/gsi/client',()=>window.google&&google.accounts&&google.accounts.id).then(()=>{const box=$('#siGoogle');if(!box)return;
+    google.accounts.id.initialize({client_id:GOOGLE_WEB_CLIENT_ID,callback:r=>viaProvider('/auth/google',{idToken:r.credential}),ux_mode:'popup'});
+    google.accounts.id.renderButton(box,{theme:'outline',size:'large',shape:'pill',text:'continue_with',width:Math.min(320,box.offsetWidth||320)})}).catch(e=>{const box=$('#siGoogle');if(box)box.remove()});
+  if(APPLE_WEB_SERVICE_ID)$('#siApple').onclick=async()=>{try{await script('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js',()=>window.AppleID);
+      AppleID.auth.init({clientId:APPLE_WEB_SERVICE_ID,scope:'name email',redirectURI:'https://fullmarkss.com/',usePopup:true});
+      const r=await AppleID.auth.signIn(),n=(r.user&&r.user.name)||{};
+      await viaProvider('/auth/apple',{identityToken:r.authorization.id_token,fullName:{givenName:n.firstName||null,familyName:n.lastName||null}})}
+    catch(e){if(e&&e.error==='popup_closed_by_user')return;$('#siMsg').textContent=(e&&e.message)||T('Sign in with Apple didn’t work. Please try again.')}};
   const send=$('#siSend');$('#siEmail').focus();
   $('#siEmail').onkeydown=e=>{if(e.key==='Enter')send.click()};
   send.onclick=async()=>{const email=$('#siEmail').value.trim().toLowerCase();store.set('fm-keep',$('#siKeep').checked?'1':'0');
@@ -4425,8 +4450,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
         v.disabled=true;v.textContent='Signing in…';
         try{const r2=await fetch(`${API_BASE}/auth/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,code:code.value})});
           const j2=await r2.json().catch(()=>({}));if(!r2.ok||!j2.token)throw new Error(j2.error||'That code didn’t work. Try again.');
-          setAuthToken(j2.token,j2.email||email);Stats.signin();Invite.claim();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
-          PlanSync.state='saving';await PlanSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done();
+          await finish(j2,email);
         }catch(e){$('#siMsg').textContent=e.message;v.disabled=false;v.textContent='Sign in'}};
     }catch(e){$('#siMsg').textContent=e.message;send.disabled=false;send.textContent='Send code'}};
 }
