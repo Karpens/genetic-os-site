@@ -2056,6 +2056,41 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 .stat:nth-child(1){--c:var(--stain)}.stat:nth-child(2){--c:var(--brand-2)}.stat:nth-child(3){--c:var(--teal)}.stat:nth-child(4){--c:var(--orange)}
 .stat span{color:var(--muted)}
 
+/* home hero: centred headline over a big product window on coloured panels */
+.annbar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:9px 16px;background:linear-gradient(90deg,color-mix(in srgb,var(--stain) 14%,var(--paper)),color-mix(in srgb,var(--brand-2) 14%,var(--paper)));color:var(--ink);font-size:14px;text-decoration:none;position:relative;z-index:51}
+.annbar b{font:800 11px "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;background:var(--stain);color:#fff;border-radius:999px;padding:3px 10px}.annbar em{font-style:normal;font-weight:700;color:var(--stain)}
+.annbar:hover em{text-decoration:underline}body.not-home .annbar{display:none}
+.hero{grid-template-columns:1fr;gap:46px;justify-items:center;text-align:center}
+.hero-text{max-width:920px;display:flex;flex-direction:column;align-items:center}
+.hero h1{font-size:clamp(44px,6.6vw,88px);line-height:1;letter-spacing:-.035em}
+.hero .lead{max-width:690px;margin-left:auto;margin-right:auto}
+.hero-cta,.trustbar,.hero-acct{justify-content:center}
+.hero .rot{display:inline-block;position:relative;text-align:left;transition:width .5s cubic-bezier(.2,.9,.2,1)}.hero .rot>span{position:absolute;left:0;top:0}
+.demo3d{width:min(1160px,100%);height:600px;perspective:none;max-width:none;margin:0}
+.demo3d::before{content:'';position:absolute;inset:90px 0 0;border-radius:34px;background:radial-gradient(60% 80% at 20% 20%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,var(--stain),var(--brand-2))}
+.win{position:absolute;left:13%;right:13%;top:0;bottom:46px;border-radius:24px;background:var(--paper);box-shadow:0 60px 120px -50px rgba(27,34,54,.6),0 0 0 1px var(--line);overflow:hidden;display:flex;flex-direction:column;text-align:left}
+.win-bar{height:46px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;background:var(--bg2);border-bottom:1px solid var(--line)}
+.win-bar i{width:12px;height:12px;border-radius:50%;background:#FCA5A5}.win-bar i:nth-child(2){background:#FDE68A}.win-bar i:nth-child(3){background:#86EFAC}
+.win-bar span{margin:0 auto;transform:translateX(-30px);font:600 13px "Inter",sans-serif;color:var(--muted);background:var(--paper);border-radius:9px;padding:5px 60px;box-shadow:0 0 0 1px var(--line)}
+.win-body{flex:1;display:grid;grid-template-columns:250px 1fr;min-height:0}
+.win-side{border-right:1px solid var(--line);padding:24px 20px;display:flex;flex-direction:column;gap:8px;background:color-mix(in srgb,var(--bg) 60%,var(--paper))}
+.win-side b{font:800 16px "Plus Jakarta Sans",sans-serif}.win-side small{color:var(--muted);font-size:13px;margin-bottom:8px}
+.ws{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;padding:9px 10px;border-radius:12px;color:var(--ink)}.ws i{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);flex:none}
+.ws.on i{background:var(--ok);box-shadow:none}.ws.half i{background:conic-gradient(var(--gold) 0 50%,var(--line) 0)}.ws.half{background:var(--stain-soft)}
+.ws-prog{margin-top:auto;font-size:12px;color:var(--muted)}.ws-prog div{height:8px;border-radius:4px;background:var(--line);margin-top:6px;overflow:hidden}.ws-prog i{display:block;width:46%;height:100%;background:linear-gradient(90deg,var(--stain),var(--brand-2))}
+.win-main{display:grid;place-items:center;padding:24px;background:radial-gradient(70% 70% at 70% 20%,color-mix(in srgb,var(--stain) 7%,transparent),transparent 70%)}
+.win .dq{position:relative;left:auto;top:auto;transform:none;animation:none;width:min(500px,100%);box-shadow:0 24px 50px -30px rgba(27,34,54,.45),0 0 0 1px var(--line)}
+.stk{position:absolute;z-index:3;width:92px;height:92px;border-radius:26px;display:grid;place-items:center;font-size:50px;background:var(--paper);box-shadow:0 0 0 4px var(--ink),8px 8px 0 4px var(--ink);animation:bob 6s ease-in-out infinite}
+.stk.s1{left:3.2%;top:170px;transform:rotate(-8deg)}.stk.s2{right:3.2%;top:140px;animation-delay:-2s}.stk.s3{right:4%;bottom:120px;animation-delay:-3.5s}.stk.s4{left:4%;bottom:96px;animation-delay:-1.2s}
+.demo3d .chipf{z-index:4}.chipf.c1{left:9%;top:42px}.chipf.c2{right:9%;top:30px}.chipf.c3{left:15%;bottom:14px}.chipf.c4{right:15%;bottom:6px}
+.statsband .stats{gap:0;background:var(--paper);border-radius:26px;box-shadow:var(--shadow),0 0 0 1px var(--line);overflow:hidden}
+.statsband .stat{background:none;box-shadow:none;border-radius:0;text-align:center;padding:36px 22px}.statsband .stat+.stat{border-left:1px solid var(--line)}
+.statsband .stat b{font-size:clamp(40px,4.8vw,64px);letter-spacing:-.03em}
+@media (max-width:960px){.demo3d{height:560px}.win{left:4%;right:4%}.win-body{grid-template-columns:1fr}.win-side{display:none}.stk{width:64px;height:64px;font-size:34px;border-radius:18px}
+  .stk.s1{left:-6px;top:120px}.stk.s2{right:-6px;top:96px}.stk.s3,.stk.s4{display:none}.chipf.c1{left:2%}.chipf.c2{right:2%}.chipf.c3{left:4%}.chipf.c4{right:4%}
+  .statsband .stats{grid-template-columns:1fr 1fr}.statsband .stat+.stat{border-left:0}.statsband .stat:nth-child(even){border-left:1px solid var(--line)}.statsband .stat:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:560px){.annbar{gap:8px;font-size:13px;padding:8px 12px;flex-wrap:nowrap}.annbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.annbar em{display:none}.stk{display:none}.demo3d{height:520px}.demo3d::before{inset:70px -10px 0;border-radius:26px}.win{bottom:40px}.win-bar span{padding:5px 22px;transform:none}.win-main{padding:14px}.chipf{font-size:13px;padding:8px 12px}.chipf.c3,.chipf.c4{display:none}}
+
 /* feature grid: one colour per feature */
 .bx{--stage-ink:var(--ink);--stage-muted:var(--muted);background:color-mix(in srgb,var(--bc,var(--stain)) 6%,var(--paper));box-shadow:0 0 0 1px color-mix(in srgb,var(--bc,var(--stain)) 18%,var(--line))}
 .bx:hover{box-shadow:var(--shadow-lg),0 0 0 1.5px color-mix(in srgb,var(--bc,var(--stain)) 50%,transparent)}
@@ -2126,6 +2161,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </script>
 
 
+<a class="annbar" id="annBar" href="#home" data-scroll="build"><b>New</b><span>Further Maths and Cambridge (CIE) are here</span><em>See subjects →</em></a>
 <header class="top" id="topbar">
   <div class="wrap nav">
     <a class="brand" href="#home"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="var(--stain)"/><path d="M7 12.3l3.2 3.2L17.5 8" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Full Marks</a>
@@ -2157,7 +2193,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
           <a class="btn lg" href="#home" data-scroll="build" id="heroStart">Start revising free →</a>
           <button class="btn ghost lg" type="button" id="tourBtn">▶ How it works</button>
         </div>
-        <div class="hero-acct" id="heroAcct" hidden><button class="btn ghost" type="button" id="heroJoin"><span aria-hidden="true">👤</span>Create a free account</button><span>With your email, no password · saves your progress on every device</span></div>
+        <div class="hero-acct" id="heroAcct" hidden><button class="btn ghost" type="button" id="heroJoin"><span aria-hidden="true">👤</span>Create a free account</button><span id="heroHint">With your email, no password · saves your progress on every device</span></div>
         <div class="trustbar free-only">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure payment</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>Cancel any time</span>
@@ -2166,11 +2202,16 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         </div>
       </div>
       <div class="demo3d" id="demo3d" aria-hidden="true">
+        <span class="stk s1">🧠</span><span class="stk s2">🔬</span><span class="stk s3">⚛️</span><span class="stk s4">🧮</span>
+        <div class="win"><div class="win-bar"><i></i><i></i><i></i><span>fullmarkss.com</span></div>
+          <div class="win-body"><div class="win-side"><b>Biology · AQA GCSE</b><small>Topic 1 · Cell biology</small>
+            <div class="ws on"><i></i>Cell structure</div><div class="ws on"><i></i>Microscopy</div><div class="ws half"><i></i>Cell division</div><div class="ws"><i></i>Transport in cells</div><div class="ws"><i></i>Stem cells</div>
+            <div class="ws-prog"><span>Topic progress</span><div><i></i></div></div></div>
+          <div class="win-main" id="winMain"><div class="dq" id="dq"><div class="k"><span id="dqSub">Biology · GCSE</span><em id="dqNo">Q 1/10</em></div><h4 id="dqQ"></h4><div id="dqO"></div><div class="bar"><i id="dqBar"></i></div></div></div></div></div>
         <div class="chipf c1"><span>🔥</span> 7-day streak</div>
         <div class="chipf c2"><big>A*</big> predicted</div>
         <div class="chipf c3"><span>⚡</span> +10 XP</div>
         <div class="chipf c4"><span>🏆</span> Level 12</div>
-        <div class="dq" id="dq"><div class="k"><span id="dqSub">Biology · GCSE</span><em id="dqNo">Q 1/10</em></div><h4 id="dqQ"></h4><div id="dqO"></div><div class="bar"><i id="dqBar"></i></div></div>
         <svg class="dcur" id="dcur" viewBox="0 0 46 56"><path d="M4 3 L4 44 L15 34 L23 52 L31 48 L23 31 L38 31 Z" fill="#111" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>
       </div>
     </div>
@@ -3397,7 +3438,8 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-scroll]');
   const rot=$('#rotWord'),names=Object.values(SUBJECTS).map(s=>[s.name.replace('Computer Science','Computing'),s.color]);
   rot.innerHTML=names.map(([n,c])=>`<span style="color:${c}">${esc(n)}.</span>`).join('');
   const spans=[...rot.children];let ri=0;spans[0].classList.add('on');
-  setInterval(()=>{if(document.hidden)return;const a=spans[ri];ri=(ri+1)%spans.length;const b=spans[ri];a.classList.remove('on');a.classList.add('out');b.classList.remove('out');b.classList.add('on');setTimeout(()=>a.classList.remove('out'),800)},2200);
+  const fit=()=>{rot.style.width=spans[ri].offsetWidth+'px'};fit();document.fonts&&document.fonts.ready.then(fit);addEventListener('resize',fit);setTimeout(fit,1500);
+  setInterval(()=>{if(document.hidden)return;const a=spans[ri];ri=(ri+1)%spans.length;const b=spans[ri];a.classList.remove('on');a.classList.add('out');b.classList.remove('out');b.classList.add('on');fit();setTimeout(()=>a.classList.remove('out'),800)},2200);
 
   // the auto-playing question card
   const pool=[];for(const [k,s] of Object.entries(SUBJECTS))for(const [l] of LEVELS){const d=s[l];if(!d||!d.full)continue;for(const t of d.topics)for(const q of t.subs[0].q)if(q[0].length<90&&q[1].every(o=>o.length<34))pool.push([s.name,l,q])}
@@ -3653,7 +3695,7 @@ function lbAfterGame(id,score){const el=$('#lbRes');if(!el||!API_BASE||!['speed'
 const HomeJoin={
   render(){const on=!!(API_BASE&&!authToken());['heroAcct','finJoin'].forEach(id=>{const e=$('#'+id);if(e)e.hidden=!on})},
   boot(){['heroJoin','finJoin'].forEach(id=>{const e=$('#'+id);if(e)e.onclick=()=>planSignIn(T('Create your free account'),()=>{Acct.render();HomeJoin.render();route()})});this.render();
-    const ways=[GOOGLE_WEB_CLIENT_ID&&'Google',APPLE_WEB_SERVICE_ID&&'Apple'].filter(Boolean),hint=$('#heroAcct span:last-child');
+    const ways=[GOOGLE_WEB_CLIENT_ID&&'Google',APPLE_WEB_SERVICE_ID&&'Apple'].filter(Boolean),hint=$('#heroHint');
     if(hint)hint.textContent=ways.length?T('{0} or email · saves your progress on every device',ways.join(', ')):T('With your email, no password · saves your progress on every device');
     // the summer exam series starts in the second week of May
     const now=new Date(),y=now.getMonth()>5||(now.getMonth()===5&&now.getDate()>20)?now.getFullYear()+1:now.getFullYear(),may=new Date(y,4,11),w=Math.ceil((may-now)/6048e5),ec=$('#examCount');
@@ -4371,6 +4413,8 @@ function tourDeck(){const s=SUBJECTS[subject],d=s[level],x=d&&d.full?d.topics[0]
     {stop:1,end:1,lines:['The first subtopic of every topic is free, so pick your subject and start revising now. Good luck, you have got this!'],
       html:`<div class="xp-scene"><div class="xp-art"><span>🚀</span></div><h2>Ready? Let’s go!</h2><div class="actions"><button class="btn lg" data-xpact="start">Start revising free →</button></div></div>`}],
     act:()=>{const b=document.querySelector('#heroStart');if(b)b.click()}}}
+// the tour's narration: shared clips common/tour1 … tour7 (voice/clips.js keeps the same lines)
+const tourDeckSpoken=()=>{const d=tourDeck();d.scenes.forEach((sc,i)=>{sc.clip={c:'tour'+(i+1)}});return d};
 
 /* home: a silent, looping preview of a real explainer for the chosen subject */
 const Trailer=(()=>{const frame=$('#cineFrame');if(!frame)return {};let on=false,key='',tm=[],raf=0;
@@ -6669,7 +6713,7 @@ function deepStudy(h){const a=h.split('/').slice(1).map(x=>{try{return decodeURI
   const k=a[i],tab=a[i+1],T=(levelData()||{}).topics||[],ti=k?T.findIndex(t=>(t.subs||[]).some(x=>(x.key||x.n)===k)):-1;
   if(ti>=0)view={topic:ti,sub:tab==='topic'?null:T[ti].subs.findIndex(x=>(x.key||x.n)===k),tab:tab==='practice'||tab==='explore'?tab:'notes',check:false,papers:false};
   renderPicker()}
-function route(){Explainer.close();const h=location.hash.slice(1),hb=h.split('/')[0],p=PAGES.includes(hb)?hb:'home';if(p==='study'&&h.includes('/'))deepStudy(h);
+function route(){Explainer.close();const h=location.hash.slice(1),hb=h.split('/')[0],p=PAGES.includes(hb)?hb:'home';document.body.classList.toggle('not-home',p!=='home');if(p==='study'&&h.includes('/'))deepStudy(h);
   $$('section.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));
   $$('.nav a.l').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+p));
   $('#navlinks').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');
@@ -6682,7 +6726,7 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
 {const r=document.documentElement,tb=$('#themeBtn'),lbl=()=>{tb.textContent=r.dataset.theme==='dark'?'☀️ '+T('Light mode'):'🌙 '+T('Dark mode')};
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
-$('#tourBtn').onclick=()=>Explainer.open(tourDeck());
+$('#tourBtn').onclick=()=>Explainer.open(tourDeckSpoken());
 renderPicker();route();Invite.boot();PlanSync.pull();{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
