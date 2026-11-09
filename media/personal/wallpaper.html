@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wallpaper</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  video { position: fixed; inset: 0; width: 100vw; height: 100vh; object-fit: cover; }
+</style>
+</head>
+<body>
+<video src="wallpaper-4k.mp4" autoplay loop muted playsinline></video>
+<script>
+  const v = document.querySelector('video');
+  const play = () => v.play().catch(() => {});
+  v.addEventListener('ended', () => { v.currentTime = 0; play(); });
+  document.addEventListener('visibilitychange', play);
+  play();
+</script>
+</body>
+</html>
