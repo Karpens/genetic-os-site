@@ -1618,7 +1618,8 @@ html.i18n .board-ui{display:none!important}
 .sc-tools .lbinput{margin:0;width:auto;flex:1 1 200px;padding:10px 14px}
 .sc-tools select.lbinput{flex:0 1 auto}
 .sc-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px}
-.st-acc{margin-top:16px}.st-acc .st-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.st-accq{max-width:240px;margin:0}
+.st-acc{margin-top:16px}.st-sch{margin-top:16px}.st-enq{padding:12px 0;border-top:1px solid var(--line)}.st-enq:first-of-type{border-top:0}.st-enq-h{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}.st-enq-h .muted{margin-left:auto;font-size:13px}
+.st-enq-m{font-size:13.5px;color:var(--muted)}.st-enq-msg{margin:6px 0;font-size:14px;white-space:pre-wrap}.st-enq-a{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.st-acc .st-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.st-accq{max-width:240px;margin:0}
 .st-accn{display:inline-block;margin-left:6px;font-size:13px;font-weight:800;color:#fff;background:var(--stain);border-radius:999px;padding:1px 9px;vertical-align:middle}
 .st-av{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;margin-right:9px;font:800 12px "Inter",sans-serif;color:#fff;background:var(--stain);vertical-align:middle}
 .st-acc td a{color:var(--ink);text-decoration:none;font-weight:600}.st-acc td a:hover{color:var(--stain)}
@@ -2145,6 +2146,30 @@ details.deeper[open] summary{margin-bottom:12px}details.deeper[open] summary::af
 @media (max-width:560px){.subrow .tag{display:none}.subrow .pring{width:36px;height:36px}.subt strong{font-size:15px}}
 @media (max-width:900px){.sx-acts{grid-template-columns:repeat(2,minmax(0,1fr))}.nd-wrap.has-d{grid-template-columns:1fr}.nd-wrap.has-d .diag{position:static}
   .nd-card{padding:22px 20px 24px}.nd-card p{font-size:18px}.nd-stage{min-height:200px}}
+/* school finder, "not on Full Marks yet" and the schools form (2026-11) */
+.sf-lab{grid-column:1/-1}.sf{position:relative}.sf .lbinput{margin:6px 0 0}
+.sf-list{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;max-height:330px;overflow:auto;background:var(--paper);border-radius:16px;padding:6px;box-shadow:var(--shadow-lg),0 0 0 1px var(--line)}
+.sf-o{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;text-align:left;padding:10px 12px;border-radius:12px;color:var(--ink);cursor:pointer;font:inherit}
+.sf-o:hover,.sf-o.on{background:var(--stain-soft)}.sf-o.custom{border-top:1px solid var(--line);border-radius:0 0 12px 12px;margin-top:4px}
+.sf-ic{font-size:20px;flex:none}.sf-t{display:flex;flex-direction:column;min-width:0}.sf-t b{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sf-t small{font-size:12.5px;color:var(--muted)}
+.sc-form-rest{display:contents}.sc-form-rest[hidden]{display:none}.sc-form-rest>.btn,.sc-form-rest>.sc-msg{grid-column:1/-1;justify-self:start}.sc-form-rest>.btn{margin-top:8px}
+.sf-not{margin-top:16px;border-radius:22px;padding:22px;background:linear-gradient(150deg,color-mix(in srgb,var(--gold) 16%,var(--paper)),var(--paper) 70%);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--gold) 35%,transparent);animation:popIn .4s cubic-bezier(.2,1.2,.3,1)}
+.sf-not-h{display:flex;gap:14px;align-items:flex-start}.sf-not-h>span{font-size:34px;line-height:1}.sf-not-h b{display:block;font:800 19px "Plus Jakarta Sans",sans-serif}.sf-not-h small{display:block;color:var(--muted);font-size:14.5px;margin-top:4px;line-height:1.5}
+.sf-share{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.sf-tips{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sf-tips>div{display:flex;flex-direction:column;gap:6px;align-items:flex-start;background:var(--paper);border-radius:16px;padding:14px 16px;box-shadow:0 0 0 1px var(--line)}
+.sf-tips b{font-size:15px}.sf-tips span{font-size:13.5px;color:var(--muted);flex:1}
+.w3more{font-size:14px;font-weight:700;color:var(--teal);text-decoration:none;margin-top:-2px}.w3more:hover{text-decoration:underline}
+.forsch{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;margin-top:24px;padding:28px 32px;border-radius:28px;background:radial-gradient(70% 120% at 0% 0%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,#0F9F8F,#2563EB);color:#fff;box-shadow:0 40px 80px -40px rgba(15,95,140,.7)}
+.forsch-art{display:flex;gap:10px}.forsch-art span{width:64px;height:64px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:32px;box-shadow:0 0 0 3px #1B2236,5px 5px 0 3px #1B2236}.forsch-art span:nth-child(2){transform:translateY(-8px) rotate(5deg)}.forsch-art span:nth-child(1){transform:rotate(-6deg)}
+#p-home .forsch .eyebrow{background:rgba(255,255,255,.18);color:#fff;box-shadow:none;margin:0 0 6px}.forsch h3{margin:0;font-size:26px;letter-spacing:-.02em;color:#fff}.forsch p{margin:6px 0 0;color:rgba(255,255,255,.88)}
+.forsch .btn{background:#fff;color:#0F5F8C;white-space:nowrap}
+.askp-acts{display:flex;gap:8px;flex-wrap:wrap}
+.se-lead{margin-top:0;color:var(--muted)}.se-perks{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}.se-perks span{font-size:13.5px;font-weight:700;background:var(--stain-soft);color:var(--stain);border-radius:999px;padding:6px 12px}
+.se-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:14px}.se-grid label,.se-grid>div{display:flex;flex-direction:column;font-size:14px;font-weight:700}.se-grid .wide{grid-column:1/-1}.se-grid .lbinput{margin:6px 0 8px;font-weight:400}
+.se-l{margin-bottom:8px}.se-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}.se-chips button{border:0;border-radius:999px;padding:7px 13px;font:600 13.5px "Inter",sans-serif;background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer}
+.se-chips button[aria-pressed=true]{background:var(--c);color:#fff;box-shadow:0 8px 16px -10px var(--c)}
+.se-done{text-align:center;padding:10px 0 4px}.se-done .big{font-size:48px}.se-done h3{margin:6px 0}
+@media (max-width:860px){.forsch{grid-template-columns:1fr;text-align:left;gap:18px;padding:24px}.forsch .btn{justify-self:start}.sf-tips,.se-grid{grid-template-columns:1fr}}
 @media (max-width:560px){.annbar{gap:8px;font-size:13px;padding:8px 12px;flex-wrap:nowrap}.annbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.annbar em{display:none}.stk{display:none}.demo3d{height:520px}.demo3d::before{inset:70px -10px 0;border-radius:26px}.win{bottom:40px}.win-bar span{padding:5px 22px;transform:none}.win-main{padding:14px}.chipf{font-size:13px;padding:8px 12px}.chipf.c3,.chipf.c4{display:none}}
 /* home course picker: one wide card, colour tiles and pills (no ticket, no mountain) */
 #build .builder{display:block;max-width:1120px;margin:0 auto}
@@ -2394,8 +2419,9 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <div class="who3">
         <div class="w3c rv" style="--d:0;--wc:var(--stain)"><div class="w3art" aria-hidden="true"><span>🎒</span><span>📘</span><span>✏️</span></div><div class="w3t"><h3>I’m a student</h3><p>Your exact spec, notes for every subtopic, <span data-total-q>5,000+</span> explained questions, games and timed mocks. Start with the first topic of any subject, free.</p><a class="btn" href="#home" data-scroll="build">Start revising free →</a></div></div>
         <div class="w3c rv" style="--d:1;--wc:var(--orange)"><div class="w3art" aria-hidden="true"><span>🏡</span><span>💳</span><span>📈</span></div><div class="w3t"><h3>I’m a parent</h3><p>One plan covers every subject and level. <b data-trial-line>Every plan starts with a free trial</b>, and you can cancel any time in two clicks.</p><a class="btn ghost" href="#pricing">See plans and prices</a></div></div>
-        <div class="w3c rv" style="--d:2;--wc:var(--teal)"><div class="w3art" aria-hidden="true"><span>🍎</span><span>🧑‍🏫</span><span>📋</span></div><div class="w3t"><h3>I’m a teacher</h3><p>Free for teachers and for every student in their classes. Share a class code, set homework and see who has done it.</p><a class="btn ghost" href="#teacher">Get a free teacher account</a></div></div>
+        <div class="w3c rv" style="--d:2;--wc:var(--teal)"><div class="w3art" aria-hidden="true"><span>🍎</span><span>🧑‍🏫</span><span>📋</span></div><div class="w3t"><h3>I’m a teacher</h3><p>Free for teachers and for every student in their classes. Share a class code, set homework and see who has done it.</p><a class="btn ghost" href="#teacher">Get a free teacher account</a><a class="w3more" href="#" data-school-enq>Whole school? Get a price →</a></div></div>
       </div>
+      <div class="forsch rv"><div class="forsch-art" aria-hidden="true"><span>🏫</span><span>🧑‍🏫</span><span>🎒</span></div><div class="forsch-t"><span class="eyebrow">For schools</span><h3>Full Marks for your whole school</h3><p>Every teacher and every student, set up for you, on one invoice. Tell us about your school and we’ll send you a price.</p></div><button type="button" class="btn lg" data-school-enq>Get a price for your school →</button></div>
     </div>
 
     <div class="sec">
@@ -2534,7 +2560,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       </div>
     </div>
     <p class="fine" id="taxNote" style="text-align:center;margin-top:12px"></p>
-    <div class="askp"><div><b>🏫 Teacher or school?</b><span>Full Marks is free for teachers, and for every student in their classes. Ask for a teacher account, create a class and share the code.</span></div><a class="btn ghost" href="#teacher">Teacher portal</a></div>
+    <div class="askp"><div><b>🏫 Teacher or school?</b><span>Full Marks is free for teachers, and for every student in their classes. Ask for a teacher account, create a class and share the code. For the whole school, ask us for a price.</span></div><div class="askp-acts"><a class="btn ghost" href="#teacher">Teacher portal</a><button type="button" class="btn ghost" data-school-enq>Whole school</button></div></div>
     <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link, price and how to cancel.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
     <div class="askp"><div><b>🎁 Try it free with a friend</b><span>Send a friend your invite link. When they make a free account, you both get a week of full access.</span></div><button class="btn ghost" type="button" id="invAskp">Invite a friend</button></div>
     <p class="fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
@@ -2598,7 +2624,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </section>
 </main>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="/revision/">Revision notes</a> · <a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="#teacher">For teachers</a> · <a href="#" id="whoFoot">Teacher or student?</a> · <a href="#" id="langFoot" translate="no"></a> · <a href="#" id="themeBtn"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="/revision/">Revision notes</a> · <a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="#" data-school-enq>For schools</a> · <a href="#teacher">For teachers</a> · <a href="#" id="whoFoot">Teacher or student?</a> · <a href="#" id="langFoot" translate="no"></a> · <a href="#" id="themeBtn"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -5090,20 +5116,25 @@ function schoolDraw(main,d){main.dataset.sig=JSON.stringify(d);const cl=d.classe
     try{await SCH.api('POST',`/class/${a.dataset.leave}/leave`);renderSchool('school')}catch(err){toast('⚠️',err.message)}})}
 function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=p.school||store.get('fm-school','');
   const pick=S.find(s=>s.name.toLowerCase()===String(want).toLowerCase());
-  return `<div class="sc-card" id="joinCard"><h3>${more?'Join another class':'Join your class'}</h3><p class="muted">Choose your school and subject, then type the 6-digit code from your teacher.</p>
-    ${S.length?`<div class="sc-form">
-      <label>School<select class="lbinput" id="jSchool"><option value="">Choose your school…</option>${S.map(s=>`<option${pick&&s.name===pick.name?' selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+  return `<div class="sc-card" id="joinCard"><h3>${more?'Join another class':'Join your class'}</h3><p class="muted">Find your school, then choose your subject and type the 6-digit code from your teacher.</p>
+    <div class="sc-form">
+      <label class="sf-lab">School<div class="sf" id="jFind"><input class="lbinput" id="jSchoolQ" autocomplete="off" spellcheck="false" placeholder="Start typing your school’s name…" value="${esc(pick?pick.name:want)}" aria-autocomplete="list"><div class="sf-list" role="listbox" hidden></div></div><input type="hidden" id="jSchool" value="${esc(pick?pick.name:'')}"></label>
+      <div class="sc-form-rest" id="jRest"${pick?'':' hidden'}>
       <label>Subject<select class="lbinput" id="jSub" data-want="${esc(p.subject||'')}"></select></label>
       <label>Class code<input class="lbinput sc-codein" id="jCode" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="225544" value="${esc(p.code||'')}"></label>
-      <label>Your full name<input class="lbinput" id="jName" maxlength="60" autocomplete="name" placeholder="First and last name" value="${esc(store.get('fm-school-name',''))}"></label></div>
-      <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p>`
-    :'<p class="muted"><b>No schools use Full Marks yet.</b> Your school appears here as soon as your teacher creates a class.</p>'}
+      <label>Your full name<input class="lbinput" id="jName" maxlength="60" autocomplete="name" placeholder="First and last name" value="${esc(store.get('fm-school-name',''))}"></label>
+      <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p></div></div>
+    <div id="jNot" hidden></div>
     <p class="sc-note">🎁 Students in a teacher’s class get full access to Full Marks for free.</p>
     <p class="sc-note">🔒 When your teacher approves you, they can see your grades and what you do on Full Marks: the notes, 3D models and explainers you open, your practice and scores, and how long you study. You can leave a class at any time.</p></div>`}
-function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)return;const sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg');
-  const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value),list=s?s.subjects:[],want=sub.dataset.want||sub.value;
+function schoolJoinBind(main){const box=main.querySelector('#jFind');if(!box)return;const sch=main.querySelector('#jSchool'),sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg'),rest=main.querySelector('#jRest'),not=main.querySelector('#jNot');
+  const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value)||(SchoolPage.pick&&SchoolPage.pick.onFM?SchoolPage.pick:null),list=s&&s.subjects||[],want=sub.dataset.want||sub.value;
     sub.innerHTML=list.length?(list.length>1?'<option value="">Choose the subject…</option>':'')+SCH.opts(list.map(k=>[k,SCH.sName(k)]),want):'<option value="">Choose your school first</option>';sub.disabled=!list.length};
-  fill();sch.onchange=()=>{sub.dataset.want='';fill()};
+  // a school on Full Marks opens the rest of the form; any other school shows how to bring Full Marks to it
+  const show=s=>{SchoolPage.pick=s;sch.value=s&&s.onFM?s.name:'';rest.hidden=!(s&&s.onFM);not.hidden=!(s&&!s.onFM);
+    if(s&&!s.onFM){not.innerHTML=SchoolNotYet.html(s);SchoolNotYet.bind(not,s)}else not.innerHTML='';if(s&&s.onFM)sub.dataset.want='';fill()};
+  SchoolFind.mount(box,{pick:show});
+  if(sch.value)show({name:sch.value,onFM:true});
   code.oninput=()=>{code.value=code.value.replace(/\D/g,'').slice(0,6)};
   go.onclick=async()=>{const name=main.querySelector('#jName').value.trim(),body={school:sch.value,subject:sub.value,code:code.value,name};
     msg.textContent=!body.school?T('Choose your school.'):!body.subject?T('Choose the subject.'):body.code.length!==6?T('The class code has 6 digits.'):name.length<2?T('Enter your full name so your teacher knows who you are.'):'';
@@ -5113,6 +5144,74 @@ function schoolJoinBind(main){const sch=main.querySelector('#jSchool');if(!sch)r
       toast(r.status==='member'?'✓':'📨',r.status==='member'?T('You’re already in {0}.',r.class.name):T('Request sent to {0}. You’ll see your grades as soon as they approve you.',r.class.teacher||T('your teacher')));
       if(location.hash!=='#school')location.hash='school';else renderSchool('school')}
     catch(e){msg.textContent=e.message;go.disabled=false;go.textContent=T('Send request to my teacher')}}}
+
+/* Finding a school as you type: schools on Full Marks first, then every secondary school and college in England,
+   and "Use …" for anything else. pick(school) gets {name, town, onFM, subjects}, or null when the text changes. */
+const SchoolFind={
+  mount(box,{pick}){const q=box.querySelector('input'),list=box.querySelector('.sf-list');let items=[],k=-1,t=null,seq=0,cur=q.value.trim();
+    const draw=()=>{list.hidden=!items.length;q.setAttribute('aria-expanded',String(!!items.length));
+      list.innerHTML=items.map((x,i)=>`<button type="button" role="option" class="sf-o${i===k?' on':''}${x.custom?' custom':''}" data-i="${i}"><span class="sf-ic" aria-hidden="true">${x.custom?'✏️':x.onFM?'✅':'🏫'}</span><span class="sf-t"><b>${esc(x.custom?T('Use “{0}”',x.name):x.name)}</b><small>${esc(x.custom?T('My school isn’t in the list'):[x.town,x.onFM?T('on Full Marks'):''].filter(Boolean).join(' · '))}</small></span></button>`).join('')};
+    const choose=x=>{items=[];draw();q.value=x.name;cur=x.name;pick(x)};
+    const search=async()=>{const v=q.value.trim(),my=++seq;if(v.length<2){items=[];draw();return}
+      let res;try{res=(await SCH.api('GET','/schools/search?q='+encodeURIComponent(v))).results||[]}
+      catch(e){res=(SchoolPage.schools||[]).filter(x=>x.name.toLowerCase().includes(v.toLowerCase())).map(x=>({...x,onFM:true}))}
+      if(my!==seq)return;items=res.concat(res.some(x=>x.name.toLowerCase()===v.toLowerCase())?[]:[{name:v,custom:true,onFM:false}]);k=-1;draw()};
+    q.oninput=()=>{if(q.value.trim()!==cur){cur='';pick(null)}clearTimeout(t);t=setTimeout(search,180)};
+    q.onfocus=()=>{if(!cur&&q.value.trim().length>1)search()};
+    q.onkeydown=e=>{if(list.hidden)return;if(e.key==='ArrowDown'||e.key==='ArrowUp'){k=(k+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;draw();e.preventDefault()}
+      else if(e.key==='Enter'){if(k<0&&items.length)k=0;choose(items[k]);e.preventDefault()}else if(e.key==='Escape'){items=[];draw()}};
+    list.onmousedown=e=>e.preventDefault();
+    list.onclick=e=>{const b=e.target.closest('[data-i]');if(b)choose(items[+b.dataset.i])};
+    q.onblur=()=>setTimeout(()=>{items=[];draw()},150)}};
+
+/* A student's school that isn't on Full Marks yet: say so, count it for the owner, and help them bring it in. */
+const SchoolNotYet={told:new Set(),
+  msg(){return T('Hi! I’ve been revising with Full Marks: notes, exam-style questions and explainers for GCSE and A-level, matched to our exam board. It’s free for teachers and for every student in their classes: you create a class, share a code, set homework and see how we are doing. Could our class use it? {0}','https://fullmarkss.com/?utm_source=student_share#teacher')},
+  html(s){const mail=`mailto:?subject=${encodeURIComponent(T('Could our class use Full Marks?'))}&body=${encodeURIComponent(this.msg())}`;
+    return `<div class="sf-not"><div class="sf-not-h"><span aria-hidden="true">🏫</span><div><b>${esc(T('{0} isn’t on Full Marks yet',s.name))}</b><small>${esc(T('No teacher there uses Full Marks so far. Tell them about it: once a teacher signs up, Full Marks is free for them and for every student in their classes.'))}</small></div></div>
+      <div class="sf-share"><a class="btn" href="${mail}">✉️ ${esc(T('Email my teacher'))}</a><button type="button" class="btn ghost" data-sf-copy>📋 ${esc(T('Copy the message'))}</button>${navigator.share?`<button type="button" class="btn ghost" data-sf-share>📤 ${esc(T('Share'))}</button>`:''}</div>
+      <div class="sf-tips"><div><b>💡 ${esc(T('Your school could have it for everyone'))}</b><span>${esc(T('Send us your school’s name and we’ll get in touch with them about a price for the whole school.'))}</span><button type="button" class="btn ghost sm" data-sf-enq>${esc(T('Tell us about my school'))} →</button></div>
+      <div><b>🚀 ${esc(T('Start now, on your own'))}</b><span>${esc(T('The first topic of every subject is free.'))}</span><a class="btn ghost sm" href="#home" data-scroll="build">${esc(T('Start revising'))} →</a></div></div></div>`},
+  bind(root,s){const copy=root.querySelector('[data-sf-copy]'),share=root.querySelector('[data-sf-share]'),enq=root.querySelector('[data-sf-enq]');
+    if(copy)copy.onclick=()=>SCH.copy(this.msg());
+    if(share)share.onclick=()=>navigator.share({title:'Full Marks',text:this.msg()}).catch(()=>{});
+    if(enq)enq.onclick=()=>SchoolEnq.open({school:s.name,town:s.town,role:'Student'});
+    const key=(s.name+'|'+(s.town||'')).toLowerCase();if(API_BASE&&!this.told.has(key)){this.told.add(key);fetch(`${API_BASE}/schools/interest`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({school:s.name,town:s.town||''})}).catch(()=>{})}}};
+
+/* A school asking for Full Marks for everyone: a short form, sent to the owner, who replies with a price. */
+const SchoolEnq={
+  ROLES:['Teacher','Head of department','Senior leader','Business or IT manager','Parent','Student','Other'],
+  SIZES:['Under 100','100–300','300–600','600–1,000','Over 1,000'],
+  STARTS:['As soon as possible','This term','Next term','Next school year','Just looking'],
+  open(pre={}){const o=(l,v)=>l.map(x=>`<option${x===v?' selected':''}>${esc(x)}</option>`).join('');
+    showModal(T('Full Marks for your whole school'),`<div class="se">
+      <p class="se-lead">${esc(T('Teachers can already use Full Marks free with their own classes. For the whole school, tell us a little about it and we’ll reply with a price within two working days.'))}</p>
+      <div class="se-perks"><span>👩‍🏫 ${esc(T('Every teacher'))}</span><span>🎒 ${esc(T('Every student'))}</span><span>🧾 ${esc(T('One invoice'))}</span><span>🤝 ${esc(T('Help setting up'))}</span></div>
+      <div class="se-grid">
+        <label>${esc(T('Your name'))}<input class="lbinput" id="seName" autocomplete="name" maxlength="80"></label>
+        <label>${esc(T('Your role'))}<select class="lbinput" id="seRole">${o(this.ROLES,pre.role||'Teacher')}</select></label>
+        <label class="wide">${esc(T('School'))}<div class="sf" id="seFind"><input class="lbinput" id="seSchool" autocomplete="off" spellcheck="false" maxlength="120" placeholder="${esc(T('Start typing the school’s name…'))}" value="${esc(pre.school||'')}"><div class="sf-list" role="listbox" hidden></div></div></label>
+        <label>${esc(T('Email'))}<input class="lbinput" id="seEmail" type="email" autocomplete="email" maxlength="120" value="${esc(store.get('go-auth-email',''))}"></label>
+        <label>${esc(T('Phone'))} <small class="muted">(${esc(T('optional'))})</small><input class="lbinput" id="sePhone" type="tel" autocomplete="tel" maxlength="40"></label>
+        <label>${esc(T('Students'))}<select class="lbinput" id="seSize"><option value="">${esc(T('About how many?'))}</option>${o(this.SIZES)}</select></label>
+        <label>${esc(T('When'))}<select class="lbinput" id="seStart">${o(this.STARTS,'Next term')}</select></label>
+        <div class="wide"><span class="se-l">${esc(T('Subjects'))}</span><div class="se-chips">${Object.entries(SUBJECTS).map(([k,x])=>`<button type="button" data-k="${k}" style="--c:${x.color}" aria-pressed="false">${esc(x.name)}</button>`).join('')}</div></div>
+        <label class="wide">${esc(T('Anything else?'))} <small class="muted">(${esc(T('optional'))})</small><textarea class="lbinput" id="seMsg" rows="3" maxlength="2000" placeholder="${esc(T('Year groups, exam boards, questions about the price…'))}"></textarea></label>
+      </div>
+      <button type="button" class="btn lg" id="seGo">${esc(T('Ask for a price'))} →</button><p class="sc-msg" id="seErr"></p>
+      <p class="sc-note">${esc(T('We only use these details to reply to you.'))}</p></div>`);
+    $('#modal .box').classList.add('wide');let town=pre.town||'';
+    SchoolFind.mount($('#seFind'),{pick:x=>{town=x&&x.town||''}});
+    $('#mBody .se-chips').onclick=e=>{const b=e.target.closest('[data-k]');if(b)b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'))};
+    const go=$('#seGo'),err=$('#seErr');
+    go.onclick=async()=>{const v=id=>$('#'+id).value.trim(),body={name:v('seName'),role:v('seRole'),school:v('seSchool'),town,email:v('seEmail'),phone:v('sePhone'),size:v('seSize'),start:v('seStart'),message:v('seMsg'),subjects:[...$$('#mBody .se-chips [aria-pressed=true]')].map(b=>SUBJECTS[b.dataset.k].name)};
+      err.textContent=body.name.length<2?T('Please enter your name.'):body.school.length<3?T('Please enter your school.'):!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)?T('Please enter an email address we can reply to.'):'';
+      if(err.textContent)return;go.disabled=true;go.textContent=T('Sending…');
+      try{await SCH.api('POST','/schools/enquiry',body);
+        $('#mBody').innerHTML=`<div class="se-done"><div class="big">🎉</div><h3>${esc(T('Thank you!'))}</h3><p>${esc(T('We’ve got your request for {0}. We’ll reply to {1} within two working days.',body.school,body.email))}</p><button type="button" class="btn" onclick="document.getElementById('modal').classList.remove('on')">${esc(T('Close'))}</button></div>`}
+      catch(e){err.textContent=e.message;go.disabled=false;go.textContent=T('Ask for a price')+' →'}}}};
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('[data-school-enq]');if(!a)return;e.preventDefault();SchoolEnq.open()});
+
 function schoolHw(c){const hw=c.homework||[];if(!hw.length)return '';const todo=hw.filter(h=>!h.done).length,today=HW.today();(SchoolPage.hw=SchoolPage.hw||{});hw.forEach(h=>SchoolPage.hw[h.id]={...h,cls:c.id});
   return `<div class="hw-box"><h4>📚 ${esc(T('Homework'))} ${todo?`<span class="sc-pill gold">${esc(T('{0} to do',todo))}</span>`:`<span class="sc-pill">${esc(T('all done ✓'))}</span>`}</h4>${hw.map(h=>{const [,ic,kl]=HW.kind(h.kind),late=!h.done&&h.due&&h.due<today,fresh=!h.done&&SchoolPage.seenHw&&!SchoolPage.seenHw.has(h.id);
     return `<div class="hw-item${h.done?' done':''}${fresh?' new':''}"><div class="hw-top"><span class="hw-ic">${h.done?'✅':ic}</span><div><b>${fresh?`<span class="hw-new">${esc(T('NEW'))}</span>`:''}${esc(h.title)}</b><small${late?' class="hw-late"':''}>${esc(T(kl))}${h.due?' · '+esc(late?T('was due {0}',SCH.date(h.due)):T('due {0}',SCH.date(h.due))):''}</small></div></div>
@@ -5582,13 +5681,23 @@ ST.accounts=function(main){const a=this.acc,root=main.querySelector('.st-root');
     ${a.durable?'':'<p class="muted">On this server the list starts again after every update (see the note at the top).</p>'}</div>`;
   const old=root.querySelector('.st-acc');if(old)old.outerHTML=html;else root.insertAdjacentHTML('beforeend',html);
   const inp=root.querySelector('.st-accq');inp.oninput=()=>{this.accQ=inp.value;const pos=inp.selectionStart;this.accounts(main);const i2=root.querySelector('.st-accq');i2.focus();try{i2.setSelectionRange(pos,pos)}catch(e){}}};
-{const draw=ST.draw;ST.draw=function(main,d,n){draw.call(this,main,d,n);this.accounts(main)}}
+// Schools: requests for Full Marks for the whole school, and the schools students said they are at
+ST.schools=function(main){const a=this.sch,root=main.querySelector('.st-root');if(!a||!root)return;const E=a.enquiries||[],A=a.asked||[];
+  const day=t=>new Date(t).toLocaleDateString(I18N.L.html,{day:'numeric',month:'short'});
+  const html=`<div class="sc-cols st-sch"><div class="sc-card"><div class="st-head"><div><h4 style="margin:0">School requests <span class="st-accn">${this.n(E.length)}</span></h4><p class="muted">Schools asking for Full Marks for everyone. Reply to agree a price.</p></div></div>
+      ${E.length?E.map(e=>`<div class="st-enq"><div class="st-enq-h"><b>${esc(e.school)}</b>${e.town?`<small> · ${esc(e.town)}</small>`:''}<span class="muted">${esc(day(e.at))}</span></div>
+        <div class="st-enq-m">${esc(e.name)} · ${esc(e.role)}${e.size?` · ${esc(e.size)} students`:''}${e.start?` · ${esc(e.start)}`:''}</div>${e.subjects&&e.subjects.length?`<div class="st-enq-m">${esc(e.subjects.join(', '))}</div>`:''}${e.message?`<p class="st-enq-msg">${esc(e.message)}</p>`:''}
+        <div class="st-enq-a"><a class="btn sm" href="mailto:${esc(e.email)}?subject=${encodeURIComponent('Full Marks for '+e.school)}">✉️ ${esc(e.email)}</a>${e.phone?`<a class="btn ghost sm" href="tel:${esc(e.phone.replace(/\s+/g,''))}">📞 ${esc(e.phone)}</a>`:''}</div></div>`).join(''):'<p class="muted">No requests yet. The form is on the home page, the pricing page and in the footer (For schools).</p>'}</div>
+    <div class="sc-card"><div class="st-head"><div><h4 style="margin:0">Schools students are at</h4><p class="muted">Students whose school has no teacher on Full Marks yet. Good schools to contact.</p></div></div>
+      ${A.length?`<ul class="st-list">${A.slice(0,40).map(x=>`<li><span class="l">${esc(x.school)}</span><span class="n">${this.n(x.n)}</span></li>`).join('')}</ul>`:'<p class="muted">None yet.</p>'}</div></div>`;
+  const old=root.querySelector('.st-sch');if(old)old.outerHTML=html;else root.insertAdjacentHTML('beforeend',html)};
+{const draw=ST.draw;ST.draw=function(main,d,n){draw.call(this,main,d,n);this.accounts(main);this.schools(main)}}
 async function renderStats(){const main=$('#statsMain');if(!main)return;const seq=++SCH.seq;
   if(!API_BASE||!authToken())return SCH.signin(main,'Visitors and sales','Sign in with the owner’s email.');
   const root=main.querySelector('.st-root');if(root)root.classList.add('busy');else main.innerHTML=SCH.loading();
-  try{const n=ST.days,[d,acc]=await Promise.all([SCH.api('GET',`/admin/stats?days=${Math.min(400,n*2)}`),SCH.api('GET','/admin/accounts').catch(()=>null)]);if(seq!==SCH.seq)return;
+  try{const n=ST.days,[d,acc,sch]=await Promise.all([SCH.api('GET',`/admin/stats?days=${Math.min(400,n*2)}`),SCH.api('GET','/admin/accounts').catch(()=>null),SCH.api('GET','/admin/schools').catch(()=>null)]);if(seq!==SCH.seq)return;
     try{localStorage.setItem('fm-nostats','1')}catch(e){}
-    ST.acc=acc;ST.draw(main,d,n)}
+    ST.acc=acc;ST.sch=sch;ST.draw(main,d,n)}
   catch(e){if(seq!==SCH.seq)return;if(e.status===403){main.innerHTML='<div class="sc-card sc-empty"><div class="big">🔒</div><h3>Only the owner can see this page.</h3></div>';return}SCH.fail(main,e,renderStats)}}
 
 /* ---------- AI tutor under every explanation ---------- */
