@@ -310,6 +310,7 @@ body.has-full .free-only{display:none!important}
 .faq details p{margin:0 0 18px;color:var(--muted);line-height:1.6}
 .fin-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.finale .fin-join{color:var(--stage-ink);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
 .mstick{display:none}
+body.not-home .mstick{display:none!important}
 @media (max-width:860px){.who3{grid-template-columns:1fr}
   .mstick{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-radius:18px;background:var(--paper);box-shadow:0 18px 40px -12px rgba(15,23,42,.35),0 0 0 1px var(--line);transform:translateY(140%);transition:transform .35s cubic-bezier(.2,1.2,.3,1)}
   .mstick.on{transform:none}.mstick b{display:block;font-size:15px}.mstick span{font-size:13px;color:var(--muted)}.mstick .btn{padding:11px 16px}}
@@ -343,6 +344,13 @@ body.has-full .free-only{display:none!important}
 .subjbanner{position:relative;border-radius:23px;padding:34px;margin-bottom:24px;background:var(--stage);color:var(--stage-ink);overflow:hidden;isolation:isolate}
 .subjbanner::before{content:'';position:absolute;width:500px;height:500px;right:-180px;top:-220px;border-radius:50%;background:var(--sc,var(--stain));filter:blur(70px);opacity:.6;z-index:-1;animation:blob 16s ease-in-out infinite alternate}
 .subjbanner h2{color:#fff;margin:0}
+.subjbanner.slim{padding:16px 22px;border-radius:18px;margin-bottom:18px}
+.subjbanner.slim .studyhead{align-items:center;margin:0}
+.subjbanner.slim h2.big{font-size:26px;line-height:1.1}
+.subjbanner.slim .studyhead select{padding:7px 12px;font-size:14px}
+@media (max-width:560px){.subjbanner.slim .studyhead>div:last-child{display:none!important}.subjbanner.slim{padding:14px 18px}}
+.nd-go{margin:18px 0 26px;align-items:center}
+.l3-hero{margin-top:8px}
 .subjbanner .muted{color:var(--stage-muted)}
 .subjbanner select{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.18)}
 .subjbanner select option{color:#111}
@@ -449,6 +457,7 @@ body.has-full .free-only{display:none!important}
 .gcard:hover::before{transform:scale(1.5);opacity:.2}
 .gcard p{flex:0}
 .gcard .btn{margin-top:auto}
+@media (max-width:560px){.gcards{grid-template-columns:1fr 1fr;gap:10px}.gcard{padding:16px 14px}.gcard h3{font-size:16px;line-height:1.2}.gcard p{font-size:13px;line-height:1.4;margin:6px 0}.gcard .gicon{width:42px;height:42px;font-size:21px;border-radius:12px;margin-bottom:10px}.gcard .lockb,.gcard .newb{top:10px;right:10px;font-size:10px;padding:3px 7px}.gcard .btn{padding:10px 8px;font-size:14px}}
 .gicon{width:60px;height:60px;border-radius:20px;background:var(--gc,var(--stain));color:#fff;display:grid;place-items:center;font-size:30px;margin-bottom:14px;box-shadow:0 14px 26px -12px var(--gc,var(--stain));transition:transform .5s cubic-bezier(.2,1.6,.4,1)}
 .gcard:hover .gicon{transform:rotate(-12deg) scale(1.1)}
 .gstat{font-size:15px}
@@ -506,6 +515,7 @@ body.has-full .free-only{display:none!important}
 .badge.got .e{filter:none;opacity:1;animation:bob 4s ease-in-out infinite}
 .badge b{display:block;font:800 15px "Plus Jakarta Sans",sans-serif}
 .badge small{color:var(--muted);font-size:12px}
+@media (max-width:560px){.badges{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.badge{padding:12px 6px}.badge .e{font-size:30px}.badge b{font-size:13px}.badge small{font-size:11px;line-height:1.3;display:block}}
 .subprog{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
 .sp{display:block;width:100%;border:0;color:inherit;font:inherit;cursor:pointer;background:var(--paper);border-radius:15px;padding:18px;text-align:center;box-shadow:var(--shadow),0 0 0 1px var(--line);transition:transform .2s,box-shadow .2s}
 .sp:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg),0 0 0 2px var(--c,var(--stain))}
@@ -846,7 +856,15 @@ footer .social svg{width:15px;height:15px}
 .why-fig .replay:hover{transform:rotate(-180deg) scale(1.1);opacity:1}
 
 .askp{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:22px auto 0;max-width:760px;padding:16px 20px;border-radius:20px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.askps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:34px 0 26px}
+.askps .askp{margin:0;max-width:none;flex-direction:column;align-items:flex-start;justify-content:space-between}
+.askps .askp span{display:block;margin-top:4px}
+@media (max-width:860px){.askps{grid-template-columns:1fr}}
+.pc-consent{margin:22px auto 0;font-size:13px}
+.pc-fine{font-size:12.5px;max-width:none}
+.plan.best .price small{color:rgba(255,255,255,.8)}
 .askp b{display:block;font:800 17px "Plus Jakarta Sans",sans-serif}.askp span{color:var(--muted);font-size:14px}
+.trialban[hidden]{display:none!important}
 .trialban{display:flex;align-items:center;gap:14px;margin:0 0 18px;padding:14px 18px;border-radius:20px;background:linear-gradient(120deg,var(--gold-soft),var(--stain-soft));animation:popIn .6s cubic-bezier(.2,1.4,.3,1)}
 .trialban>span{font-size:30px;animation:bob 3s ease-in-out infinite}.trialban b{display:block;font:800 18px "Plus Jakarta Sans",sans-serif}.trialban small{color:var(--muted)}
 .plan .trial{font-size:13px;font-weight:600;color:color-mix(in srgb,var(--stain) 80%,var(--ink));margin:auto 0 10px;line-height:1.4}
@@ -1521,6 +1539,31 @@ html.i18n .board-ui{display:none!important}
 .gr .btn{flex:none}
 @media (max-width:560px){.gr{flex-wrap:wrap}.gr .btn{width:100%}}
 .gr-note{font-size:12.5px;color:var(--muted);margin:8px 0 18px}
+.me-more{margin:14px 0 0;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.me-chip{border:0;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);border-radius:99px;padding:6px 12px;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink);cursor:pointer}
+.me-chip:hover{box-shadow:inset 0 0 0 1.5px var(--c)}
+.sc-empty>p{margin-left:auto;margin-right:auto}
+.pl-filters[hidden]{display:none!important}
+.gr-sg{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
+.gr-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 9%,var(--paper));box-shadow:inset 0 0 0 1px var(--line);font-size:12.5px;font-weight:600;color:var(--muted)}
+.gr-chip b{color:var(--ink);font:800 14px/1 "Plus Jakarta Sans",sans-serif}
+.gr-v{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px}
+.gr-v.ok{color:#0f7a4f;background:color-mix(in srgb,#3DDB93 18%,transparent)}
+.gr-v.gap{color:#8a5200;background:color-mix(in srgb,#F0C168 28%,transparent)}
+:root[data-theme="dark"] .gr-v.ok{color:#6FF0B4}:root[data-theme="dark"] .gr-v.gap{color:#FFD38A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gr-v.ok{color:#6FF0B4}:root:not([data-theme="light"]) .gr-v.gap{color:#FFD38A}}
+.gr-add,.gr-edit{border:0;background:none;padding:4px 2px;font-family:inherit;font-weight:600;font-size:13px;line-height:1.2;text-align:left;color:var(--stain);cursor:pointer}
+.gr-add:hover,.gr-edit:hover{text-decoration:underline}
+.gr-edit{color:var(--muted);font-size:12.5px}
+.sg>.muted{margin:0 0 16px}
+.sg-row{margin:0 0 16px}
+.sg-row .se-l{display:block;font-weight:700;font-size:14px;margin:0 0 8px}
+.sg-pills{display:flex;flex-wrap:wrap;gap:6px}
+.modal .box:has(.sg){max-width:560px}.modal .box:has(.sg) #mClose{display:none}
+.sg-pills button{min-width:40px;height:42px;padding:0 10px;border-radius:12px;border:0;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);font:800 16px/1 "Plus Jakarta Sans",sans-serif;color:var(--ink);cursor:pointer}
+.sg-pills button.none{font-family:inherit;font-weight:600;font-size:13px;color:var(--muted)}
+.sg-pills button[aria-pressed=true]{background:var(--stain);color:#fff;box-shadow:none}
+.sg-fm{font-size:14px;margin:0 0 6px}
 .gr-res{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0 4px}
 .gr-res span{background:var(--bg2);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600}
 .gr-res b{font:800 17px "Plus Jakarta Sans",sans-serif;margin-left:4px}
@@ -2118,6 +2161,7 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 #studyMain .tabs{display:inline-flex;gap:4px;padding:5px;border-radius:999px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);margin:16px 0 22px}
 #studyMain .tab{box-shadow:none;background:none;padding:10px 18px;color:var(--muted)}
 #studyMain .tab.on{background:var(--sc,var(--stain));color:#fff;box-shadow:0 10px 20px -12px var(--sc,var(--stain))}
+@media (max-width:560px){#studyMain .tabs{display:flex;flex-wrap:nowrap;max-width:100%}#studyMain .tab{flex:1;white-space:nowrap;padding:10px 8px;font-size:13.5px}}
 .nd-bar{display:flex;gap:10px;margin:0 0 16px}
 .nd-wrap{margin:0 0 20px}.nd-wrap.has-d{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px;align-items:start}
 .nd-wrap.has-d .diag{margin:0;max-width:none;position:sticky;top:96px}
@@ -2209,6 +2253,8 @@ details.deeper[open] summary{margin-bottom:12px}details.deeper[open] summary::af
 #p-home .sec-head .eyebrow{background:color-mix(in srgb,var(--stain) 10%,var(--paper));padding:7px 16px;border-radius:999px;margin-bottom:16px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--stain) 18%,transparent)}
 #p-home .sec-head .eyebrow::before{display:none}
 .sec.band{position:relative;isolation:isolate;padding:100px 0;margin-top:100px}
+.sec.band+.sec.band{margin-top:0}
+#p-home #build.sec.band{margin-top:0}
 .sec.band::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;background:var(--bandbg)}
 .band-soft{--bandbg:linear-gradient(180deg,color-mix(in srgb,var(--stain) 7%,var(--bg)),color-mix(in srgb,var(--brand-2) 6%,var(--bg)))}
 .band-violet{--bandbg:radial-gradient(60% 90% at 12% 0%,rgba(255,255,255,.2),transparent 60%),linear-gradient(135deg,#3B4FE0,#7C3AED)}
@@ -2243,7 +2289,7 @@ details.deeper[open] summary{margin-bottom:12px}details.deeper[open] summary::af
 .finale .stk.f1{left:6%;top:50px}.finale .stk.f2{right:7%;top:70px;animation-delay:-2s}.finale .stk.f3{left:10%;bottom:46px;animation-delay:-4s}.finale .stk.f4{right:11%;bottom:56px;animation-delay:-1s}
 @media (max-width:960px){.statsband .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.statsband .stat:nth-child(even){border-left-color:rgba(255,255,255,.1)}.statsband .stat:nth-child(n+3){border-top-color:rgba(255,255,255,.1)}
   .plans2,.faqwrap{grid-template-columns:1fr}#p-home .faqwrap .sec-head{position:static;text-align:center}#p-home .faqwrap .sec-head p{margin-left:auto}
-  #p-home .band-violet .tryq .sec-head{text-align:center}#p-home .band-violet .tryq .sec-head p{margin-left:auto}.band .stk,.finale .stk{display:none}.sec.band{padding:72px 0;margin-top:72px}}
+  #p-home .band-violet .tryq .sec-head{text-align:center}#p-home .band-violet .tryq .sec-head p{margin-left:auto}.band .stk,.finale .stk{display:none}.sec.band{padding:72px 0;margin-top:72px}.sec.band+.sec.band{margin-top:0}}
 
 /* feature grid: one colour per feature */
 .bx{--stage-ink:var(--ink);--stage-muted:var(--muted);background:color-mix(in srgb,var(--bc,var(--stain)) 6%,var(--paper));box-shadow:0 0 0 1px color-mix(in srgb,var(--bc,var(--stain)) 18%,var(--line))}
@@ -2342,7 +2388,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <div class="hero-text">
         <div class="pill"><b>NEW</b><span><span data-total-q>5,000+</span> exam-style questions, every one explained</span></div>
         <h1><span class="ln"><span>Revise smarter.</span></span><span class="ln"><span>Get <span class="grad">full marks</span></span></span><span class="ln"><span>in <span class="rot" id="rotWord"></span></span></span></h1>
-        <p class="lead">Your subject, your exam board (AQA, OCR, Edexcel or Cambridge) and your level — with notes for every subtopic, thousands of exam-style questions, timed exams, games, flashcards and a daily challenge that keeps your streak alive.</p>
+        <p class="lead">Notes, exam-style questions, mock papers and games for your exact course, from GCSE to A-level.</p>
         <div class="hero-cta">
           <a class="btn lg" href="#home" data-scroll="build" id="heroStart">Start revising free →</a>
           <button class="btn ghost lg" type="button" id="tourBtn">▶ How it works</button>
@@ -2371,10 +2417,10 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     </div>
     <div class="statsband">
       <div class="wrap stats">
-        <div class="stat rv" style="--d:0"><b data-count="10" data-count-subj>0</b><span>subjects, GCSE to A-level and Foundation year</span></div>
-        <div class="stat rv" style="--d:1"><b data-count="5" data-count-boards>0</b><span>exam boards: AQA, OCR A, OCR B, Edexcel, Cambridge</span></div>
-        <div class="stat rv" style="--d:2"><b data-count-subs>0</b><span>subtopics with full notes</span></div>
-        <div class="stat rv" style="--d:3"><b data-count-q>0</b><span>exam-style questions, each explained</span></div>
+        <div class="stat rv" style="--d:0"><b data-count="10" data-count-subj>0</b><span>subjects, GCSE to A-level</span></div>
+        <div class="stat rv" style="--d:1"><b data-count="5" data-count-boards>0</b><span>exam boards</span></div>
+        <div class="stat rv" style="--d:2"><b data-count-subs>0</b><span>subtopics with notes</span></div>
+        <div class="stat rv" style="--d:3"><b data-count-q>0</b><span>questions, each explained</span></div>
       </div>
     </div>
   </div>
@@ -2432,7 +2478,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <div class="bx w2 rv tilt" style="--d:2;--bc:var(--orange)"><span class="flame">🔥</span><h3>Daily streak</h3><p>A 5-question daily challenge. Don't break the chain.</p><div class="streakdays"><i class="on">M</i><i class="on" style="animation-delay:.1s">T</i><i class="on" style="animation-delay:.2s">W</i><i class="on" style="animation-delay:.3s">T</i><i>F</i><i>S</i><i>S</i></div></div>
         <div class="bx w2 rv tilt" style="--d:3;--bc:var(--teal)"><div class="ic">🃏</div><h3>Flashcards</h3><p>Key terms on cards that flip. Know it or go again.</p><div class="flipdemo"><div><span>Osmosis</span><span>Movement of water across a partially permeable membrane</span></div></div></div>
         <div class="bx w2 rv tilt" style="--d:4;--bc:var(--pink)"><h3>XP &amp; levels</h3><p>Every right answer earns XP. Level up as you revise.</p><div class="levelbar"><div><i></i></div><span><b>Lv 7</b><b>Lv 8</b></span></div></div>
-        <div class="bx w4 rv tilt" style="--d:5;--bc:var(--sky)"><div class="ic">🎮</div><h3>Revision games</h3><p>Boss Battles, Swipe True or False, The Ladder, Speed Round, Survival and more, plus a weekly leaderboard to race other students. Revision that doesn't feel like revision.</p></div>
+        <div class="bx w4 rv tilt" style="--d:5;--bc:var(--sky)"><div class="ic">🎮</div><h3>Revision games</h3><p>Boss Battle, The Ladder, Speed Round and more, with a weekly leaderboard.</p></div>
         <div class="bx w2 rv tilt" style="--d:6;--bc:var(--ok)"><div class="ic">✅</div><h3>Spec checklist</h3><p>Rate every topic on your board's spec: red, amber, green.</p></div>
       </div>
     </div>
@@ -2443,7 +2489,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       <div class="cine-head rv">
         <span class="eyebrow">New · Explainers</span>
         <h2>Every topic, explained like a <span class="grad">mini-documentary.</span></h2>
-        <p class="cine-lead">Press play and a narrator walks you through the topic, slide by slide. Diagrams draw themselves, key points build up as they are spoken, and every word is captioned.</p>
+        <p class="cine-lead">Press play: a narrator talks you through the topic while the diagrams draw themselves.</p>
       </div>
       <div class="cine-frame" id="cineFrame">
         <div class="xp-box cine-box" id="cineBox"><div class="xp-bg"><i></i><i></i><i></i></div><div class="xp-stage" id="cineS" aria-hidden="true"></div><div class="xp-cc" id="cineC" aria-hidden="true"></div>
@@ -2451,14 +2497,10 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
           <button class="cine-play" id="cinePlay" type="button" aria-label="Watch this explainer"><i></i><span>Watch it with sound</span></button>
         </div>
       </div>
-      <div class="cine-feats rv"><span>🎙️ Narrated, start to finish</span><span>✍️ Diagrams that draw themselves</span><span>💬 Captions, word by word</span><span>🧭 Chapters, speed and full screen</span><span>📱 Made for your phone too</span></div>
+      <div class="cine-feats rv"><span>🎙️ Narrated</span><span>💬 Captions</span><span>📱 Works on your phone</span></div>
     </div>
   </section>
   <div class="wrap">
-    <div class="sec">
-      <div class="sec-head rv"><span class="eyebrow">Every exam board</span><h2>Every exam board — <span class="grad">properly covered</span></h2><p>Pick your board and the topic list follows its own specification.</p></div>
-      <div class="boards" id="boardCards"></div>
-    </div>
 
     <div class="sec free-only" id="homePlans">
       <div class="sec-head rv"><span class="eyebrow">Free or full access</span><h2>Start free. <span class="grad">Go all in</span> when you’re ready.</h2><p>Try the first topic of any subject with no card needed. Here’s what changes with full access.</p></div>
@@ -2532,7 +2574,6 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     <h2>One plan. <span class="grad">Every subject.</span></h2>
     <p class="muted">Every plan includes all subjects at GCSE, AS and A2. Cancel any time. Already subscribed on another device? <a href="#" id="restoreLink">Restore access</a>.</p>
     <div class="owned" id="ownedBox" hidden></div>
-    <label class="consent"><input type="checkbox" id="agreeTerms"> <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms</a>. I understand that access starts straight away, so I give up my 14-day cancellation right once I start using the content, and that already-paid periods aren't refunded. If my plan starts with a free trial, I can cancel before it ends and pay nothing.</span></label>
     <div class="trialban" id="bonusBan" hidden><span>🎁</span><div><b>Your free week from an invite is on</b><small></small></div></div>
     <div class="trialban" id="trialBan" hidden><span>🎁</span><div><b>Every plan starts with a free trial</b><small>Full access straight away. Cancel before it ends and you pay nothing.</small></div></div>
     <div class="plans">
@@ -2559,14 +2600,17 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <button class="btn" data-plan="annual">Choose annual</button>
       </div>
     </div>
+    <label class="consent pc-consent"><input type="checkbox" id="agreeTerms"> <span>I agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms</a>. I understand that access starts straight away, so I give up my 14-day cancellation right once I start using the content, and that already-paid periods aren't refunded. If my plan starts with a free trial, I can cancel before it ends and pay nothing.</span></label>
     <p class="fine" id="taxNote" style="text-align:center;margin-top:12px"></p>
-    <div class="askp"><div><b>🏫 Teacher or school?</b><span>Full Marks is free for teachers, and for every student in their classes. Ask for a teacher account, create a class and share the code. For the whole school, ask us for a price.</span></div><div class="askp-acts"><a class="btn ghost" href="#teacher">Teacher portal</a><button type="button" class="btn ghost" data-school-enq>Whole school</button></div></div>
-    <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link, price and how to cancel.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
-    <div class="askp"><div><b>🎁 Try it free with a friend</b><span>Send a friend your invite link. When they make a free account, you both get a week of full access.</span></div><button class="btn ghost" type="button" id="invAskp">Invite a friend</button></div>
-    <p class="fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
+    <div class="askps">
+    <div class="askp"><div><b>🏫 Teacher or school?</b><span>Free for teachers and their classes. For the whole school, ask us for a price.</span></div><div class="askp-acts"><a class="btn ghost" href="#teacher">Teacher portal</a><button type="button" class="btn ghost" data-school-enq>Whole school</button></div></div>
+    <div class="askp"><div><b>🙋 Not paying yourself?</b><span>Send a parent a ready-made message with the link and price.</span></div><button class="btn ghost ask-parent" type="button">Ask a parent</button></div>
+    <div class="askp"><div><b>🎁 Try it free with a friend</b><span>When a friend makes a free account, you both get a week of full access.</span></div><button class="btn ghost" type="button" id="invAskp">Invite a friend</button></div>
+    </div>
+    <p class="fine pc-fine">Plans renew automatically until cancelled. Cancel any time on the <a href="#me">Progress page</a> with <strong>Manage subscription</strong>, before the next payment date, to stop future charges. Access to the content begins immediately once payment is confirmed; by completing a purchase you agree to this immediate access and to giving up your legal 14-day cancellation right for the current billing period once you've started using the content. We don't refund any part of a period that has already started — cancelling only stops the next payment. Payments are processed securely by Stripe. If you're under 18, please ask a parent or guardian to buy the plan.</p>
     <h2 style="margin-top:48px;font-size:28px">Questions</h2>
-    <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR and Edexcel. New subjects are added at no extra cost.</p></details>
-    <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR and Edexcel. Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
+    <details><summary>Which subjects are included?</summary><p style="margin-top:8px">Biology, Chemistry, Physics, Maths, Further Maths, Computer Science, Geography, Psychology, Economics and Business, at GCSE, AS and A2, for AQA, OCR, Edexcel and Cambridge. New subjects are added at no extra cost.</p></details>
+    <details><summary>Which exam boards does this cover?</summary><p style="margin-top:8px">AQA, OCR (A and B), Edexcel and Cambridge (CIE). Choose your board and the topic list follows that board’s specification. Where a board doesn’t offer a subject at a level, we show you which boards do.</p></details>
     <details><summary>Is it free for schools?</summary><p style="margin-top:8px">Yes. Teachers get a free account in the <a href="#teacher">teacher portal</a>. Students who join a teacher’s class with its code get full access for free too, for as long as they are in the class.</p></details>
     <details><summary>How does Invite a friend work?</summary><p style="margin-top:8px">Open <strong>Invite a friend</strong> in your account menu and send your link. When a friend opens it and makes their first Full Marks account, you each get 7 days of full access on the website, with no card needed. You can earn up to 5 free weeks. If you already have full access, your free week is saved and starts when that ends. Free weeks don’t include the AI tutor.</p></details>
     <details><summary>Can I cancel?</summary><p style="margin-top:8px">Yes, any time, from your account. Cancelling stops future payments, and you keep access until the end of the period you've already paid for.</p></details>
@@ -2979,7 +3023,7 @@ function renderStudy(){Extra.ensure(subject,level);L3.ensure();
   $('#subSel').value=subject;$('#lvlSel').value=level;fillBrd();$('#brdSel').value=boardOf(subject);
   $('#studyTitle').textContent=s.name;$('#p-study').style.setProperty('--sc',s.color);
   $('#studyLevelName').textContent=level==='UFP'?'University Foundation Programme · Foundation year':`${boardLabel()} · `+[LV(level),LEVELS.find(l=>l[0]===level)[1]].join(' · ');$('#brdSel').hidden=level==='UFP';
-  crumbs();
+  crumbs();$('#subjBanner').classList.toggle('slim',!!(session||view.topic!=null||view.papers||view.check));
   if(session){Track.set({kind:session.lvl?'level':session.exam?'exam':'quiz',subject,level,topic:session.lvl?`${session.lvl.x.n} ${session.lvl.x.title} · ${T('Level {0}',session.lvl.i+1)}`:session.title,sub:session.lvl?pkey(session.lvl.x.key||session.lvl.x.n):session.key});renderSession();return}
   if(view.topic==null||view.sub==null)Track.set({kind:'browse',subject,level,topic:SUBJECTS[subject].name});
   const P=getProg();
@@ -3034,17 +3078,16 @@ function renderStudy(){Extra.ensure(subject,level);L3.ensure();
   main.innerHTML=`<div class="topichead"><span class="tnum">${x.n}</span><h2>${esc(x.title)}</h2></div>
     <div class="tabs"><button class="tab ${view.tab==='notes'?'on':''}" data-tab="notes">📖 Notes</button><button class="tab ${view.tab==='practice'?'on':''}" data-tab="practice">✍️ Practice · ${PL.count(x)} ${PL.count(x)>1?'levels':'level'}</button>${x.d||x.hasD||Lab.match(x,t).length?`<button class="tab ${view.tab==='explore'?'on':''}" data-tab="explore">🧪 Explore</button>`:''}</div>
     <div id="subBody"></div>
-    <div class="actions" style="margin-top:6px"><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet PDF for topic ${esc(t.n)}</button><button class="btn ghost sm" id="noteSub">📝 Add a note</button></div>
     <div class="pager">${prev?`<button class="btn ghost" data-go="${view.sub-1}">← ${prev.n} ${esc(prev.title)}</button>`:'<span></span>'}${next?`<button class="btn ghost" data-go="${view.sub+1}">${next.n} ${esc(next.title)} →</button>`:''}</div>`;
   main.querySelector('.tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(b){view.tab=b.dataset.tab;renderStudy()}};
-  $('#cheatSub').onclick=()=>printCheat(t);$('#noteSub').onclick=()=>noteFromStudy(x);
   main.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{view.sub=+b.dataset.go;view.tab='notes';renderStudy();scrollTo(0,0)});
   const body=$('#subBody');
   if(!open){body.innerHTML=lockCard(`Unlock the notes and ${nq(x)} questions for ${esc(x.title)}, and every other subtopic in every subject.`);return}
   Track.set({kind:view.tab==='explore'?'explore':view.tab==='practice'?'levels':'notes',subject,level,topic:`${x.n} ${x.title}`,sub:pkey(x.key||x.n)});
   if(view.tab==='notes'){
     const m3=Lab.match(x,t).find(m=>L3.KINDS.includes(m.k)||L3.LIB[m.k])||(L3.mapMeta(x).parts.length>=4?{k:'map'}:null),h3=m3&&(Lab.title[m3.k]||L3.LIB[m3.k].title);
-    body.innerHTML=`${m3?`<section class="lab-sec l3-hero" translate="no"><div class="lab-sech"><h3>${h3[0]} ${esc(h3[1])}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}<div class="nd-bar"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div><div class="nd-wrap${x.d?' has-d':''}">${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}${Deck.html(x.notes)}</div>${x.x&&x.x.length?`<details class="deeper"><summary>🔍 Go deeper <small>${x.x.length} more ${x.x.length>1?'points':'point'}</small></summary><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></details>`:''}<button class="btn" id="goPractice">Practise ${esc(x.title)}</button>`;
+    body.innerHTML=`<div class="nd-bar"><button class="btn watch sm" id="xpSub">▶ Watch this explained</button></div><div class="nd-wrap${x.d?' has-d':''}">${x.d?`<figure class="diag">${x.d}<figcaption>${esc(x.title)}</figcaption></figure>`:''}${Deck.html(x.notes)}</div>${x.x&&x.x.length?`<details class="deeper"><summary>🔍 Go deeper <small>${x.x.length} more ${x.x.length>1?'points':'point'}</small></summary><ul>${x.x.map((n,i)=>`<li style="--i:${i}">${md(n)}</li>`).join('')}</ul></details>`:''}<div class="actions nd-go"><button class="btn" id="goPractice">✍️ Practise ${esc(x.title)}</button><button class="btn ghost sm" id="cheatSub">⬇️ Cheat sheet</button><button class="btn ghost sm" id="noteSub">📝 Add a note</button></div>${m3?`<section class="lab-sec l3-hero" translate="no"><div class="lab-sech"><h3>${h3[0]} ${esc(h3[1])}<span class="l3-new">${esc(T('INTERACTIVE'))}</span></h3></div><div class="lab-host" data-ai-host id="heroHost"></div></section>`:''}`;
+    $('#cheatSub').onclick=()=>printCheat(t);$('#noteSub').onclick=()=>noteFromStudy(x);
     Deck.wire(body,()=>{view.tab='practice';renderStudy();scrollTo(0,0)});
     $('#goPractice').onclick=()=>{view.tab='practice';renderStudy();scrollTo(0,0)};$('#xpSub').onclick=()=>watchTopic(t,view.sub);animateDiagrams(body);if(m3){Lab.mount($('#heroHost'),m3,x,{hero:1});$('#heroHost').addEventListener('pointerdown',()=>Track.used3d(),{once:true})}
   }else if(view.tab==='explore'){Lab.render(body,x,t);body.addEventListener('pointerdown',()=>Track.used3d(),{once:true})
@@ -3317,15 +3360,15 @@ function renderSpecView(main,spec){
 let game=null,gameInt=null;
 function stopGame(){clearInterval(gameInt);gameInt=null;game=null;CURQ=null}
 const GAMES=[
-  {id:'boss',name:'Boss Battle',icon:'\u{1F409}',color:'#7C3AED',desc:'Every topic has a boss. Right answers hit it, combos hit harder, wrong answers cost you a heart. Beat them all with three stars.'},
-  {id:'swipe',name:'Swipe: True or False',icon:'\u{1F446}',color:'#0EA5E9',desc:'One question, one answer. Swipe right if it\u2019s right, left if it\u2019s wrong. How many can you sort in 60 seconds?'},
-  {id:'ladder',name:'The Ladder',icon:'\u{1FA9C}',color:'#F59E0B',desc:'Twelve questions up to 125,000 points with 50:50, Ask the class and Swap. A wrong answer drops you to your last safe rung.'},
-  {id:'daily',name:'Daily Challenge',icon:'\u2600',color:'#F97316',desc:'Five fresh questions every day for your subject and level. Finish it for a big XP bonus and keep your streak alive.'},
-  {id:'flash',name:'Flashcards',icon:'\u{1F0CF}',color:'#EC4899',desc:'Key terms on cards that flip. Mark the ones you know; the rest come back until you have them all.'},
-  {id:'speed',name:'Speed Round',icon:'\u26A1',color:'#4361EE',desc:'Answer as many questions as you can in 60 seconds. Every correct answer in a row adds bonus points.'},
-  {id:'survival',name:'Survival',icon:'\u2764',color:'#E5484D',desc:'You have three lives. Each wrong answer costs one. How far can you get?'},
-  {id:'match',name:'Match Up',icon:'\u25C6',color:'#0D9488',desc:'Pair six key terms with their meanings as fast as you can. Wrong matches add a 5-second penalty.'},
-  {id:'mistakes',name:'Fix your mistakes',icon:'\u{1F501}',color:'#6366F1',desc:'Every question you get wrong anywhere on Full Marks lands here. Get it right twice and it\u2019s mastered.'}
+  {id:'boss',name:'Boss Battle',icon:'\u{1F409}',color:'#7C3AED',desc:'Beat a boss for every topic. Combos hit harder.'},
+  {id:'swipe',name:'Swipe: True or False',icon:'\u{1F446}',color:'#0EA5E9',desc:'True or false? Sort as many as you can in 60 seconds.'},
+  {id:'ladder',name:'The Ladder',icon:'\u{1FA9C}',color:'#F59E0B',desc:'Twelve questions to the top, with three lifelines.'},
+  {id:'daily',name:'Daily Challenge',icon:'\u2600',color:'#F97316',desc:'Five new questions a day. Keep your streak alive.'},
+  {id:'flash',name:'Flashcards',icon:'\u{1F0CF}',color:'#EC4899',desc:'Flip the key terms until you know them all.'},
+  {id:'speed',name:'Speed Round',icon:'\u26A1',color:'#4361EE',desc:'As many answers as you can in 60 seconds.'},
+  {id:'survival',name:'Survival',icon:'\u2764',color:'#E5484D',desc:'Three lives. How far can you get?'},
+  {id:'match',name:'Match Up',icon:'\u25C6',color:'#0D9488',desc:'Match six terms to their meanings, fast.'},
+  {id:'mistakes',name:'Fix your mistakes',icon:'\u{1F501}',color:'#6366F1',desc:'Everything you got wrong, until you get it right.'}
 ];
 const bestKey=id=>`go-best-${id}-${subject}:${level}`;
 const trialUsed=id=>store.get('go-trial-'+id,'0')==='1';
@@ -3337,10 +3380,10 @@ function renderGames(){Extra.ensure(subject,level);
   stopGame();
   $('#gCtx').textContent=`${SUBJECTS[subject].name} · ${level}`;
   const gm=$('#gamesMain');
-  gm.innerHTML=`<div class="gcards">${GAMES.map((g,gi)=>{const best=store.get(bestKey(g.id),''),dd=store.get('fm-daily-'+today(),'');
-    const label=g.id==='daily'?(dd!==''?`Done today · ${dd}/5 · play again`:'Play today\u2019s challenge'):canPlay(g.id)?'Play':'🔓 Unlock with full access';
+  gm.innerHTML=`<div class="gcards">${[...GAMES].sort((a,b)=>canPlay(b.id)-canPlay(a.id)).map((g,gi)=>{const best=store.get(bestKey(g.id),''),dd=store.get('fm-daily-'+today(),'');
+    const label=g.id==='daily'?(dd!==''?`Done · ${dd}/5 · again`:'Play today'):canPlay(g.id)?'Play':'🔓 Unlock';
     return `<div class="gcard${canPlay(g.id)?'':' locked'}" style="--i:${gi};--gc:${g.color}">${canPlay(g.id)?['boss','swipe','ladder','mistakes'].includes(g.id)?'<span class="newb">NEW</span>':'':'<span class="lockb">🔒 Premium</span>'}<div class="gicon" aria-hidden="true">${g.icon}</div><h3>${g.name}</h3><p>${g.desc}</p><p class="muted">${g.id==='flash'?`${(PAIRS[subject]||[]).length} key terms`:g.id==='mistakes'?`${Mist.list().length} question${Mist.list().length===1?'':'s'} to fix`:g.id==='boss'?bossTally():best?`Best: ${g.id==='match'?best+' s':g.id==='daily'?best+'/5':best}`:'No best score yet'}</p><button class="btn${canPlay(g.id)?'':' gold'}" data-g="${g.id}">${label}</button></div>`}).join('')}</div><div class="lb" id="lb"></div>`;
-  if(!premium)gm.insertAdjacentHTML('afterbegin',`<div class="gfree"><span>🎮</span><div><b>Daily Challenge, Flashcards, Match Up and Swipe are free.</b><small>Boss Battle, The Ladder, Speed Round, Survival and Fix your mistakes unlock with full access${Mist.list().length?`, and ${Mist.list().length} of your mistakes are already waiting there`:''}.</small></div><a class="btn gold sm" href="#pricing">Unlock all games</a></div>`);
+  if(!premium)gm.insertAdjacentHTML('afterbegin',`<div class="gfree"><span>🎮</span><div><b>4 games are free. 5 more come with full access.</b>${Mist.list().length?`<small>${Mist.list().length} of your mistakes are waiting in Fix your mistakes.</small>`:''}</div><a class="btn gold sm" href="#pricing">Unlock all games</a></div>`);
   gm.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const id=b.dataset.g;
     if(!canPlay(id)){location.hash='pricing';return}
     Stats.event('game');PLAY()[id]();scrollTo(0,0)});
@@ -3725,7 +3768,8 @@ function renderMe(){const main=$('#meMain');if(!main)return;const xp=XP.xp,l=lvl
     <div><h2>${st?`🔥 ${st}-day streak`:'Start your streak today'}</h2><p style="color:var(--stage-muted);margin:0">${fmtN(xpFor(l+1)-xp)} XP to level ${l+1}. Every right answer earns XP, streaks earn bonuses.</p>
     <div class="me-stats"><div><b>${fmtN(xp)}</b><span>total XP</span></div><div><b>${fmtN(s.answered)}</b><span>questions answered</span></div><div><b>${acc}%</b><span>accuracy</span></div><div><b>${s.daily||0}</b><span>daily challenges</span></div></div></div></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Activity</h2><p class="muted">The last 15 weeks. Darker squares mean more questions that day.</p><div class="heat">${cells.join('')}</div></div>
-    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Subjects</h2><div class="subprog">${Object.entries(SUBJECTS).map(([k,sb])=>{const v=Object.entries(P).filter(([x])=>x.startsWith(k+':')).map(([,v])=>v);const avg=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return `<button type="button" class="sp" data-sp="${k}" style="--c:${sb.color}" aria-label="${esc(T('Open {0}',sb.name))}"><div class="r" style="--c:${sb.color}" data-p="${avg}"><b>${avg}%</b></div><strong>${esc(sb.name)}</strong><br><small class="muted">${v.length} tests done</small><span class="go">${esc(T('Open'))} →</span></button>`}).join('')}</div></div>
+    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Subjects</h2><div class="subprog">${meSubjects(P).map(([k,sb])=>{const v=Object.entries(P).filter(([x])=>x.startsWith(k+':')).map(([,v])=>v);const avg=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):0;return `<button type="button" class="sp" data-sp="${k}" style="--c:${sb.color}" aria-label="${esc(T('Open {0}',sb.name))}"><div class="r" style="--c:${sb.color}" data-p="${avg}"><b>${avg}%</b></div><strong>${esc(sb.name)}</strong><br><small class="muted">${v.length} tests done</small><span class="go">${esc(T('Open'))} →</span></button>`}).join('')}</div>${meOthers(P)}</div>
+    ${meGrades(P)}
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Badges</h2><div class="badges">${BADGES.map(([e,n,t,f],i)=>{const got=f(s,st,l,xp);return `<div class="badge${got?' got':''}" style="--i:${i}"><span class="e">${e}</span><b>${n}</b><small>${t}</small></div>`}).join('')}</div></div>
     <div class="actions" style="margin-top:40px"><a class="btn" href="#games" id="meDaily">Do today's challenge</a><a class="btn ghost" href="#study">Keep revising</a></div>
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Your account</h2>${accountCard()}</div>`;
@@ -3930,10 +3974,33 @@ const Grade={
   why(p){const a=[];if(p.papers)a.push(`${p.papers} mock paper${p.papers===1?'':'s'}`);if(p.cov)a.push(`${Math.round(p.cov*100)}% of the topics practised`);return a.length?'Based on '+a.join(' and '):''},
   // One subject: a row on My Plan, or a card at the top of its past papers.
   html(s,l,b,o={}){const p=this.predict(s,l,b),S=SUBJECTS[s];
-    if(p.none)return `<div class="gr${o.card?' card':''}" style="--c:${S.color}"><div class="gr-b none" aria-hidden="true"><b>?</b></div><div class="gr-t"><b>${o.card?'Your predicted grade':esc(S.name)}</b><small>Sit a timed mock paper, or practise a few more topics, and a predicted grade appears here.</small></div>${o.btn||''}</div>`;
+    if(p.none)return `<div class="gr${o.card?' card':''}" style="--c:${S.color}"><div class="gr-b none" aria-hidden="true"><b>?</b></div><div class="gr-t"><b>${o.card?'Your predicted grade':esc(S.name)}</b><small>Sit a mock paper or practise a few more topics to see it.</small>${this.sg(s,l,b,p)}</div>${o.btn||''}</div>`;
     return `<div class="gr${o.card?' card':''}" style="--c:${S.color}"><div class="gr-b" role="img" aria-label="Predicted grade ${esc(p.grade)}, ${p.pct}%"><b>${esc(p.grade)}</b><small>${p.pct}%</small></div>
-      <div class="gr-t"><b>${o.card?`Your predicted grade: ${esc(p.grade)}`:`${esc(S.name)}: ${esc(p.grade)}`}</b><small>${esc(this.why(p))} · ${p.conf} confidence</small><small>${p.up?`${p.up[1]-p.pct}% more on your papers for ${this.an(p.up[0])} ${esc(p.up[0])}.`:'That’s the top grade. Keep it there!'}</small></div>${o.btn||''}</div>`},
+      <div class="gr-t"><b>${o.card?`Your predicted grade: ${esc(p.grade)}`:`${esc(S.name)}: ${esc(p.grade)}`}</b><small>${esc(this.why(p))} · ${p.conf} confidence</small><small>${p.up?`${p.up[1]-p.pct}% more on your papers for ${this.an(p.up[0])} ${esc(p.up[0])}.`:'That’s the top grade. Keep it there!'}</small>${this.sg(s,l,b,p)}</div>${o.btn||''}</div>`},
+  // The grades the student's school gave them, typed in by the student: what the school predicts and their target.
+  // Kept on this device and in the account (ProgSync), shown next to Full Marks' own estimate.
+  SG:{all(){const o=jget('fm-sgrades',{});return o&&typeof o==='object'&&!Array.isArray(o)?o:{}},
+    get(s,l,b){const x=this.all()[`${s}:${l}:${b}`];return x&&(x.pred||x.target)?x:null},
+    set(s,l,b,pred,target){const o=this.all();o[`${s}:${l}:${b}`]={pred:pred||'',target:target||'',at:Date.now()};store.set('fm-sgrades',JSON.stringify(o))}},
+  rank(g,l,b){const a=this.scale(l,b),i=a.findIndex(x=>x[0]===g);return i<0?a.length:i},
+  sg(s,l,b,p){const x=this.SG.get(s,l,b),k=esc(`${s}|${l}|${b}`);p=p||this.predict(s,l,b);
+    if(!x)return `<div class="gr-sg" data-sgk="${k}"><button type="button" class="gr-add" data-sg="${k}">+ ${esc(T('Add your school’s predicted grade'))}</button></div>`;
+    let v='';if(!p.none&&x.target){const d=this.rank(p.grade,l,b)-this.rank(x.target,l,b);v=d<=0?`<span class="gr-v ok">✓ ${esc(T('On track for your target'))}</span>`:`<span class="gr-v gap">${esc(d===1?T('1 grade to your target'):T('{0} grades to your target',d))}</span>`}
+    return `<div class="gr-sg" data-sgk="${k}">${x.pred?`<span class="gr-chip">🏫 ${esc(T('School'))} <b>${esc(x.pred)}</b></span>`:''}${x.target?`<span class="gr-chip">🎯 ${esc(T('Target'))} <b>${esc(x.target)}</b></span>`:''}${v}<button type="button" class="gr-edit" data-sg="${k}">✎ ${esc(T('Change'))}</button></div>`},
+  edit(k){const [s,l,b]=k.split('|'),S=SUBJECTS[s];if(!S)return;const x=this.SG.get(s,l,b)||{},G=this.scale(l,b).map(g=>g[0]),p=this.predict(s,l,b);
+    const row=(id,v,lab)=>`<div class="sg-row"><span class="se-l">${lab}</span><div class="sg-pills" id="${id}">${G.map(g=>`<button type="button" data-g="${esc(g)}" aria-pressed="${g===v}">${esc(g)}</button>`).join('')}<button type="button" class="none" data-g="" aria-pressed="${!v}">${esc(T('Not yet'))}</button></div></div>`;
+    showModal(`${S.name} · ${LV(l)}`,`<div class="sg"><p class="muted">${esc(T('Got grades from your school? Add them and see them next to your Full Marks estimate.'))}</p>
+      ${row('sgP',x.pred,'🏫 '+esc(T('What your school predicts')))}${row('sgT',x.target,'🎯 '+esc(T('Your target grade')))}
+      ${p.none?'':`<p class="sg-fm">${esc(T('Your Full Marks estimate'))}: <b>${esc(p.grade)}</b></p>`}
+      <div class="actions"><button type="button" class="btn" id="sgSave">${esc(T('Save'))}</button>${x.pred||x.target?`<button type="button" class="btn ghost" id="sgDel">${esc(T('Remove'))}</button>`:''}<button type="button" class="btn ghost" id="sgX">${esc(T('Cancel'))}</button></div></div>`);
+    $('#sgX').onclick=()=>$('#modal').classList.remove('on');
+    $$('#mBody .sg-pills').forEach(r=>r.onclick=e=>{const t=e.target.closest('[data-g]');if(t)r.querySelectorAll('[data-g]').forEach(y=>y.setAttribute('aria-pressed',String(y===t)))});
+    const pick=id=>{const on=$(`#${id} [aria-pressed="true"]`);return on?on.dataset.g:''};
+    const done=(pr,tg)=>{this.SG.set(s,l,b,pr,tg);$('#modal').classList.remove('on');$$('.gr-sg').forEach(el=>{if(el.dataset.sgk===k)el.outerHTML=this.sg(s,l,b)});toast(pr||tg?'🎯':'✓',esc(pr||tg?T('Saved'):T('Removed')))};
+    $('#sgSave').onclick=()=>done(pick('sgP'),pick('sgT'));
+    if($('#sgDel'))$('#sgDel').onclick=()=>done('','')},
   note:'An estimate from your work on Full Marks, not an official prediction: real grade boundaries change every year.'};
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-sg]');if(!b)return;e.preventDefault();e.stopPropagation();Grade.edit(b.dataset.sg)},true);
 
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
 const OFFICIAL={aqa:['AQA','https://www.aqa.org.uk/find-past-papers-and-mark-schemes','Search for your specification code. Recent papers are released to students after a year; older ones are always available.'],
@@ -3994,11 +4061,21 @@ function renderPapers(main,spec){const d=levelData(),b=boardOf(subject),[bn,url,
 
 /* ---------- account: manage subscription (Stripe customer portal) ---------- */
 var TRIAL=0;
+// Subjects with practice in them (and the ones in the study plan) as cards; the rest as small links underneath.
+function meSubjects(P){const used=Object.keys(SUBJECTS).filter(k=>Object.keys(P).some(x=>x.startsWith(k+':'))||(PLAN&&(PLAN.subjects||[]).some(y=>y.s===k)));
+  return Object.entries(SUBJECTS).filter(([k])=>!used.length||used.includes(k))}
+function meOthers(P){const shown=new Set(meSubjects(P).map(([k])=>k)),rest=Object.entries(SUBJECTS).filter(([k])=>!shown.has(k));
+  return rest.length?`<p class="me-more">${esc(T('More subjects'))}: ${rest.map(([k,sb])=>`<button type="button" class="me-chip" data-sp="${k}" style="--c:${sb.color}">${esc(sb.name)}</button>`).join('')}</p>`:''}
+// Predicted grades for the subjects being studied: Full Marks' estimate and the grades from school, side by side.
+function meGrades(P){const used=Object.keys(SUBJECTS).filter(k=>Object.keys(P).some(x=>x.startsWith(k+':'))||(PLAN&&(PLAN.subjects||[]).some(y=>y.s===k)));if(!used.length)return '';
+  const lv=PLAN&&PLAN.level&&PLAN.level!=='UFP'?PLAN.level:level==='UFP'?'A2':level,bd=k=>{const x=PLAN&&(PLAN.subjects||[]).find(y=>y.s===k);return x&&x.b||boardOf(k)};
+  return `<div class="sec" style="padding-top:50px"><h2 style="font-size:32px">${esc(T('Predicted grades'))}</h2><p class="muted">${esc(T('Your Full Marks estimate, next to the grades your school gave you.'))}</p><div>${used.filter(k=>SUBJECTS[k][lv]).map(k=>Grade.html(k,lv,bd(k))).join('')}</div><p class="gr-note">${esc(Grade.note)}</p></div>`}
 function accountCard(){const em=store.get('go-auth-email','');
   if(premium&&viaSchool())return `<div class="acct on"><div><b>✓ Full access is active</b><span>${esc(subLine())}</span><span>${em?`Signed in as ${esc(em)}. `:''}Free through your school, nothing to pay.</span></div><a class="btn" href="#${ACCOUNT.schoolRole==='teacher'?'teacher':'school'}">${ACCOUNT.schoolRole==='teacher'?'Teacher portal':'My classes'}</a></div>`;
   if(viaBonus())return `<div class="acct on"><div><b>✓ Full access is active</b><span>${esc(subLine())}</span><span>${em?`Signed in as ${esc(em)}. `:''}Choose a plan before it ends to keep everything open.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="meInvite">🎁 Invite a friend</button></div>`;
   if(premium)return `<div class="acct on"><div><b>✓ Full access is active</b><span>${subLine()}</span><span>${em?`Signed in as ${esc(em)}. `:''}Cancel, switch plan, update your card or download invoices.</span></div><button class="btn" id="manageSub">Manage subscription</button></div>`;
-  if(authToken())return `<div class="acct"><div><b>No active subscription</b><span>${em?`Signed in as ${esc(em)}. `:''}Your plan has ended or was cancelled. Invite a friend and you both get a free week.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="meInvite">🎁 Invite a friend</button><button class="btn ghost" id="manageSub">Billing history</button></div>`;
+  const paid=!!(ACCOUNT&&(ACCOUNT.periodEnd||ACCOUNT.status||ACCOUNT.plan));
+  if(authToken())return `<div class="acct"><div><b>${paid?'No active subscription':'Free account'}</b><span>${em?`Signed in as ${esc(em)}. `:''}${paid?'Your plan has ended or was cancelled.':'The first topic of every subject is free.'} Invite a friend and you both get a free week.</span></div><a class="btn" href="#pricing">See plans</a><button class="btn ghost" id="meInvite">🎁 Invite a friend</button>${paid?'<button class="btn ghost" id="manageSub">Billing history</button>':''}</div>`;
   return `<div class="acct"><div><b>Using Full Marks for free</b><span>Already subscribed on another device? Restore access with the email you paid with.</span></div><button class="btn ghost" id="meRestore">Restore access</button><a class="btn" href="#pricing">See plans</a></div>`}
 function wireAccount(){
   const r=$('#meRestore');if(r)r.onclick=()=>$('#restoreLink')?.click();
@@ -4690,7 +4767,7 @@ const ProgSync={
   // keep both: progress only ever adds up) or own (the device that changed it last wins, e.g. a mistake fixed or a
   // checklist colour changed). [kind, how, ends where the newest items go, how many to keep]
   KEYS:{'go-prog':['j','grow'],'go-rag':['j','own'],'fm-mist':['j','own'],'fm-mocks':['j','grow','end',300],'fm-recent':['j','own'],'fm-xp':['n','grow'],
-    'fm-xpw':['j','grow'],'fm-days':['j','grow'],'fm-mins':['j','grow'],'fm-stats':['j','grow'],'go-sub':['s','own'],'go-lvl':['s','own'],'go-boards':['j','own']},
+    'fm-xpw':['j','grow'],'fm-days':['j','grow'],'fm-mins':['j','grow'],'fm-stats':['j','grow'],'go-sub':['s','own'],'go-lvl':['s','own'],'go-boards':['j','own'],'fm-sgrades':['j','own']},
   PERSONAL:['fm-plan','fm-ai','fm-lbname','fm-school','fm-school-name','fm-in-class','fm-seen-grades','fm-seen-hw','fm-join'],
   t:null,busy:false,again:false,ready:false,dirty:new Set(),
   on(){return !!(API_BASE&&authToken())},
@@ -4883,13 +4960,13 @@ function renderPlanBoard(main){main.dataset.step='';
         <div class="pl-strip" aria-hidden="true">${x.topics.map(o=>`<i style="--f:${o.f}" title="Topic ${esc(o.t.n)} · ${esc(o.t.title)}"></i>`).join('')}</div>
         ${x.next?`<button class="btn ghost sm" data-popen="${ref({p:x.p,ti:x.next.ti,si:x.next.si})}|notes"><span>Next: ${esc(x.next.x.n)} ${esc(x.next.x.title)}</span><span>→</span></button>`:`<button class="btn ghost sm" data-psubj-go="${x.p.s}"><span>${x.locked?'Unlock the rest with full access':'All done · revise any topic'}</span><span>→</span></button>`}</div>`).join('')}</div>
       <p class="muted pl-free">Want to try another subject? Everything stays open in <a href="#home">Subjects</a>.</p></div>
-    <div class="pl-sec"><h3 class="pl-h">Predicted grades</h3><p class="muted">From your timed mock papers and practice. Every mock you sit makes them sharper.</p>
+    <div class="pl-sec"><h3 class="pl-h">Predicted grades</h3><p class="muted">Your Full Marks estimate from mocks and practice, next to the grades your school gave you.</p>
       <div>${S.map(x=>Grade.html(x.p.s,PLAN.level,x.p.b,{btn:`<button class="btn ghost sm" data-pmock="${x.p.s}">Sit a mock paper</button>`})).join('')}</div>
       <p class="gr-note">${esc(Grade.note)}</p></div>
     ${weak.length?`<div class="pl-sec"><h3 class="pl-h">Needs another look</h3><p class="muted">Your lowest scores. A second try is the fastest way to lock them in.</p>
       <div>${weak.map(u=>`<div class="pl-wk" style="--c:${u.s.color}"><b class="sc">${u.sc}%</b><span><small>${esc(u.s.name)}</small><b>${esc(u.x.n)} ${esc(u.x.title)}</b></span><button class="btn sm" data-popen="${ref(u)}|practice">Try again</button></div>`).join('')}</div></div>`:''}
     <div class="pl-sec" id="plNotes"><div class="pl-nhead"><div><h3 class="pl-h">Your notes</h3><p class="muted" style="margin:0">Formulas, mnemonics, what your teacher said: anything you want to remember.</p></div><button class="btn" id="nNew">+ New note</button></div>
-      <div class="pl-filters">${[['all','All'],['','General'],...noteSubs.map(k=>[k,SUBJECTS[k].name])].map(([k,n])=>{const c=k==='all'?notes.length:notes.filter(x=>(x.s||'')===k).length;return `<button class="pl-chip${noteFilter===k?' on':''}" data-nf="${k}">${esc(n)} <small>${c}</small></button>`}).join('')}</div>
+      <div class="pl-filters"${notes.length?'':' hidden'}>${[['all','All'],['','General'],...noteSubs.map(k=>[k,SUBJECTS[k].name])].map(([k,n])=>{const c=k==='all'?notes.length:notes.filter(x=>(x.s||'')===k).length;return `<button class="pl-chip${noteFilter===k?' on':''}" data-nf="${k}">${esc(n)} <small>${c}</small></button>`}).join('')}</div>
       <div class="pl-notes" id="nList">${notesHtml()}</div></div>`;
   requestAnimationFrame(()=>{const fg=$('#plFg');if(fg)fg.style.strokeDashoffset=452-452*ringF});
   wirePlanBoard(main,picks)}
@@ -4987,7 +5064,7 @@ const SCH={seq:0,role:null,roleAt:0,
   modal(title,html,wide){showModal(title,html);$('#modal .box').classList.toggle('wide',!!wide)},
   close(){$('#modal').classList.remove('on')},
   copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('📋','Copied'),()=>prompt(T('Copy this:'),t))},
-  signin(main,title,text,then){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🔐</div><h3>${esc(title)}</h3><p class="muted">${esc(text)}</p><button class="btn" data-sign>Sign in with email</button></div>`;
+  signin(main,title,text,then){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">🔐</div><h3>${esc(title)}</h3><p class="muted">${esc(text)}</p><button class="btn" data-sign>Sign in or create an account</button></div>`;
     main.querySelector('[data-sign]').onclick=()=>planSignIn(title,then||route)},
   signOut(){Acct.signOut()},
   fail(main,e,again){main.innerHTML=`<div class="sc-card sc-empty"><div class="big">⚠️</div><h3>${esc(e.message)}</h3><p><button class="btn ghost" data-again>Try again</button></p></div>`;main.querySelector('[data-again]').onclick=again},
@@ -5126,7 +5203,7 @@ function schoolJoinCard(more,pre){const S=SchoolPage.schools||[],p=pre||{},want=
       <button class="btn" id="jGo">Send request to my teacher</button><p class="sc-msg" id="jMsg"></p></div></div>
     <div id="jNot" hidden></div>
     <p class="sc-note">🎁 Students in a teacher’s class get full access to Full Marks for free.</p>
-    <p class="sc-note">🔒 When your teacher approves you, they can see your grades and what you do on Full Marks: the notes, 3D models and explainers you open, your practice and scores, and how long you study. You can leave a class at any time.</p></div>`}
+    <p class="sc-note">🔒 Your teacher sees your grades and what you practise on Full Marks. You can leave a class at any time.</p></div>`}
 function schoolJoinBind(main){const box=main.querySelector('#jFind');if(!box)return;const sch=main.querySelector('#jSchool'),sub=main.querySelector('#jSub'),code=main.querySelector('#jCode'),go=main.querySelector('#jGo'),msg=main.querySelector('#jMsg'),rest=main.querySelector('#jRest'),not=main.querySelector('#jNot');
   const fill=()=>{const s=(SchoolPage.schools||[]).find(x=>x.name===sch.value)||(SchoolPage.pick&&SchoolPage.pick.onFM?SchoolPage.pick:null),list=s&&s.subjects||[],want=sub.dataset.want||sub.value;
     sub.innerHTML=list.length?(list.length>1?'<option value="">Choose the subject…</option>':'')+SCH.opts(list.map(k=>[k,SCH.sName(k)]),want):'<option value="">Choose your school first</option>';sub.disabled=!list.length};
