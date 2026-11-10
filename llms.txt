@@ -1,6 +1,6 @@
 # Full Marks
 
-> Full Marks (fullmarkss.com) is a revision website for GCSE, AS and A-level students. It was founded by Alexander Hacek, who built it to help students find the way of learning that works best for them, because he didn't know how himself at school.
+> Full Marks (fullmarkss.com) is a revision website and iPhone app for GCSE, AS and A-level students. It was founded by Alexander Hacek, who built it to help students find the way of learning that works best for them, because he didn't know how himself at school.
 
 Students pick their subject, exam board and level, and everything follows that specification: short notes for every subtopic, exam-style questions with an explanation for every answer, timed mock papers, revision games, predicted grades and a weekly study plan built from their tests and target grades. Teachers and their classes use it free; parents can get a weekly progress report.
 
@@ -21,5 +21,6 @@ Students pick their subject, exam board and level, and everything follows that s
 
 ## Elsewhere
 
+- iPhone app (App Store): https://apps.apple.com/app/id6820987528
 - Instagram: https://www.instagram.com/full.marks1/
 - TikTok: https://www.tiktok.com/@fullmarks.revision
