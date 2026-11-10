@@ -1566,8 +1566,11 @@ html.i18n .board-ui{display:none!important}
 .tr-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .tr{background:var(--paper);border-radius:20px;padding:22px;box-shadow:var(--shadow),0 0 0 1px var(--line);display:flex;flex-direction:column;gap:6px}
 .tr>span{font-size:30px}.tr b{font:800 17px/1.25 "Plus Jakarta Sans",sans-serif}.tr small{color:var(--muted);font-size:14px;line-height:1.45}
+.tr-quote{display:flex;align-items:center;gap:14px;max-width:560px;margin:26px auto 0;padding:14px 18px;border-radius:18px;background:var(--paper);box-shadow:0 0 0 1px var(--line);text-decoration:none;color:var(--ink)}
+.tr-quote>span:first-child{flex:none;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4361EE,#7C3AED);color:#fff;display:grid;place-items:center;font:800 17px "Plus Jakarta Sans",sans-serif}
+.tr-quote q{display:block;font:700 17px/1.35 "Plus Jakarta Sans",sans-serif}.tr-quote small{color:var(--muted);font-size:13px}
 .tr-more{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:22px 0 0;font-weight:700}.tr-more a{text-decoration:none}
-@media (max-width:900px){.tr-grid{grid-template-columns:1fr 1fr}}@media (max-width:520px){.tr-grid{grid-template-columns:1fr}.tr{flex-direction:row;align-items:flex-start;gap:14px;padding:16px}.tr>span{font-size:26px}}
+@media (max-width:900px){.tr-grid{grid-template-columns:1fr 1fr}}@media (max-width:520px){.tr-grid{grid-template-columns:1fr;gap:10px}.tr{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:2px;padding:16px}.tr>span{grid-row:span 2;font-size:26px}}
 .rv-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px 0 14px;font-weight:700}.rv-head b{font:800 30px "Plus Jakarta Sans",sans-serif}.rv-head span:last-child{color:var(--muted)}
 .rv-st{color:#F59E0B;letter-spacing:2px;font-size:18px}.rv-st i{font-style:normal;color:var(--line)}
 .rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
@@ -2574,6 +2577,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <div class="tr rv" style="--d:3"><span aria-hidden="true">🔒</span><b>No ads, no selling data</b><small>Payments by Stripe. Cancel in two clicks. Delete your account any time.</small></div>
       </div>
       <div id="revBox"></div>
+      <a class="tr-quote" href="/about.html"><span aria-hidden="true">AH</span><span><q>I want students to learn with joy, not dread.</q><small>Alexander Hacek, 19, founder of Full Marks · Read why →</small></span></a>
       <p class="tr-more"><a href="/about.html">Who makes Full Marks →</a><a href="/schools.html">For schools and teachers →</a><a href="#" data-review>Leave a review →</a></p>
     </div>
 
