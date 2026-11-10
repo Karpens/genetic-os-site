@@ -1569,7 +1569,7 @@ html.i18n .board-ui{display:none!important}
 .tr-quote{display:flex;align-items:center;gap:14px;max-width:560px;margin:26px auto 0;padding:14px 18px;border-radius:18px;background:var(--paper);box-shadow:0 0 0 1px var(--line);text-decoration:none;color:var(--ink)}
 .tr-quote .tr-av{flex:none;width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--paper);box-shadow:0 0 0 2px var(--stain)}
 .tr-quote q{display:block;font:700 17px/1.35 "Plus Jakarta Sans",sans-serif}.tr-quote small{color:var(--muted);font-size:13px}
-.tr-more{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:22px 0 0;font-weight:700}.tr-more a{text-decoration:none}
+.tr-more{max-width:none!important;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:22px 0 0;font-weight:700}.tr-more a{text-decoration:none}
 @media (max-width:900px){.tr-grid{grid-template-columns:1fr 1fr}}@media (max-width:520px){.tr-grid{grid-template-columns:1fr;gap:10px}.tr{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:2px;padding:16px}.tr>span{grid-row:span 2;font-size:26px}}
 .rv-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px 0 14px;font-weight:700}.rv-head b{font:800 30px "Plus Jakarta Sans",sans-serif}.rv-head span:last-child{color:var(--muted)}
 .rv-st{color:#F59E0B;letter-spacing:2px;font-size:18px}.rv-st i{font-style:normal;color:var(--line)}
@@ -2182,6 +2182,12 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 .hero h1{font-size:clamp(44px,6.6vw,88px);line-height:1;letter-spacing:-.035em}
 .hero .lead{max-width:690px;margin-left:auto;margin-right:auto}
 .hero-cta,.trustbar,.hero-acct{justify-content:center}
+.hero-founder{display:inline-flex;align-items:center;gap:10px;margin:20px auto 0;padding:6px 14px 6px 6px;border-radius:99px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line);color:var(--ink);text-decoration:none;font-size:14.5px;opacity:0;animation:fadeUp .9s .85s cubic-bezier(.2,.8,.2,1) forwards;transition:transform .2s,box-shadow .2s}
+.hero-founder:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg),0 0 0 1.5px var(--stain)}
+.hero-founder img{width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px var(--stain)}
+.hero-founder span{color:var(--muted)}.hero-founder b{color:var(--ink)}.hero-founder i{font-style:normal;color:var(--stain);font-weight:800}
+.hero-text>.hero-founder{align-self:center}
+@media (max-width:560px){.hero-founder{font-size:13px;margin:0 auto 22px}.hero-text>*{order:2}.hero-text>.pill,.hero-text>h1,.hero-text>.lead,.hero-text>.hero-founder{order:1}}
 .hero .rot{display:inline-block;position:relative;text-align:left;transition:width .5s cubic-bezier(.2,.9,.2,1)}.hero .rot>span{position:absolute;left:0;top:0}
 .demo3d{width:min(1160px,100%);height:600px;perspective:none;max-width:none;margin:0}
 .demo3d::before{content:'';position:absolute;inset:90px 0 0;border-radius:34px;background:radial-gradient(60% 80% at 20% 20%,rgba(255,255,255,.22),transparent 60%),linear-gradient(135deg,var(--stain),var(--brand-2))}
@@ -2466,6 +2472,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>First topic in every subject is free</span>
           <span id="examCount" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2h12M6 22h12M7 2c0 5 10 5 10 10S7 17 7 22M17 2c0 5-10 5-10 10s10 5 10 10"/></svg><b></b></span>
         </div>
+        <a class="hero-founder" href="/about.html"><img src="/img/alexander-sm.jpg" width="36" height="36" alt=""><span><b>Made by Alexander, 19</b> · why I built it</span><i aria-hidden="true">→</i></a>
       </div>
       <div class="demo3d" id="demo3d" aria-hidden="true">
         <span class="stk s1">🧠</span><span class="stk s2">🔬</span><span class="stk s3">⚛️</span><span class="stk s4">🧮</span>
@@ -2518,12 +2525,17 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
       </div>
     </div>
 
-    <div class="sec band band-violet">
-      <span class="stk t1" aria-hidden="true">✏️</span><span class="stk t2" aria-hidden="true">💡</span>
-      <div class="tryq">
-        <div class="sec-head rv" style="margin:0"><span class="eyebrow">Try one now</span><h2>Can you get <span class="grad">this</span> right?</h2><p>A real question from the bank. Pick an answer — every question comes with a clear explanation, just like the real thing.</p><button class="btn ghost" id="tryNext">Another question ↻</button></div>
-        <div class="qcard rv zoom" style="--d:1" id="tryCard"></div>
+    <div class="sec" id="trust">
+      <div class="sec-head rv"><span class="eyebrow">Why trust Full Marks</span><h2>Made for your exams. <span class="grad">Honest about everything.</span></h2></div>
+      <div class="tr-grid">
+        <div class="tr rv" style="--d:0"><span aria-hidden="true">🎯</span><b>Your exact course</b><small>Notes and questions follow your exam board’s specification, topic by topic.</small></div>
+        <div class="tr rv" style="--d:1"><span aria-hidden="true">💡</span><b>Every answer explained</b><small>Right or wrong, you see why, so every question teaches you something.</small></div>
+        <div class="tr rv" style="--d:2"><span aria-hidden="true">🛠️</span><b>Spot a mistake? We fix it</b><small>Every question has a Report button, and every report is read.</small></div>
+        <div class="tr rv" style="--d:3"><span aria-hidden="true">🔒</span><b>No ads, no selling data</b><small>Payments by Stripe. Cancel in two clicks. Delete your account any time.</small></div>
       </div>
+      <div id="revBox"></div>
+      <a class="tr-quote" href="/about.html"><img class="tr-av" src="/img/alexander-sm.jpg" width="52" height="52" alt="" loading="lazy"><span><q>I made Full Marks to help students find the best way to learn, because I didn’t know how myself.</q><small>Alexander Hacek, 19, founder of Full Marks · Read why →</small></span></a>
+      <p class="tr-more"><a href="/about.html">Who makes Full Marks →</a><a href="/schools.html">For schools and teachers →</a><a href="#" data-review>Leave a review →</a></p>
     </div>
 
     <div class="sec">
@@ -2534,6 +2546,14 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <div class="w3c rv" style="--d:2;--wc:var(--teal)"><div class="w3art" aria-hidden="true"><span>🍎</span><span>🧑‍🏫</span><span>📋</span></div><div class="w3t"><h3>I’m a teacher</h3><p>Free for teachers and for every student in their classes. Share a class code, set homework and see who has done it.</p><a class="btn ghost" href="#teacher">Get a free teacher account</a><a class="w3more" href="#" data-school-enq>Whole school? Get a price →</a></div></div>
       </div>
       <div class="forsch rv"><div class="forsch-art" aria-hidden="true"><span>🏫</span><span>🧑‍🏫</span><span>🎒</span></div><div class="forsch-t"><span class="eyebrow">For schools</span><h3>Full Marks for your whole school</h3><p>Every teacher and every student, set up for you, on one invoice. Tell us about your school and we’ll send you a price.</p></div><button type="button" class="btn lg" data-school-enq>Get a price for your school →</button></div>
+    </div>
+
+    <div class="sec band band-violet">
+      <span class="stk t1" aria-hidden="true">✏️</span><span class="stk t2" aria-hidden="true">💡</span>
+      <div class="tryq">
+        <div class="sec-head rv" style="margin:0"><span class="eyebrow">Try one now</span><h2>Can you get <span class="grad">this</span> right?</h2><p>A real question from the bank. Pick an answer — every question comes with a clear explanation, just like the real thing.</p><button class="btn ghost" id="tryNext">Another question ↻</button></div>
+        <div class="qcard rv zoom" style="--d:1" id="tryCard"></div>
+      </div>
     </div>
 
     <div class="sec">
@@ -2567,19 +2587,6 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
     </div>
   </section>
   <div class="wrap">
-
-    <div class="sec" id="trust">
-      <div class="sec-head rv"><span class="eyebrow">Why trust Full Marks</span><h2>Made for your exams. <span class="grad">Honest about everything.</span></h2></div>
-      <div class="tr-grid">
-        <div class="tr rv" style="--d:0"><span aria-hidden="true">🎯</span><b>Your exact course</b><small>Notes and questions follow your exam board’s specification, topic by topic.</small></div>
-        <div class="tr rv" style="--d:1"><span aria-hidden="true">💡</span><b>Every answer explained</b><small>Right or wrong, you see why, so every question teaches you something.</small></div>
-        <div class="tr rv" style="--d:2"><span aria-hidden="true">🛠️</span><b>Spot a mistake? We fix it</b><small>Every question has a Report button, and every report is read.</small></div>
-        <div class="tr rv" style="--d:3"><span aria-hidden="true">🔒</span><b>No ads, no selling data</b><small>Payments by Stripe. Cancel in two clicks. Delete your account any time.</small></div>
-      </div>
-      <div id="revBox"></div>
-      <a class="tr-quote" href="/about.html"><img class="tr-av" src="/img/alexander-sm.jpg" width="52" height="52" alt="" loading="lazy"><span><q>I made Full Marks to help students find the best way to learn, because I didn’t know how myself.</q><small>Alexander Hacek, 19, founder of Full Marks · Read why →</small></span></a>
-      <p class="tr-more"><a href="/about.html">Who makes Full Marks →</a><a href="/schools.html">For schools and teachers →</a><a href="#" data-review>Leave a review →</a></p>
-    </div>
 
     <div class="sec free-only" id="homePlans">
       <div class="sec-head rv"><span class="eyebrow">Free or full access</span><h2>Start free. <span class="grad">Go all in</span> when you’re ready.</h2><p>Try the first topic of any subject with no card needed. Here’s what changes with full access.</p></div>
