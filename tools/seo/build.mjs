@@ -280,7 +280,7 @@ function hubPage() {
   const body = `
 <header class="hero">
 <p class="eyebrow">Free revision notes</p>
-<h1>GCSE and A-level revision notes and questions</h1>
+<h1>GCSE and A-level revision notes and practice tests</h1>
 <p class="lead">Clear notes, diagrams and exam-style practice questions for ${plural(subjects.length, 'subject')}, from GCSE to the end of A-level, written for AQA, OCR, Edexcel and Cambridge. The first part of every topic is free to read here, with answers explained.</p>
 <ul class="stats"><li>${plural(nT, 'topic')}</li><li>${plural(nS, 'subtopic')}</li><li>${plural(nQ, 'exam-style question')}</li></ul>
 <div class="actions"><a class="btn" href="/#study">Start revising in Full Marks</a></div>
@@ -296,8 +296,8 @@ ${C.LEVELS.filter(([L]) => LEVEL[L] && byLevel(L).length).map(([L]) => `
 <div class="actions"><a class="btn" href="/#study">Open Full Marks</a><a class="btn ghost" href="/#pricing">See full access</a></div>
 </section>`;
   add(`/${DIR}/`, page({
-    url: `/${DIR}/`, title: 'GCSE and A-level revision notes and practice questions | Full Marks',
-    desc: 'Free GCSE and A-level revision notes, diagrams and exam-style questions with answers for every topic, written for AQA, OCR, Edexcel and Cambridge.',
+    url: `/${DIR}/`, title: 'GCSE and A-level revision notes and practice tests | Full Marks',
+    desc: 'Free GCSE and A-level revision notes, diagrams and practice tests with answers for every topic, written for AQA, OCR, Edexcel and Cambridge.',
     crumbs: [['Full Marks', '/'], ['Revision', `/${DIR}/`]], body,
     ld: [{ '@type': 'CollectionPage', name: 'GCSE and A-level revision notes', url: SITE + `/${DIR}/`, inLanguage: 'en-GB', publisher: ORG }],
   }));
@@ -308,7 +308,7 @@ function levelPage(L) {
   const body = `
 <header class="hero">
 <p class="eyebrow">${esc(lv.years)}</p>
-<h1>${esc(lv.name)} revision notes and questions</h1>
+<h1>${esc(lv.name)} revision notes and practice tests</h1>
 <p class="lead">Pick your subject for topic-by-topic ${esc(lv.name)} notes, diagrams and exam-style questions with answers, for ${esc(list([...new Set(cs.flatMap(c => c.boards.map(x => x.label.replace(/ [AB]$/, ''))))]))}.</p>
 </header>
 <section>
@@ -319,8 +319,8 @@ function levelPage(L) {
 <div class="grid">${C.LEVELS.filter(([x]) => x !== L && LEVEL[x] && byLevel(x).length).map(([x]) => tile(`/${DIR}/${LEVEL[x].slug}/`, LEVEL[x].years, `${LEVEL[x].name} revision`, list(byLevel(x).map(c => c.s.name)))).join('')}</div>
 </section>`;
   add(url, page({
-    url, title: `${lv.name} revision notes and practice questions | Full Marks`,
-    desc: clip(`Free ${lv.name} revision notes and exam-style questions with answers for ${list(cs.map(c => c.s.name))}.`),
+    url, title: `${lv.name} revision notes and practice tests | Full Marks`,
+    desc: clip(`Free ${lv.name} revision notes and practice tests with answers for ${list(cs.map(c => c.s.name))}.`),
     crumbs: [['Full Marks', '/'], ['Revision', `/${DIR}/`], [lv.name, url]], body,
     ld: [{ '@type': 'CollectionPage', name: `${lv.name} revision notes`, url: SITE + url, inLanguage: 'en-GB', publisher: ORG }],
   }));
@@ -349,8 +349,8 @@ ${others.length ? `<section>
 <div class="grid">${others.map(x => tile(x.url, x.lv.years, x.name, `${plural(x.topics.length, 'topic')} · ${plural(x.q, 'question')}`)).join('')}</div>
 </section>` : ''}`;
   add(c.url, page({
-    url: c.url, color: c.color, subj: c.k, title: `${c.name} revision notes and practice questions | Full Marks`,
-    desc: clip(`Free ${c.name} revision notes and exam-style questions with answers: ${list(c.topics.map(t => t.title))}.`),
+    url: c.url, color: c.color, subj: c.k, title: `${c.name} revision notes and practice tests | Full Marks`,
+    desc: clip(`Free ${c.name} revision notes and practice tests with answers: ${list(c.topics.map(t => t.title))}.`),
     crumbs: crumbsOf(c), body,
     ld: [{ '@type': 'CollectionPage', name: `${c.name} revision`, url: SITE + c.url, inLanguage: 'en-GB', about: c.s.name, educationalLevel: c.lv.name, publisher: ORG }],
   }));
@@ -380,7 +380,7 @@ ${others.length ? `<section>
 <div class="grid">${others.map(y => tile(y.url, y.label, y.spec, y.note)).join('')}</div>
 </section>` : ''}`;
   add(x.url, page({
-    url: x.url, color: c.color, subj: c.k, title: fit(...[' revision notes and questions | Full Marks', ' revision notes', ' revision'].map(e => x.spec + (/^Year/.test(x.note) ? ' ' + x.note : '') + e)),
+    url: x.url, color: c.color, subj: c.k, title: fit(...[' notes and practice tests | Full Marks', ' revision notes and tests', ' revision notes', ' revision'].map(e => x.spec + (/^Year/.test(x.note) ? ' ' + x.note : '') + e)),
     desc: clip(`${x.label} ${c.name} revision for ${x.spec}: notes and exam-style questions for ${list(x.topics.map(t => t.title))}.`),
     crumbs: [...crumbsOf(c), [x.label, x.url]], body,
     ld: [{ '@type': 'CollectionPage', name: `${x.label} ${c.name} revision`, url: SITE + x.url, inLanguage: 'en-GB', about: x.spec, educationalLevel: c.lv.name, publisher: ORG }],
@@ -411,7 +411,7 @@ ${x.x && x.x.length ? `<h3>In more detail</h3>
     if (x.q && x.q.length) qs = `
 <section id="questions" class="card">
 <p class="eyebrow">Practice</p>
-<h2>${esc(x.title)}: ${plural(x.q.length, 'question')}</h2>
+<h2>Practice test: ${esc(x.title)} (${plural(x.q.length, 'question')})</h2>
 <p class="muted">Pick an answer to check it, or open the answer for the explanation.</p>
 <p class="tally" aria-live="polite"></p>
 ${x.q.map((q, i) => `<div class="q" data-a="${+q[2]}">
@@ -452,8 +452,8 @@ ${missing.length ? `<p class="muted">Not in the ${esc(list(missing))} specificat
   const lead = x ? plain(x.notes.slice(0, 2).join(' ')) : plain(intro(t).join(' '));
   add(t.url, page({
     url: t.url, color: c.color, subj: c.k, type: 'article',
-    title: fit(`${t.title}: ${c.name} revision notes and questions | Full Marks`, `${t.title}: ${c.name} revision notes`, `${t.title} | ${c.name}`),
-    desc: clip(x ? `${t.title} for ${c.name}: free revision notes and ${plural(x.q.length, 'practice question')} with answers. ${lead}` : `${t.title} for ${c.name}: ${lead}`),
+    title: fit(`${t.title}: ${c.name} notes and practice test | Full Marks`, `${t.title}: ${c.name} notes and practice test`, `${t.title}: ${c.name} notes and test`, `${t.title}: ${c.name} revision notes`, `${t.title} | ${c.name}`),
+    desc: clip(x ? `${t.title} for ${c.name}: free revision notes and a ${x.q.length}-question practice test with answers. ${lead}` : `${t.title} for ${c.name}: ${lead}`),
     crumbs: [...crumbsOf(c), [t.title, t.url]], body,
     ld: [{
       '@type': 'LearningResource', name: `${t.title}: ${c.name} revision notes`, url: SITE + t.url, inLanguage: 'en-GB',
