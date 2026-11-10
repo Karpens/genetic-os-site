@@ -352,6 +352,14 @@ body.not-home .mstick{display:none!important}
 @media (max-width:560px){.subjbanner.slim .studyhead>div:last-child{display:none!important}.subjbanner.slim{padding:14px 18px}}
 .nd-go{margin:18px 0 26px;align-items:center}
 .l3-hero{margin-top:8px}
+.embed3d body{background:var(--bg);padding:0}
+.embed3d body>*:not(#embed3d){display:none!important}
+#embed3d{max-width:900px;margin:0 auto;padding:10px 12px 32px}
+#embed3d .l3-hero{margin:0;padding:0;background:none;border:0;box-shadow:none}
+#embed3d .why-ai{display:none!important}
+.e3-msg{min-height:80vh;display:grid;place-items:center;align-content:center;gap:4px;text-align:center;padding:24px}
+.e3-msg .big{font-size:46px}.e3-msg h3{margin:6px 0 0}.e3-msg p{max-width:34ch;margin:4px auto 0}
+#e3idx{white-space:pre-wrap;word-break:break-all;font-size:11px}
 .subjbanner .muted{color:var(--stage-muted)}
 .subjbanner select{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.18)}
 .subjbanner select option{color:#111}
@@ -2413,6 +2421,7 @@ details.deeper[open] summary{margin-bottom:12px}details.deeper[open] summary::af
 
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://fullmarkss.com/#org","name":"Full Marks","url":"https://fullmarkss.com/","description":"Full Marks is a revision website for GCSE, AS and A-level students: notes for every subtopic, exam-style questions with an explanation for every answer, timed mock papers, games and a weekly study plan, for AQA, OCR, Edexcel and Cambridge.","founder":{"@id":"https://fullmarkss.com/about.html#alexander"},"email":"hello@fullmarkss.com","sameAs":["https://www.instagram.com/full.marks1/","https://www.tiktok.com/@fullmarks.revision","https://apps.apple.com/app/id6820987528"]},{"@type":"Person","@id":"https://fullmarkss.com/about.html#alexander","name":"Alexander Hacek","jobTitle":"Founder of Full Marks","description":"Alexander Hacek founded Full Marks, a GCSE and A-level revision website, to help students find the way of learning that works best for them.","image":"https://fullmarkss.com/img/alexander.jpg","url":"https://fullmarkss.com/about.html","worksFor":{"@id":"https://fullmarkss.com/#org"}},{"@type":"WebSite","@id":"https://fullmarkss.com/#site","name":"Full Marks","url":"https://fullmarkss.com/","publisher":{"@id":"https://fullmarkss.com/#org"}},{"@type":"MobileApplication","@id":"https://fullmarkss.com/#app","name":"Full Marks Revision","operatingSystem":"iOS","applicationCategory":"EducationalApplication","url":"https://apps.apple.com/app/id6820987528","installUrl":"https://apps.apple.com/app/id6820987528","publisher":{"@id":"https://fullmarkss.com/#org"}}]}</script>
+<script>if(/[?&]app=3d(&|$)/.test(location.search))document.documentElement.classList.add('embed3d')</script>
 </head>
 <body>
 <!--
@@ -2952,6 +2961,9 @@ function langMenu(){const live=window.FM_LIVE||[],show=Object.keys(LOCALES).filt
 // Premium is only ever true after the backend has confirmed an active
 // subscription and sent the full content (see loadPremium below).
 let premium=false;
+// The iPhone app shows one subtopic's 3D model on its own: fullmarkss.com/?app=3d#study/<subject>/<level>/<board>/<subtopic>
+// (see Embed3D). Nothing else on the page starts then: no sign-in checks, syncing, visit counts or animations.
+const EMBED3D=document.documentElement.classList.contains('embed3d');
 let subject=store.get('go-sub','biology'); if(!SUBJECTS[subject])subject='biology';
 let level=store.get('go-lvl','GCSE'); if(!LEVELS.some(l=>l[0]===level))level='GCSE';
 
@@ -3643,8 +3655,8 @@ async function handleAuthRedirect(){
     history.replaceState({},'',location.pathname+location.hash);
   }
 }
-if(API_BASE)refreshPremiumFromServer();
-handleAuthRedirect();
+if(API_BASE&&!EMBED3D)refreshPremiumFromServer();
+if(!EMBED3D)handleAuthRedirect();
 
 /* ---------- motion, XP, streaks, daily challenge, flashcards, progress ---------- */
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3727,7 +3739,7 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-scroll]');
 
 /* ---------- hero: particles, rotating subject, auto-playing question ---------- */
 (function hero(){
-  const cv=$('#particles');if(!cv)return;const cx=cv.getContext('2d');let W,H,pts=[],raf=0,mouse={x:-999,y:-999};
+  const cv=$('#particles');if(!cv||EMBED3D)return;const cx=cv.getContext('2d');let W,H,pts=[],raf=0,mouse={x:-999,y:-999};
   const size=()=>{const r=cv.getBoundingClientRect();W=cv.width=r.width*devicePixelRatio;H=cv.height=r.height*devicePixelRatio;
     const n=Math.min(90,Math.round(r.width*r.height/14000));pts=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35*devicePixelRatio,vy:(Math.random()-.5)*.35*devicePixelRatio,r:(Math.random()*1.6+.6)*devicePixelRatio}))};
   const draw=()=>{cx.clearRect(0,0,W,H);const L=120*devicePixelRatio;
@@ -4027,8 +4039,7 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
     const fp=$('#fromPrice'),alt=$('#priceAlt'),q=P.quarterly,a=P.annual;if(fp&&m&&m.amount)fp.textContent=money(m.amount,m.currency);
     if(alt){const parts=[];if(q&&q.amount)parts.push(`${money(q.amount,q.currency)} for 3 months`);if(a&&a.amount){const months=a.interval==='year'?12*a.count:a.count||12;parts.push(`${money(a.amount,a.currency)} a year (just ${money(Math.round(a.amount/months),a.currency)} a month)`)}
       if(parts.length)alt.textContent='or '+parts.join(', or ')}}catch(e){}}
-loadPrices();
-HomeJoin.boot();
+if(!EMBED3D){loadPrices();HomeJoin.boot()}
 $('#invAskp')?.addEventListener('click',()=>Invite.open());
 
 /* ---------- mock results and predicted grades ---------- */
@@ -6496,6 +6507,31 @@ const Sim={
       :'<ul><li>In a <b>longitudinal</b> wave the particles move backwards and forwards, in the same direction the wave travels.</li><li>It has <b>compressions</b> (close together) and <b>rarefactions</b> (spread out). Sound is a longitudinal wave.</li></ul>'};info()}};
 
 /* 3D models (three.js, loaded only when a model opens): brain, cells, DNA and molecules */
+// The 3D model of one subtopic, full screen, for the iPhone app (and the list of subtopics that have one).
+// Free subtopics are open to everyone. The others need full access: the app puts its sign-in into this
+// page's storage, and the server says whether that account has it.
+const Embed3D={
+  model(x,t,s){return Lab.match(x,t,s).find(m=>L3.KINDS.includes(m.k)||(L3.LIB&&L3.LIB[m.k]))||null},
+  title(m){const h=Lab.title[m.k]||(L3.LIB&&L3.LIB[m.k]&&L3.LIB[m.k].title);return h?`${h[0]} ${h[1]}`:'3D model'},
+  // {"<subject>/<level>/<board>": {"<subtopic>": "<title>"}}: saved as 3d.json by tools/3d-index.mjs.
+  index(){const out={},keep=[subject,level];
+    for(const [s,S] of Object.entries(SUBJECTS))for(const l of ['GCSE','AS','A2']){const raw=S[l];if(!raw||!raw.full)continue;subject=s;level=l;
+      for(const [b] of BOARDS){if(!(SPECS[s]&&SPECS[s][b]&&SPECS[s][b][l]))continue;const d=ldFor(raw,b),k=`${s}/${l}/${b}`;
+        for(const t of d.topics||[])for(const x of t.subs||[]){const m=this.model(x,t,s);if(m)(out[k]=out[k]||{})[x.key||x.n]=this.title(m)}}}
+    [subject,level]=keep;return out},
+  say(box,icon,title,text){box.innerHTML=`<div class="e3-msg"><div class="big">${icon}</div><h3>${esc(title)}</h3>${text?`<p class="muted">${esc(text)}</p>`:''}</div>`},
+  async boot(){const qs=new URLSearchParams(location.search),th=qs.get('theme');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th;
+    const box=document.createElement('main');box.id='embed3d';document.body.appendChild(box);this.say(box,'⏳','Loading the 3D model…');
+    try{await L3.lib()}catch(e){return this.say(box,'📶','The 3D model didn’t load','Check your connection and try again.')}
+    const a=location.hash.slice(1).split('/').map(z=>{try{return decodeURIComponent(z)}catch(e){return z}});
+    if(a[0]==='index'){box.innerHTML=`<pre id="e3idx">${esc(JSON.stringify(this.index()))}</pre>`;return}
+    const [,s,l,b,key]=a;if(a[0]!=='study'||!SUBJECTS[s]||!SUBJECTS[s][l]||!SUBJECTS[s][l].full)return this.say(box,'🤔','This model isn’t available');
+    subject=s;level=l;if(BOARDS.some(z=>z[0]===b))boards[s]=b;
+    const T=(levelData()||{}).topics||[],t=T.find(z=>(z.subs||[]).some(x=>(x.key||x.n)===key)),x=t&&t.subs.find(z=>(z.key||z.n)===key),m=x&&this.model(x,t,s);
+    if(!m)return this.say(box,'🧪','No 3D model here yet','This subtopic doesn’t have a 3D model.');
+    if(!x.notes.length){let ok=false;try{if(API_BASE&&authToken()){const r=await fetch(`${API_BASE}/me`,{headers:{Authorization:'Bearer '+authToken()}});ok=!!(r.ok&&(await r.json()).premium)}}catch(e){}
+      if(!ok)return this.say(box,'🔒','Part of full access','Full access opens the 3D model of every subtopic.')}
+    box.innerHTML=`<section class="lab-sec l3-hero" translate="no"><div class="lab-host" id="e3Host"></div></section>`;Lab.mount($('#e3Host'),m,x,{hero:1})}};
 const L3={
   // Kinds that are real 3D models (shown at the top of the notes too).
   KINDS:['neurone','brain','cells','dna','molecules'],
@@ -7415,9 +7451,9 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeckSpoken());
-renderPicker();route();Invite.boot();PlanSync.pull();ProgSync.pull();Reviews.load();if(authToken())setTimeout(()=>Welcome.claim(),2500);
-{const qs=new URLSearchParams(location.search),k=['school','review'].find(x=>qs.has(x));if(k){qs.delete(k);history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash);setTimeout(()=>k==='school'?SchoolEnq.open():Reviews.open(),600)}}{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
+if(EMBED3D)Embed3D.boot();else{renderPicker();route();Invite.boot();PlanSync.pull();ProgSync.pull();Reviews.load();if(authToken())setTimeout(()=>Welcome.claim(),2500)}
+{const qs=new URLSearchParams(location.search),k=['school','review'].find(x=>qs.has(x));if(k){qs.delete(k);history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash);setTimeout(()=>k==='school'?SchoolEnq.open():Reviews.open(),600)}}{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!EMBED3D&&!(c&&c.saveData))setTimeout(pre,2500)}if(!EMBED3D){WHO.boot();StuAct.boot();Mins.boot()}
+if(!EMBED3D)document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
   if(API_BASE)fetch(`${API_BASE}/i18n/status`).then(r=>r.ok?r.json():null).then(j=>{if(j)langShare=Object.fromEntries(Object.entries(j.languages||{}).map(([k,v])=>[k,v.share]));showLang()}).catch(()=>{});
