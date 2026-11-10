@@ -6520,7 +6520,8 @@ const Embed3D={
         for(const t of d.topics||[])for(const x of t.subs||[]){const m=this.model(x,t,s);if(m)(out[k]=out[k]||{})[x.key||x.n]=this.title(m)}}}
     [subject,level]=keep;return out},
   say(box,icon,title,text){box.innerHTML=`<div class="e3-msg"><div class="big">${icon}</div><h3>${esc(title)}</h3>${text?`<p class="muted">${esc(text)}</p>`:''}</div>`},
-  async boot(){const qs=new URLSearchParams(location.search),th=qs.get('theme');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th;
+  async boot(){const qs=new URLSearchParams(location.search),th=qs.get('theme'),bg=qs.get('bg');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th;
+    if(/^[0-9a-f]{6}$/i.test(bg||''))document.documentElement.style.setProperty('--bg','#'+bg); // the app's own background
     const box=document.createElement('main');box.id='embed3d';document.body.appendChild(box);this.say(box,'⏳','Loading the 3D model…');
     try{await L3.lib()}catch(e){return this.say(box,'📶','The 3D model didn’t load','Check your connection and try again.')}
     const a=location.hash.slice(1).split('/').map(z=>{try{return decodeURIComponent(z)}catch(e){return z}});
