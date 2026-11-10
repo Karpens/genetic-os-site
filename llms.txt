@@ -1,0 +1,25 @@
+# Full Marks
+
+> Full Marks (fullmarkss.com) is a revision website for GCSE, AS and A-level students. It was founded by Alexander Hacek, who built it to help students find the way of learning that works best for them, because he didn't know how himself at school.
+
+Students pick their subject, exam board and level, and everything follows that specification: short notes for every subtopic, exam-style questions with an explanation for every answer, timed mock papers, revision games, predicted grades and a weekly study plan built from their tests and target grades. Teachers and their classes use it free; parents can get a weekly progress report.
+
+- Founder: Alexander Hacek
+- Exam boards: AQA, OCR A, OCR B, Edexcel, Cambridge (CIE)
+- Subjects: Biology, Chemistry, Physics, Maths, Further Maths, Computer Science, Geography, Psychology, Economics, Business
+- Levels: GCSE, AS, A-level, Foundation year
+- Free to start: the first topic of every subject, with no card
+- Contact: hello@fullmarkss.com
+
+## Pages
+
+- [About Full Marks and its founder](https://fullmarkss.com/about.html): who makes it, how the notes and questions are made, safety and data
+- [Full Marks for schools](https://fullmarkss.com/schools.html): free for teachers and their classes, safeguarding, whole-school plans
+- [Free revision notes](https://fullmarkss.com/revision/): notes by level, subject and exam board
+- [Pricing](https://fullmarkss.com/#pricing)
+- [Privacy policy](https://fullmarkss.com/privacy.html)
+
+## Elsewhere
+
+- Instagram: https://www.instagram.com/full.marks1/
+- TikTok: https://www.tiktok.com/@fullmarks.revision
