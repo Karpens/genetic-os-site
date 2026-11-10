@@ -1539,6 +1539,51 @@ html.i18n .board-ui{display:none!important}
 .gr .btn{flex:none}
 @media (max-width:560px){.gr{flex-wrap:wrap}.gr .btn{width:100%}}
 .gr-note{font-size:12.5px;color:var(--muted);margin:8px 0 18px}
+.wk-sum{text-align:right;flex:none}.wk-sum b{display:block;font:800 28px/1 "Plus Jakarta Sans",sans-serif}.wk-sum small{color:var(--muted);font-size:12px}
+.wk-bar{height:8px;border-radius:99px;background:var(--bg2);overflow:hidden;margin:14px 0 16px}
+.wk-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#3DDB93,#4361EE);transition:width .6s}
+.wk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.wk-card{background:var(--paper);border-radius:16px;padding:14px 16px 8px;box-shadow:var(--shadow),0 0 0 1px var(--line);border-top:4px solid var(--c)}
+.wk-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.wk-h b{font-size:16px;margin-right:auto}
+.wk-h .gl{color:var(--c)}.wk-h .gl svg{width:22px;height:22px}
+.wk-aim{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:color-mix(in srgb,var(--c) 12%,var(--paper))}
+.wk-card ul{list-style:none;margin:0;padding:0}
+.wk-card li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.wk-card li:first-child{border-top:0}
+.wk-ck{flex:none;width:20px;height:20px;margin-top:1px;border-radius:7px;box-shadow:inset 0 0 0 1.5px var(--line);display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff}
+.wk-card li.done .wk-ck{background:#22C55E;box-shadow:none}
+.wk-card li a,.wk-card li button{flex:1;min-width:0;text-align:left;border:0;background:none;padding:0;font-family:inherit;font-size:14.5px;font-weight:600;line-height:1.35;color:var(--ink);text-decoration:none;cursor:pointer}
+.wk-card li a:hover,.wk-card li button:hover{color:var(--stain)}
+.wk-card li a small{color:var(--muted);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;margin-right:6px}
+.wk-card li a em{font-style:normal;color:#C2410C;font-size:12.5px}
+.wk-card li.done a,.wk-card li.done button{color:var(--muted);text-decoration:line-through}
+.wk-card li.lock a{color:var(--stain);font-size:13.5px}
+.wk-done{margin:12px 0 0;font-weight:700}
+.wk-mail{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px;padding:14px 18px;border-radius:16px;background:linear-gradient(120deg,var(--stain-soft),color-mix(in srgb,var(--brand-2) 8%,var(--paper)));box-shadow:0 0 0 1px var(--line)}
+.wk-mail>span{font-size:28px}.wk-mail>div{flex:1;min-width:200px}.wk-mail b{display:block}.wk-mail small{color:var(--muted)}
+.wk-mail.on{background:var(--paper)}
+.wk-test{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--bg2);color:var(--ink)}
+.wk-test.soon{background:#FDE7E7;color:#B42318}
+.ts-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.ts-card{display:flex;align-items:center;gap:14px;text-align:left;border:0;cursor:pointer;background:var(--paper);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow),0 0 0 1px var(--line);font-family:inherit;color:var(--ink);border-left:4px solid var(--c)}
+.ts-card:hover{box-shadow:var(--shadow),0 0 0 1.5px var(--c)}
+.ts-date{flex:none;width:50px;height:54px;border-radius:12px;display:grid;place-items:center;align-content:center;background:color-mix(in srgb,var(--c) 12%,var(--paper))}
+.ts-date b{font:800 22px/1 "Plus Jakarta Sans",sans-serif}.ts-date small{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.ts-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.ts-t b{font-size:15px}.ts-t small{color:var(--muted);font-size:13px;line-height:1.35}
+.ts-when{flex:none;font-size:12.5px;font-weight:700;color:var(--muted)}
+.ts-card.soon .ts-when{color:#B42318}
+.ts-empty{width:100%;border:1.5px dashed var(--line);background:none;border-radius:16px;padding:16px;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;text-align:center}
+.ts-empty:hover{border-color:var(--stain);color:var(--stain)}
+.ts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px}
+.ts-row label{display:block}.ts-row .se-l,.ts-f .sg-row .se-l{display:block;font-weight:700;font-size:14px;margin:0 0 8px}
+.ts-f .sg-pills button{font-family:inherit;font-weight:700;font-size:13.5px}
+.ts-tp{display:flex;flex-wrap:wrap;gap:6px;max-height:220px;overflow:auto}
+.ts-tp button{border:0;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);border-radius:10px;padding:7px 10px;font-family:inherit;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
+.ts-tp button b{color:var(--stain);margin-right:2px}
+.ts-tp button[aria-pressed=true]{background:var(--stain);color:#fff;box-shadow:none}.ts-tp button[aria-pressed=true] b{color:#fff}
+#plTests .ts-list,#plTests .ts-empty{margin-top:14px}
+@media (max-width:560px){.ts-row{grid-template-columns:1fr}.wk-sum{text-align:left}}
 .me-more{margin:14px 0 0;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .me-chip{border:0;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);border-radius:99px;padding:6px 12px;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink);cursor:pointer}
 .me-chip:hover{box-shadow:inset 0 0 0 1.5px var(--c)}
@@ -3996,11 +4041,138 @@ const Grade={
     $('#sgX').onclick=()=>$('#modal').classList.remove('on');
     $$('#mBody .sg-pills').forEach(r=>r.onclick=e=>{const t=e.target.closest('[data-g]');if(t)r.querySelectorAll('[data-g]').forEach(y=>y.setAttribute('aria-pressed',String(y===t)))});
     const pick=id=>{const on=$(`#${id} [aria-pressed="true"]`);return on?on.dataset.g:''};
-    const done=(pr,tg)=>{this.SG.set(s,l,b,pr,tg);$('#modal').classList.remove('on');$$('.gr-sg').forEach(el=>{if(el.dataset.sgk===k)el.outerHTML=this.sg(s,l,b)});toast(pr||tg?'🎯':'✓',esc(pr||tg?T('Saved'):T('Removed')))};
+    const done=(pr,tg)=>{this.SG.set(s,l,b,pr,tg);$('#modal').classList.remove('on');$$('.gr-sg').forEach(el=>{if(el.dataset.sgk===k)el.outerHTML=this.sg(s,l,b)});
+      const how=pr||tg?Road.fromGrade(s,l,b):null;
+      toast(pr||tg?'🎯':'✓',how==='new'?'Saved. Your study plan for the week is ready in <a href="#plan">My Plan</a>.':how==='added'?`Saved, and ${esc(S.name)} is now in <a href="#plan">your plan</a>.`:esc(pr||tg?T('Saved'):T('Removed')));
+      if(location.hash.slice(1)==='plan'&&typeof renderPlan==='function')renderPlan()};
     $('#sgSave').onclick=()=>done(pick('sgP'),pick('sgT'));
     if($('#sgDel'))$('#sgDel').onclick=()=>done('','')},
   note:'An estimate from your work on Full Marks, not an official prediction: real grade boundaries change every year.'};
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-sg]');if(!b)return;e.preventDefault();e.stopPropagation();Grade.edit(b.dataset.sg)},true);
+
+// Tests the student has at school (class tests, mocks, end of topic tests, the real exams), with the topics they
+// cover. Kept with the progress (fm-tests) as {id: test}; a deleted test stays as {del:1} so it can't come back
+// from another device. The week gets ready for the next test of each subject, and the server emails a reminder
+// the day before to students who turned the emails on.
+const Tests={
+  KINDS:[['class','Class test'],['mock','Mock exam'],['topic','End of topic test'],['exam','Real exam']],
+  all(){const o=jget('fm-tests',{});return o&&typeof o==='object'&&!Array.isArray(o)?o:{}},
+  list(){return Object.entries(this.all()).map(([id,x])=>({...x,id})).filter(x=>x&&!x.del&&SUBJECTS[x.s]&&/^\d{4}-\d{2}-\d{2}$/.test(x.d||'')).sort((a,b)=>a.d.localeCompare(b.d))},
+  upcoming(){const t=today();return this.list().filter(x=>x.d>=t)},
+  days(d){return Math.round((new Date(d+'T12:00')-new Date(today()+'T12:00'))/864e5)},
+  when(d){const n=this.days(d);return n===0?'Today':n===1?'Tomorrow':n<7?`In ${n} days`:n<14?'Next week':`In ${Math.round(n/7)} weeks`},
+  kind(k){return (this.KINDS.find(x=>x[0]===k)||this.KINDS[0])[1]},
+  topics(x){const raw=SUBJECTS[x.s]&&SUBJECTS[x.s][x.l],d=raw&&ldFor(raw,x.b);const T=d&&d.full?d.topics:[];
+    return (x.topics||[]).length?T.filter(t=>x.topics.includes(String(t.n))):[]},
+  label(x){const T=this.topics(x);return T.length?(T.length>3?`Topics ${T.map(t=>t.n).join(', ')}`:T.map(t=>`${t.n} ${t.title}`).join(' · ')):'Everything'},
+  save(id,x){const o=this.all();o[id]={...x,at:Date.now()};store.set('fm-tests',JSON.stringify(o))},
+  del(id){const o=this.all();if(o[id]){o[id]={...o[id],del:1,at:Date.now()};store.set('fm-tests',JSON.stringify(o))}},
+  // The add or change form: subject, date, kind and the topics it covers.
+  edit(id){const x=id?this.all()[id]:null,lv=x?x.l:planReady()?PLAN.level:PLAN_LEVELS.some(y=>y[0]===level)?level:'GCSE';
+    const subs=Object.entries(SUBJECTS).filter(([k,v])=>v[lv]),inPlan=planSubs().map(y=>y.s);
+    const s0=x?x.s:(inPlan[0]||(SUBJECTS[subject]&&SUBJECTS[subject][lv]?subject:subs[0][0]));
+    const brd=k=>{const y=planSubs().find(z=>z.s===k);return y?y.b:boardOf(k)};
+    showModal(x?'Change this test':'Add a test',`<div class="sg ts-f">
+      <div class="ts-row"><label><span class="se-l">Subject</span><select class="lbinput" id="tsS">${subs.map(([k,v])=>`<option value="${k}"${k===s0?' selected':''}>${esc(v.name)}</option>`).join('')}</select></label>
+        <label><span class="se-l">Date</span><input class="lbinput" type="date" id="tsD" min="${today()}" value="${esc(x?x.d:'')}"></label></div>
+      <div class="sg-row"><span class="se-l">What kind?</span><div class="sg-pills" id="tsK">${this.KINDS.map(([k,n])=>`<button type="button" data-g="${k}" aria-pressed="${(x?x.k:'class')===k}">${esc(n)}</button>`).join('')}</div></div>
+      <div class="sg-row"><span class="se-l">What’s it on?</span><div class="ts-tp" id="tsT"></div></div>
+      <p class="sc-msg" id="tsErr"></p>
+      <div class="actions"><button type="button" class="btn" id="tsSave">Save</button>${x?'<button type="button" class="btn ghost" id="tsDel">Delete</button>':''}<button type="button" class="btn ghost" id="sgX">Cancel</button></div></div>`);
+    let picked=new Set(x?(x.topics||[]).map(String):[]);
+    const draw=()=>{const k=$('#tsS').value,raw=SUBJECTS[k][lv],d=ldFor(raw,brd(k)),T=d&&d.full?d.topics:[];
+      $('#tsT').innerHTML=`<button type="button" class="all" data-n="" aria-pressed="${!picked.size}">Everything</button>${T.map(t=>`<button type="button" data-n="${esc(t.n)}" aria-pressed="${picked.has(String(t.n))}"><b>${esc(t.n)}</b> ${esc(t.title)}</button>`).join('')}`};
+    draw();$('#tsS').onchange=()=>{picked=new Set();draw()};
+    $('#tsT').onclick=e=>{const b=e.target.closest('[data-n]');if(!b)return;const n=b.dataset.n;if(!n)picked.clear();else if(picked.has(n))picked.delete(n);else picked.add(n);draw()};
+    $('#tsK').onclick=e=>{const b=e.target.closest('[data-g]');if(b)$$('#tsK [data-g]').forEach(y=>y.setAttribute('aria-pressed',String(y===b)))};
+    $('#sgX').onclick=()=>$('#modal').classList.remove('on');
+    const after=(msg)=>{$('#modal').classList.remove('on');toast('📅',msg);if(location.hash.slice(1)==='plan'&&typeof renderPlan==='function')renderPlan()};
+    $('#tsSave').onclick=()=>{const k=$('#tsS').value,d=$('#tsD').value,kd=($('#tsK [aria-pressed="true"]')||{}).dataset?.g||'class';
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){$('#tsErr').textContent='Pick the date of the test.';return}
+      if(d<today()){$('#tsErr').textContent='That date has already passed.';return}
+      this.save(id||uid(),{s:k,l:lv,b:brd(k),d,k:kd,topics:[...picked]});
+      const how=Road.ensure(k,lv,brd(k));
+      after(how==='new'?'Saved. Your study plan is ready, and gets you ready for it.':how==='added'?`Saved, and ${esc(SUBJECTS[k].name)} is now in your plan.`:'Saved. Your week now gets you ready for it.')};
+    if($('#tsDel'))$('#tsDel').onclick=()=>{this.del(id);after('Test deleted.')}}};
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('[data-tadd],[data-tedit]');if(!a)return;e.preventDefault();e.stopPropagation();Tests.edit(a.dataset.tedit||null)},true);
+function testsHtml(){const L=Tests.upcoming().slice(0,8),mon=d=>new Date(d+'T12:00').toLocaleDateString(I18N.L.html,{month:'short'});
+  return `<div class="pl-sec" id="plTests"><div class="pl-nhead"><div><h3 class="pl-h">Tests coming up</h3><p class="muted" style="margin:0">Add your school tests and mocks, and your week gets you ready for them.</p></div><button type="button" class="btn" data-tadd>+ Add a test</button></div>
+    ${L.length?`<div class="ts-list">${L.map((x,i)=>{const n=Tests.days(x.d);return `<button type="button" class="ts-card${n<=2?' soon':''}" data-tedit="${esc(x.id)}" style="--c:${SUBJECTS[x.s].color};--i:${i}"><span class="ts-date"><b>${new Date(x.d+'T12:00').getDate()}</b><small>${esc(mon(x.d))}</small></span>
+      <span class="ts-t"><b>${esc(SUBJECTS[x.s].name)} · ${esc(Tests.kind(x.k))}</b><small>${esc(Tests.label(x))}</small></span><span class="ts-when">${esc(Tests.when(x.d))}</span></button>`}).join('')}</div>`
+      :`<button type="button" class="ts-empty" data-tadd>📅 No tests yet. Add your next one and the plan gets you ready for it.</button>`}</div>`}
+
+// This week's work towards the targets: the next subtopics, the weakest scores to redo and a timed mock paper,
+// with more for the subjects furthest from their target. The list is fixed for the week (Monday to Sunday, so the
+// ticks stay put) and kept with the progress (fm-road), so the Monday email from the server lists the same things.
+const Road={
+  wk(t=Date.now()){const d=new Date(t);d.setUTCHours(0,0,0,0);d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));return d.toISOString().slice(0,10)},
+  wkStart(){return new Date(this.wk()+'T00:00:00Z').getTime()},
+  // The exam date from the plan, or the start of the summer exams.
+  exam(){if(PLAN&&PLAN.exam)return PLAN.exam;const n=new Date();return `${n.getMonth()>5?n.getFullYear()+1:n.getFullYear()}-05-11`},
+  weeks(){return Math.max(1,Math.ceil((new Date(this.exam()+'T09:00')-Date.now())/(7*864e5)))},
+  item(u,s,l,b,tab){const k=u.x.key||u.x.n;return {k:`${s}:${l}:${k}`,t:`${u.x.n} ${u.x.title}`,u:`study/${s}/${l}/${b}/${encodeURIComponent(k)}/${tab}`,tn:String(u.t.n)}},
+  // The next test of a subject in the coming four weeks.
+  test(s,l){return Tests.upcoming().find(x=>x.s===s&&x.l===l&&Tests.days(x.d)<=28)||null},
+  sig(){return JSON.stringify([PLAN.level,planSubs().map(p=>{const g=Grade.SG.get(p.s,PLAN.level,p.b)||{},t=this.test(p.s,PLAN.level);return [p.s,p.b,g.pred||'',g.target||'',t&&[t.d,t.k,t.topics]]}),this.exam(),premium])},
+  // One subject: how far it is from its target, and so how much to do this week.
+  // A test in the next three weeks puts its topics first, adds a little more and a practice paper for it.
+  plan(x){const l=PLAN.level,s=x.p.s,b=x.p.b,sg=Grade.SG.get(s,l,b)||{},e=Grade.predict(s,l,b),est=e.none?null:e.grade,cur=est||sg.pred||null,tg=sg.target||null;
+    const gap=tg&&cur?Math.max(0,Grade.rank(cur,l,b)-Grade.rank(tg,l,b)):null,g=Math.min(tg?(gap==null?1:gap):0,3);
+    const ts=this.test(s,l),soon=!!ts&&Tests.days(ts.d)<=21,F=new Set(ts?(ts.topics||[]).map(String):[]),inF=u=>!F.size||F.has(String(u.t.n));
+    const first=a=>soon?[...a.filter(inF),...a.filter(u=>!inF(u))]:a;
+    const left=x.subs.filter(u=>u.sc==null),open=first(left.filter(u=>u.open));
+    const learn=open.length?Math.min(open.length,10,Math.max(1,Math.ceil(left.length/this.weeks()))+g+(soon?2:0)):0;
+    const weak=first([...x.weak].sort((a,c)=>a.sc-c.sc)),weakN=Math.min(weak.length,1+Math.min(g,2)+(soon?1:0));
+    const test=ts?{d:ts.d,k:ts.k,name:Tests.kind(ts.k),on:Tests.label(ts),topics:[...F],days:Tests.days(ts.d)}:null;
+    return {s,l,b,name:x.s.name,est,pred:sg.pred||null,target:tg,gap,learn,weakN,mock:!!tg||soon||this.weeks()<=12,locked:x.locked,test,
+      mockT:soon?`Practice paper for your ${Tests.kind(ts.k).toLowerCase()}`:'Sit a timed mock paper',
+      queue:open.slice(0,learn+8).map(u=>this.item(u,s,l,b,'notes')),weak:weak.slice(0,6).map(u=>({...this.item(u,s,l,b,'practice'),sc:u.sc}))}},
+  build(){const subs=planSubs().map(planSubject).filter(Boolean).map(x=>{const r=this.plan(x);
+      r.items=[...r.queue.slice(0,r.learn).map(i=>({...i,kind:'learn'})),...r.weak.slice(0,r.weakN).map(i=>({...i,kind:'weak'})),...(r.mock?[{kind:'mock',t:r.mockT}]:[])];return r});
+    return {v:1,wk:this.wk(),sig:this.sig(),at:Date.now(),exam:this.exam(),subs}},
+  // Built on the first visit of the week, or when the subjects, grades or exam date change. Otherwise only the
+  // queues are refreshed, which the email uses if the student hasn't opened the site yet that week.
+  get(){if(!planReady())return null;let r=jget('fm-road',null);
+    if(!r||r.v!==1||r.wk!==this.wk()||r.sig!==this.sig()||!Array.isArray(r.subs)){r=this.build();this.save(r);return r}
+    const f=this.build();let ch=false;
+    r.subs.forEach(o=>{const n=f.subs.find(y=>y.s===o.s);if(n&&JSON.stringify([n.queue,n.weak,n.est,n.gap,n.locked,n.test])!==JSON.stringify([o.queue,o.weak,o.est,o.gap,o.locked,o.test])){Object.assign(o,{queue:n.queue,weak:n.weak,est:n.est,gap:n.gap,locked:n.locked,test:n.test});ch=true}});
+    if(ch){r.at=Date.now();this.save(r)}return r},
+  save(r){store.set('fm-road',JSON.stringify(r))},
+  done(o,i){const P=getProg();return i.kind==='mock'?Mocks.all().some(m=>m.s===o.s&&m.l===o.l&&m.b===o.b&&m.at>=this.wkStart()):i.kind==='weak'?(P[i.k]??0)>=60:P[i.k]!=null},
+  // Grades from school or a test make a study plan when there isn't one, and add a missing subject to the plan.
+  ensure(s,l,b){return this.fromGrade(s,l,b)},
+  fromGrade(s,l,b){if(!PLAN_LEVELS.some(x=>x[0]===l))return null;
+    if(!planReady()){PLAN={...(PLAN||{}),v:1,level:l,subjects:[{s,b}],exam:(PLAN&&PLAN.exam)||this.exam(),goal:(PLAN&&PLAN.goal)||20,pAt:Date.now(),notes:(PLAN&&PLAN.notes)||[]};planDraft=null;planStep=0;planChanged();applyPlanBoards();return 'new'}
+    if(PLAN.level===l&&!PLAN.subjects.some(x=>x.s===s)){PLAN.subjects.push({s,b});planChanged();applyPlanBoards();return 'added'}
+    return null}};
+// The Monday email with the week, for students who turn it on (the server sends it; see /me/reminders).
+const Remind={on:null,who:'',busy:false,
+  async load(){const em=store.get('go-auth-email','');if(!API_BASE||!authToken()){this.on=null;return}if(this.who===em&&this.on!=null)return;
+    try{const j=await SCH.api('GET','/me/reminders');this.on=!!j.on;this.who=em}catch(e){this.on=null}},
+  html(){const em=store.get('go-auth-email','');
+    if(!authToken())return `<div class="wk-mail"><span aria-hidden="true">📬</span><div><b>Get your week by email</b><small>Every Monday morning, and a reminder the day before a test.</small></div><button type="button" class="btn sm" data-rm="sign">Sign in to turn it on</button></div>`;
+    if(this.on==null||this.who!==em)return '';
+    return this.on?`<div class="wk-mail on"><span aria-hidden="true">📬</span><div><b>Your week comes by email</b><small>Every Monday morning and before each test, to ${esc(em)}.</small></div><button type="button" class="btn ghost sm" data-rm="off">Turn off</button></div>`
+      :`<div class="wk-mail"><span aria-hidden="true">📬</span><div><b>Get your week by email</b><small>Every Monday morning, and a reminder the day before a test. Turn it off any time.</small></div><button type="button" class="btn sm" data-rm="on">Turn on</button></div>`},
+  paint(){const b=$('#wkMail');if(b)b.innerHTML=this.html()},
+  async set(on){if(this.busy)return;this.busy=true;
+    try{if(on){for(let i=0;i<25&&ProgSync.busy;i++)await new Promise(r=>setTimeout(r,200));await ProgSync.send()}
+      const j=await SCH.api('PUT','/me/reminders',{on});this.on=!!j.on;this.who=store.get('go-auth-email','');
+      toast(on?'📬':'✓',on?(j.sent?'Done! This week’s plan is on its way to your inbox.':'Done! Your first plan arrives on Monday morning.'):'Weekly emails are off.')}
+    catch(e){toast('⚠️',esc(e.message))}
+    this.busy=false;this.paint()}};
+function weekHtml(){const r=Road.get();if(!r)return '';
+  const rows=r.subs.map(o=>({o,its:(o.items||[]).map(i=>({...i,d:Road.done(o,i)}))})).filter(x=>x.its.length||(x.o.locked&&!premium));
+  const all=rows.flatMap(x=>x.its),dn=all.filter(i=>i.d).length,aimed=r.subs.some(o=>o.target);
+  const aim=o=>o.target?`<span class="wk-aim">${o.est||o.pred?`${esc(o.est||o.pred)} → `:''}🎯 ${esc(o.target)}</span>${o.gap!=null?`<span class="gr-v ${o.gap>0?'gap':'ok'}">${o.gap>0?(o.gap===1?'1 grade to go':`${o.gap} grades to go`):'✓ On track'}</span>`:''}`:'';
+  const tchip=o=>o.test?`<span class="wk-test${Tests.days(o.test.d)<=2?' soon':''}">📅 ${esc(o.test.name)} · ${esc(Tests.when(o.test.d).toLowerCase())}</span>`:'';
+  const li=(o,i)=>`<li class="${i.d?'done':''}"><span class="wk-ck" aria-hidden="true">${i.d?'✓':''}</span>${i.kind==='mock'?`<button type="button" data-pmock="${o.s}">📝 ${esc(i.t||'Sit a timed mock paper')}</button>`:`<a href="#${esc(i.u)}"><small>${i.kind==='weak'?'Redo':'Learn'}</small>${esc(i.t)}${i.kind==='weak'&&i.sc!=null?` <em>${i.sc}%</em>`:''}</a>`}</li>`;
+  return `<div class="pl-sec" id="plWeek"><div class="pl-nhead"><div><h3 class="pl-h">Your week</h3><p class="muted" style="margin:0">${aimed?'Planned from your grades, targets and tests: more for the subjects furthest from their target.':r.subs.some(o=>o.test)?'Planned around your next tests and your progress. Add the grades your school gave you below, and it aims at your targets too.':'Planned from your exam date and progress. Add your tests and the grades your school gave you, and it gets you ready for them.'}</p></div>${all.length?`<div class="wk-sum"><b>${dn}/${all.length}</b><small>done</small></div>`:''}</div>
+    ${all.length?`<div class="wk-bar"><i style="width:${Math.round(dn/all.length*100)}%"></i></div>`:''}
+    ${rows.length?`<div class="wk-grid">${rows.map(({o,its},k)=>`<div class="wk-card" style="--c:${SUBJECTS[o.s].color};--i:${k}"><div class="wk-h">${glyph(o.s)}<b>${esc(SUBJECTS[o.s].name)}</b>${aim(o)}${tchip(o)}</div>
+      <ul>${its.map(i=>li(o,i)).join('')}${!its.some(i=>i.kind==='learn')&&o.locked&&!premium?`<li class="lock"><a href="#pricing">🔒 ${fmtN(o.locked)} more subtopics with full access</a></li>`:''}</ul></div>`).join('')}</div>`:'<div class="pl-empty">🎉 Everything in your plan is done. Keep testing yourself with mock papers.</div>'}
+    ${all.length&&dn===all.length?'<p class="wk-done">🎉 Your week is done. Great work!</p>':''}
+    <div id="wkMail">${Remind.html()}</div></div>`}
 
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
 const OFFICIAL={aqa:['AQA','https://www.aqa.org.uk/find-past-papers-and-mark-schemes','Search for your specification code. Recent papers are released to students after a year; older ones are always available.'],
@@ -4767,7 +4939,7 @@ const ProgSync={
   // keep both: progress only ever adds up) or own (the device that changed it last wins, e.g. a mistake fixed or a
   // checklist colour changed). [kind, how, ends where the newest items go, how many to keep]
   KEYS:{'go-prog':['j','grow'],'go-rag':['j','own'],'fm-mist':['j','own'],'fm-mocks':['j','grow','end',300],'fm-recent':['j','own'],'fm-xp':['n','grow'],
-    'fm-xpw':['j','grow'],'fm-days':['j','grow'],'fm-mins':['j','grow'],'fm-stats':['j','grow'],'go-sub':['s','own'],'go-lvl':['s','own'],'go-boards':['j','own'],'fm-sgrades':['j','own']},
+    'fm-xpw':['j','grow'],'fm-days':['j','grow'],'fm-mins':['j','grow'],'fm-stats':['j','grow'],'go-sub':['s','own'],'go-lvl':['s','own'],'go-boards':['j','own'],'fm-sgrades':['j','own'],'fm-road':['j','new'],'fm-tests':['j','own']},
   PERSONAL:['fm-plan','fm-ai','fm-lbname','fm-school','fm-school-name','fm-in-class','fm-seen-grades','fm-seen-hw','fm-join'],
   t:null,busy:false,again:false,ready:false,dirty:new Set(),
   on(){return !!(API_BASE&&authToken())},
@@ -4775,8 +4947,10 @@ const ProgSync={
     if(t==='s')o[k]=v;else if(t==='n'){if(v!==''&&!isNaN(+v))o[k]=+v}else try{o[k]=JSON.parse(v)}catch(e){}}return o},
   write(o){for(const [k,v] of Object.entries(o)){const d=this.KEYS[k];if(!d||v==null)continue;try{localStorage.setItem(k,d[0]==='j'?JSON.stringify(v):String(v))}catch(e){}}},
   same(a,b){return JSON.stringify(a)===JSON.stringify(b)},
-  // numbers: the larger; lists: both, without repeats; objects: key by key; anything else: this device first
+  // numbers: the larger; lists: both, without repeats; objects: key by key; anything else: this device first;
+  // 'new' keys: the copy saved last
   merge(a,b,d){if(a==null)return b;if(b==null)return a;
+    if(d&&d[1]==='new')return (+a.at||0)>=(+b.at||0)?a:b;
     if(typeof a==='number'&&typeof b==='number')return Math.max(a,b);
     if(Array.isArray(a)&&Array.isArray(b)){const seen=new Set(),out=[],add=x=>{const k=JSON.stringify(x);if(!seen.has(k)){seen.add(k);out.push(x)}};b.forEach(add);a.forEach(add);
       return d&&d[3]?out.slice(-d[3]):out}
@@ -4895,7 +5069,7 @@ function renderPlan(){const main=$('#planMain');if(!main)return;
 function planWho(main){if(!main||main.querySelector('.who-badge'))return;main.insertAdjacentHTML('afterbegin',WHO.badge());WHO.bindBadge(main)}
 
 function renderPlanSetup(main){const D=planDraft,steps=['Level','Subjects','Exam boards','Exam date'];let body='';
-  if(planStep===0)body=`<h3 class="pl-q">What are you studying?</h3><p class="muted">This picks the right notes, questions and videos for you.</p>
+  if(planStep===0)body=`<h3 class="pl-q">What are you studying?</h3><p class="muted">This picks the right notes, questions and videos for you. Got a test coming up? <a href="#" data-tadd>Add it</a> and we’ll make the plan for you.</p>
     <div class="pl-levels">${PLAN_LEVELS.map(([l,n,y],i)=>`<button class="pl-lv${D.level===l?' on':''}" data-l="${l}" style="--i:${i}" aria-pressed="${D.level===l}"><b>${n}</b><small>${y}</small></button>`).join('')}</div>`;
   if(planStep===1){const n=D.subjects.length;
     body=`<h3 class="pl-q">Pick your subjects</h3><p class="muted">${D.level==='GCSE'?'Most students take 8–10 GCSEs. Add the ones you want to revise here.':'Most students take 3 A-levels, and some take 4.'} You can change them any time.</p>
@@ -4951,24 +5125,24 @@ function renderPlanBoard(main){main.dataset.step='';
         <div class="pl-stats"><div><span>Today</span><b>${fmtN(todayN)} / ${goal}</b><div class="pl-gbar"><i style="width:${Math.min(100,todayN/goal*100)}%"></i></div></div><div><span>Streak</span><b>${st?`🔥 ${st}`:'0'}</b></div><div><span>Plan done</span><b>${pctAll}%</b></div>${hasDays?`<div><span>Exams</span><b class="pl-small">${fmtDate(PLAN.exam)}</b></div>`:''}</div>
         <div class="pl-acts">${picks.length?'<button class="btn sm" id="plGo">▶ Start today’s first task</button>':''}<button class="btn ghost sm" id="plEdit">✎ Edit plan</button></div></div></div>
     ${syncCard()}
-    <div class="pl-sec"><h3 class="pl-h">Today’s plan</h3><p class="muted">One subtopic from each of your least-covered subjects. Watch it, read the notes, then practise.</p>
-      ${picks.length?`<div class="pl-tasks">${picks.map(task).join('')}</div>`:`<div class="pl-empty">${locked?`🎉 You’ve done every subtopic you can open. ${fmtN(locked)} more unlock with full access.`:'🎉 You’ve done every subtopic in your plan. Re-test your weak spots below.'}</div>`}
-      ${picks.length&&locked&&!premium?`<p class="pl-upsell">🔒 ${fmtN(locked)} more subtopics in your plan unlock with <a href="#pricing">full access</a>.</p>`:''}</div>
+    ${testsHtml()}
+    ${weekHtml()}
+    <div class="pl-sec"><h3 class="pl-h">Predicted grades</h3><p class="muted">Your Full Marks estimate from mocks and practice, next to the grades your school gave you.</p>
+      <div>${S.map(x=>Grade.html(x.p.s,PLAN.level,x.p.b,{btn:`<button class="btn ghost sm" data-pmock="${x.p.s}">Sit a mock paper</button>`})).join('')}</div>
+      <p class="gr-note">${esc(Grade.note)}</p></div>
     <div class="pl-sec"><h3 class="pl-h">Your subjects</h3>
       <div class="pl-scards">${S.map((x,i)=>`<div class="pl-scard" data-psubj="${x.p.s}" style="--c:${x.s.color};--i:${i}" role="link" tabindex="0" aria-label="Open ${esc(x.s.name)}">
         <div class="pl-sr" style="--p:${x.pct}"><b>${x.pct}%</b></div><div class="pl-si"><b>${esc(x.s.name)}</b><small>${esc(bName(x.p.b,x.p.s))} · ${esc(LV(PLAN.level))}</small><small>${fmtN(x.done)} of ${fmtN(x.total)} subtopics${x.avg!=null?` · average ${x.avg}%`:''}</small></div>
         <div class="pl-strip" aria-hidden="true">${x.topics.map(o=>`<i style="--f:${o.f}" title="Topic ${esc(o.t.n)} · ${esc(o.t.title)}"></i>`).join('')}</div>
         ${x.next?`<button class="btn ghost sm" data-popen="${ref({p:x.p,ti:x.next.ti,si:x.next.si})}|notes"><span>Next: ${esc(x.next.x.n)} ${esc(x.next.x.title)}</span><span>→</span></button>`:`<button class="btn ghost sm" data-psubj-go="${x.p.s}"><span>${x.locked?'Unlock the rest with full access':'All done · revise any topic'}</span><span>→</span></button>`}</div>`).join('')}</div>
       <p class="muted pl-free">Want to try another subject? Everything stays open in <a href="#home">Subjects</a>.</p></div>
-    <div class="pl-sec"><h3 class="pl-h">Predicted grades</h3><p class="muted">Your Full Marks estimate from mocks and practice, next to the grades your school gave you.</p>
-      <div>${S.map(x=>Grade.html(x.p.s,PLAN.level,x.p.b,{btn:`<button class="btn ghost sm" data-pmock="${x.p.s}">Sit a mock paper</button>`})).join('')}</div>
-      <p class="gr-note">${esc(Grade.note)}</p></div>
     ${weak.length?`<div class="pl-sec"><h3 class="pl-h">Needs another look</h3><p class="muted">Your lowest scores. A second try is the fastest way to lock them in.</p>
       <div>${weak.map(u=>`<div class="pl-wk" style="--c:${u.s.color}"><b class="sc">${u.sc}%</b><span><small>${esc(u.s.name)}</small><b>${esc(u.x.n)} ${esc(u.x.title)}</b></span><button class="btn sm" data-popen="${ref(u)}|practice">Try again</button></div>`).join('')}</div></div>`:''}
     <div class="pl-sec" id="plNotes"><div class="pl-nhead"><div><h3 class="pl-h">Your notes</h3><p class="muted" style="margin:0">Formulas, mnemonics, what your teacher said: anything you want to remember.</p></div><button class="btn" id="nNew">+ New note</button></div>
       <div class="pl-filters"${notes.length?'':' hidden'}>${[['all','All'],['','General'],...noteSubs.map(k=>[k,SUBJECTS[k].name])].map(([k,n])=>{const c=k==='all'?notes.length:notes.filter(x=>(x.s||'')===k).length;return `<button class="pl-chip${noteFilter===k?' on':''}" data-nf="${k}">${esc(n)} <small>${c}</small></button>`}).join('')}</div>
       <div class="pl-notes" id="nList">${notesHtml()}</div></div>`;
   requestAnimationFrame(()=>{const fg=$('#plFg');if(fg)fg.style.strokeDashoffset=452-452*ringF});
+  if(authToken()&&(Remind.on==null||Remind.who!==store.get('go-auth-email','')))Remind.load().then(()=>Remind.paint());
   wirePlanBoard(main,picks)}
 
 function noteHtml(n,i){const c=n.s&&SUBJECTS[n.s]?SUBJECTS[n.s].color:'var(--muted)';
@@ -4987,6 +5161,7 @@ function wirePlanBoard(main,picks){
     const sg=t.closest('[data-psubj-go]');if(sg){planOpen(sg.dataset.psubjGo,null,null);return}
     const pm=t.closest('[data-pmock]');if(pm){planUse(pm.dataset.pmock);view={topic:null,sub:null,tab:'notes',check:false,papers:true};endSession();renderPicker();location.hash='study';return}
     if(t.closest('[data-plsign]')){planSignIn();return}
+    const rm=t.closest('[data-rm]');if(rm){const a=rm.dataset.rm;if(a==='sign')planSignIn('Get your week by email',()=>Remind.load().then(()=>Remind.set(true)));else Remind.set(a==='on');return}
     if(t.closest('[data-plretry]')){PlanSync.send();return}
     if(t.closest('[data-plout]')){planSignOut();return}
     const f=t.closest('[data-nf]');if(f){noteFilter=f.dataset.nf;main.querySelectorAll('[data-nf]').forEach(b=>b.classList.toggle('on',b===f));$('#nList').innerHTML=notesHtml();return}
