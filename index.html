@@ -1563,6 +1563,24 @@ html.i18n .board-ui{display:none!important}
 .wk-mail{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px;padding:14px 18px;border-radius:16px;background:linear-gradient(120deg,var(--stain-soft),color-mix(in srgb,var(--brand-2) 8%,var(--paper)));box-shadow:0 0 0 1px var(--line)}
 .wk-mail>span{font-size:28px}.wk-mail>div{flex:1;min-width:200px}.wk-mail b{display:block}.wk-mail small{color:var(--muted)}
 .wk-mail.on{background:var(--paper)}
+.tr-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.tr{background:var(--paper);border-radius:20px;padding:22px;box-shadow:var(--shadow),0 0 0 1px var(--line);display:flex;flex-direction:column;gap:6px}
+.tr>span{font-size:30px}.tr b{font:800 17px/1.25 "Plus Jakarta Sans",sans-serif}.tr small{color:var(--muted);font-size:14px;line-height:1.45}
+.tr-more{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:22px 0 0;font-weight:700}.tr-more a{text-decoration:none}
+@media (max-width:900px){.tr-grid{grid-template-columns:1fr 1fr}}@media (max-width:520px){.tr-grid{grid-template-columns:1fr}.tr{flex-direction:row;align-items:flex-start;gap:14px;padding:16px}.tr>span{font-size:26px}}
+.rv-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px 0 14px;font-weight:700}.rv-head b{font:800 30px "Plus Jakarta Sans",sans-serif}.rv-head span:last-child{color:var(--muted)}
+.rv-st{color:#F59E0B;letter-spacing:2px;font-size:18px}.rv-st i{font-style:normal;color:var(--line)}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.rv-card{margin:0;background:var(--paper);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.rv-card blockquote{margin:8px 0 10px;font-size:15.5px;line-height:1.5}.rv-card figcaption{color:var(--muted);font-size:13.5px;font-weight:700}
+.rv-ask,.pa-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px;padding:14px 18px;border-radius:16px;background:linear-gradient(120deg,var(--gold-soft,#FFF6E0),var(--stain-soft));box-shadow:0 0 0 1px var(--line)}
+.pa-box{margin:14px 0 0;background:var(--paper)}.pa-box.on{background:var(--paper)}
+.rv-ask>span,.pa-box>span{font-size:28px}.rv-ask>div,.pa-box>div{flex:1;min-width:200px}.rv-ask b,.pa-box b{display:block}.rv-ask small,.pa-box small{color:var(--muted)}
+.pa-f{display:flex;gap:8px;flex:1 1 280px}.pa-f .lbinput{flex:1;min-width:0;margin:0}
+.rv-f label{display:block;margin:0 0 14px}.rv-f .se-l{display:block;font-weight:700;font-size:14px;margin:0 0 8px}
+.rv-stars{display:flex;gap:6px;margin:0 0 16px}.rv-stars button{border:0;background:none;font-size:40px;line-height:1;color:var(--line);cursor:pointer;padding:0;transition:transform .15s}
+.rv-stars button.on{color:#F59E0B}.rv-stars button:hover{transform:scale(1.12)}
+.rv-ok{display:flex!important;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);cursor:pointer}.rv-ok input{width:18px;height:18px;margin-top:2px;flex:none}
 .wk-test{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--bg2);color:var(--ink)}
 .wk-test.soon{background:#FDE7E7;color:#B42318}
 .ts-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
@@ -2547,10 +2565,22 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
   </section>
   <div class="wrap">
 
+    <div class="sec" id="trust">
+      <div class="sec-head rv"><span class="eyebrow">Why trust Full Marks</span><h2>Made for your exams. <span class="grad">Honest about everything.</span></h2></div>
+      <div class="tr-grid">
+        <div class="tr rv" style="--d:0"><span aria-hidden="true">🎯</span><b>Your exact course</b><small>Notes and questions follow your exam board’s specification, topic by topic.</small></div>
+        <div class="tr rv" style="--d:1"><span aria-hidden="true">💡</span><b>Every answer explained</b><small>Right or wrong, you see why, so every question teaches you something.</small></div>
+        <div class="tr rv" style="--d:2"><span aria-hidden="true">🛠️</span><b>Spot a mistake? We fix it</b><small>Every question has a Report button, and every report is read.</small></div>
+        <div class="tr rv" style="--d:3"><span aria-hidden="true">🔒</span><b>No ads, no selling data</b><small>Payments by Stripe. Cancel in two clicks. Delete your account any time.</small></div>
+      </div>
+      <div id="revBox"></div>
+      <p class="tr-more"><a href="/about.html">Who makes Full Marks →</a><a href="/schools.html">For schools and teachers →</a><a href="#" data-review>Leave a review →</a></p>
+    </div>
+
     <div class="sec free-only" id="homePlans">
       <div class="sec-head rv"><span class="eyebrow">Free or full access</span><h2>Start free. <span class="grad">Go all in</span> when you’re ready.</h2><p>Try the first topic of any subject with no card needed. Here’s what changes with full access.</p></div>
       <div class="plans2">
-        <div class="p2 rv" style="--d:0"><h3>Free</h3><div class="p2price"><b>£0</b><span>no card needed</span></div>
+        <div class="p2 rv" style="--d:0"><h3>Free</h3><div class="p2price"><b>£0</b><span>no card needed</span></div><p class="p2trial" data-welcome-line hidden></p>
           <ul><li>The first topic of every subject</li><li>Sample exam-style questions</li><li>Daily challenge, XP and streaks</li><li>Match Up, Flashcards and Swipe</li><li>Weekly leaderboards</li><li>A free mini mock and free cheat sheets</li><li>Progress saved on this device</li></ul>
           <a class="btn ghost lg" href="#home" data-scroll="build">Start free</a></div>
         <div class="p2 full rv" style="--d:1"><h3>Full access</h3><div class="p2price"><b id="fromPrice">£10</b><span>a month</span></div><p class="p2alt" id="priceAlt">or £25 for 3 months, or £50 a year (just £4.17 a month)</p><p class="p2trial" data-trial-line>Every plan starts with a free trial. Cancel before it ends and you pay nothing.</p>
@@ -2713,7 +2743,7 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 </section>
 </main>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="/revision/">Revision notes</a> · <a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="#" data-school-enq>For schools</a> · <a href="#teacher">For teachers</a> · <a href="#" id="whoFoot">Teacher or student?</a> · <a href="#" id="langFoot" translate="no"></a> · <a href="#" id="themeBtn"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Full Marks</span><span><a href="/revision/">Revision notes</a> · <a href="/about.html">About</a> · <a href="#pricing">Pricing</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a id="mailto" href="#">Contact</a> · <a href="/schools.html">For schools</a> · <a href="#" data-review>Leave a review</a> · <a href="#teacher">For teachers</a> · <a href="#" id="whoFoot">Teacher or student?</a> · <a href="#" id="langFoot" translate="no"></a> · <a href="#" id="themeBtn"></a> · <a class="social" href="https://www.tiktok.com/@fullmarks.revision" target="_blank" rel="noopener" aria-label="Full Marks on TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>@fullmarks.revision</a></span></div></footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="box">
@@ -3817,7 +3847,9 @@ function renderMe(){const main=$('#meMain');if(!main)return;const xp=XP.xp,l=lvl
     ${meGrades(P)}
     <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Badges</h2><div class="badges">${BADGES.map(([e,n,t,f],i)=>{const got=f(s,st,l,xp);return `<div class="badge${got?' got':''}" style="--i:${i}"><span class="e">${e}</span><b>${n}</b><small>${t}</small></div>`}).join('')}</div></div>
     <div class="actions" style="margin-top:40px"><a class="btn" href="#games" id="meDaily">Do today's challenge</a><a class="btn ghost" href="#study">Keep revising</a></div>
-    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Your account</h2>${accountCard()}</div>`;
+    <div class="sec" style="padding-top:50px"><h2 style="font-size:32px">Your account</h2>${accountCard()}<div data-parent>${Parent.html()}</div></div>`;
+  if(authToken())Parent.load();
+  {const a=Reviews.card();if(a)main.insertAdjacentHTML('afterbegin',a)}
   wireAccount();
   // a subject opens at the level it has been studied at most (else the level in use, else its first level)
   main.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{const k=b.dataset.sp,n={};for(const x of Object.keys(P)){const [s1,l1]=x.split(':');if(s1===k&&SUBJECTS[k][l1])n[l1]=(n[l1]||0)+1}
@@ -3972,6 +4004,7 @@ async function loadPrices(){if(!API_BASE)return;try{const r=await fetch(`${API_B
     if(months>1){card.querySelector('.pm').textContent=`${money(Math.round(pr.amount/months),pr.currency)} a month`;const sv=card.querySelector('.sv');
       if(sv&&m&&m.amount){const save=m.amount*months-pr.amount;sv.textContent=save>0?`Save ${money(save,pr.currency)} compared with monthly`:'All subjects, one payment'}}}
   const tx=$('#taxNote'),tb=(Object.values(P)[0]||{}).tax;if(tx&&j.automaticTax)tx.textContent=tb==='exclusive'?'VAT is added at checkout where it applies.':'Prices include VAT where it applies.';
+  Welcome.days=+j.welcomeDays||0;Welcome.lines();
   TRIAL=+j.trialDays||0;if(TRIAL){const per={monthly:'month',quarterly:'3 months',annual:'year'};
     $$('.plan[data-p]').forEach(card=>{const b=card.querySelector('[data-plan]'),amt=card.querySelector('.amt').textContent;b.textContent=`Start ${TRIAL}-day free trial`;
       let t=card.querySelector('.trial');if(!t){t=document.createElement('div');t.className='trial';b.before(t)}t.textContent=`Free for ${TRIAL} days, then ${amt} / ${per[card.dataset.p]}. Cancel before then and pay nothing.`});
@@ -4172,7 +4205,7 @@ function weekHtml(){const r=Road.get();if(!r)return '';
     ${rows.length?`<div class="wk-grid">${rows.map(({o,its},k)=>`<div class="wk-card" style="--c:${SUBJECTS[o.s].color};--i:${k}"><div class="wk-h">${glyph(o.s)}<b>${esc(SUBJECTS[o.s].name)}</b>${aim(o)}${tchip(o)}</div>
       <ul>${its.map(i=>li(o,i)).join('')}${!its.some(i=>i.kind==='learn')&&o.locked&&!premium?`<li class="lock"><a href="#pricing">🔒 ${fmtN(o.locked)} more subtopics with full access</a></li>`:''}</ul></div>`).join('')}</div>`:'<div class="pl-empty">🎉 Everything in your plan is done. Keep testing yourself with mock papers.</div>'}
     ${all.length&&dn===all.length?'<p class="wk-done">🎉 Your week is done. Great work!</p>':''}
-    <div id="wkMail">${Remind.html()}</div></div>`}
+    <div id="wkMail">${Remind.html()}</div><div data-parent>${Parent.html()}</div></div>`}
 
 /* ---------- past papers: official links, mock sets, topic papers, tracker ---------- */
 const OFFICIAL={aqa:['AQA','https://www.aqa.org.uk/find-past-papers-and-mark-schemes','Search for your specification code. Recent papers are released to students after a year; older ones are always available.'],
@@ -5004,7 +5037,7 @@ function planSignIn(title,done){if(typeof title!=='string')title='';if(typeof do
     <label style="display:flex;gap:8px;align-items:center;margin:2px 0 12px;font-size:15px;cursor:pointer"><input type="checkbox" id="siKeep" style="width:18px;height:18px"${store.get('fm-keep','1')!=='0'?' checked':''}> ${esc(T('Keep me signed in on this device'))}</label>
     <button class="btn" id="siSend">Send code</button><p class="muted" id="siMsg" style="font-size:14px;min-height:1em"></p>`);
   // whichever way they sign in, the same things happen afterwards
-  const finish=async(j,email,via='email')=>{setAuthToken(j.token,j.email||email);Stats.signin(via);Invite.claim();$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
+  const finish=async(j,email,via='email')=>{setAuthToken(j.token,j.email||email);Stats.signin(via);Invite.claim();setTimeout(()=>Welcome.claim(),1500);$('#modal').classList.remove('on');toast('✓',done?'Signed in.':'Signed in. Your plan is saved to your account.');SCH.role=null;
     PlanSync.state='saving';await PlanSync.pull();await ProgSync.pull();if(!PLAN)PlanSync.set('saved');refreshPremiumFromServer();StuAct.boot();if(location.hash==='#plan')renderPlan();if(done)done()};
   const viaProvider=async(path,body)=>{$('#siMsg').textContent=T('Signing in…');store.set('fm-keep',$('#siKeep').checked?'1':'0');
     try{const r=await fetch(`${API_BASE}${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -5143,6 +5176,7 @@ function renderPlanBoard(main){main.dataset.step='';
       <div class="pl-notes" id="nList">${notesHtml()}</div></div>`;
   requestAnimationFrame(()=>{const fg=$('#plFg');if(fg)fg.style.strokeDashoffset=452-452*ringF});
   if(authToken()&&(Remind.on==null||Remind.who!==store.get('go-auth-email','')))Remind.load().then(()=>Remind.paint());
+  if(authToken())Parent.load();
   wirePlanBoard(main,picks)}
 
 function noteHtml(n,i){const c=n.s&&SUBJECTS[n.s]?SUBJECTS[n.s].color:'var(--muted)';
@@ -5556,7 +5590,8 @@ async function renderTeacher(h,quiet){const main=$('#teacherMain');if(!main)retu
   if(!quiet){clearInterval(TCH.timer);TCH.timer=setInterval(()=>{if(location.hash.slice(1).split('/')[0]!=='teacher'){clearInterval(TCH.timer);return}
     const a=document.activeElement;if(document.hidden||$('#modal').classList.contains('on')||(a&&main.contains(a)&&/INPUT|SELECT|TEXTAREA/.test(a.tagName)))return;renderTeacher(location.hash.slice(1),true)},20000)}
   if(!API_BASE){main.innerHTML='<div class="sc-card">Accounts aren’t connected on this copy of the site.</div>';return}
-  if(!authToken()){clearInterval(TCH.timer);main.dataset.view='';return SCH.signin(main,'Teacher portal','Sign in with your school email. If you’re new, you can ask for a teacher account straight after.')}
+  if(!authToken()){clearInterval(TCH.timer);main.dataset.view='';SCH.signin(main,'Teacher portal','Sign in with your school email. If you’re new, you can ask for a teacher account straight after.');
+    main.querySelector('.sc-empty')?.insertAdjacentHTML('beforeend','<p class="sc-note" style="margin-top:16px">Free for teachers and their classes. <a href="/schools.html">How it works, safeguarding and data →</a></p>');return}
   if(!quiet&&main.dataset.view!==h){main.innerHTML=SCH.loading();main.dataset.sig=''}main.dataset.view=h;
   try{const role=await SCH.getRole(quiet||!parts.length);if(seq!==SCH.seq)return;
     if((role.teacher||{}).status==='teacher'&&!premium&&!SCH.accessChecked){SCH.accessChecked=1;refreshPremiumFromServer()}
@@ -5943,13 +5978,21 @@ ST.schools=function(main){const a=this.sch,root=main.querySelector('.st-root');i
     <div class="sc-card"><div class="st-head"><div><h4 style="margin:0">Schools students are at</h4><p class="muted">Students whose school has no teacher on Full Marks yet. Good schools to contact.</p></div></div>
       ${A.length?`<ul class="st-list">${A.slice(0,40).map(x=>`<li><span class="l">${esc(x.school)}</span><span class="n">${this.n(x.n)}</span></li>`).join('')}</ul>`:'<p class="muted">None yet.</p>'}</div></div>`;
   const old=root.querySelector('.st-sch');if(old)old.outerHTML=html;else root.insertAdjacentHTML('beforeend',html)};
-{const draw=ST.draw;ST.draw=function(main,d,n){draw.call(this,main,d,n);this.accounts(main);this.schools(main)}}
+ST.reviews=function(main){const R=this.rev&&this.rev.reviews,M=this.rem,root=main.querySelector('.st-root');if(!root||(!R&&!M))return;
+  const day=t=>new Date(t).toLocaleDateString(I18N.L.html,{day:'numeric',month:'short'}),stt={new:'New',shown:'On the site',hidden:'Hidden'};
+  const html=`<div class="sc-card st-rev"><div class="st-head"><div><h4 style="margin:0">Reviews <span class="st-accn">${this.n((R||[]).length)}</span></h4><p class="muted">Only the ones you show appear on the home page, with the first name and role.${M?` · Weekly plan emails: <b>${this.n(M.on)}</b> on · Parent reports: <b>${this.n(M.parents||0)}</b>${M.parentsWaiting?` (+${this.n(M.parentsWaiting)} waiting)`:''}`:''}</p></div></div>
+    ${R&&R.length?R.map(r=>`<div class="st-enq"><div class="st-enq-h"><b style="color:#F59E0B">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</b><small> · ${esc(r.name||'—')}, ${esc(r.role)} · ${esc(r.email)}</small><span class="muted">${esc(day(r.at))} · ${esc(stt[r.state]||r.state)}</span></div>
+      ${r.text?`<p class="st-enq-msg">${esc(r.text)}</p>`:''}<div class="st-enq-a">${r.show?`<button class="btn sm" data-rv="${esc(r.id)}|shown"${r.state==='shown'?' disabled':''}>Show on the site</button>`:'<span class="muted">They asked for it not to be shown.</span>'}<button class="btn ghost sm" data-rv="${esc(r.id)}|hidden"${r.state==='hidden'?' disabled':''}>Hide</button><button class="btn ghost sm" data-rv="${esc(r.id)}|deleted">Delete</button></div></div>`).join(''):'<p class="muted">No reviews yet. Students are asked after a few days of revision, and anyone can use “Leave a review” in the footer.</p>'}</div>`;
+  const old=root.querySelector('.st-rev');if(old)old.outerHTML=html;else root.insertAdjacentHTML('beforeend',html);
+  root.querySelectorAll('[data-rv]').forEach(b=>b.onclick=async()=>{const [id,state]=b.dataset.rv.split('|');if(state==='deleted'&&!confirm('Delete this review?'))return;b.disabled=true;
+    try{await SCH.api('POST',`/admin/reviews/${id}`,{state});const r=this.rev.reviews,i=r.findIndex(x=>x.id===id);if(state==='deleted')r.splice(i,1);else r[i].state=state;this.reviews(main)}catch(e){toast('⚠️',esc(e.message));b.disabled=false}})};
+{const draw=ST.draw;ST.draw=function(main,d,n){draw.call(this,main,d,n);this.accounts(main);this.schools(main);this.reviews(main)}}
 async function renderStats(){const main=$('#statsMain');if(!main)return;const seq=++SCH.seq;
   if(!API_BASE||!authToken())return SCH.signin(main,'Visitors and sales','Sign in with the owner’s email.');
   const root=main.querySelector('.st-root');if(root)root.classList.add('busy');else main.innerHTML=SCH.loading();
-  try{const n=ST.days,[d,acc,sch]=await Promise.all([SCH.api('GET',`/admin/stats?days=${Math.min(400,n*2)}`),SCH.api('GET','/admin/accounts').catch(()=>null),SCH.api('GET','/admin/schools').catch(()=>null)]);if(seq!==SCH.seq)return;
+  try{const n=ST.days,[d,acc,sch,rev,rem]=await Promise.all([SCH.api('GET',`/admin/stats?days=${Math.min(400,n*2)}`),SCH.api('GET','/admin/accounts').catch(()=>null),SCH.api('GET','/admin/schools').catch(()=>null),SCH.api('GET','/admin/reviews').catch(()=>null),SCH.api('GET','/admin/reminders').catch(()=>null)]);if(seq!==SCH.seq)return;
     try{localStorage.setItem('fm-nostats','1')}catch(e){}
-    ST.acc=acc;ST.sch=sch;ST.draw(main,d,n)}
+    ST.acc=acc;ST.sch=sch;ST.rev=rev;ST.rem=rem;ST.draw(main,d,n)}
   catch(e){if(seq!==SCH.seq)return;if(e.status===403){main.innerHTML='<div class="sc-card sc-empty"><div class="big">🔒</div><h3>Only the owner can see this page.</h3></div>';return}SCH.fail(main,e,renderStats)}}
 
 /* ---------- AI tutor under every explanation ---------- */
@@ -7224,6 +7267,56 @@ L3.ensure=()=>{if(L3.done)return;const at=()=>[subject,level,view.topic,view.sub
 
 /* ---------- account: sign in and sign out from the top bar ---------- */
 /* ---------- invite a friend: a free week of full access for both (invites.js in the backend) ---------- */
+// A new account's welcome week: full access with no card, once (POST /welcome; the length comes from /prices).
+const Welcome={days:0,busy:false,
+  lines(){const d=this.days;if(!d)return;const hint=$('#heroHint');if(hint&&!authToken())hint.textContent=`Free account: ${d} days of full access, no card · saves your progress on every device`;
+    $$('[data-welcome-line]').forEach(e=>{e.hidden=false;e.textContent=`Make a free account and get ${d} days of full access first.`})},
+  async claim(){if(!API_BASE||!authToken()||this.busy)return;const em=store.get('go-auth-email','');if(store.get('fm-wel','')===em)return;this.busy=true;
+    try{const r=await fetch(`${API_BASE}/welcome`,{method:'POST',headers:{Authorization:'Bearer '+authToken()}}),j=await r.json();
+      if(r.ok){store.set('fm-wel',em);if(j.ok){await refreshPremiumFromServer();toast('🎁',`Welcome! Your ${j.days} days of full access have started. Every subject is open.`)}}}catch(e){}
+    this.busy=false}};
+// Reviews: the owner's approved ones on the home page; anyone signed in can write one.
+const Reviews={list:null,
+  async load(){if(!API_BASE)return;try{const r=await fetch(`${API_BASE}/reviews`);if(!r.ok)return;this.list=await r.json();this.paint()}catch(e){}},
+  paint(){const b=$('#revBox'),L=this.list;if(!b||!L||!L.count)return;const st=n=>`<span class="rv-st" aria-label="${n} out of 5">${'★'.repeat(n)}<i>${'★'.repeat(5-n)}</i></span>`;
+    b.innerHTML=`<div class="rv-head"><b>${esc(String(L.avg))}</b>${st(Math.round(L.avg))}<span>from ${L.count} review${L.count===1?'':'s'}</span></div>
+      <div class="rv-grid">${L.reviews.slice(0,6).map(r=>`<figure class="rv-card">${st(r.stars)}<blockquote>${esc(r.text)}</blockquote><figcaption>${esc(r.name||'A student')}, ${esc(r.role)}</figcaption></figure>`).join('')}</div>`},
+  // after a few days of revision, once a month at most, until they write one
+  due(){if(!authToken()||store.get('fm-rev-done','')==='1')return false;const n=Object.keys(XP.days()).length,last=+store.get('fm-rev-ask','0')||0;return n>=3&&Date.now()-last>21*864e5},
+  card(){return this.due()?`<div class="rv-ask" id="rvAsk"><span aria-hidden="true">⭐</span><div><b>How is Full Marks for you?</b><small>Two taps help other students find it, and tell us what to make better.</small></div><button type="button" class="btn sm" data-review>Leave a review</button><button type="button" class="btn ghost sm" data-review-later>Later</button></div>`:''},
+  open(){if(!authToken()){planSignIn('Sign in to leave a review',()=>this.open());return}
+    showModal('Leave a review',`<div class="sg rv-f"><div class="rv-stars" id="rvS">${[1,2,3,4,5].map(n=>`<button type="button" data-n="${n}" aria-label="${n} star${n>1?'s':''}">★</button>`).join('')}</div>
+      <label><span class="se-l">What do you think?</span><textarea class="lbinput" id="rvT" rows="4" maxlength="600" placeholder="What helps you most? What could be better?"></textarea></label>
+      <div class="ts-row"><label><span class="se-l">Your first name</span><input class="lbinput" id="rvN" maxlength="30" autocomplete="given-name"></label>
+        <div><span class="se-l">You are a</span><div class="sg-pills" id="rvR">${['student','parent','teacher'].map((r,i)=>`<button type="button" data-g="${r}" aria-pressed="${i===0}">${r[0].toUpperCase()+r.slice(1)}</button>`).join('')}</div></div></div>
+      <label class="rv-ok"><input type="checkbox" id="rvShow"> Full Marks may show my first name and review on fullmarkss.com</label>
+      <p class="sc-msg" id="rvErr"></p>
+      <div class="actions"><button type="button" class="btn" id="rvGo">Send</button><button type="button" class="btn ghost" id="sgX">Cancel</button></div></div>`);
+    let stars=0;const paint=()=>$$('#rvS [data-n]').forEach(b=>b.classList.toggle('on',+b.dataset.n<=stars));
+    $('#rvS').onclick=e=>{const b=e.target.closest('[data-n]');if(b){stars=+b.dataset.n;paint()}};
+    $('#rvR').onclick=e=>{const b=e.target.closest('[data-g]');if(b)$$('#rvR [data-g]').forEach(y=>y.setAttribute('aria-pressed',String(y===b)))};
+    $('#sgX').onclick=()=>$('#modal').classList.remove('on');
+    $('#rvGo').onclick=async()=>{const err=$('#rvErr');if(!stars){err.textContent='Tap the stars first.';return}
+      const body={stars,text:$('#rvT').value.trim(),name:$('#rvN').value.trim(),role:($('#rvR [aria-pressed="true"]')||{}).dataset?.g||'student',show:$('#rvShow').checked};
+      $('#rvGo').disabled=true;try{await SCH.api('POST','/reviews',body);store.set('fm-rev-done','1');$('#rvAsk')?.remove();
+        $('#mBody').innerHTML=`<div class="se-done"><div class="big">${stars>=4?'🎉':'🙏'}</div><h3>Thank you!</h3><p>${stars>=4?'That really helps other students find Full Marks.':'Thanks for being honest. We read every review and we’ll use yours to make Full Marks better.'}</p><button type="button" class="btn" onclick="document.getElementById('modal').classList.remove('on')">Close</button></div>`}
+      catch(e){err.textContent=e.message;$('#rvGo').disabled=false}}}};
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-review],[data-review-later]');if(!t)return;e.preventDefault();
+  if(t.hasAttribute('data-review-later')){store.set('fm-rev-ask',String(Date.now()));$('#rvAsk')?.remove();return}store.set('fm-rev-ask',String(Date.now()));Reviews.open()});
+// A weekly report for a parent: the student asks, the parent confirms by email (/me/parent).
+const Parent={st:null,who:'',busy:false,
+  async load(){const em=store.get('go-auth-email','');if(!API_BASE||!authToken()){this.st=null;return}if(this.who===em&&this.st)return;
+    try{this.st=await SCH.api('GET','/me/parent');this.who=em}catch(e){this.st=null}this.paint()},
+  html(){if(!authToken())return '';const s=this.st;if(!s||this.who!==store.get('go-auth-email',''))return '';
+    if(s.state==='on')return `<div class="pa-box on"><span aria-hidden="true">👨‍👩‍👧</span><div><b>Weekly report for a parent is on</b><small>${esc(s.email)} gets it every Monday.</small></div><button type="button" class="btn ghost sm" data-pa="stop">Stop</button></div>`;
+    if(s.state==='pending')return `<div class="pa-box"><span aria-hidden="true">📨</span><div><b>Waiting for ${esc(s.email)}</b><small>We emailed them a link to say yes. Reports start the Monday after.</small></div><button type="button" class="btn ghost sm" data-pa="again">Send again</button><button type="button" class="btn ghost sm" data-pa="stop">Cancel</button></div>`;
+    return `<div class="pa-box"><span aria-hidden="true">👨‍👩‍👧</span><div><b>Send a weekly report to a parent</b><small>Every Monday: how much you revised, your predicted grades and your tests. They confirm it first.</small></div><form class="pa-f" data-pa-form><input class="lbinput" type="email" required placeholder="parent@example.com" aria-label="Parent’s email" autocomplete="off"><button class="btn sm">Send</button></form></div>`},
+  paint(){$$('[data-parent]').forEach(b=>b.innerHTML=this.html())},
+  async send(email){if(this.busy)return;this.busy=true;try{this.st=await SCH.api('PUT','/me/parent',{email});toast('📨','Sent! Ask them to look for an email from Full Marks.')}catch(e){toast('⚠️',esc(e.message))}this.busy=false;this.paint()},
+  async stop(){if(this.busy)return;this.busy=true;try{await SCH.api('DELETE','/me/parent');this.st={email:null,state:null};toast('✓','The parent report is off.')}catch(e){toast('⚠️',esc(e.message))}this.busy=false;this.paint()}};
+document.addEventListener('submit',e=>{const f=e.target.closest&&e.target.closest('[data-pa-form]');if(!f)return;e.preventDefault();Parent.send(f.querySelector('input').value.trim())});
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pa]');if(!b)return;e.preventDefault();if(b.dataset.pa==='stop')Parent.stop();else if(Parent.st&&Parent.st.email)Parent.send(Parent.st.email)});
+
 const Invite={
   code(){return store.get('fm-invite','')},
   day(t){return new Date(t).toLocaleDateString(I18N.on?I18N.L.html:'en-GB',{weekday:'long',day:'numeric',month:'long'})},
@@ -7309,7 +7402,8 @@ $('#menuBtn').onclick=()=>{const o=$('#navlinks').classList.toggle('open');$('#m
   r.dataset.theme=store.get('fm-theme','')==='dark'?'dark':'light';lbl();tb.onclick=e=>{e.preventDefault();r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';store.set('fm-theme',r.dataset.theme);lbl()}}
 $('#yr').textContent=new Date().getFullYear();$('#mailto').href='mailto:'+SUPPORT_EMAIL;
 $('#tourBtn').onclick=()=>Explainer.open(tourDeckSpoken());
-renderPicker();route();Invite.boot();PlanSync.pull();ProgSync.pull();{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
+renderPicker();route();Invite.boot();PlanSync.pull();ProgSync.pull();Reviews.load();if(authToken())setTimeout(()=>Welcome.claim(),2500);
+{const qs=new URLSearchParams(location.search),k=['school','review'].find(x=>qs.has(x));if(k){qs.delete(k);history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash);setTimeout(()=>k==='school'?SchoolEnq.open():Reviews.open(),600)}}{const pre=()=>L3.lib().catch(()=>{}),c=navigator.connection;if(!(c&&c.saveData))setTimeout(pre,2500)}WHO.boot();StuAct.boot();Mins.boot();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-(StuAct.at||0)>180e3)StuAct.boot()});Acct.render();$('#acctBtn').onclick=Acct.open;
 {const lb=$('#langBtn'),lf=$('#langFoot');lb.textContent=I18N.L.flag;lb.title=`Language: ${I18N.L.name}`;lb.setAttribute('aria-label',lb.title);lb.onclick=langMenu;lf.textContent=`🌐 ${I18N.L.name}`;lf.onclick=e=>{e.preventDefault();langMenu()};
   const showLang=()=>{const any=I18N.on||Object.values(langShare).some(v=>v>=.9);lb.hidden=!any;lf.hidden=!any;if(lf.previousSibling&&lf.previousSibling.nodeType===3)lf.previousSibling.textContent=any?' · ':' '};showLang();
