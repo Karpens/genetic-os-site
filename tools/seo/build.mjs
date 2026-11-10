@@ -496,6 +496,8 @@ for (const [p, body] of files) {
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>${SITE}/</loc></url>
+<url><loc>${SITE}/about.html</loc></url>
+<url><loc>${SITE}/schools.html</loc></url>
 ${pages.map(u => `<url><loc>${SITE + u}</loc><lastmod>${mods.get(SITE + u)}</lastmod></url>`).join('\n')}
 </urlset>
 `;
