@@ -1580,9 +1580,12 @@ html.i18n .board-ui{display:none!important}
 .tr-quote q{display:block;font:700 17px/1.35 "Plus Jakarta Sans",sans-serif}.tr-quote small{color:var(--muted);font-size:13px}
 .tr-more{max-width:none!important;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:22px 0 0;font-weight:700}.tr-more a{text-decoration:none}
 @media (max-width:900px){.tr-grid{grid-template-columns:1fr 1fr}}@media (max-width:520px){.tr-grid{grid-template-columns:1fr;gap:10px}.tr{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:2px;padding:16px}.tr>span{grid-row:span 2;font-size:26px}}
-.rv-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px 0 14px;font-weight:700}.rv-head b{font:800 30px "Plus Jakarta Sans",sans-serif}.rv-head span:last-child{color:var(--muted)}
+#revBox{max-width:none!important}.rv-title{text-align:center;margin:40px 0 0;font:800 26px "Plus Jakarta Sans",sans-serif}
+.rv-empty{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:640px;margin:16px auto 0;padding:16px 20px;border-radius:18px;background:var(--paper);box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.rv-empty>span{font-size:28px}.rv-empty>div{flex:1;min-width:200px}.rv-empty b{display:block}.rv-empty small{color:var(--muted)}
+.rv-head{display:flex;align-items:center;justify-content:center;gap:10px;margin:12px 0 14px;font-weight:700}.rv-head b{font:800 30px "Plus Jakarta Sans",sans-serif}.rv-head span:last-child{color:var(--muted)}
 .rv-st{color:#F59E0B;letter-spacing:2px;font-size:18px}.rv-st i{font-style:normal;color:var(--line)}
-.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,340px));justify-content:center;gap:12px}
 .rv-card{margin:0;background:var(--paper);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow),0 0 0 1px var(--line)}
 .rv-card blockquote{margin:8px 0 10px;font-size:15.5px;line-height:1.5}.rv-card figcaption{color:var(--muted);font-size:13.5px;font-weight:700}
 .rv-ask,.pa-box{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px;padding:14px 18px;border-radius:16px;background:linear-gradient(120deg,var(--gold-soft,#FFF6E0),var(--stain-soft));box-shadow:0 0 0 1px var(--line)}
@@ -2544,9 +2547,9 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
         <div class="tr rv" style="--d:2"><span aria-hidden="true">🛠️</span><b>Spot a mistake? We fix it</b><small>Every question has a Report button, and every report is read.</small></div>
         <div class="tr rv" style="--d:3"><span aria-hidden="true">🔒</span><b>No ads, no selling data</b><small>Payments by Stripe. Cancel in two clicks. Delete your account any time.</small></div>
       </div>
-      <div id="revBox"></div>
       <a class="tr-quote" href="/about.html"><img class="tr-av" src="/img/alexander-sm.jpg" width="52" height="52" alt="" loading="lazy"><span><q>I made Full Marks to help students find the best way to learn, because I didn’t know how myself.</q><small>Alexander Hacek, 19, founder of Full Marks · Read why →</small></span></a>
       <p class="tr-more"><a href="/about.html">Who makes Full Marks →</a><a href="/schools.html">For schools and teachers →</a><a href="#" data-review>Leave a review →</a></p>
+      <div id="revBox"></div>
     </div>
 
     <div class="sec">
@@ -7328,8 +7331,11 @@ const Welcome={days:0,busy:false,
 // Reviews: the owner's approved ones on the home page; anyone signed in can write one.
 const Reviews={list:null,
   async load(){if(!API_BASE)return;try{const r=await fetch(`${API_BASE}/reviews`);if(!r.ok)return;this.list=await r.json();this.paint()}catch(e){}},
-  paint(){const b=$('#revBox'),L=this.list;if(!b||!L||!L.count)return;const st=n=>`<span class="rv-st" aria-label="${n} out of 5">${'★'.repeat(n)}<i>${'★'.repeat(5-n)}</i></span>`;
-    b.innerHTML=`<div class="rv-head"><b>${esc(String(L.avg))}</b>${st(Math.round(L.avg))}<span>from ${L.count} review${L.count===1?'':'s'}</span></div>
+  paint(){const b=$('#revBox'),L=this.list;if(!b||!L)return;
+    // until the first review is approved: an honest invitation instead of an empty space
+    if(!L.count){b.innerHTML=`<h3 class="rv-title">Reviews</h3><div class="rv-empty"><span aria-hidden="true">⭐</span><div><b>Be one of the first to review Full Marks</b><small>Only real reviews from students, parents and teachers who use it appear here.</small></div><button type="button" class="btn sm" data-review>Leave a review</button></div>`;return}
+    const st=n=>`<span class="rv-st" aria-label="${n} out of 5">${'★'.repeat(n)}<i>${'★'.repeat(5-n)}</i></span>`;
+    b.innerHTML=`<h3 class="rv-title">What people say</h3><div class="rv-head"><b>${esc(String(L.avg))}</b>${st(Math.round(L.avg))}<span>from ${L.count} review${L.count===1?'':'s'}</span></div>
       <div class="rv-grid">${L.reviews.slice(0,6).map(r=>`<figure class="rv-card">${st(r.stars)}<blockquote>${esc(r.text)}</blockquote><figcaption>${esc(r.name||'A student')}, ${esc(r.role)}</figcaption></figure>`).join('')}</div>`},
   // after a few days of revision, once a month at most, until they write one
   due(){if(!authToken()||store.get('fm-rev-done','')==='1')return false;const n=Object.keys(XP.days()).length,last=+store.get('fm-rev-ask','0')||0;return n>=3&&Date.now()-last>21*864e5},
