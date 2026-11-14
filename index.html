@@ -9,6 +9,11 @@ try{var q=new URLSearchParams(location.search).get('lang'),L=['sk','es','ru'],l=
 <meta name="description" content="GCSE and A-level revision for every exam board: notes, diagrams, exam-style questions, timed exams, past papers and games for AQA, OCR, Edexcel and Cambridge.">
 <link rel="canonical" href="https://fullmarkss.com/">
 <meta name="apple-itunes-app" content="app-id=6820987528">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%234361EE'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#F7F8FC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141A2C" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Full Marks">
 <meta property="og:title" content="Full Marks · GCSE and A-level revision">
@@ -2190,6 +2195,9 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 84%,transparent)}
 .annbar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:9px 16px;background:linear-gradient(90deg,color-mix(in srgb,var(--stain) 14%,var(--paper)),color-mix(in srgb,var(--brand-2) 14%,var(--paper)));color:var(--ink);font-size:14px;text-decoration:none;position:relative;z-index:51}
 .annbar b{font:800 11px "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;background:var(--stain);color:#fff;border-radius:999px;padding:3px 10px}.annbar em{font-style:normal;font-weight:700;color:var(--stain)}
 .annbar:hover em{text-decoration:underline}body.not-home .annbar{display:none}
+.inst-help{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:220;width:min(420px,calc(100% - 32px));background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:20px 20px 18px;box-shadow:var(--shadow-lg)}
+.inst-help h3{margin:0 0 10px;font:800 18px "Plus Jakarta Sans",sans-serif}.inst-help ul{margin:0;padding-left:20px;color:var(--muted);line-height:1.6}.inst-help ul b{color:var(--ink)}
+.inst-help button{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;border-radius:50%;background:var(--bg2);color:var(--ink);font-size:18px;cursor:pointer}
 .hero{grid-template-columns:1fr;gap:46px;justify-items:center;text-align:center}
 .hero-text{max-width:920px;display:flex;flex-direction:column;align-items:center}
 .hero h1{font-size:clamp(44px,6.6vw,88px);line-height:1;letter-spacing:-.035em}
@@ -2449,6 +2457,24 @@ const SUPPORT_EMAIL = "hello@fullmarkss.com";
 
 
 <a class="annbar" id="annBar" href="https://apps.apple.com/app/id6820987528" target="_blank" rel="noopener"><b>New</b><span>Full Marks is on the App Store</span><em>Get the iPhone app →</em></a>
+<script>/* iPhone and computers: the bar links to the App Store. Android: it adds Full Marks to the home screen instead.
+   Once Full Marks runs from the home screen, the bar is not shown. */
+(()=>{const b=document.getElementById('annBar'),hide=()=>{b.style.display='none'};
+if('serviceWorker' in navigator&&!document.documentElement.classList.contains('embed3d'))addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){hide();return}
+if(!/Android/i.test(navigator.userAgent)||document.documentElement.classList.contains('embed3d'))return;
+let ask=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();ask=e});
+addEventListener('appinstalled',hide);
+b.removeAttribute('target');b.removeAttribute('rel');b.href='#install';
+b.innerHTML='<b>App</b><span>Add Full Marks to your home screen</span><em>Install →</em>';
+const help=()=>{document.querySelectorAll('.inst-help').forEach(x=>x.remove());const d=document.createElement('div');d.className='inst-help';d.setAttribute('role','dialog');d.setAttribute('aria-label','Add Full Marks to your home screen');
+  d.innerHTML='<button aria-label="Close">×</button><h3>Add Full Marks to your home screen</h3><ul><li><b>Chrome:</b> tap <b>⋮</b> at the top right, then <b>Add to Home screen</b> or <b>Install app</b>.</li><li><b>Samsung Internet:</b> tap <b>☰</b>, then <b>Add page to</b> → <b>Home screen</b>.</li></ul>';
+  d.querySelector('button').onclick=()=>d.remove();document.body.appendChild(d)};
+b.addEventListener('click',async e=>{e.preventDefault();
+  if(!ask){help();return}
+  const p=ask;ask=null;p.prompt();const r=await p.userChoice.catch(()=>null);if(r&&r.outcome==='accepted')hide()});
+})();</script>
 <header class="top" id="topbar">
   <div class="wrap nav">
     <a class="brand" href="#home"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="var(--stain)"/><path d="M7 12.3l3.2 3.2L17.5 8" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Full Marks</a>

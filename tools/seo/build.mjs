@@ -243,6 +243,9 @@ function page({ url, title, desc, crumbs, body, color, subj = '', type = 'websit
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#4361EE">
 <link rel="icon" href="${ICON}">
+<meta name="apple-itunes-app" content="app-id=6820987528">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('fm-theme')==='dark'?'dark':'light'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
