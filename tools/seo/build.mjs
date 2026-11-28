@@ -187,6 +187,10 @@ figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
 .js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
 .opts li.right{border-color:var(--ok);background:var(--ok-soft)}
 .opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.js .opts li{padding:0}.js .opts li::before{content:none}
+.ob{display:block;width:100%;margin:0;padding:10px 14px;border:0;border-radius:11px;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.ob::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.q.done .ob{cursor:default}.ob:focus-visible{outline:2px solid var(--stain);outline-offset:2px}
 details{margin:0 0 10px}
 summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
 details p{margin:8px 0 0}
@@ -208,9 +212,9 @@ details p{margin:8px 0 0}
 [id]{scroll-margin-top:76px}
 @media (max-width:560px){.top nav .hide-s{display:none}.lead{font-size:17px}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}.boards li{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){a.tile{transition:none}a.tile:hover{transform:none}}`;
-// the questions answer themselves when tapped; without JavaScript they still work through "Show answer"
+// the questions answer themselves when tapped (each option becomes a real button); without JavaScript they still work through "Show answer"
 const SCRIPT = `<script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
-qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \\u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>`;
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){var b=d.createElement('button');b.type='button';b.className='ob';b.setAttribute('data-l',li.getAttribute('data-l'));while(li.firstChild)b.appendChild(li.firstChild);li.appendChild(b);b.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \\u2014 well done for finishing!':' so far')}})})})();</script>`;
 
 // A visit counted the way the app counts it (Stats in index.html): no cookie and nothing that identifies anyone.
 // An arrival from outside the site is a visit; every page is a page view. Off for robots and in the owner's browser.
