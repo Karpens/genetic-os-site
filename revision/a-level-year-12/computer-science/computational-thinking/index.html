@@ -99,6 +99,10 @@ figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
 .js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
 .opts li.right{border-color:var(--ok);background:var(--ok-soft)}
 .opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.js .opts li{padding:0}.js .opts li::before{content:none}
+.ob{display:block;width:100%;margin:0;padding:10px 14px;border:0;border-radius:11px;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.ob::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.q.done .ob{cursor:default}.ob:focus-visible{outline:2px solid var(--stain);outline-offset:2px}
 details{margin:0 0 10px}
 summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
 details p{margin:8px 0 0}
@@ -221,7 +225,7 @@ details p{margin:8px 0 0}
 </main>
 <footer class="foot"><div class="wrap"><span>© Full Marks · fullmarkss.com</span><span><a href="/revision/">Revision notes</a> · <a href="/#pricing">Pricing</a> · <a href="/#teacher">For teachers</a> · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a></span></div></footer>
 <script>(function(){var d=document;d.documentElement.classList.add('js');var qs=d.querySelectorAll('.q'),t=d.querySelector('.tally'),n=0,r=0;
-qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){li.tabIndex=0;li.setAttribute('role','button');li.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')};li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}}})})})();</script>
+qs.forEach(function(q){q.querySelectorAll('.opts li').forEach(function(li,i){var b=d.createElement('button');b.type='button';b.className='ob';b.setAttribute('data-l',li.getAttribute('data-l'));while(li.firstChild)b.appendChild(li.firstChild);li.appendChild(b);b.onclick=function(){if(q.classList.contains('done'))return;q.classList.add('done');var a=+q.dataset.a,o=q.querySelectorAll('.opts li');o[a].classList.add('right');if(i!==a)o[i].classList.add('wrong');else r++;n++;var s=q.querySelector('details');if(s)s.open=true;if(t)t.textContent=r+' of '+n+' right'+(n===qs.length?' \u2014 well done for finishing!':' so far')}})})})();</script>
 <script>(function(){try{var d=document,N=navigator;if(N.webdriver||!N.sendBeacon||localStorage.getItem('fm-nostats')==='1')return;var r='',x=0;try{var u=d.referrer?new URL(d.referrer):null;if(u&&u.host!==location.host){x=1;r=u.hostname}}catch(e){}
 var n=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0]||{}).type||'navigate',q=new URLSearchParams(location.search),b={views:[['revision',"computing"]]};
 if(n==='navigate'&&(x||!d.referrer)){var s=Math.min(screen.width,screen.height);b.visit=1;b.ref=r;b.utm=q.get('utm_source')||'';b.dev=matchMedia('(pointer:coarse)').matches?(s<600?'phone':'tablet'):'desktop';b.lang=(N.language||'').slice(0,2).toLowerCase();b.land='revision'}

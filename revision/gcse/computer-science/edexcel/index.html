@@ -99,6 +99,10 @@ figure img{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
 .js .q:not(.done) .opts li:hover,.opts li:focus-visible{border-color:var(--stain);outline:none}
 .opts li.right{border-color:var(--ok);background:var(--ok-soft)}
 .opts li.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.js .opts li{padding:0}.js .opts li::before{content:none}
+.ob{display:block;width:100%;margin:0;padding:10px 14px;border:0;border-radius:11px;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.ob::before{content:attr(data-l) ". ";font-weight:700;color:var(--muted)}
+.q.done .ob{cursor:default}.ob:focus-visible{outline:2px solid var(--stain);outline-offset:2px}
 details{margin:0 0 10px}
 summary{cursor:pointer;color:var(--stain);font-weight:600;width:max-content;max-width:100%}
 details p{margin:8px 0 0}
